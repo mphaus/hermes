@@ -185,4 +185,14 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+    'mph_user_first_name' => env('MPH_USER_FIRST_NAME'),
+
+    'mph_user_last_name' => env('MPH_USER_LAST_NAME'),
+
+    'mph_user_email' => env('MPH_USER_EMAIL'),
+
+    'mph_username' => env('MPH_USERNAME'),
+
+    'mph_user_password' => env('MPH_USER_PASSWORD'),
+
 ];
