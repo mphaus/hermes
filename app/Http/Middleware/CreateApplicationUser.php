@@ -17,13 +17,13 @@ class CreateApplicationUser
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $user = User::firstOrNew(['username' => config('app.mph_username')]);
+        $user = User::firstOrNew(['username' => config('app.mph_user.username')]);
 
         if ($user->exists === false) {
-            $user->first_name = config('app.mph_user_first_name');
-            $user->last_name = config('app.mph_user_last_name');
-            $user->email = config('app.mph_user_email');
-            $user->password = Hash::make(config('app.mph_user_password'));
+            $user->first_name = config('app.mph_user.first_name');
+            $user->last_name = config('app.mph_user.last_name');
+            $user->email = config('app.mph_user.email');
+            $user->password = Hash::make(config('app.mph_user.password'));
             $user->save();
 
             return redirect()->route('login');
