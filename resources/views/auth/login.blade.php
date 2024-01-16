@@ -39,10 +39,11 @@
                 class="g-recaptcha"
                 data-sitekey="{{ config('app.recaptcha_v3.site_key') }}"
                 data-callback="onSubmit"
-                data-action="submit"
+                data-action="login"
             >
                 {{ __('Log in') }}
             </x-primary-button>
         </div>
+        <x-input-error :messages="$errors->get('g-recaptcha-response')" class="mt-2" />
     </form>
 </x-guest-layout>
