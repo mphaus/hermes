@@ -12,10 +12,23 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: [ 'Figtree', ...defaultTheme.fontFamily.sans ],
             },
+            colors: {
+                primary: {
+                    100: "#f2d6dd",
+                    200: "#e5aebb",
+                    300: "#d88599",
+                    400: "#cb5d77",
+                    500: "#be3455",
+                    600: "#982a44",
+                    700: "#721f33",
+                    800: "#4c1522",
+                    900: "#260a11"
+                },
+            }
         },
     },
 
-    plugins: [forms],
+    plugins: [ forms ],
 };
