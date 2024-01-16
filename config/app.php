@@ -185,4 +185,17 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+    'mph_user' => [
+        'first_name' => env('MPH_USER_FIRST_NAME'),
+        'last_name' => env('MPH_USER_LAST_NAME'),
+        'email' => env('MPH_USER_EMAIL'),
+        'username' => env('MPH_USERNAME'),
+        'password' => env('MPH_USER_PASSWORD'),
+    ],
+
+    'recaptcha_v3' => [
+        'site_key' => env('RECAPTCHA_V3_SITE_KEY'),
+        'secret_key' => env('RECAPTCHA_V3_SECRET_KEY'),
+    ],
+
 ];
