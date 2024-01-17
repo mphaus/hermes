@@ -28,7 +28,11 @@
 
             <!-- Page Content -->
             <main>
-                {{ $slot }}
+                <div class="container">
+                    <div class="py-12">
+                        {{ $slot }}
+                    </div>
+                </div>
             </main>
         </div>
     </body>
