@@ -194,7 +194,12 @@ return [
     ],
 
     'recaptcha_v3' => [
-        'site_key' => env('RECAPTCHA_V3_SITE_KEY'),
-        'secret_key' => env('RECAPTCHA_V3_SECRET_KEY'),
+        'site_key' => env('RECAPTCHA_V3_SITE_KEY', ''),
+        'secret_key' => env('RECAPTCHA_V3_SECRET_KEY', ''),
+    ],
+
+    'current_rms' => [
+        'auth_token' => env('CURRENT_KEY', ''),
+        'subdomain' => env('CURRENT_SUBDOMAIN', ''),
     ],
 ];
