@@ -1,11 +1,10 @@
-<x-layout.guest>
+<x-layout-guest>
     <x-slot name="title">{{ __('Login') }}</x-slot>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
-    <form method="POST" action="{{ route('login.authenticate') }}" data-element="login-form">
-        @csrf
+    <x-form method="POST" action="{{ route('login.authenticate') }}" data-element="login-form">
         <div>
-            <x-input.label for="username" :value="__('Username')" />
+            <x-input-label for="username" :value="__('Username')" />
             <x-input 
                 id="username" 
                 class="block w-full mt-1" 
@@ -16,10 +15,10 @@
                 autofocus 
                 autocomplete="username" 
             />
-            <x-input.error :messages="$errors->get('username')" class="mt-2" />
+            <x-input-error :messages="$errors->get('username')" class="mt-2" />
         </div>
         <div class="mt-4">
-            <x-input.label for="password" :value="__('Password')" />
+            <x-input-label for="password" :value="__('Password')" />
             <x-input 
                 id="password" 
                 class="block w-full mt-1"
@@ -27,11 +26,11 @@
                 name="password"
                 required autocomplete="current-password" 
             />
-            <x-input.error :messages="$errors->get('password')" class="mt-2" />
+            <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
         <div class="block mt-4">
             <label for="remember_me" class="inline-flex items-center">
-                <x-input.checkbox 
+                <x-input-checkbox 
                     id="remember_me"
                     name="remember"
                 />
@@ -49,6 +48,6 @@
                 {{ __('Log in') }}
             </x-button>
         </div>
-        <x-input.error :messages="$errors->get('g-recaptcha-response')" class="mt-2" />
-    </form>
-</x-layout.guest>
+        <x-input-error :messages="$errors->get('g-recaptcha-response')" class="mt-2" />
+    </x-form>
+</x-layout-guest>
