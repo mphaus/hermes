@@ -13,7 +13,7 @@ class JobsIndex extends Component
 {
     use WithHttpCurrentError;
 
-    #[Computed()]
+    #[Computed]
     public function jobs(): array
     {
         $defaultResponse = [
