@@ -7,13 +7,11 @@ use Illuminate\Support\Arr;
 
 trait WithHttpCurrentError
 {
-    public function errorMessage(string $message, Response $response)
+    public function errorMessage(string $message, Response $response): string
     {
-        return [
-            'error' => Arr::join([
-                $message,
-                ...$response->json()['errors'],
-            ], ' '),
-        ];
+        return Arr::join([
+            $message,
+            ...$response->json()['errors'],
+        ], ' ');
     }
 }
