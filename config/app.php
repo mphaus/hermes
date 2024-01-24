@@ -199,7 +199,8 @@ return [
     ],
 
     'current_rms' => [
-        'auth_token' => env('CURRENT_KEY', ''),
-        'subdomain' => env('CURRENT_SUBDOMAIN', ''),
+        'subdomain' => env('CURRENT_RMS_SUBDOMAIN', ''),
+        'auth_token' => env('CURRENT_RMS_AUTH_KEY', ''),
+        'host' => env('CURRENT_RMS_HOST', ''),
     ],
 ];
