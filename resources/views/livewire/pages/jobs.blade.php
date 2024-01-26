@@ -1,8 +1,16 @@
+<x-slot name="title">{{ __('Jobs list') }}</x-slot>
+<x-slot name="heading">{{ __('Active Jobs') }}</x-slot>
 <div>
     @if ($this->jobs['error'])
         <x-generic-error :message="$this->jobs['error']" />
     @elseif ($this->jobs['opportunities']->isNotEmpty())
-        <div class="space-y-4">
+        <div wire:loading.block>
+            @include('jobs-skeleton')
+        </div>
+        <div 
+            class="space-y-4"
+            wire:loading.class="hidden"
+        >
             <div class="hidden lg:block">
                 <div class="px-6 grid items-center grid-cols-[28rem_1fr_1fr_1fr] xl:grid-cols-[45rem_1fr_1fr_1fr] text-sm gap-2 font-semibold">
                     <p>{{ __('Subject') }}</p>
