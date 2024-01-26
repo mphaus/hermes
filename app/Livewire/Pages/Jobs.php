@@ -1,17 +1,23 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Pages;
 
 use App\Traits\WithHttpCurrentError;
 use Illuminate\Contracts\View\View;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Http;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Lazy;
 use Livewire\Component;
+use Livewire\WithPagination;
 
-class JobsIndex extends Component
+#[Lazy]
+class Jobs extends Component
 {
+    use WithPagination;
     use WithHttpCurrentError;
+
+    public bool $beingPaginated = false;
 
     #[Computed]
     public function jobs(): array
@@ -23,8 +29,8 @@ class JobsIndex extends Component
 
         $response = Http::current()
             ->withQueryParameters([
-                'page' => request()->query('page', 1),
-                'per_page' => 25,
+                'page' => $this->getPage(),
+                'per_page' => 4,
                 'filtermode' => 'with_active_status',
             ])
             ->get('opportunities');
@@ -55,8 +61,18 @@ class JobsIndex extends Component
         ];
     }
 
+    public function updatedPage()
+    {
+        $this->beingPaginated = false;
+    }
+
+    public function placeholder(): View
+    {
+        return view('jobs-skeleton');
+    }
+
     public function render(): View
     {
-        return view('livewire.jobs-index');
+        return view('livewire.pages.jobs');
     }
 }

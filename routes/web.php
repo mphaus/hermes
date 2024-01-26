@@ -2,6 +2,7 @@
 
 // use App\Http\Controllers\ProfileController;
 
+use App\Livewire\Pages\Jobs;
 use App\Livewire\Pages\JobsShow;
 use Illuminate\Support\Facades\Route;
 
@@ -21,7 +22,7 @@ Route::middleware('auth')->group(function () {
     // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::view('jobs', 'jobs')->name('jobs');
+    Route::get('jobs', Jobs::class)->name('jobs');
     Route::get('jobs/{id}', JobsShow::class)->name('jobs.show');
 });
 
