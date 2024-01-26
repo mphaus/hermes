@@ -1,6 +1,8 @@
 <?php
 
 // use App\Http\Controllers\ProfileController;
+
+use App\Livewire\Pages\JobsShow;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,6 +22,7 @@ Route::middleware('auth')->group(function () {
     // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::view('jobs', 'jobs')->name('jobs');
+    Route::get('jobs/{id}', JobsShow::class)->name('jobs.show');
 });
 
 require __DIR__ . '/auth.php';
