@@ -1947,16 +1947,16 @@
         },
         {
             "name": "livewire/livewire",
-            "version": "v3.4.0",
+            "version": "v3.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/livewire/livewire.git",
-                "reference": "5c659ce15c157c2b320ad0ba5f5b828ddc6fa245"
+                "reference": "fd74e6b31c96c40bb36c99e79d5c62460b31ec6b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/livewire/livewire/zipball/5c659ce15c157c2b320ad0ba5f5b828ddc6fa245",
-                "reference": "5c659ce15c157c2b320ad0ba5f5b828ddc6fa245",
+                "url": "https://api.github.com/repos/livewire/livewire/zipball/fd74e6b31c96c40bb36c99e79d5c62460b31ec6b",
+                "reference": "fd74e6b31c96c40bb36c99e79d5c62460b31ec6b",
                 "shasum": ""
             },
             "require": {
@@ -2010,7 +2010,7 @@
             "description": "A front-end framework for Laravel.",
             "support": {
                 "issues": "https://github.com/livewire/livewire/issues",
-                "source": "https://github.com/livewire/livewire/tree/v3.4.0"
+                "source": "https://github.com/livewire/livewire/tree/v3.4.1"
             },
             "funding": [
                 {
@@ -2018,7 +2018,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-01-23T15:22:18+00:00"
+            "time": "2024-01-24T13:56:12+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -6719,16 +6719,16 @@
         },
         {
             "name": "pestphp/pest",
-            "version": "v2.32.2",
+            "version": "v2.32.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pestphp/pest.git",
-                "reference": "f75063c42012f6964ea9bf47cd8e9076231bd1cd"
+                "reference": "4febd8a11bb1e25b7dc6446ba59546507d6a7556"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pestphp/pest/zipball/f75063c42012f6964ea9bf47cd8e9076231bd1cd",
-                "reference": "f75063c42012f6964ea9bf47cd8e9076231bd1cd",
+                "url": "https://api.github.com/repos/pestphp/pest/zipball/4febd8a11bb1e25b7dc6446ba59546507d6a7556",
+                "reference": "4febd8a11bb1e25b7dc6446ba59546507d6a7556",
                 "shasum": ""
             },
             "require": {
@@ -6772,8 +6772,7 @@
                         "Pest\\Plugins\\Snapshot",
                         "Pest\\Plugins\\Verbose",
                         "Pest\\Plugins\\Version",
-                        "Pest\\Plugins\\Parallel",
-                        "Pest\\Plugins\\JUnit"
+                        "Pest\\Plugins\\Parallel"
                     ]
                 },
                 "phpstan": {
@@ -6812,7 +6811,7 @@
             ],
             "support": {
                 "issues": "https://github.com/pestphp/pest/issues",
-                "source": "https://github.com/pestphp/pest/tree/v2.32.2"
+                "source": "https://github.com/pestphp/pest/tree/v2.32.3"
             },
             "funding": [
                 {
@@ -6824,7 +6823,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-01-23T18:12:07+00:00"
+            "time": "2024-01-25T10:17:36+00:00"
         },
         {
             "name": "pestphp/pest-plugin",
