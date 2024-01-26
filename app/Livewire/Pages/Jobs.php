@@ -30,7 +30,7 @@ class Jobs extends Component
         $response = Http::current()
             ->withQueryParameters([
                 'page' => $this->getPage(),
-                'per_page' => 4,
+                'per_page' => 25,
                 'filtermode' => 'with_active_status',
             ])
             ->get('opportunities');

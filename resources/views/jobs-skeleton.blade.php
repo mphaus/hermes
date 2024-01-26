@@ -10,7 +10,7 @@
                 <div class="h-5 bg-gray-200 rounded-lg"></div>
             </div>
         </div>
-        @for ($i = 0; $i < 4; $i++)
+        @for ($i = 0; $i < 25; $i++)
             <x-card class="relative">
                 <div class="flex flex-col gap-2 lg:grid lg:grid-cols-[28rem_1fr_1fr_1fr] lg:items-center xl:grid-cols-[45rem_1fr_1fr_1fr] animate-pulse">
                     <div class="h-6 bg-gray-200 rounded-lg"></div>
