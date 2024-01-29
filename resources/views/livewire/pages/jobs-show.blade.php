@@ -13,11 +13,11 @@
                 @endif
                 <div class="flex flex-col gap-1 text-sm">
                     <p class="font-semibold">{{ __('Start date') }}</p>
-                    <time datetime="{{ $this->job['opportunity']['starts_at'] }}">{{ now()->parse($this->job['opportunity']['starts_at'])->timezone('Australia/Melbourne')->format('d/m/Y H:i') }}</time>
+                    <time datetime="{{ $this->job['opportunity']['starts_at'] }}">{{ now()->parse($this->job['opportunity']['starts_at'])->timezone(config('app.timezone'))->format('d/m/Y H:i') }}</time>
                 </div>
                 <div class="flex flex-col gap-1 text-sm">
                     <p class="font-semibold">{{ __('End date') }}</p>
-                    <time datetime="{{ $this->job['opportunity']['ends_at'] }}">{{ now()->parse($this->job['opportunity']['ends_at'])->timezone('Australia/Melbourne')->format('d/m/Y H:i') }}</time>
+                    <time datetime="{{ $this->job['opportunity']['ends_at'] }}">{{ now()->parse($this->job['opportunity']['ends_at'])->timezone(config('app.timezone'))->format('d/m/Y H:i') }}</time>
                 </div>
                 <div class="flex flex-col gap-1 text-sm">
                     <p class="font-semibold">{{ __('Revenue') }}</p>
@@ -32,6 +32,9 @@
                     </ul>
                 </div>
             </div>
+        </x-card>
+        <x-card class="mt-4">
+            <livewire:opportunity-items-create :job="$this->job['opportunity']" />
         </x-card>
     @endif
 </div>
