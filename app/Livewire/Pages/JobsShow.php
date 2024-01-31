@@ -30,7 +30,7 @@ class JobsShow extends Component
             'opportunity' => [],
         ];
 
-        $response = Http::current()->get("opportunities/{$this->id}");
+        $response = Http::current()->get("opportunities/{$this->id}?include[]=opportunity_items&include[]=participants");
         $appName = config('app.name');
         $notFoundText = __('Job not found');
 
