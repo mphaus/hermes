@@ -193,6 +193,8 @@ return [
         'password' => env('MPH_USER_PASSWORD'),
     ],
 
+    'mph_test_opportunity_id' => env('MPH_TEST_OPPORTUNITY_ID'),
+
     'recaptcha_v3' => [
         'site_key' => env('RECAPTCHA_V3_SITE_KEY', ''),
         'secret_key' => env('RECAPTCHA_V3_SECRET_KEY', ''),

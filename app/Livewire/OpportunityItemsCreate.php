@@ -2,8 +2,11 @@
 
 namespace App\Livewire;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Promise;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\App;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Validate;
@@ -27,7 +30,7 @@ class OpportunityItemsCreate extends Component
         $this->job = $job;
     }
 
-    public function save(): void
+    public function save(): mixed
     {
         $filename = Arr::join([
             $this->job['id'],
@@ -50,6 +53,7 @@ class OpportunityItemsCreate extends Component
                     $diff = array_diff($requiredHeadings, $header);
 
                     if (count($diff) > 0) {
+                        fclose($handle);
                         $missingHeaders = Arr::join($diff, ', ', ' and ');
                         throw ValidationException::withMessages(['csvfile' => __('The uploaded csv file does not contain the valid headers required to identify the data. Missing headers: :missing_headers.', ['missing_headers' => $missingHeaders])]);
                     }
@@ -63,10 +67,65 @@ class OpportunityItemsCreate extends Component
         }
 
         // EXTRACT EXISTING GROUPS
-        $existingGroups = array_map(fn ($group) => ['id' => $group['id'], 'name' => $group['name']], array_filter($this->job['opportunity_items'], fn ($item) => $item['opportunity_item_type_name'] === 'Group'));
+        $existingGroups = array_values(array_map(fn ($group) => ['id' => $group['id'], 'name' => $group['name']], array_filter($this->job['opportunity_items'], fn ($item) => $item['opportunity_item_type_name'] === 'Group')));
 
-        dd($existingGroups);
-        dd($data);
+        // EXTRACT GROUPS SENT OVER THE FILE IN A DISTINCT WAY
+        $groups = array_unique(array_map(fn ($item) => $item['group_name'], $data));
+
+        // CHECK IF GROUPS SENT OVER THE FILE ARE PRESENT IN THE EXISTING GROUPS FROM THE JOB
+        $groupDiff = array_diff(
+            $groups,
+            array_map(fn ($group) => $group['name'], $existingGroups),
+        );
+
+        // CREATE NEW GROUPS USING THE API IF NEEDED
+        if (count($groupDiff) > 0) {
+            $responses = $this->createGroups($groupDiff);
+
+            foreach ($responses as $response) {
+                if ($response['state'] !== 'fulfilled') {
+                    continue;
+                }
+
+                $newGroup = json_decode($response['value']->getBody()->getContents(), true);
+                $existingGroups[] = [
+                    'id' => $newGroup['opportunity_item']['id'],
+                    'name' => $newGroup['opportunity_item']['name'],
+                ];
+            }
+        }
+
+        dd($existingGroups, $data);
+    }
+
+    protected function createGroups(array $groups): array
+    {
+        $opportunityId = App::environment(['local', 'staging']) ? config('app.mph_test_opportunity_id') : $this->job['id'];
+        $client = new Client(['base_uri' => config('app.current_rms.host')]);
+        $promises = array_map(function ($group) use ($client, $opportunityId) {
+            $headers = [
+                'X-AUTH-TOKEN' => config('app.current_rms.auth_token'),
+                'X-SUBDOMAIN' => config('app.current_rms.subdomain'),
+            ];
+
+            $query = [
+                'opportunity_item' => [
+                    'opportunity_id' => $opportunityId,
+                    'opportunity_item_type_name' => 'Group',
+                    'name' => $group,
+                    'opportunity_item_type' => 0,
+                ],
+            ];
+
+            return $client->postAsync("opportunities/{$opportunityId}/opportunity_items", [
+                'headers' => $headers,
+                'query' => $query,
+            ]);
+        }, $groups);
+
+        $responses = Promise\Utils::settle($promises)->wait();
+
+        return $responses;
     }
 
     public function render(): View
