@@ -95,7 +95,40 @@ class OpportunityItemsCreate extends Component
             }
         }
 
-        dd($existingGroups, $data);
+        // CREATE OPPORTUNITY ITEMS
+        $this->createItems($data, $existingGroups);
+
+        dd($data);
+    }
+
+    protected function createItems(array $items, array $groups)
+    {
+        $opportunityId = App::environment(['local', 'staging']) ? config('app.mph_test_opportunity_id') : $this->job['id'];
+        $client = new Client(['base_uri' => config('app.current_rms.host')]);
+        $promises = array_map(function ($item) use ($client, $opportunityId, $groups) {
+            $headers = [
+                'X-AUTH-TOKEN' => config('app.current_rms.auth_token'),
+                'X-SUBDOMAIN' => config('app.current_rms.subdomain'),
+            ];
+
+            $query = [
+                'opportunity_item' => [
+                    'opportunity_id' => $opportunityId,
+                    'item_id' => $item['id'],
+                    'quantity' => $item['quantity'],
+                    'parent_opportunity_item_id' => 84539,
+                ],
+            ];
+
+            return $client->postAsync("opportunities/{$opportunityId}/opportunity_items", [
+                'headers' => $headers,
+                'query' => $query,
+            ]);
+        }, $items);
+
+        $responses = Promise\Utils::settle($promises)->wait();
+
+        return $responses;
     }
 
     protected function createGroups(array $groups): array

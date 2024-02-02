@@ -5,6 +5,7 @@ namespace App\Livewire\Pages;
 use App\Enums\JobStatus;
 use App\Traits\WithHttpCurrentError;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Http;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Lazy;
@@ -46,7 +47,10 @@ class JobsShow extends Component
 
         ['opportunity' => $opportunity] = $response->json();
 
-        if ($opportunity['status'] !== JobStatus::Active->value) {
+        if (
+            App::environment(['local', 'staging']) === false
+            && $opportunity['status'] !== JobStatus::Active->value
+        ) {
             $this->js("document.title = '{$notFoundText}'");
             $this->js("document.querySelector('[data-element=\"app-heading\"]').textContent = '{$notFoundText}'");
 
