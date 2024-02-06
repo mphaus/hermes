@@ -154,7 +154,7 @@ class ItemsFileUpload extends Component
         ['opportunity_items' => $opportunityItems] = $this->job;
         $client = new Client(['base_uri' => config('app.current_rms.host')]);
 
-        $promises = array_filter(array_map(function ($item) use ($client, $opportunityId, $opportunityItems, $groups) {
+        $promiseItems = array_filter(array_map(function ($item) use ($client, $opportunityId, $opportunityItems, $groups) {
             // PREPARE ITEM DATA
             [
                 'id' => $id,
@@ -179,7 +179,34 @@ class ItemsFileUpload extends Component
                 if ($quantity <= 0) {
                     return $client->deleteAsync("opportunities/{$opportunityId}/opportunity_items/{$opportunityItems[$index]['id']}", ['headers' => $headers]);
                 } else {
-                    return false;
+                    $query = [
+                        'opportunity_item' => [
+                            'opportunity_id' => $opportunityId,
+                            'item_id' => $id,
+                            'quantity' => $quantity,
+                            'price' => 0,
+                        ],
+                    ];
+
+                    // GET GROUP ID TO BE ADDED TO
+                    $groupIds = array_values(array_map(function ($group) {
+                        return $group['id'];
+                    }, array_filter($groups, function ($group) use ($groupName) {
+                        return $group['name'] === $groupName;
+                    })));
+
+                    if (count($groupIds) > 0) {
+                        [$groupId] = $groupIds;
+                        $query['opportunity_item']['parent_opportunity_item_id'] = $groupId;
+                    }
+
+                    return [
+                        $client->deleteAsync("opportunities/{$opportunityId}/opportunity_items/{$opportunityItems[$index]['id']}", ['headers' => $headers]),
+                        $client->postAsync("opportunities/{$opportunityId}/opportunity_items", [
+                            'headers' => $headers,
+                            'query' => $query,
+                        ]),
+                    ];
                 }
             } else {
                 // ITEM DOES NOT EXIST, CHECK QUANTITY AND CREATE IT.
@@ -214,6 +241,11 @@ class ItemsFileUpload extends Component
                 ]);
             }
         }, $items));
+
+        $promises = [];
+        array_walk_recursive($promiseItems, function ($promiseItem) use (&$promises) {
+            $promises[] = $promiseItem;
+        });
 
         $responses = Promise\Utils::settle($promises)->wait();
 
