@@ -153,9 +153,8 @@ class ItemsFileUpload extends Component
         $opportunityId = $this->opportunityId;
         ['opportunity_items' => $opportunityItems] = $this->job;
         $client = new Client(['base_uri' => config('app.current_rms.host')]);
-        $promises = [];
 
-        $promises = array_map(function ($item) use ($client, $opportunityId, $opportunityItems, $groups) {
+        $promises = array_filter(array_map(function ($item) use ($client, $opportunityId, $opportunityItems, $groups) {
             // PREPARE ITEM DATA
             [
                 'id' => $id,
@@ -171,42 +170,50 @@ class ItemsFileUpload extends Component
                 'X-SUBDOMAIN' => config('app.current_rms.subdomain'),
             ];
 
-            // CHECK IF ITEM ALREADY EXISTS IN JOB
+            // CHECK IF ITEM ALREADY EXISTS IN THE JOB
             $itemIds = array_column($opportunityItems, 'item_id');
             $index = array_search($id, $itemIds);
 
-            dd($index, $opportunityItems[$index]);
+            if ($index) {
+                // ITEM EXISTS, CHECK QUANTITY, UPDATE IT OR DELETE IT.
+                if ($quantity <= 0) {
+                    return $client->deleteAsync("opportunities/{$opportunityId}/opportunity_items/{$opportunityItems[$index]['id']}", ['headers' => $headers]);
+                } else {
+                    return false;
+                }
+            } else {
+                // ITEM DOES NOT EXIST, CHECK QUANTITY AND CREATE IT.
+                if ($quantity <= 0) {
+                    return false;
+                }
 
-            if ($quantity <= 0) {
-                return $client->deleteAsync("opportunities/{$opportunityId}/opportunity_items/{$id}", ['headers' => $headers]);
+                $query = [
+                    'opportunity_item' => [
+                        'opportunity_id' => $opportunityId,
+                        'item_id' => $id,
+                        'quantity' => $quantity,
+                        'price' => 0,
+                    ],
+                ];
+
+                // GET GROUP ID TO BE ADDED TO
+                $groupIds = array_values(array_map(function ($group) {
+                    return $group['id'];
+                }, array_filter($groups, function ($group) use ($groupName) {
+                    return $group['name'] === $groupName;
+                })));
+
+                if (count($groupIds) > 0) {
+                    [$groupId] = $groupIds;
+                    $query['opportunity_item']['parent_opportunity_item_id'] = $groupId;
+                }
+
+                return $client->postAsync("opportunities/{$opportunityId}/opportunity_items", [
+                    'headers' => $headers,
+                    'query' => $query,
+                ]);
             }
-
-            $query = [
-                'opportunity_item' => [
-                    'opportunity_id' => $opportunityId,
-                    'item_id' => $id,
-                    'quantity' => $quantity,
-                    'price' => 0,
-                ],
-            ];
-
-            // GET GROUP ID TO BE ADDED TO
-            $groupIds = array_values(array_map(function ($group) {
-                return $group['id'];
-            }, array_filter($groups, function ($group) use ($groupName) {
-                return $group['name'] === $groupName;
-            })));
-
-            if (count($groupIds) > 0) {
-                [$groupId] = $groupIds;
-                $query['opportunity_item']['parent_opportunity_item_id'] = $groupId;
-            }
-
-            return $client->postAsync("opportunities/{$opportunityId}/opportunity_items", [
-                'headers' => $headers,
-                'query' => $query,
-            ]);
-        }, $items);
+        }, $items));
 
         $responses = Promise\Utils::settle($promises)->wait();
 
