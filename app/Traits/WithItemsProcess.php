@@ -5,6 +5,7 @@ namespace App\Traits;
 use GuzzleHttp\Client;
 use GuzzleHttp\Promise;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
 trait WithItemsProcess
@@ -47,6 +48,7 @@ trait WithItemsProcess
 
                     if (count($diff) > 0) {
                         fclose($handle);
+                        $this->deleteFile($filename);
                         $missingHeadings = Arr::join($diff, ', ', ' and ');
                         throw ValidationException::withMessages(['csvfile' => __('The uploaded csv file does not contain the valid headings required to identify the items. Missing headings: :missing_headings.', ['missing_headings' => $missingHeadings])]);
                     }
@@ -59,7 +61,13 @@ trait WithItemsProcess
             fclose($handle);
         }
 
+        $this->deleteFile($filename);
         $this->setItems($items);
+    }
+
+    private function deleteFile(string $filename)
+    {
+        Storage::delete($this->path . '/' . $filename);
     }
 
     private function setItems(array $items): void
