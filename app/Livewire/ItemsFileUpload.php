@@ -13,7 +13,7 @@ use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
-class OpportunityItemsCreate extends Component
+class ItemsFileUpload extends Component
 {
     use WithFileUploads;
 
@@ -215,6 +215,6 @@ class OpportunityItemsCreate extends Component
 
     public function render(): View
     {
-        return view('livewire.opportunity-items-create');
+        return view('livewire.items-file-upload');
     }
 }

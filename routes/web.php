@@ -2,8 +2,8 @@
 
 // use App\Http\Controllers\ProfileController;
 
-use App\Livewire\Pages\Jobs;
-use App\Livewire\Pages\JobsShow;
+use App\Livewire\JobsIndex;
+use App\Livewire\ShowJob;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,9 +22,8 @@ Route::middleware('auth')->group(function () {
     // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('jobs', Jobs::class)->name('jobs');
-    Route::get('jobs/{id}', JobsShow::class)->name('jobs.show');
+    Route::get('jobs', JobsIndex::class)->name('jobs');
+    Route::get('jobs/{id}', ShowJob::class)->name('jobs.show');
 });
 
 require __DIR__ . '/auth.php';
-require __DIR__ . '/csv.php';

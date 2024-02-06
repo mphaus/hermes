@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Pages;
+namespace App\Livewire;
 
 use App\Traits\WithHttpCurrentError;
 use Illuminate\Contracts\View\View;
@@ -12,7 +12,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 
 #[Lazy]
-class Jobs extends Component
+class JobsIndex extends Component
 {
     use WithPagination;
     use WithHttpCurrentError;
@@ -73,6 +73,6 @@ class Jobs extends Component
 
     public function render(): View
     {
-        return view('livewire.pages.jobs');
+        return view('livewire.jobs-index');
     }
 }

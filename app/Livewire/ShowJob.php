@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Pages;
+namespace App\Livewire;
 
 use App\Enums\JobStatus;
 use App\Traits\WithHttpCurrentError;
@@ -12,7 +12,7 @@ use Livewire\Attributes\Lazy;
 use Livewire\Component;
 
 #[Lazy]
-class JobsShow extends Component
+class ShowJob extends Component
 {
     use WithHttpCurrentError;
 
@@ -76,6 +76,6 @@ class JobsShow extends Component
 
     public function render(): View
     {
-        return view('livewire.pages.jobs-show');
+        return view('livewire.show-job');
     }
 }
