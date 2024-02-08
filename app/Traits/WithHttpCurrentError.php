@@ -15,7 +15,7 @@ trait WithHttpCurrentError
 
         return Arr::join([
             $message,
-            ...$response->json()['errors'],
+            ...$response->json()['error'],
         ], ' ');
     }
 }

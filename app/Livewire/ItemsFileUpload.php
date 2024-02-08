@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Traits\WithItemsProcess;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Arr;
+use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -16,7 +17,7 @@ class ItemsFileUpload extends Component
     use WithItemsProcess;
 
     #[Validate('file', message: 'This field must be a file.')]
-    #[Validate('max:1024', message: 'The :attribute field must not be greater than :max kilobytes.')]
+    #[Validate('max:512', message: 'The :attribute field must not be greater than :max kilobytes.')]
     #[Validate('mimes:csv', message: 'The file must be a file of type: :values.')]
     public $csvfile;
 
@@ -30,6 +31,10 @@ class ItemsFileUpload extends Component
 
     public function save(): mixed
     {
+        if (!$this->csvfile) {
+            throw ValidationException::withMessages(['csvfile' => __('Please, select a csv file to upload.')]);
+        }
+
         $filename = Arr::join([
             $this->job['id'],
             now()->setTimezone(config('app.timezone'))->getTimestamp(),
@@ -37,9 +42,14 @@ class ItemsFileUpload extends Component
         ], '-', '-') . '.csv';
 
         $this->csvfile->storeAs(path: $this->path, name: $filename);
-        $this->processItems($this->job, $filename);
+        $responses = $this->processItems($this->job, $filename);
 
-        dd('Success');
+        session()->flash('alert', [
+            'type' => 'success',
+            'message' => __('The data was uploaded and processed successfully.'),
+        ]);
+
+        return $this->redirectRoute('jobs.show', ['id' => $this->job['id']]);
     }
 
     public function render(): View
