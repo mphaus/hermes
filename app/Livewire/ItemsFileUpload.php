@@ -42,7 +42,7 @@ class ItemsFileUpload extends Component
         ], '-', '-') . '.csv';
 
         $this->csvfile->storeAs(path: $this->path, name: $filename);
-        $responses = $this->processItems($this->job, $filename);
+        $this->processItems($this->job, $filename);
 
         session()->flash('alert', [
             'type' => 'success',

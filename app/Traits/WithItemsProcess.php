@@ -5,6 +5,7 @@ namespace App\Traits;
 use GuzzleHttp\Client;
 use GuzzleHttp\Promise;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
@@ -171,24 +172,17 @@ trait WithItemsProcess
 
     private function storeItems(array $job)
     {
-        $client = new Client(['base_uri' => config('app.current_rms.host')]);
         ['opportunity_items' => $opportunityItems] = $job;
 
-        $promiseItems = array_filter(array_map(function ($item) use ($client, $opportunityItems) {
+        foreach ($this->items as $item) {
             // PREPARE ITEM DATA
             [
                 'id' => $id,
                 'quantity' => $quantity,
-                'group_name' => $groupName,
             ] = $item;
 
             $id = intval($id);
             $quantity = intval($quantity);
-
-            $headers = [
-                'X-AUTH-TOKEN' => config('app.current_rms.auth_token'),
-                'X-SUBDOMAIN' => config('app.current_rms.subdomain'),
-            ];
 
             // CHECK IF ITEM ALREADY EXISTS IN THE JOB
             $itemIds = array_column($opportunityItems, 'item_id');
@@ -197,37 +191,24 @@ trait WithItemsProcess
             if ($index) {
                 $itemId = $opportunityItems[$index]['id'];
 
-                // ITEM EXISTS, CHECK QUANTITY, UPDATE IT OR DELETE IT.
-                if ($quantity <= 0) {
-                    return $this->prepareItemDelete($itemId, $headers, $client);
-                } else {
-                    return [
-                        $this->prepareItemDelete($itemId, $headers, $client),
-                        $this->prepareItemCreate($item, $headers, $client),
-                    ];
+                // ITEM EXISTS, DELETE IT, CHECK QUANTITY, RE-CREATE IT.
+                $this->deleteItem($itemId);
+
+                if ($quantity > 0) {
+                    $this->createItem($item);
                 }
             } else {
                 // ITEM DOES NOT EXIST, CHECK QUANTITY AND CREATE IT.
                 if ($quantity <= 0) {
-                    return false;
+                    continue;
                 }
 
-                return $this->prepareItemCreate($item, $headers, $client);
+                $this->createItem($item);
             }
-        }, $this->items));
-
-        $promises = [];
-
-        array_walk_recursive($promiseItems, function ($promiseItem) use (&$promises) {
-            $promises[] = $promiseItem;
-        });
-
-        $responses = Promise\Utils::settle($promises)->wait();
-
-        return $responses;
+        }
     }
 
-    private function prepareItemCreate(array $item, array $headers, Client $client): \GuzzleHttp\Promise\PromiseInterface
+    private function createItem(array $item)
     {
         [
             'id' => $id,
@@ -256,14 +237,109 @@ trait WithItemsProcess
             $query['opportunity_item']['parent_opportunity_item_id'] = $groupId;
         }
 
-        return $client->postAsync("opportunities/{$this->opportunityId}/opportunity_items", [
-            'headers' => $headers,
-            'query' => $query,
-        ]);
+        return Http::current()->withQueryParameters($query)->post("opportunities/{$this->opportunityId}/opportunity_items");
     }
 
-    private function prepareItemDelete(int $itemId, array $headers, Client $client): \GuzzleHttp\Promise\PromiseInterface
+    private function deleteItem(int $itemId)
     {
-        return $client->deleteAsync("opportunities/{$this->opportunityId}/opportunity_items/{$itemId}", ['headers' => $headers]);
+        return Http::current()->delete("opportunities/{$this->opportunityId}/opportunity_items/{$itemId}");
     }
+
+    // private function storeItems(array $job)
+    // {
+    //     $client = new Client(['base_uri' => config('app.current_rms.host')]);
+    //     ['opportunity_items' => $opportunityItems] = $job;
+
+    //     $promiseItems = array_filter(array_map(function ($item) use ($client, $opportunityItems) {
+    //         // PREPARE ITEM DATA
+    //         [
+    //             'id' => $id,
+    //             'quantity' => $quantity,
+    //             'group_name' => $groupName,
+    //         ] = $item;
+
+    //         $id = intval($id);
+    //         $quantity = intval($quantity);
+
+    //         $headers = [
+    //             'X-AUTH-TOKEN' => config('app.current_rms.auth_token'),
+    //             'X-SUBDOMAIN' => config('app.current_rms.subdomain'),
+    //         ];
+
+    //         // CHECK IF ITEM ALREADY EXISTS IN THE JOB
+    //         $itemIds = array_column($opportunityItems, 'item_id');
+    //         $index = array_search($id, $itemIds);
+
+    //         if ($index) {
+    //             $itemId = $opportunityItems[$index]['id'];
+
+    //             // ITEM EXISTS, CHECK QUANTITY, UPDATE IT OR DELETE IT.
+    //             if ($quantity <= 0) {
+    //                 return $this->prepareItemDelete($itemId, $headers, $client);
+    //             } else {
+    //                 return [
+    //                     $this->prepareItemDelete($itemId, $headers, $client),
+    //                     $this->prepareItemCreate($item, $headers, $client),
+    //                 ];
+    //             }
+    //         } else {
+    //             // ITEM DOES NOT EXIST, CHECK QUANTITY AND CREATE IT.
+    //             if ($quantity <= 0) {
+    //                 return false;
+    //             }
+
+    //             return $this->prepareItemCreate($item, $headers, $client);
+    //         }
+    //     }, $this->items));
+
+    //     $promises = [];
+
+    //     array_walk_recursive($promiseItems, function ($promiseItem) use (&$promises) {
+    //         $promises[] = $promiseItem;
+    //     });
+
+    //     $responses = Promise\Utils::settle($promises)->wait();
+
+    //     return $responses;
+    // }
+
+    // private function prepareItemCreate(array $item, array $headers, Client $client): \GuzzleHttp\Promise\PromiseInterface
+    // {
+    //     [
+    //         'id' => $id,
+    //         'quantity' => $quantity,
+    //         'group_name' => $groupName,
+    //     ] = $item;
+
+    //     $query = [
+    //         'opportunity_item' => [
+    //             'opportunity_id' => $this->opportunityId,
+    //             'item_id' => $id,
+    //             'quantity' => $quantity,
+    //             'price' => 0,
+    //         ],
+    //     ];
+
+    //     // GET GROUP ID TO BE ADDED TO
+    //     $groupIds = array_values(array_map(function ($group) {
+    //         return $group['id'];
+    //     }, array_filter($this->existingGroups, function ($group) use ($groupName) {
+    //         return $group['name'] === $groupName;
+    //     })));
+
+    //     if (count($groupIds) > 0) {
+    //         [$groupId] = $groupIds;
+    //         $query['opportunity_item']['parent_opportunity_item_id'] = $groupId;
+    //     }
+
+    //     return $client->postAsync("opportunities/{$this->opportunityId}/opportunity_items", [
+    //         'headers' => $headers,
+    //         'query' => $query,
+    //     ]);
+    // }
+
+    // private function prepareItemDelete(int $itemId, array $headers, Client $client): \GuzzleHttp\Promise\PromiseInterface
+    // {
+    //     return $client->deleteAsync("opportunities/{$this->opportunityId}/opportunity_items/{$itemId}", ['headers' => $headers]);
+    // }
 }
