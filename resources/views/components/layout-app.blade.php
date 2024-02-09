@@ -36,6 +36,11 @@
                 </div>
             </main>
         </div>
-        @livewireScriptConfig
+        @if (session('alert'))
+            <x-alert :type="session('alert')['type']">
+                {{ session('alert')['message'] }}
+            </x-alert>
+        @endif
+        @livewireScripts
     </body>
 </html>

@@ -25,6 +25,7 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @livewireStyles
     </head>
     <body class="font-sans antialiased text-gray-900">
         <div class="flex flex-col items-center min-h-screen px-4 pt-6 bg-gray-100 sm:justify-center sm:pt-0">
@@ -38,5 +39,6 @@
                 {{ $slot }}
             </div>
         </div>
+        @livewireScripts
     </body>
 </html>

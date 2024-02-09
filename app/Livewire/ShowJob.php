@@ -1,17 +1,18 @@
 <?php
 
-namespace App\Livewire\Pages;
+namespace App\Livewire;
 
 use App\Enums\JobStatus;
 use App\Traits\WithHttpCurrentError;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Http;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Lazy;
 use Livewire\Component;
 
 #[Lazy]
-class JobsShow extends Component
+class ShowJob extends Component
 {
     use WithHttpCurrentError;
 
@@ -30,7 +31,7 @@ class JobsShow extends Component
             'opportunity' => [],
         ];
 
-        $response = Http::current()->get("opportunities/{$this->id}");
+        $response = Http::current()->get("opportunities/{$this->id}?include[]=opportunity_items&include[]=participants");
         $appName = config('app.name');
         $notFoundText = __('Job not found');
 
@@ -46,7 +47,10 @@ class JobsShow extends Component
 
         ['opportunity' => $opportunity] = $response->json();
 
-        if ($opportunity['status'] !== JobStatus::Active->value) {
+        if (
+            App::environment(['local', 'staging']) === false
+            && $opportunity['status'] !== JobStatus::Active->value
+        ) {
             $this->js("document.title = '{$notFoundText}'");
             $this->js("document.querySelector('[data-element=\"app-heading\"]').textContent = '{$notFoundText}'");
 
@@ -72,6 +76,6 @@ class JobsShow extends Component
 
     public function render(): View
     {
-        return view('livewire.pages.jobs-show');
+        return view('livewire.show-job');
     }
 }

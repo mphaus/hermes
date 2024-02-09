@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
+use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\ServiceProvider;
-use PDO;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,13 +21,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Http::macro('current', function () {
+        $macroCallback = function () {
             return Http::withHeaders([
                 'X-AUTH-TOKEN' => config('app.current_rms.auth_token'),
                 'X-SUBDOMAIN' => config('app.current_rms.subdomain'),
-            ])
-                // ->throw()
-                ->baseUrl(config('app.current_rms.host'));
-        });
+            ])->baseUrl(config('app.current_rms.host'));
+        };
+
+        Http::macro('current', $macroCallback);
+        PendingRequest::macro('current', $macroCallback);
     }
 }
