@@ -11,7 +11,7 @@
             wire:model="csvfile"
         />
         <x-input-error :messages="$errors->get('csvfile')" class="mt-2" />
-        
+        <x-input-error :messages="$errors->get('item_process')" class="mt-2" />
     </fieldset>
     <div class="flex justify-end mt-6">
         <x-button variant="primary">

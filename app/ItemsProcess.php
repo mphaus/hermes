@@ -1,45 +1,59 @@
 <?php
 
-namespace App\Traits;
+namespace App;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Promise;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\ValidationException;
 
-trait WithItemsProcess
+class ItemsProcess
 {
+    private array $job;
+
+    private string $filename;
+
+    private string $propertyName;
+
+    private int $opportunityId = 0;
+
     private string $path = 'csv_files';
 
-    private array $items = [];
+    private string $fullPath;
 
     private array $requiredHeadings = ['id', 'quantity', 'group_name'];
+
+    private array $items = [];
 
     private array $existingGroups = [];
 
     private array $groups = [];
 
-    private int $opportunityId = 0;
-
-    private function processItems(array $job, string $filename)
+    public function __construct(array $job, string $filename)
     {
-        $this->opportunityId = App::environment(['local', 'staging']) ? config('app.mph_test_opportunity_id') : $job['id'];
-        $this->prepareItems($filename);
-        $this->prepareExistingGroups($job);
+        $this->job = $job;
+        $this->filename = $filename;
+        $this->opportunityId = App::environment(['local', 'staging']) ? config('app.mph_test_opportunity_id') : $this->job['id'];
+        $this->fullPath = base_path() . '/storage/app/' . $this->path . '/';
+    }
+
+    public function process()
+    {
+        $this->prepareItems();
+        $this->prepareExistingGroups();
         $this->prepareGroups();
         $this->maybeCreateNewGroups();
 
-        return $this->storeItems($job);
+        return $this->storeItems();
     }
 
-    private function prepareItems(string $filename): void
+    private function prepareItems(): void
     {
         $headings = null;
         $items = [];
 
-        if (($handle = fopen(base_path() . '/storage/app/' . $this->path . '/' . $filename, "r")) !== FALSE) {
+        if (($handle = fopen($this->fullPath . $this->filename, "r")) !== FALSE) {
             while (($row = fgetcsv($handle, 1000, ",")) !== FALSE) {
                 if ($headings === null) {
                     $headings = $row;
@@ -49,9 +63,9 @@ trait WithItemsProcess
 
                     if (count($diff) > 0) {
                         fclose($handle);
-                        $this->deleteFile($filename);
+                        $this->deleteFile();
                         $missingHeadings = Arr::join($diff, ', ', ' and ');
-                        throw ValidationException::withMessages(['csvfile' => __('The uploaded csv file does not contain the valid headings required to identify the items. Missing headings: :missing_headings.', ['missing_headings' => $missingHeadings])]);
+                        throw ValidationException::withMessages(['item_process' => __('The uploaded csv file does not contain the valid headings required to identify the items. Missing headings: :missing_headings.', ['missing_headings' => $missingHeadings])]);
                     }
 
                     continue;
@@ -62,13 +76,13 @@ trait WithItemsProcess
             fclose($handle);
         }
 
-        $this->deleteFile($filename);
+        $this->deleteFile();
         $this->setItems($items);
     }
 
-    private function deleteFile(string $filename)
+    private function deleteFile(): void
     {
-        Storage::delete($this->path . '/' . $filename);
+        Storage::delete($this->path . '/' . $this->filename);
     }
 
     private function setItems(array $items): void
@@ -76,13 +90,13 @@ trait WithItemsProcess
         $this->items = $items;
     }
 
-    private function prepareExistingGroups(array $job): void
+    private function prepareExistingGroups(): void
     {
         $existingGroups = array_values(
             array_map(
                 fn ($group) => ['id' => $group['id'], 'name' => $group['name']],
                 array_filter(
-                    $job['opportunity_items'],
+                    $this->job['opportunity_items'],
                     fn ($item) => $item['opportunity_item_type_name'] === 'Group'
                 )
             )
@@ -170,9 +184,9 @@ trait WithItemsProcess
         $this->setExistingGroups($existingGroups);
     }
 
-    private function storeItems(array $job)
+    private function storeItems()
     {
-        ['opportunity_items' => $opportunityItems] = $job;
+        ['opportunity_items' => $opportunityItems] = $this->job;
 
         foreach ($this->items as $item) {
             // PREPARE ITEM DATA

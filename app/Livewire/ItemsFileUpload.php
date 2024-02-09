@@ -2,7 +2,7 @@
 
 namespace App\Livewire;
 
-use App\Traits\WithItemsProcess;
+use App\ItemsProcess;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\ValidationException;
@@ -14,7 +14,7 @@ use Livewire\WithFileUploads;
 class ItemsFileUpload extends Component
 {
     use WithFileUploads;
-    use WithItemsProcess;
+
 
     #[Validate('file', message: 'This field must be a file.')]
     #[Validate('max:512', message: 'The :attribute field must not be greater than :max kilobytes.')]
@@ -41,8 +41,10 @@ class ItemsFileUpload extends Component
             str()->slug($this->job['subject']),
         ], '-', '-') . '.csv';
 
-        $this->csvfile->storeAs(path: $this->path, name: $filename);
-        $this->processItems($this->job, $filename);
+        $this->csvfile->storeAs(path: 'csv_files', name: $filename);
+
+        $items = new ItemsProcess($this->job, $filename);
+        $items->process();
 
         session()->flash('alert', [
             'type' => 'success',
