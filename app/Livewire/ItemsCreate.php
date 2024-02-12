@@ -11,10 +11,9 @@ use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
-class ItemsFileUpload extends Component
+class ItemsCreate extends Component
 {
     use WithFileUploads;
-
 
     #[Validate('file', message: 'This field must be a file.')]
     #[Validate('max:512', message: 'The :attribute field must not be greater than :max kilobytes.')]
@@ -56,6 +55,6 @@ class ItemsFileUpload extends Component
 
     public function render(): View
     {
-        return view('livewire.items-file-upload');
+        return view('livewire.items-create');
     }
 }

@@ -12,7 +12,7 @@ use Livewire\Attributes\Lazy;
 use Livewire\Component;
 
 #[Lazy]
-class ShowJob extends Component
+class JobsShow extends Component
 {
     use WithHttpCurrentError;
 
@@ -76,6 +76,6 @@ class ShowJob extends Component
 
     public function render(): View
     {
-        return view('livewire.show-job');
+        return view('livewire.jobs-show');
     }
 }
