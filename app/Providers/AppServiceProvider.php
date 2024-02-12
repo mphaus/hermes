@@ -29,6 +29,5 @@ class AppServiceProvider extends ServiceProvider
         };
 
         Http::macro('current', $macroCallback);
-        PendingRequest::macro('current', $macroCallback);
     }
 }

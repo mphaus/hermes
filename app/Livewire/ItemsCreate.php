@@ -43,7 +43,7 @@ class ItemsCreate extends Component
         $this->csvfile->storeAs(path: 'csv_files', name: $filename);
 
         $items = new ItemsProcess($this->job, $filename);
-        $items->process();
+        dd($items->process());
 
         session()->flash('alert', [
             'type' => 'success',

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Traits\WithHttpCurrentError;
 use GuzzleHttp\Client;
 use GuzzleHttp\Promise;
 use Illuminate\Support\Facades\App;
@@ -10,6 +11,8 @@ use Illuminate\Support\Facades\Storage;
 
 class ItemsProcess
 {
+    use WithHttpCurrentError;
+
     protected array $job;
 
     protected string $filename;
@@ -22,13 +25,15 @@ class ItemsProcess
 
     protected string $fullPath;
 
-    protected array $requiredHeadings = ['id', 'quantity', 'group_name'];
+    protected array $requiredHeadings = ['id', 'item_name', 'quantity', 'group_name'];
 
     protected array $items = [];
 
     protected array $existingGroups = [];
 
     protected array $groups = [];
+
+    protected $log = [];
 
     public function __construct(array $job, string $filename)
     {
@@ -184,7 +189,7 @@ class ItemsProcess
         $this->setExistingGroups($existingGroups);
     }
 
-    private function storeItems()
+    private function storeItems(): array
     {
         ['opportunity_items' => $opportunityItems] = $this->job;
 
@@ -205,11 +210,19 @@ class ItemsProcess
             if ($index) {
                 $itemId = $opportunityItems[$index]['id'];
 
-                // ITEM EXISTS, DELETE IT, CHECK QUANTITY, RE-CREATE IT.
-                $this->deleteItem($itemId);
+                // ITEM EXISTS, MAYBE DELETE IT OR CHECK QUANTITY, DELETE IT AND RE-CREATE IT.
+                if ($quantity <= 0) {
+                    $this->deleteItem($itemId, $item);
+                } else {
+                    $currentQuantity = intval($opportunityItems[$index]['quantity']);
 
-                if ($quantity > 0) {
-                    $this->createItem($item);
+                    if ($quantity !== $currentQuantity) {
+                        $deletion = $this->deleteItem($itemId, $item);
+
+                        if ($deletion) {
+                            $this->createItem($item, true);
+                        }
+                    }
                 }
             } else {
                 // ITEM DOES NOT EXIST, CHECK QUANTITY AND CREATE IT.
@@ -220,9 +233,11 @@ class ItemsProcess
                 $this->createItem($item);
             }
         }
+
+        return $this->log;
     }
 
-    private function createItem(array $item)
+    private function createItem(array $item, bool $recreated = false): bool
     {
         [
             'id' => $id,
@@ -251,12 +266,64 @@ class ItemsProcess
             $query['opportunity_item']['parent_opportunity_item_id'] = $groupId;
         }
 
-        return Http::current()->withQueryParameters($query)->post("opportunities/{$this->opportunityId}/opportunity_items");
+        $response = Http::current()->withQueryParameters($query)->post("opportunities/{$this->opportunityId}/opportunity_items");
+        $action = $recreated ? 're-creation' : 'creation';
+
+        if ($response->failed()) {
+            $this->addToLog([
+                'item_id' => $item['id'],
+                'item_name' => $item['item_name'],
+                'action' => $action,
+                'error' => [
+                    'code' => $response->getStatusCode(),
+                    'message' => $this->errorMessage($response->getReasonPhrase(), $response, '. '),
+                ],
+            ]);
+
+            return false;
+        }
+
+        $this->addToLog([
+            'item_id' => $item['id'],
+            'item_name' => $item['item_name'],
+            'action' => $action,
+            'error' => [],
+        ]);
+
+        return true;
     }
 
-    private function deleteItem(int $itemId)
+    private function deleteItem(int $id, array $item): bool
     {
-        return Http::current()->delete("opportunities/{$this->opportunityId}/opportunity_items/{$itemId}");
+        $response = Http::current()->delete("opportunities/{$this->opportunityId}/opportunity_items/{$id}");
+
+        if ($response->failed()) {
+            $this->addToLog([
+                'item_id' => $item['id'],
+                'item_name' => $item['item_name'],
+                'action' => 'deletion',
+                'error' => [
+                    'code' => $response->getStatusCode(),
+                    'message' => $this->errorMessage($response->getReasonPhrase(), $response),
+                ],
+            ]);
+
+            return false;
+        }
+
+        $this->addToLog([
+            'item_id' => $item['id'],
+            'item_name' => $item['item_name'],
+            'action' => 'deletion',
+            'error' => [],
+        ]);
+
+        return true;
+    }
+
+    private function addToLog(array $data)
+    {
+        $this->log[] = $data;
     }
 
     // private function storeItems(array $job)
