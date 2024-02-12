@@ -10,25 +10,25 @@ use Illuminate\Support\Facades\Storage;
 
 class ItemsProcess
 {
-    private array $job;
+    protected array $job;
 
-    private string $filename;
+    protected string $filename;
 
-    private string $propertyName;
+    protected string $propertyName;
 
-    private int $opportunityId = 0;
+    protected int $opportunityId = 0;
 
-    private string $path = 'csv_files';
+    protected string $path = 'csv_files';
 
-    private string $fullPath;
+    protected string $fullPath;
 
-    private array $requiredHeadings = ['id', 'quantity', 'group_name'];
+    protected array $requiredHeadings = ['id', 'quantity', 'group_name'];
 
-    private array $items = [];
+    protected array $items = [];
 
-    private array $existingGroups = [];
+    protected array $existingGroups = [];
 
-    private array $groups = [];
+    protected array $groups = [];
 
     public function __construct(array $job, string $filename)
     {
