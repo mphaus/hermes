@@ -16,8 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('job_id');
             $table->foreignId('user_id');
             $table->enum('status', ['successful', 'warnings']);
-            $table->ipAddress();
-            $table->text('user_agent');
+            $table->ipAddress()->nullable();
+            $table->text('user_agent')->nullable();
             $table->json('data');
             $table->timestamps();
 

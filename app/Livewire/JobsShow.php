@@ -41,7 +41,7 @@ class JobsShow extends Component
 
             return [
                 ...$defaultResponse,
-                'error' => $this->errorMessage('An unexpected error occurred while fetching the details for this Job. Please refresh the page and try again.', $response),
+                'error' => $this->errorMessage('An unexpected error occurred while fetching the details for this Job. Please refresh the page and try again.', $response->json()),
             ];
         }
 

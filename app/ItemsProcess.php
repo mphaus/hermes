@@ -134,10 +134,10 @@ class ItemsProcess
 
     private function maybeCreateNewGroups(): void
     {
-        $groupDiff = array_diff(
+        $groupDiff = array_values(array_diff(
             $this->groups,
             array_map(fn ($group) => $group['name'], $this->existingGroups),
-        );
+        ));
 
         if (count($groupDiff) <= 0) {
             return;
@@ -174,8 +174,21 @@ class ItemsProcess
         $responses = Promise\Utils::settle($promises)->wait();
         $existingGroups = $this->existingGroups;
 
-        foreach ($responses as $response) {
+        foreach ($responses as $key => $response) {
             if ($response['state'] !== 'fulfilled') {
+                $res = $response['reason']->getResponse();
+                $errors = json_decode($res->getBody()->getContents(), true);
+
+                $this->addToLog([
+                    'item_id' => null,
+                    'item_name' => $groups[$key],
+                    'action' => 'creation',
+                    'error' => [
+                        'code' => $res->getStatusCode(),
+                        'message' => $this->errorMessage($res->getReasonPhrase(), $errors, '. '),
+                    ],
+                ]);
+
                 continue;
             }
 
@@ -184,6 +197,13 @@ class ItemsProcess
                 'id' => $newGroup['opportunity_item']['id'],
                 'name' => $newGroup['opportunity_item']['name'],
             ];
+
+            $this->addToLog([
+                'item_id' => $newGroup['opportunity_item']['id'],
+                'item_name' => $newGroup['opportunity_item']['name'],
+                'action' => 'creation',
+                'error' => [],
+            ]);
         }
 
         $this->setExistingGroups($existingGroups);
@@ -276,7 +296,7 @@ class ItemsProcess
                 'action' => $action,
                 'error' => [
                     'code' => $response->getStatusCode(),
-                    'message' => $this->errorMessage($response->getReasonPhrase(), $response, '. '),
+                    'message' => $this->errorMessage($response->getReasonPhrase(), $response->json(), '. '),
                 ],
             ]);
 
@@ -304,7 +324,7 @@ class ItemsProcess
                 'action' => 'deletion',
                 'error' => [
                     'code' => $response->getStatusCode(),
-                    'message' => $this->errorMessage($response->getReasonPhrase(), $response),
+                    'message' => $this->errorMessage($response->getReasonPhrase(), $response->json()),
                 ],
             ]);
 

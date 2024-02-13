@@ -38,7 +38,7 @@ class JobsIndex extends Component
         if ($response->failed()) {
             return [
                 ...$defaultResponse,
-                'error' => $this->errorMessage(__('An unexpected error occurred while fetching the Jobs list. Please refresh the page and try again.'), $response),
+                'error' => $this->errorMessage(__('An unexpected error occurred while fetching the Jobs list. Please refresh the page and try again.'), $response->json()),
             ];
         }
 

@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Facades\UploadLog;
 use App\ItemsProcess;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Arr;
@@ -43,14 +44,16 @@ class ItemsCreate extends Component
         $this->csvfile->storeAs(path: 'csv_files', name: $filename);
 
         $items = new ItemsProcess($this->job, $filename);
-        dd($items->process());
+        $uploadLog = $items->process();
+
+        UploadLog::save($this->job['id'], $uploadLog);
 
         session()->flash('alert', [
             'type' => 'success',
             'message' => __('The data was uploaded and processed successfully.'),
         ]);
 
-        return $this->redirectRoute('jobs.show', ['id' => $this->job['id']]);
+        return $this->redirectRoute('jobs.show', ['id' => $this->job['id']], navigate: true);
     }
 
     public function render(): View

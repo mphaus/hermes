@@ -2,26 +2,25 @@
 
 namespace App\Traits;
 
-use Illuminate\Http\Client\Response;
 use Illuminate\Support\Arr;
 
 trait WithHttpCurrentError
 {
-    public function errorMessage(string $message, Response|null $response = null, string $glue = ' '): string
+    public function errorMessage(string $message, array $errors = [], string $glue = ' '): string
     {
-        if ($response === null) {
-            return Arr::join([$message], ' ');
+        if (empty($errors)) {
+            return Arr::join([$message], $glue);
         }
 
-        $errors = [];
+        $_errors = [];
 
-        array_walk_recursive($response->json()['errors'], function ($error) use (&$errors) {
-            $errors[] = $error;
+        array_walk_recursive($errors, function ($error) use (&$_errors) {
+            $_errors[] = $error;
         });
 
         return Arr::join([
             $message,
-            ...$errors,
+            ...$_errors,
         ], $glue);
     }
 }
