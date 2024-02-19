@@ -19,7 +19,7 @@ class UploadLog
         $log->save();
     }
 
-    protected function getStatus(array $uploadLog): string
+    public function getStatus(array $uploadLog): string
     {
         return empty(array_filter($uploadLog, fn ($log) => empty($log['error']) === false)) ? 'successful' : 'warnings';
     }

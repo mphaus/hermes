@@ -10,6 +10,8 @@
         'shadow-lg',
         'inset-x-4',
         'bottom-6',
+        'sm:top-4',
+        'sm:bottom-auto',
         'sm:left-auto',
         'sm:w-full',
         'sm:max-w-md',

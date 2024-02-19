@@ -4,7 +4,6 @@ namespace App\Livewire;
 
 use App\Facades\OpportunityItems;
 use App\Facades\UploadLog;
-use App\ItemsProcess;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
@@ -60,7 +59,26 @@ class ItemsCreate extends Component
         $this->csvfile->storeAs(path: 'csv_files', name: $filename);
 
         $uploadLog = OpportunityItems::process($job, $filename);
+
+        if (empty($uploadLog)) {
+            session()->flash('alert', [
+                'type' => 'success',
+                'message' => __('The data was uploaded and processed. However no changes were made.'),
+            ]);
+
+            return $this->redirectRoute('jobs.show', ['id' => $job['id']], navigate: true);
+        }
+
         UploadLog::save($job['id'], $uploadLog);
+
+        if (UploadLog::getStatus($uploadLog) !== 'successful') {
+            session()->flash('alert', [
+                'type' => 'warning',
+                'message' => __('The data was uploaded and processed with warnings. Please check the most recent entry of the log.'),
+            ]);
+
+            return $this->redirectRoute('jobs.show', ['id' => $job['id']], navigate: true);
+        }
 
         session()->flash('alert', [
             'type' => 'success',
