@@ -18,7 +18,7 @@
         'bg-yellow-500' => $type === 'warning',
     ])
     x-data
-    x-init="setTimeout(() => $root.remove(), 3000)"
+    x-init="setTimeout(() => $root.remove(), 4000)"
 >
     {{ $slot }}
 </article>

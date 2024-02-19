@@ -34,7 +34,7 @@
             </div>
         </x-card>
         <x-card class="mt-4">
-            <livewire:items-create :job="$this->job['opportunity']" />
+            <livewire:items-create :job-id="$this->job['opportunity']['id']" />
         </x-card>
     @endif
 </div>

@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\OpportunityItems;
 use App\UploadLog;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Http;
@@ -14,6 +15,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        App::bind('opportunityitems', fn () => new OpportunityItems);
         App::bind('uploadlog', fn () => new UploadLog);
     }
 

@@ -2,10 +2,12 @@
 
 namespace App\Livewire;
 
+use App\Facades\OpportunityItems;
 use App\Facades\UploadLog;
 use App\ItemsProcess;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Validate;
@@ -22,11 +24,11 @@ class ItemsCreate extends Component
     public $csvfile;
 
     #[Locked]
-    public array $job = [];
+    public int $jobId;
 
-    public function mount(array $job): void
+    public function mount(int $jobId): void
     {
-        $this->job = $job;
+        $this->jobId = $jobId;
     }
 
     public function save(): mixed
@@ -35,25 +37,37 @@ class ItemsCreate extends Component
             throw ValidationException::withMessages(['csvfile' => __('Please, select a csv file to upload.')]);
         }
 
+        // GET MOST UPDATED VERSION OF JOB HERE
+        $response = Http::current()->get("opportunities/{$this->jobId}?include[]=opportunity_items");
+
+        if ($response->failed()) {
+            session()->flash('alert', [
+                'type' => 'danger',
+                'message' => __('An error occurred while attempting to process the data from the uploaded file. Please, try again.'),
+            ]);
+
+            return $this->redirectRoute('jobs.show', ['id' => $this->jobId], navigate: true);
+        }
+
+        ['opportunity' => $job] = $response->json();
+
         $filename = Arr::join([
-            $this->job['id'],
+            $job['id'],
             now()->setTimezone(config('app.timezone'))->getTimestamp(),
-            str()->slug($this->job['subject']),
+            str()->slug($job['subject']),
         ], '-', '-') . '.csv';
 
         $this->csvfile->storeAs(path: 'csv_files', name: $filename);
 
-        $items = new ItemsProcess($this->job, $filename);
-        $uploadLog = $items->process();
-
-        UploadLog::save($this->job['id'], $uploadLog);
+        $uploadLog = OpportunityItems::process($job, $filename);
+        UploadLog::save($job['id'], $uploadLog);
 
         session()->flash('alert', [
             'type' => 'success',
             'message' => __('The data was uploaded and processed successfully.'),
         ]);
 
-        return $this->redirectRoute('jobs.show', ['id' => $this->job['id']], navigate: true);
+        return $this->redirectRoute('jobs.show', ['id' => $job['id']], navigate: true);
     }
 
     public function render(): View

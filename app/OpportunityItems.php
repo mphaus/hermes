@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
-class ItemsProcess
+class OpportunityItems
 {
     use WithHttpCurrentError;
 
@@ -35,16 +35,13 @@ class ItemsProcess
 
     protected $log = [];
 
-    public function __construct(array $job, string $filename)
+    public function process(array $job, string $filename)
     {
         $this->job = $job;
         $this->filename = $filename;
         $this->opportunityId = App::environment(['local', 'staging']) ? config('app.mph_test_opportunity_id') : $this->job['id'];
         $this->fullPath = base_path() . '/storage/app/' . $this->path . '/';
-    }
 
-    public function process()
-    {
         $this->prepareItems();
         $this->prepareExistingGroups();
         $this->prepareGroups();
