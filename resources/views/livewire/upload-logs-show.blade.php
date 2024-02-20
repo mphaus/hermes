@@ -24,7 +24,28 @@
             <p>{{ $this->log->user_agent }}</p>
         </div>
     </x-card>
-    @php
-        dd($this->log->data);
-    @endphp
+    @foreach ($this->log->data->toArray() as $data)
+        <x-card>
+            <div>
+                <p>{{ __('Item name') }}</p>
+                <p>{{ $data['item_name'] }}</p>
+            </div>
+            <div>
+                <p>{{ __('Item ID') }}</p>
+                <p>{{ $data['item_id'] }}</p>
+            </div>
+            <div>
+                <p>{{ __('Quantity') }}</p>
+                <p>{{ isset($data['quantity']) ? $data['quantity'] : __('Nil') }}</p>
+            </div>
+            <div>
+                <p>{{ __('Action') }}</p>
+                <p>{{ $data['action'] }}</p>
+            </div>
+            <div>
+                <p>{{ __('Warnings') }}</p>
+                <p>{{ empty($data['error']) ? __('Nil') : $data['error'] }}</p>
+            </div>
+        </x-card>
+    @endforeach
 </div>

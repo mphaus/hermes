@@ -290,6 +290,7 @@ class OpportunityItems
             $this->addToLog([
                 'item_id' => $item['id'],
                 'item_name' => $item['item_name'],
+                'quantity' => intval($quantity),
                 'action' => $action,
                 'error' => [
                     'code' => $response->getStatusCode(),
@@ -303,6 +304,7 @@ class OpportunityItems
         $this->addToLog([
             'item_id' => $item['id'],
             'item_name' => $item['item_name'],
+            'quantity' => intval($quantity),
             'action' => $action,
             'error' => [],
         ]);
@@ -318,6 +320,7 @@ class OpportunityItems
             $this->addToLog([
                 'item_id' => $item['id'],
                 'item_name' => $item['item_name'],
+                'quantity' => intval($item['quantity']),
                 'action' => 'deletion',
                 'error' => [
                     'code' => $response->getStatusCode(),
@@ -331,6 +334,7 @@ class OpportunityItems
         $this->addToLog([
             'item_id' => $item['id'],
             'item_name' => $item['item_name'],
+            'quantity' => intval($item['quantity']),
             'action' => 'deletion',
             'error' => [],
         ]);

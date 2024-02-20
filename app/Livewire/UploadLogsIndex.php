@@ -22,7 +22,10 @@ class UploadLogsIndex extends Component
     #[Computed]
     public function logs(): Collection
     {
-        return UploadLog::with('user')->where('job_id', $this->jobId)->get();
+        return UploadLog::with('user')
+            ->where('job_id', $this->jobId)
+            ->latest()
+            ->get();
     }
 
     public function render(): View
