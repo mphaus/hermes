@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\UploadLog;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Collection;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
@@ -19,7 +20,7 @@ class UploadLogsIndex extends Component
     }
 
     #[Computed]
-    public function logs()
+    public function logs(): Collection
     {
         return UploadLog::with('user')->where('job_id', $this->jobId)->get();
     }
