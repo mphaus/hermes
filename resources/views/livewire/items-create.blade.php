@@ -15,8 +15,8 @@
     </fieldset>
     <div class="flex justify-end mt-6">
         <x-button variant="primary">
-            <span wire:loading.class="hidden">{{ __('Upload') }}</span>
-            <span class="items-center gap-2" wire:loading.flex>
+            <span wire:loading.class="hidden" wire:target="save">{{ __('Upload') }}</span>
+            <span class="items-center gap-2" wire:loading.flex wire:target="save">
                 <x-icon-circle-notch class="w-4 h-4 fill-current animate-spin" />
                 <span>{{ __('Processing...') }}</span>
             </span>

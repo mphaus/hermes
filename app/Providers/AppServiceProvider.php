@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
-use Illuminate\Http\Client\PendingRequest;
+use App\OpportunityItems;
+use App\UploadLog;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\ServiceProvider;
 
@@ -13,7 +15,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        App::bind('opportunityitems', fn () => new OpportunityItems);
+        App::bind('uploadlog', fn () => new UploadLog);
     }
 
     /**
@@ -29,6 +32,5 @@ class AppServiceProvider extends ServiceProvider
         };
 
         Http::macro('current', $macroCallback);
-        PendingRequest::macro('current', $macroCallback);
     }
 }

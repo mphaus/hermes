@@ -9,6 +9,10 @@
 }
 
 @layer components {
+    .flow > * + * {
+        margin-block-start: var(--flow-spacing, 1em);
+    }
+
     .container {
         @apply 2xl:max-w-screen-xl;
     }

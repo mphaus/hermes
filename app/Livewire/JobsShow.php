@@ -12,7 +12,7 @@ use Livewire\Attributes\Lazy;
 use Livewire\Component;
 
 #[Lazy]
-class ShowJob extends Component
+class JobsShow extends Component
 {
     use WithHttpCurrentError;
 
@@ -41,7 +41,7 @@ class ShowJob extends Component
 
             return [
                 ...$defaultResponse,
-                'error' => $this->errorMessage('An unexpected error occurred while fetching the details for this Job. Please refresh the page and try again.', $response),
+                'error' => $this->errorMessage('An unexpected error occurred while fetching the details for this Job. Please refresh the page and try again.', $response->json()),
             ];
         }
 
@@ -76,6 +76,6 @@ class ShowJob extends Component
 
     public function render(): View
     {
-        return view('livewire.show-job');
+        return view('livewire.jobs-show');
     }
 }

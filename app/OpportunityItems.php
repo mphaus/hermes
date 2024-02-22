@@ -2,44 +2,46 @@
 
 namespace App;
 
+use App\Traits\WithHttpCurrentError;
 use GuzzleHttp\Client;
 use GuzzleHttp\Promise;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
-class ItemsProcess
+class OpportunityItems
 {
-    private array $job;
+    use WithHttpCurrentError;
 
-    private string $filename;
+    protected array $job;
 
-    private string $propertyName;
+    protected string $filename;
 
-    private int $opportunityId = 0;
+    protected string $propertyName;
 
-    private string $path = 'csv_files';
+    protected int $opportunityId = 0;
 
-    private string $fullPath;
+    protected string $path = 'csv_files';
 
-    private array $requiredHeadings = ['id', 'quantity', 'group_name'];
+    protected string $fullPath;
 
-    private array $items = [];
+    protected array $requiredHeadings = ['id', 'item_name', 'quantity', 'group_name'];
 
-    private array $existingGroups = [];
+    protected array $items = [];
 
-    private array $groups = [];
+    protected array $existingGroups = [];
 
-    public function __construct(array $job, string $filename)
+    protected array $groups = [];
+
+    protected $log = [];
+
+    public function process(array $job, string $filename)
     {
         $this->job = $job;
         $this->filename = $filename;
         $this->opportunityId = App::environment(['local', 'staging']) ? config('app.mph_test_opportunity_id') : $this->job['id'];
         $this->fullPath = base_path() . '/storage/app/' . $this->path . '/';
-    }
 
-    public function process()
-    {
         $this->prepareItems();
         $this->prepareExistingGroups();
         $this->prepareGroups();
@@ -129,10 +131,10 @@ class ItemsProcess
 
     private function maybeCreateNewGroups(): void
     {
-        $groupDiff = array_diff(
+        $groupDiff = array_values(array_diff(
             $this->groups,
             array_map(fn ($group) => $group['name'], $this->existingGroups),
-        );
+        ));
 
         if (count($groupDiff) <= 0) {
             return;
@@ -169,8 +171,21 @@ class ItemsProcess
         $responses = Promise\Utils::settle($promises)->wait();
         $existingGroups = $this->existingGroups;
 
-        foreach ($responses as $response) {
+        foreach ($responses as $key => $response) {
             if ($response['state'] !== 'fulfilled') {
+                $res = $response['reason']->getResponse();
+                $errors = json_decode($res->getBody()->getContents(), true);
+
+                $this->addToLog([
+                    'item_id' => null,
+                    'item_name' => $groups[$key],
+                    'action' => 'creation',
+                    'error' => [
+                        'code' => $res->getStatusCode(),
+                        'message' => $this->errorMessage($res->getReasonPhrase(), $errors, '. '),
+                    ],
+                ]);
+
                 continue;
             }
 
@@ -179,12 +194,19 @@ class ItemsProcess
                 'id' => $newGroup['opportunity_item']['id'],
                 'name' => $newGroup['opportunity_item']['name'],
             ];
+
+            $this->addToLog([
+                'item_id' => $newGroup['opportunity_item']['id'],
+                'item_name' => $newGroup['opportunity_item']['name'],
+                'action' => 'creation',
+                'error' => [],
+            ]);
         }
 
         $this->setExistingGroups($existingGroups);
     }
 
-    private function storeItems()
+    private function storeItems(): array
     {
         ['opportunity_items' => $opportunityItems] = $this->job;
 
@@ -205,11 +227,19 @@ class ItemsProcess
             if ($index) {
                 $itemId = $opportunityItems[$index]['id'];
 
-                // ITEM EXISTS, DELETE IT, CHECK QUANTITY, RE-CREATE IT.
-                $this->deleteItem($itemId);
+                // ITEM EXISTS, MAYBE DELETE IT OR CHECK QUANTITY, DELETE IT AND RE-CREATE IT.
+                if ($quantity <= 0) {
+                    $this->deleteItem($itemId, $item);
+                } else {
+                    $currentQuantity = intval($opportunityItems[$index]['quantity']);
 
-                if ($quantity > 0) {
-                    $this->createItem($item);
+                    if ($quantity !== $currentQuantity) {
+                        $deletion = $this->deleteItem($itemId, $item, true);
+
+                        if ($deletion) {
+                            $this->createItem($item, true);
+                        }
+                    }
                 }
             } else {
                 // ITEM DOES NOT EXIST, CHECK QUANTITY AND CREATE IT.
@@ -220,9 +250,11 @@ class ItemsProcess
                 $this->createItem($item);
             }
         }
+
+        return $this->log;
     }
 
-    private function createItem(array $item)
+    private function createItem(array $item, bool $recreated = false): bool
     {
         [
             'id' => $id,
@@ -251,12 +283,69 @@ class ItemsProcess
             $query['opportunity_item']['parent_opportunity_item_id'] = $groupId;
         }
 
-        return Http::current()->withQueryParameters($query)->post("opportunities/{$this->opportunityId}/opportunity_items");
+        $response = Http::current()->withQueryParameters($query)->post("opportunities/{$this->opportunityId}/opportunity_items");
+        $action = $recreated ? 're-creation' : 'creation';
+
+        if ($response->failed()) {
+            $this->addToLog([
+                'item_id' => $item['id'],
+                'item_name' => $item['item_name'],
+                'quantity' => intval($quantity),
+                'action' => $action,
+                'error' => [
+                    'code' => $response->getStatusCode(),
+                    'message' => $this->errorMessage($response->getReasonPhrase(), $response->json(), '. '),
+                ],
+            ]);
+
+            return false;
+        }
+
+        $this->addToLog([
+            'item_id' => $item['id'],
+            'item_name' => $item['item_name'],
+            'quantity' => intval($quantity),
+            'action' => $action,
+            'error' => [],
+        ]);
+
+        return true;
     }
 
-    private function deleteItem(int $itemId)
+    private function deleteItem(int $id, array $item, bool $recreation = false): bool
     {
-        return Http::current()->delete("opportunities/{$this->opportunityId}/opportunity_items/{$itemId}");
+        $response = Http::current()->delete("opportunities/{$this->opportunityId}/opportunity_items/{$id}");
+        $quantity = $recreation ? 0 : intval($item['quantity']);
+
+        if ($response->failed()) {
+            $this->addToLog([
+                'item_id' => $item['id'],
+                'item_name' => $item['item_name'],
+                'quantity' => $quantity,
+                'action' => 'deletion',
+                'error' => [
+                    'code' => $response->getStatusCode(),
+                    'message' => $this->errorMessage($response->getReasonPhrase(), $response->json()),
+                ],
+            ]);
+
+            return false;
+        }
+
+        $this->addToLog([
+            'item_id' => $item['id'],
+            'item_name' => $item['item_name'],
+            'quantity' => $quantity,
+            'action' => 'deletion',
+            'error' => [],
+        ]);
+
+        return true;
+    }
+
+    private function addToLog(array $data)
+    {
+        $this->log[] = $data;
     }
 
     // private function storeItems(array $job)

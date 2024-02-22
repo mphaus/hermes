@@ -183,6 +183,8 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
+        'OpportunityItems' => App\Facades\OpportunityItems::class,
+        'UploadLog' => App\Facades\UploadLog::class,
     ])->toArray(),
 
     'mph_user' => [
