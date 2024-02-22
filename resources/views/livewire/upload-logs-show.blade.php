@@ -1,7 +1,20 @@
-<x-slot name="title">{{ __('Log') }}</x-slot>
-<x-slot name="heading">{{__('Log') }}</x-slot>
+<x-slot name="title">{{ __('Loading...') }}</x-slot>
+<x-slot name="heading">{{ __('Loading Job name...') }}</x-slot>
 
 <div class="flow">
+    <div class="mt-0" x-data="{
+        appName: '{{ config('app.name') }}',
+        init() {
+            const jobName = window.sessionStorage.getItem('job{{ $this->log->job_id }}');
+
+            if (jobName) {
+                document.title = `${this.appName} - ${jobName} - Log`;
+                document.querySelector('[data-element=app-heading]').textContent = jobName;
+            } else {
+                $wire.getJob({{ $this->log->job_id }});
+            }
+        },
+    }"></div>
     <x-card>
         <div class="grid gap-4 text-sm sm:grid-cols-2 md:grid-cols-4 md:gap-6">
             <div class="flex flex-col gap-1">

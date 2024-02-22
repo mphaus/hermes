@@ -7,6 +7,7 @@
         <x-generic-error :message="$this->job['error']" />
     @else
         <div class="flow">
+            <div class="mt-0" x-data x-init="window.sessionStorage.setItem('job{{ $this->job['opportunity']['id'] }}', '{{ $this->job['opportunity']['subject'] }}')"></div>
             <x-card>
                 <div class="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
                     @if ($this->job['opportunity']['description'])
