@@ -9,7 +9,7 @@
             wire:navigate
         ></a>
         <div class="grid grid-cols-[6rem_1fr] gap-1 text-sm lg:block">
-            <p class="font-semibold lg:hidden">{{ __('Upload by') }}</p>
+            <p class="font-semibold lg:hidden">{{ __('Uploaded by') }}</p>
             <p>{{ $log->user->fullName }}</p>
         </div>
         <div class="grid grid-cols-[6rem_1fr] gap-1 text-sm lg:mt-0 lg:block">

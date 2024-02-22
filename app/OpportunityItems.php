@@ -234,7 +234,7 @@ class OpportunityItems
                     $currentQuantity = intval($opportunityItems[$index]['quantity']);
 
                     if ($quantity !== $currentQuantity) {
-                        $deletion = $this->deleteItem($itemId, $item);
+                        $deletion = $this->deleteItem($itemId, $item, true);
 
                         if ($deletion) {
                             $this->createItem($item, true);
@@ -312,15 +312,16 @@ class OpportunityItems
         return true;
     }
 
-    private function deleteItem(int $id, array $item): bool
+    private function deleteItem(int $id, array $item, bool $recreation = false): bool
     {
         $response = Http::current()->delete("opportunities/{$this->opportunityId}/opportunity_items/{$id}");
+        $quantity = $recreation ? 0 : intval($item['quantity']);
 
         if ($response->failed()) {
             $this->addToLog([
                 'item_id' => $item['id'],
                 'item_name' => $item['item_name'],
-                'quantity' => intval($item['quantity']),
+                'quantity' => $quantity,
                 'action' => 'deletion',
                 'error' => [
                     'code' => $response->getStatusCode(),
@@ -334,7 +335,7 @@ class OpportunityItems
         $this->addToLog([
             'item_id' => $item['id'],
             'item_name' => $item['item_name'],
-            'quantity' => intval($item['quantity']),
+            'quantity' => $quantity,
             'action' => 'deletion',
             'error' => [],
         ]);
