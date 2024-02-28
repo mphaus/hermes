@@ -11,7 +11,10 @@
             <x-card>
                 <div class="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
                     @if ($this->job['opportunity']['description'])
-                        <p class="col-span-2 md:col-span-4">{{ $this->job['opportunity']['description'] }}</p>
+                        <div class="col-span-2 md:col-span-4">
+                            <p class="text-sm font-semibold">{{ __('Opportunity Description text') }}</p>
+                            <p class="mt-1">{{ $this->job['opportunity']['description'] }}</p>
+                        </div>
                     @endif
                     <div class="flex flex-col gap-1 text-sm">
                         <p class="font-semibold">{{ __('Start date') }}</p>
