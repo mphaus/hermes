@@ -14,7 +14,7 @@
         </div>
         <div class="grid grid-cols-[6rem_1fr] gap-1 text-sm lg:mt-0 lg:block">
             <p class="font-semibold lg:hidden">{{ __('Uploaded at') }}</p>
-            <time datetime="{{ $log->created_at }}">{{ now()->parse($log->created_at)->timezone(config('app.timezone'))->format('d/M/Y H:i') }}</time>
+            <time datetime="{{ $log->created_at }}">{{ now()->parse($log->created_at)->timezone(config('app.timezone'))->format('d-M-Y') }}</time>
         </div>
         <div class="grid grid-cols-[6rem_1fr] gap-1 text-sm lg:mt-0 lg:block">
             <p class="font-semibold lg:hidden">{{ __('Status') }}</p>
