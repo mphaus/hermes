@@ -29,7 +29,7 @@
     </div>
     <div class="mt-6 text-sm" wire:loading wire:target="save">
         <p class="font-semibold">{{ __('Now ingesting...') }}</p>
-        <p class="mt-1">{{ __('CurrentRMS limits file uploads to a maximum of 60 rows a minute. Most CSV\'s are a few hundred rows, so this can take a few minutes. While you\'re waiting, you are encouraged to ask CurrentRMS to increase this limit -  "Critical" is an appropriate response, because this limit is quite silly!') }}</p>
+        <p class="mt-1">{!! __('CurrentRMS limits file uploads to a maximum of 60 rows a minute. Most CSV\'s are a few hundred rows, so this can take a few minutes. While you\'re waiting, you are encouraged to <br> <a href="https://wishlist.current-rms.com/c/52-customer-specific-api-throttling-other-api-ideas" class="font-semibold" target="_blank">ask CurrentRMS to increase this limit</a> - "Critical" is an appropriate response, because this limit is quite silly!') !!}</p>
         <p class="mt-2">{{ __('Once the import is complete, the log below will be updated. Leave this tab open until the import is completed.') }}</p>
     </div>
 </x-form>
