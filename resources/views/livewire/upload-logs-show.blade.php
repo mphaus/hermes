@@ -23,7 +23,7 @@
             </div>
             <div class="flex flex-col gap-1">
                 <p class="font-semibold">{{ __('Uploaded at') }}</p>
-                <time>{{ now()->parse($this->log->created_at)->timezone(config('app.timezone'))->format('d/M/Y H:i') }}</time>
+                <time>{{ now()->parse($this->log->created_at)->timezone(config('app.timezone'))->format('d-M-Y') }}</time>
             </div>
             <div class="flex flex-col gap-1">
                 <p class="font-semibold">{{ __('Status') }}</p>

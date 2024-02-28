@@ -1,5 +1,8 @@
 <x-slot name="title">{{ __('Jobs list') }}</x-slot>
-<x-slot name="heading">{{ __('Active Jobs') }}</x-slot>
+<x-slot name="heading">
+    <span>{{ __('Active Jobs') }}</span>
+    <span class="block mt-2 text-sm font-normal">{{ __('Jobs in CurrentRMS with the "State" of "Active".') }}</span>
+</x-slot>
 <div>
     @if ($this->jobs['error'])
         <x-generic-error :message="$this->jobs['error']" />
@@ -12,11 +15,10 @@
             wire:loading.class="hidden"
         >
             <div class="hidden lg:block">
-                <div class="px-6 grid items-center grid-cols-[28rem_1fr_1fr_1fr] xl:grid-cols-[45rem_1fr_1fr_1fr] text-sm gap-2 font-semibold">
+                <div class="px-6 grid items-center grid-cols-[28rem_1fr_1fr] xl:grid-cols-[45rem_1fr_1fr] text-sm gap-2 font-semibold">
                     <p>{{ __('Subject') }}</p>
                     <p>{{ __('Start date') }}</p>
                     <p>{{ __('End date') }}</p>
-                    <p>{{ __('Revenue') }}</p>
                 </div>
             </div>
             @foreach ($this->jobs['opportunities'] as $job)

@@ -34,6 +34,10 @@
                     </x-slot>
 
                     <x-slot name="content">
+                        <x-dropdown-link href="mailto:garion@mphaus.com" target="_blank" title="{{ __('Need help?') }}">
+                            {{ __('Need help?') }}
+                        </x-dropdown-link>
+
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
@@ -75,6 +79,10 @@
             </div>
 
             <div class="mt-3 space-y-1">
+                <x-responsive-nav-link href="mailto:garion@mphaus.com" target="_blank" title="{{ __('Need help?') }}">
+                    {{ __('Need help?') }}
+                </x-responsive-nav-link>
+
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
