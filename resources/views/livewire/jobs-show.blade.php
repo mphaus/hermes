@@ -13,7 +13,7 @@
                     @if ($this->job['opportunity']['description'])
                         <div class="flex flex-col col-span-2 gap-1 md:col-span-4">
                             <p class="text-sm font-semibold">{{ __('Opportunity description') }}</p>
-                            <p>{{ $this->job['opportunity']['description'] }}</p>
+                            <div>{!! nl2br($this->job['opportunity']['description']) !!}</div>
                         </div>
                     @endif
                     <div class="flex flex-col col-span-2 gap-1 md:col-span-4">
