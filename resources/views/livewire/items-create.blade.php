@@ -1,4 +1,9 @@
-<x-form wire:submit="save">
+<x-form 
+    wire:submit="save"
+    x-data="itemsCreateForm"
+    x-on:submit.prevent="submitting = true"
+    x-on:items-created="submitting = false"
+>
     <fieldset wire:loading.class="opacity-50 pointer-events-none" wire:target="save">
         <legend>{{ __('Upload file') }}</legend>
         <div class="mt-2 space-y-2 text-sm">
@@ -34,3 +39,31 @@
         <p class="mt-2">{{ __('Leave this tab open until the import is completed.') }}</p>
     </div>
 </x-form>
+@script
+<script>
+    Alpine.data('itemsCreateForm', () => {
+        const beforeUnloadHandler = (e) => {
+            e.preventDefault();
+            e.returnValue = true;
+        };
+
+        return {
+            submitting: false,
+            init() {
+                this.$watch('submitting', isSubmitting => {
+                    if (isSubmitting) {
+                        window.addEventListener('beforeunload', beforeUnloadHandler);
+                    } else {
+                        window.removeEventListener('beforeunload', beforeUnloadHandler);
+                    }
+                });
+            },
+            destroy() {
+                if (this.submitting) {
+                    window.removeEventListener('beforeunload', beforeUnloadHandler);
+                }
+            },
+        };
+    });
+</script>
+@endscript
