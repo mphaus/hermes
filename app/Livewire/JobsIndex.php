@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Enums\JobStatus;
 use App\Traits\WithHttpCurrentError;
 use Illuminate\Contracts\View\View;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -31,7 +32,9 @@ class JobsIndex extends Component
             ->withQueryParameters([
                 'page' => $this->getPage(),
                 'per_page' => 25,
-                'filtermode' => 'with_active_status',
+                'filtermode' => 'orders',
+                'q[status_eq]' => JobStatus::Open->value,
+                'q[id_not_eq]' => config('app.mph_test_opportunity_id'),
             ])
             ->get('opportunities');
 
