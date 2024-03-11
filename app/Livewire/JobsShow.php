@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Enums\JobState;
 use App\Enums\JobStatus;
 use App\Traits\WithHttpCurrentError;
 use Illuminate\Contracts\View\View;
@@ -49,7 +50,7 @@ class JobsShow extends Component
 
         if (
             App::environment(['local', 'staging']) === false
-            && $opportunity['status'] !== JobStatus::Active->value
+            && ($opportunity['status'] !== JobStatus::Open->value || $opportunity['state'] !== JobState::Order->value || $opportunity['id'] === intval(config('app.mph_test_opportunity_id')))
         ) {
             $this->js("document.title = '{$notFoundText}'");
             $this->js("document.querySelector('[data-element=\"app-heading\"]').textContent = '{$notFoundText}'");
