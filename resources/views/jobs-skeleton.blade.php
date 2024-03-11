@@ -2,7 +2,7 @@
     <x-slot name="title">{{ __('Jobs list') }}</x-slot>
     <x-slot name="heading">
         <span>{{ __('Active Jobs') }}</span>
-        <span class="block mt-2 text-sm font-normal">{{ __('Jobs in CurrentRMS with the "State" of "Active".') }}</span>
+        <span class="block mt-2 text-sm font-normal">{{ __('Jobs in CurrentRMS with the "State" of "Order" and "Open".') }}</span>
     </x-slot>
     <div class="space-y-4">
         <div class="hidden lg:block">
