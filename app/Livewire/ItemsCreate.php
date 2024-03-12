@@ -7,6 +7,7 @@ use App\Facades\UploadLog;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Validate;
@@ -35,16 +36,6 @@ class ItemsCreate extends Component
         if (!$this->csvfile) {
             throw ValidationException::withMessages(['csvfile' => __('Please, select a csv file to upload.')]);
         }
-
-        sleep(10);
-        $this->dispatch('items-created')->self();
-
-        session()->flash('alert', [
-            'type' => 'success',
-            'message' => __('The data was uploaded and processed successfully.'),
-        ]);
-
-        return $this->redirectRoute('jobs.show', ['id' => config('app.mph_test_opportunity_id')], navigate: true);
 
         // GET MOST UPDATED VERSION OF JOB HERE
         $response = Http::current()->get("opportunities/{$this->jobId}?include[]=opportunity_items");
@@ -90,12 +81,12 @@ class ItemsCreate extends Component
             return $this->redirectRoute('jobs.show', ['id' => $job['id']], navigate: true);
         }
 
+        $this->dispatch('items-created')->self();
+
         session()->flash('alert', [
             'type' => 'success',
             'message' => __('The data was uploaded and processed successfully.'),
         ]);
-
-        $this->dispatch('items-created')->self();
 
         return $this->redirectRoute('jobs.show', ['id' => $job['id']], navigate: true);
     }
