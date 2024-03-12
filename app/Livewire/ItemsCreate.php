@@ -7,6 +7,7 @@ use App\Facades\UploadLog;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Validate;
@@ -79,6 +80,8 @@ class ItemsCreate extends Component
 
             return $this->redirectRoute('jobs.show', ['id' => $job['id']], navigate: true);
         }
+
+        $this->dispatch('items-created')->self();
 
         session()->flash('alert', [
             'type' => 'success',
