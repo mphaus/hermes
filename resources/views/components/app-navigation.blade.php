@@ -5,15 +5,18 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="flex items-center shrink-0">
-                    <a href="{{ route('jobs') }}" wire:navigate>
+                    <a href="{{ route('jobs.index') }}" wire:navigate>
                         <x-application-logo class="w-auto h-9" />
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('jobs')" :active="request()->routeIs('jobs')" wire:navigate>
+                    <x-nav-link :href="route('jobs.index')" :active="request()->routeIs('jobs.index')" wire:navigate>
                         {{ __('Jobs') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('action-stream.index')" :active="request()->routeIs('action-stream.index')" wire:navigate>
+                        {{ __('Action Stream') }}
                     </x-nav-link>
                 </div>
             </div>
@@ -67,8 +70,11 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('jobs')" :active="request()->routeIs('jobs')" wire:navigate>
+            <x-responsive-nav-link :href="route('jobs.index')" :active="request()->routeIs('jobs.index')" wire:navigate>
                 {{ __('Jobs') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('action-stream.index')" :active="request()->routeIs('action-stream.index')" wire:navigate>
+                {{ __('Action Stream') }}
             </x-responsive-nav-link>
         </div>
 
