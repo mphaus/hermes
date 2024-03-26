@@ -18,8 +18,6 @@ class JobsIndex extends Component
     use WithPagination;
     use WithHttpCurrentError;
 
-    public bool $beingPaginated = false;
-
     #[Computed]
     public function jobs(): array
     {
@@ -62,11 +60,6 @@ class JobsIndex extends Component
                 perPage: $meta['per_page']
             ))->withPath('/jobs'),
         ];
-    }
-
-    public function updatedPage()
-    {
-        $this->beingPaginated = false;
     }
 
     public function placeholder(): View
