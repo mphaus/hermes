@@ -2,9 +2,9 @@
 
 namespace App\Livewire;
 
-use App\Enums\ActionType;
-use App\Enums\Member;
+use App\Traits\WithActionType;
 use App\Traits\WithHttpCurrentError;
+use App\Traits\WithMember;
 use Illuminate\Contracts\View\View;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Http;
@@ -16,6 +16,8 @@ use Livewire\WithPagination;
 #[Lazy]
 class ActionStreamIndex extends Component
 {
+    use WithActionType;
+    use WithMember;
     use WithPagination;
     use WithHttpCurrentError;
 
@@ -27,12 +29,14 @@ class ActionStreamIndex extends Component
             'log' => collect([]),
         ];
 
+        return $defaultResponse;
+
         $queryParams = [
             'page' => $this->getPage(),
             'per_page' => 20,
             'include[]' => 'all',
-            'q[member_id_in]' => array_map(fn ($member) => $member->value, Member::cases()),
-            'q[action_type_in]' => array_map(fn ($type) => $type->value, ActionType::cases()),
+            'q[member_id_in]' => array_map(fn ($member) => $member['id'], $this->getMembers()),
+            'q[action_type_in]' => array_map(fn ($type) => $type['key'], $this->getActionTypes()),
             'q[updated_at_gteq]' => now()->timezone(config('app.timezone'))->subDays(3)->format('Y-m-d'), // LAST THREE DAYS
             'q[updated_at_lteq_date]' => now()->timezone(config('app.timezone'))->format('Y-m-d'), // TODAY
         ];

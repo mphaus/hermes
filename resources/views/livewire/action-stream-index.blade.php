@@ -1,23 +1,10 @@
 <x-slot name="title">{{ __('Action Stream') }}</x-slot>
 <x-slot name="heading">{{ __('Action Stream') }}</x-slot>
 <div class="flow">
+    <livewire:action-stream-filters />
     @if ($this->actions['error'])
         <x-generic-error :message="$this->actions['error']" />
     @elseif ($this->actions['log']->isNotEmpty())
-        <section class="hidden">
-            <select name="" id="">
-                <option value="">Matt Hansen</option>
-                <option value="">Michael Parsons</option>
-            </select>
-            <select name="" id="">
-                <option value="">Action 1</option>
-                <option value="">Action 2</option>
-            </select>
-            <input type="date">
-            <x-button variant="primary">Search</x-button>
-            <x-button variant="primary">Last seven days</x-button>
-            <x-button variant="primary">Last month</x-button>
-        </section>
         <section wire:loading.block>
             @include('action-stream-skeleton')
         </section>
