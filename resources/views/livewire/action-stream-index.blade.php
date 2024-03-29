@@ -4,7 +4,7 @@
     @if ($this->actions['error'])
         <x-generic-error :message="$this->actions['error']" />
     @elseif ($this->actions['log']->isNotEmpty())
-        <livewire:action-stream-filters />
+        <livewire:action-stream-filters :memberIds="$memberIds" :actionTypes="$actionTypes" :dateRange="$dateRange" />
         <section wire:loading.block>
             @include('action-stream-skeleton')
         </section>

@@ -10,6 +10,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Http;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Lazy;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -20,6 +21,15 @@ class ActionStreamIndex extends Component
     use WithMember;
     use WithPagination;
     use WithHttpCurrentError;
+
+    #[Url(as: 'members')]
+    public array $memberIds = [];
+
+    #[Url(as: 'action-types')]
+    public array $actionTypes = [];
+
+    #[Url(as: 'date-range')]
+    public array $dateRange = [];
 
     #[Computed]
     public function actions(): array
@@ -64,6 +74,13 @@ class ActionStreamIndex extends Component
                 perPage: $meta['per_page'],
             ))->withPath('/action-stream'),
         ];
+    }
+
+    public function setFilters(array $memberIds = [], array $actionTypes = [], array $dateRange = [])
+    {
+        $this->memberIds = $memberIds;
+        $this->actionTypes = $actionTypes;
+        $this->dateRange = $dateRange;
     }
 
     public function placeholder(): View
