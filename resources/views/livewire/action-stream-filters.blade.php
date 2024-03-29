@@ -1,5 +1,5 @@
-<div x-data="ActionStreamFilters" class="space-y-2">
-    <div class="grid gap-2">
+<div x-data="ActionStreamFilters" class="space-y-3">
+    <div class="grid gap-2 lg:grid-cols-3 lg:items-end">
         <div class="space-y-1">
             <x-input-label value="{{ __('Members') }}" class="!text-xs" />
             <select
@@ -19,7 +19,6 @@
                 multiple
                 x-ref="actions"
             >
-                <option value=""></option>
                 @foreach ($this->actionTypes as $type)
                     <option value="{{ $type['key'] }}">{{ $type['value'] }}</option>
                 @endforeach
@@ -33,9 +32,9 @@
                 x-ref="dateRange"
             />
         </div>
-        <x-button type="button" variant="primary" class="block w-full">{{ __('Search') }}</x-button>
     </div>
-    <div class="grid gap-2">
+    <div class="grid gap-2 lg:grid-cols-4">
+        <x-button type="button" variant="primary" class="block w-full">{{ __('Search') }}</x-button>
         <x-button type="button" variant="outline-primary" class="block w-full">{{ __('This week') }}</x-button>
         <x-button type="button" variant="outline-primary" class="block w-full">{{ __('This month') }}</x-button>
         <x-button type="button" variant="outline-primary" class="block w-full">{{ __('Clear') }}</x-button>
@@ -47,8 +46,15 @@
     Alpine.data('ActionStreamFilters', () => {
         return {
             init() {
-                $(this.$refs.members).select2();
-                $(this.$refs.actions).select2();
+                $(this.$refs.members).select2({
+                    placeholder: 'Select or type one or more members',
+                    width: '100%',
+                });
+
+                $(this.$refs.actions).select2({
+                    placeholder: 'Select or type one or more actions',
+                    width: '100%',
+                });
 
                 flatpickr(this.$refs.dateRange, {
                     mode: 'range',

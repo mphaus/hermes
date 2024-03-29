@@ -1,18 +1,18 @@
 <x-slot name="title">{{ __('Action Stream') }}</x-slot>
 <x-slot name="heading">{{ __('Action Stream') }}</x-slot>
 <div class="flow">
-    <livewire:action-stream-filters />
     @if ($this->actions['error'])
         <x-generic-error :message="$this->actions['error']" />
     @elseif ($this->actions['log']->isNotEmpty())
+        <livewire:action-stream-filters />
         <section wire:loading.block>
             @include('action-stream-skeleton')
         </section>
         <section 
-            class="flow"
+            class="mt-8 flow"
             wire:loading.class="hidden"
         >
-            <div class="hidden lg:block">
+            <div class="hidden xl:block">
                 <div class="gap-2 px-6 text-sm font-semibold xl:grid grid-cols-[28rem_1fr_1fr_1fr_1fr_1fr]">
                     <p>{{ __('Job') }}</p>
                     <p>{{ __('User') }}</p>

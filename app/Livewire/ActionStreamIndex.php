@@ -29,8 +29,6 @@ class ActionStreamIndex extends Component
             'log' => collect([]),
         ];
 
-        return $defaultResponse;
-
         $queryParams = [
             'page' => $this->getPage(),
             'per_page' => 20,
