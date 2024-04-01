@@ -26,11 +26,15 @@ class ActionStreamFilters extends Component
     #[Locked]
     public array $formattedDateRange = [];
 
-    public function mount(array $memberIds, array $actionTypes, array $dateRange)
+    #[Locked]
+    public string $timePeriod = '';
+
+    public function mount(array $memberIds, array $actionTypes, array $dateRange, string $timePeriod)
     {
         $this->memberIds = $memberIds;
         $this->_actionTypes = $actionTypes;
         $this->dateRange = $dateRange;
+        $this->timePeriod = $timePeriod;
 
         if ($this->dateRange) {
             $this->formattedDateRange = array_map(fn ($date) => date('d-M-Y', strtotime($date)), $this->dateRange);

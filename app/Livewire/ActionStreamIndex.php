@@ -31,6 +31,9 @@ class ActionStreamIndex extends Component
     #[Url(as: 'date-range')]
     public array $dateRange = [];
 
+    #[Url(as: 'time-period')]
+    public string $timePeriod = '';
+
     #[Computed]
     public function actions(): array
     {
@@ -45,9 +48,37 @@ class ActionStreamIndex extends Component
             'include[]' => 'all',
             'q[member_id_in]' => array_map(fn ($member) => $member['id'], $this->getMembers()),
             'q[action_type_in]' => array_map(fn ($type) => $type['key'], $this->getActionTypes()),
-            'q[updated_at_gteq]' => now()->timezone(config('app.timezone'))->subDays(3)->format('Y-m-d'), // LAST THREE DAYS
-            'q[updated_at_lteq_date]' => now()->timezone(config('app.timezone'))->format('Y-m-d'), // TODAY
+            'q[updated_at_gteq]' => now()->timezone('UTC')->subDays(3)->format('Y-m-d'), // LAST THREE DAYS
+            'q[updated_at_lteq_date]' => now()->timezone('UTC')->format('Y-m-d'), // TODAY
         ];
+
+        if ($this->memberIds) {
+            $queryParams['q[member_id_in]'] = array_map(fn ($member) => $member, $this->memberIds);
+        }
+
+        if ($this->actionTypes) {
+            $queryParams['q[action_type_in]'] = array_map(fn ($type) => $type, $this->actionTypes);
+        }
+
+        if ($this->dateRange) {
+            $queryParams['q[updated_at_gteq]'] = now()->createFromFormat('Y-m-d', $this->dateRange[0], 'UTC')->format('Y-m-d');
+            $queryParams['q[updated_at_lteq_date]'] = now()->createFromFormat('Y-m-d', $this->dateRange[1], 'UTC')->format('Y-m-d');
+        }
+
+        if ($this->timePeriod) {
+            switch ($this->timePeriod) {
+                case 'this-week':
+                    $queryParams['q[updated_at_gteq]'] = now()->timezone('UTC')->startOfWeek()->format('Y-m-d');
+                    $queryParams['q[updated_at_lteq_date]'] = now()->timezone('UTC')->endOfWeek()->format('Y-m-d');
+                    break;
+                case 'this-month':
+                    $queryParams['q[updated_at_gteq]'] = now()->timezone('UTC')->startOfMonth()->format('Y-m-d');
+                    $queryParams['q[updated_at_lteq_date]'] = now()->timezone('UTC')->endOfMonth()->format('Y-m-d');
+                    break;
+                default:
+                    break;
+            }
+        }
 
         $queryParams = preg_replace('/\[\d+\]/', '[]', urldecode(http_build_query($queryParams)));
 
@@ -76,11 +107,12 @@ class ActionStreamIndex extends Component
         ];
     }
 
-    public function setFilters(array $memberIds = [], array $actionTypes = [], array $dateRange = [])
+    public function setFilters(array $memberIds = [], array $actionTypes = [], array $dateRange = [], string $timePeriod)
     {
         $this->memberIds = $memberIds;
         $this->actionTypes = $actionTypes;
-        $this->dateRange = $dateRange;
+        $this->dateRange = $timePeriod ? [] : $dateRange;
+        $this->timePeriod = $timePeriod;
     }
 
     public function placeholder(): View

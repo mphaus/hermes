@@ -40,13 +40,34 @@
             type="button" 
             variant="primary" 
             class="block w-full"
-            x-on:click="$wire.$parent.setFilters(memberIds, actionTypes, dateRange)"
+            x-on:click="$wire.$parent.setFilters(memberIds, actionTypes, dateRange, timePeriod)"
         >
             {{ __('Search') }}
         </x-button>
-        <x-button type="button" variant="outline-primary" class="block w-full">{{ __('This week') }}</x-button>
-        <x-button type="button" variant="outline-primary" class="block w-full">{{ __('This month') }}</x-button>
-        <x-button type="button" variant="outline-primary" class="block w-full">{{ __('Clear') }}</x-button>
+        <x-button 
+            type="button" 
+            variant="outline-primary" 
+            class="block w-full"
+            x-on:click="_flatpickrInstance.clear(); timePeriod = 'this-week'; $wire.$parent.setFilters(memberIds, actionTypes, dateRange, timePeriod);"
+            x-bind:class="{ 'pressed': timePeriod === 'this-week' }"
+        >
+            {{ __('This week') }}
+        </x-button>
+        <x-button 
+            type="button" 
+            variant="outline-primary" 
+            class="block w-full"
+            x-on:click="_flatpickrInstance.clear(); timePeriod = 'this-month'; $wire.$parent.setFilters(memberIds, actionTypes, dateRange, timePeriod);"
+            x-bind:class="{ 'pressed': timePeriod === 'this-month' }"
+        >
+            {{ __('This month') }}
+        </x-button>
+        <x-button 
+            type="button" 
+            variant="outline-primary" 
+            class="block w-full"
+            x-on:click="clear"
+        >{{ __('Clear') }}</x-button>
     </div>
 </div>
 
@@ -56,12 +77,15 @@
         initialMemberIds = {{ Js::from($memberIds) }}, 
         initialActionTypes = {{ Js::from($_actionTypes) }},
         initialDateRange = {{ Js::from($dateRange) }},
-        formattedDateRange = {{ Js::from($formattedDateRange) }}
+        formattedDateRange = {{ Js::from($formattedDateRange) }},
+        initialTimePeriod = {{ Js::from($timePeriod) }}
     ) => {
         return {
             memberIds: initialMemberIds,
             actionTypes: initialActionTypes,
             dateRange: initialDateRange,
+            timePeriod: initialTimePeriod,
+            _flatpickrInstance: null,
             init() {
                 $(this.$refs.memberIds).select2({
                     placeholder: 'Select or type one or more members',
@@ -85,7 +109,7 @@
                         .trigger('change');
                 }
 
-                flatpickr(this.$refs.dateRange, {
+                this._flatpickrInstance = flatpickr(this.$refs.dateRange, {
                     mode: 'range',
                     dateFormat: 'd-M-Y',
                     maxDate: new Date,
@@ -99,6 +123,18 @@
                         this.dateRange = selectedDates.map(selectedDate => `${selectedDate.getUTCFullYear()}-${(selectedDate.getUTCMonth() + 1).toString().padStart(2, '0')}-${(selectedDate.getUTCDate()).toString().padStart(2, '0')}`);
                     },
                 });
+            },
+            clear() {
+                this.memberIds = [];
+                this.actionTypes = [];
+                this.dateRange = [];
+                this.timePeriod = '';
+
+                $(this.$refs.memberIds).val([]).trigger('change');
+                $(this.$refs.actionTypes).val([]).trigger('change');
+                this._flatpickrInstance.clear();
+
+                this.$wire.$parent.setFilters(this.memberIds, this.actionTypes, this.dateRange, this.timePeriod);
             }
         };
     });

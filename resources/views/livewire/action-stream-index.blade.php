@@ -1,13 +1,18 @@
 <x-slot name="title">{{ __('Action Stream') }}</x-slot>
 <x-slot name="heading">{{ __('Action Stream') }}</x-slot>
 <div class="flow">
+    <livewire:action-stream-filters 
+        :memberIds="$memberIds" 
+        :actionTypes="$actionTypes" 
+        :dateRange="$dateRange" 
+        :timePeriod="$timePeriod"
+    />
+    <section wire:loading.block>
+        @include('action-stream-skeleton')
+    </section>
     @if ($this->actions['error'])
         <x-generic-error :message="$this->actions['error']" />
     @elseif ($this->actions['log']->isNotEmpty())
-        <livewire:action-stream-filters :memberIds="$memberIds" :actionTypes="$actionTypes" :dateRange="$dateRange" />
-        <section wire:loading.block>
-            @include('action-stream-skeleton')
-        </section>
         <section 
             class="mt-8 flow"
             wire:loading.class="hidden"
@@ -27,11 +32,9 @@
             <div class="mt-8">{{ $this->actions['log']->links('pagination') }}</div>
         </section>
     @else
-        <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-            <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    {{ __('There are no actions to display.') }}
-                </div>
+        <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg" wire:loading.class="hidden">
+            <div class="p-6 text-gray-900">
+                {{ __('There are no actions to display.') }}
             </div>
         </div>
     @endif
