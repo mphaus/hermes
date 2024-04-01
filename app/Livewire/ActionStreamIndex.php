@@ -85,7 +85,10 @@ class ActionStreamIndex extends Component
         $response = Http::current()->get("actions?{$queryParams}");
 
         if ($response->failed()) {
-            dd('Handle error');
+            return [
+                ...$defaultResponse,
+                'error' => $this->errorMessage(__('An unexpected error occurred while fetching the Actions list. Please refresh the page and try again.'), $response->json()),
+            ];
         }
 
         [
