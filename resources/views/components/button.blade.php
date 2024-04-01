@@ -8,6 +8,7 @@
     $classNames = [
         'button', 
         'button-primary' => $variant === 'primary',
+        'button-outline-primary' => $variant === 'outline-primary',
         'button-sm' => $size === 'small'
     ];
 @endphp
