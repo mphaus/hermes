@@ -112,6 +112,7 @@ class ActionStreamIndex extends Component
 
     public function setFilters(array $memberIds = [], array $actionTypes = [], array $dateRange = [], string $timePeriod)
     {
+        $this->resetPage();
         $this->memberIds = $memberIds;
         $this->actionTypes = $actionTypes;
         $this->dateRange = $timePeriod ? [] : $dateRange;
