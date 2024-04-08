@@ -18,6 +18,9 @@
                     <x-nav-link :href="route('action-stream.index')" :active="request()->routeIs('action-stream.index')" wire:navigate>
                         {{ __('Action Stream') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('qet.index')" :active="request()->routeIs('qet.index')" wire:navigate>
+                        {{ __('QET') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -75,6 +78,9 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('action-stream.index')" :active="request()->routeIs('action-stream.index')" wire:navigate>
                 {{ __('Action Stream') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('qet.index')" :active="request()->routeIs('qet.index')" wire:navigate>
+                {{ __('QET') }}
             </x-responsive-nav-link>
         </div>
 

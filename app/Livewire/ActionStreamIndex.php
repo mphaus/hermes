@@ -110,7 +110,7 @@ class ActionStreamIndex extends Component
         ];
     }
 
-    public function setFilters(array $memberIds = [], array $actionTypes = [], array $dateRange = [], string $timePeriod)
+    public function setFilters(array $memberIds = [], array $actionTypes = [], array $dateRange = [], string $timePeriod = '')
     {
         $this->resetPage();
         $this->memberIds = $memberIds;
