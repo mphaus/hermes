@@ -19,7 +19,7 @@
                 wire:loading.class="hidden"
             >
                 <div class="hidden xl:block">
-                    <div class="gap-2 px-6 text-sm font-semibold xl:grid grid-cols-[28rem_1fr_1fr_1fr_1fr_1fr]">
+                    <div class="gap-2 px-6 text-sm font-semibold grid grid-cols-[28rem_1fr_1fr_1fr_1fr_1fr]">
                         <p>{{ __('Job') }}</p>
                         <p>{{ __('User') }}</p>
                         <p>{{ __('Action') }}</p>
