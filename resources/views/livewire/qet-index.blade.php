@@ -1,9 +1,14 @@
 <x-slot name="title">{{ __('QET') }}</x-slot>
 <x-slot name="heading">{{ __('QET') }}</x-slot>
-<div class="flow">
+<div class="flow" x-data="ActionStreamIndex">
     <div class="space-y-1 max-w-96">
         <x-input-label value="{{ __('Date') }}" class="!text-xs" />
-        <x-input type="text" placeholder="{{ __('Select a date') }}" class="block w-full" />
+        <x-input 
+            type="text" 
+            placeholder="{{ __('Select a date') }}" 
+            class="block w-full" 
+            x-ref="date"
+        />
     </div>
     <section class="mt-8 flow">
         <div class="flex flex-col gap-2 text-sm sm:flex-row sm:items-center sm:justify-between">
@@ -57,3 +62,25 @@
         </x-card>
     </section>
 </div>
+
+@script
+<script>
+    Alpine.data('ActionStreamIndex', () => {
+        return {
+            init() {
+                flatpickr(this.$refs.date, {
+                    dateFormat: 'd-M-Y',
+                    minDate: new Date,
+                    onChange: (selectedDates) => {
+                        const selectedDate = selectedDates.length > 0
+                            ? `${selectedDates[0].getFullYear()}-${(selectedDates[0].getMonth() + 1).toString().padStart(2, '0')}-${(selectedDates[0].getDate()).toString().padStart(2, '0')}`
+                            : '';
+                        
+                        this.$wire.fetchQET(selectedDate);
+                    }
+                });
+            }
+        };
+    });
+</script>
+@endscript
