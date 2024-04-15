@@ -185,6 +185,7 @@ return [
         // 'Example' => App\Facades\Example::class,
         'OpportunityItems' => App\Facades\OpportunityItems::class,
         'UploadLog' => App\Facades\UploadLog::class,
+        'QET' => App\Facades\QET::class,
     ])->toArray(),
 
     'mph_user' => [

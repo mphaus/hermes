@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Facades\QET;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;
@@ -31,28 +32,7 @@ class QetIndex extends Component
             return;
         }
 
-        $startDate = Carbon::createFromFormat('Y-m-d', $this->date);
-        $endDate = Carbon::createFromFormat('Y-m-d', $this->date);
-
-        $startDate->setTime(0, 0, 0, 0)->setTimezone('UTC');
-        $endDate->setTime(0, 0, 0, 0)->setTimezone('UTC')->addDay();
-
-        $response = Http::current()
-            ->withQueryParameters([
-                'per_page' => 25,
-                'q[unload_starts_at_gteq]' => $startDate->format('Y-m-d'),
-                'q[unload_ends_at_lteq]' => $endDate->format('Y-m-d'),
-                'q[load_starts_at_gteq]' => $startDate->format('Y-m-d'),
-                'q[load_ends_at_lteq]' => $endDate->format('Y-m-d'),
-                'include[]' => 'opportunity_items',
-            ])
-            ->get('opportunities');
-
-        if ($response->failed()) {
-            // HANDLE ERROR HERE
-        }
-
-        dd($response->json());
+        dd(QET::get($this->date));
     }
 
     public function render(): View
