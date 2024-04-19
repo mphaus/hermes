@@ -74,11 +74,45 @@ class QET
         }
 
         $qet = [];
+        $filteredJobsToLoad = [];
+        $filteredJobsToUnload = [];
 
-        foreach ($jobsToLoad as $jobToLoad) {
-            foreach ($jobsToUnload as $jobToUnload) {
+        foreach ($jobsToLoad as $load) {
+            $items = array_values(array_filter($load['opportunity_items'], function ($item) {
+                return $item['item_id'] !== null && $item['has_shortage'] === true && $item['accessory_mode'] === null;
+            }));
+
+            if (empty($items)) {
+                continue;
             }
+
+            $filteredJobsToLoad[] = [
+                'subject' => $load['subject'],
+                'load_starts_at' => $load['load_starts_at'],
+                'items' => $items,
+            ];
         }
+
+        dd($filteredJobsToLoad);
+
+        foreach ($jobsToUnload as $unload) {
+            dd($unload);
+            $items = array_values(array_filter($unload['opportunity_items'], function ($item) {
+                return $item['item_id'] !== null && $item['has_shortage'] === true && $item['accessory_mode'] === null;
+            }));
+
+            if (empty($items)) {
+                continue;
+            }
+
+            $filteredJobsToUnload[] = [
+                'subject' => $unload['subject'],
+                'unload_ends_at' => $unload['unload_ends_at'],
+                'items' => $items,
+            ];
+        }
+
+        dd($filteredJobsToLoad, $filteredJobsToUnload);
 
         return $qet;
     }
