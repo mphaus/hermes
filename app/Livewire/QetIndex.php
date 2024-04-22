@@ -4,35 +4,38 @@ namespace App\Livewire;
 
 use App\Facades\QET;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Http;
+use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
-use Livewire\Attributes\Url;
 use Livewire\Component;
 
 class QetIndex extends Component
 {
-    #[Url]
+    #[Locked]
     public string $date = '';
 
-    #[Locked]
-    public array $qet = [];
-
-    public function fetchQET($selectedDate)
+    public function setDate(string $date): void
     {
-        $this->date = $selectedDate;
+        $this->date = $date;
+    }
 
+    #[Computed]
+    public function qet(): array
+    {
         $defaultResponse = [
             'error' => '',
             'items' => collect([]),
         ];
 
-        if (!$selectedDate) {
-            $this->qet = $defaultResponse;
-            return;
+        if (empty($this->date)) {
+            return $defaultResponse;
         }
 
-        $this->qet = QET::get($this->date);
+        $qet = QET::get($this->date);
+
+        return [
+            ...$defaultResponse,
+            'items' => collect($qet),
+        ];
     }
 
     public function render(): View

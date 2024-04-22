@@ -22,8 +22,8 @@ class QET
 
     public function get(string $date)
     {
-        // $this->date = $date;
-        // $responses = $this->getJobs();
+        $this->date = $date;
+        $responses = $this->getJobs();
 
         // Handle error from $responses if any
 

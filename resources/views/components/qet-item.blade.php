@@ -7,7 +7,7 @@
             <p class="flex flex-col gap-1">
                 <span>{{ $qet['unload_job']['subject'] }}</span>
                 <span class="flex items-center text-xs">
-                    (<x-icon-arrow-down class="w-3 h-3" />
+                    (<x-icon-arrow-down class="w-3 h-3 fill-blue-600" />
                     <span class="block ml-1">at {{ now()->parse($qet['unload_job']['date'])->format('Hi D M d') }}</span>)
                 </span>
             </p>
@@ -17,7 +17,7 @@
             <p class="flex flex-col gap-1">
                 <span>{{ $qet['load_job']['subject'] }}</span>
                 <span class="flex items-center text-xs">
-                    (<x-icon-arrow-up class="w-3 h-3" />
+                    (<x-icon-arrow-up class="w-3 h-3 fill-blue-600" />
                     <span class="block ml-1">at {{ now()->parse($qet['load_job']['date'])->format('Hi D M d') }}</span>)
                 </span>
             </p>
