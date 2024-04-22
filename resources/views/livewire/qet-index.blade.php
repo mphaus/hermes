@@ -1,15 +1,18 @@
 <x-slot name="title">{{ __('QET') }}</x-slot>
 <x-slot name="heading">{{ __('QET') }}</x-slot>
 <div class="flow" x-data="ActionStreamIndex">
-    <div class="space-y-1 max-w-96">
-        <x-input-label value="{{ __('Date') }}" class="!text-xs" />
-        <x-input 
-            type="text" 
-            placeholder="{{ __('Select a date') }}" 
-            class="block w-full" 
-            x-ref="date"
-        />
-    </div>
+    <section class="flex items-end gap-2">
+        <div class="flex-1 space-y-1 max-w-64">
+            <x-input-label value="{{ __('Date') }}" class="!text-xs" />
+            <x-input
+                type="text"
+                placeholder="{{ __('Select a date') }}"
+                class="block w-full"
+                x-ref="date"
+            />
+        </div>
+        <x-button variant="primary" x-on:click="clearDate">{{ __('Clear') }}</x-button>
+    </section>
     <div wire:loading.block wire:target="setDate">
         @include('qet-skeleton')
     </div>
@@ -38,12 +41,15 @@
 @script
 <script>
     Alpine.data('ActionStreamIndex', () => {
+        let flatpickrInstance = null;
+
         return {
             init() {
-                flatpickr(this.$refs.date, {
+                flatpickrInstance = flatpickr(this.$refs.date, {
                     dateFormat: 'd-M-Y',
                     minDate: new Date,
                     onChange: (selectedDates) => {
+                        console.log(selectedDates);
                         const date = selectedDates.length > 0
                             ? `${selectedDates[0].getFullYear()}-${(selectedDates[0].getMonth() + 1).toString().padStart(2, '0')}-${(selectedDates[0].getDate()).toString().padStart(2, '0')}`
                             : '';
@@ -51,6 +57,9 @@
                         this.$wire.setDate(date);
                     }
                 });
+            },
+            clearDate() {
+                flatpickrInstance.clear();
             }
         };
     });
