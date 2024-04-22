@@ -8,76 +8,108 @@ use Illuminate\Support\Carbon;
 
 class QET
 {
+    protected string $date = '';
+
+    protected array $jobsToLoad = [];
+
+    protected array $jobsToUnload = [];
+
+    protected array $itemsToLoad = [];
+
+    protected array $itemsToUnload = [];
+
+    protected array $qet = [];
+
     public function get(string $date)
     {
-        // $startDate = Carbon::createFromFormat('Y-m-d', $date);
-        // $endDate = Carbon::createFromFormat('Y-m-d', $date);
+        // $this->date = $date;
+        // $responses = $this->getJobs();
 
-        // $startDate->setTime(0, 0, 0, 0)->setTimezone('UTC');
-        // $endDate->setTime(0, 0, 0, 0)->setTimezone('UTC')->addDays(2);
+        // Handle error from $responses if any
 
-        // $headers = [
-        //     'X-AUTH-TOKEN' => config('app.current_rms.auth_token'),
-        //     'X-SUBDOMAIN' => config('app.current_rms.subdomain'),
-        // ];
+        // $this->setJobs($responses);
 
-        // $client = new Client([
-        //     'base_uri' => config('app.current_rms.host'),
-        //     'headers' => $headers,
-        // ]);
-
-        // $promises = [
-        //     'load' => $client->getAsync('opportunities', [
-        //         'query' => [
-        //             'per_page' => 25,
-        //             'q[load_starts_at_gteq]' => $startDate->format('Y-m-d'),
-        //             'q[load_ends_at_lt]' => $endDate->format('Y-m-d'),
-        //             'include[]' => 'opportunity_items',
-        //         ]
-        //     ]),
-        //     'unload' => $client->getAsync('opportunities', [
-        //         'query' => [
-        //             'per_page' => 25,
-        //             'q[unload_starts_at_gteq]' => $startDate->format('Y-m-d'),
-        //             'q[unload_ends_at_lt]' => $endDate->format('Y-m-d'),
-        //             'include[]' => 'opportunity_items',
-        //         ]
-        //     ]),
-        // ];
-
-        // try {
-        //     $responses = Promise\Utils::unwrap($promises);
-        // } catch (\Throwable $th) {
-        //     // RETURN ERROR
-        // }
-
-        // $jobsToLoad = [];
-        // $jobsToUnload = [];
-
-        // foreach ($responses as $key => $response) {
-        //     $res = json_decode($response->getBody(), true);
-
-        //     switch ($key) {
-        //         case 'load':
-        //             $jobsToLoad = $res['opportunities'];
-        //             break;
-        //         case 'unload':
-        //             $jobsToUnload = $res['opportunities'];
-        //             break;
-        //         default:
-        //             break;
-        //     }
-        // }
-
-        // if (empty($jobsToLoad) || empty($jobsToUnload)) {
+        // if (empty($this->jobsToLoad) || empty($this->jobsToUnload)) {
         //     // RETURN EMPTY RESPONSE
         // }
 
-        // $qet = [];
-        // $itemsToLoad = [];
-        // $itemsToUnload = [];
+        $this->setItems();
 
-        // foreach ($jobsToLoad as $load) {
+        // if (empty($this->itemsToLoad) || empty($this->itemsToUnload)) {
+        //     // RETURN EMPTY RESPONSE
+        // }
+
+        $this->setQET();
+
+        return $this->qet;
+    }
+
+    private function getJobs(): array
+    {
+        $startDate = Carbon::createFromFormat('Y-m-d', $this->date);
+        $endDate = Carbon::createFromFormat('Y-m-d', $this->date);
+
+        $startDate->setTime(0, 0, 0, 0)->setTimezone('UTC');
+        $endDate->setTime(0, 0, 0, 0)->setTimezone('UTC')->addDays(2);
+
+        $headers = [
+            'X-AUTH-TOKEN' => config('app.current_rms.auth_token'),
+            'X-SUBDOMAIN' => config('app.current_rms.subdomain'),
+        ];
+
+        $client = new Client([
+            'base_uri' => config('app.current_rms.host'),
+            'headers' => $headers,
+        ]);
+
+        $promises = [
+            'load' => $client->getAsync('opportunities', [
+                'query' => [
+                    'per_page' => 25,
+                    'q[load_starts_at_gteq]' => $startDate->format('Y-m-d'),
+                    'q[load_ends_at_lt]' => $endDate->format('Y-m-d'),
+                    'include[]' => 'opportunity_items',
+                ]
+            ]),
+            'unload' => $client->getAsync('opportunities', [
+                'query' => [
+                    'per_page' => 25,
+                    'q[unload_starts_at_gteq]' => $startDate->format('Y-m-d'),
+                    'q[unload_ends_at_lt]' => $endDate->format('Y-m-d'),
+                    'include[]' => 'opportunity_items',
+                ]
+            ]),
+        ];
+
+        try {
+            $responses = Promise\Utils::unwrap($promises);
+            return $responses;
+        } catch (\Throwable $th) {
+            // RETURN ERROR
+        }
+    }
+
+    private function setJobs(array $responses): void
+    {
+        foreach ($responses as $key => $response) {
+            $res = json_decode($response->getBody(), true);
+
+            switch ($key) {
+                case 'load':
+                    $this->jobsToLoad = $res['opportunities'];
+                    break;
+                case 'unload':
+                    $this->jobsToUnload = $res['opportunities'];
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    private function setItems(): void
+    {
+        // foreach ($this->jobsToLoad as $load) {
         //     $items = array_values(array_filter($load['opportunity_items'], function ($item) {
         //         return $item['item_id'] !== null && $item['has_shortage'] === true && $item['accessory_mode'] === null;
         //     }));
@@ -86,8 +118,8 @@ class QET
         //         continue;
         //     }
 
-        //     $itemsToLoad = [
-        //         ...$itemsToLoad,
+        //     $this->itemsToLoad = [
+        //         ...$this->itemsToLoad,
         //         ...array_map(function ($itemToLoad) use ($load) {
         //             return [
         //                 'item_id' => $itemToLoad['item_id'],
@@ -102,7 +134,7 @@ class QET
         //     ];
         // }
 
-        // foreach ($jobsToUnload as $unload) {
+        // foreach ($this->jobsToUnload as $unload) {
         //     $items = array_values(array_filter($unload['opportunity_items'], function ($item) {
         //         return $item['item_id'] !== null && $item['accessory_mode'] === null;
         //     }));
@@ -111,8 +143,8 @@ class QET
         //         continue;
         //     }
 
-        //     $itemsToUnload = [
-        //         ...$itemsToUnload,
+        //     $this->itemsToUnload = [
+        //         ...$this->itemsToUnload,
         //         ...array_map(function ($itemToUnload) use ($unload) {
         //             return [
         //                 'item_id' => $itemToUnload['item_id'],
@@ -127,13 +159,7 @@ class QET
         //     ];
         // }
 
-        // if (empty($itemsToLoad) || empty($itemsToUnload)) {
-        //     // RETURN EMPTY RESPONSE
-        // }
-
-        // $qet = [];
-
-        $itemsToLoad = [
+        $this->itemsToLoad = [
             [
                 "item_id" => 830,
                 "name" => "EXE Rise 500kg Chain Hoist D8 Plus Double Break 4m/min 20m",
@@ -190,7 +216,7 @@ class QET
             ],
         ];
 
-        $itemsToUnload = [
+        $this->itemsToUnload = [
             [
                 "item_id" => 830,
                 "name" => "EXE Rise 500kg Chain Hoist D8 Plus Double Break 4m/min 20m",
@@ -219,11 +245,12 @@ class QET
                 ],
             ],
         ];
+    }
 
-        $qet = [];
-
-        foreach ($itemsToLoad as &$load) {
-            foreach ($itemsToUnload as &$unload) {
+    private function setQET(): void
+    {
+        foreach ($this->itemsToLoad as &$load) {
+            foreach ($this->itemsToUnload as &$unload) {
                 if ($unload['item_id'] === $load['item_id']) {
                     $unload_ends_at = $unload['job']['unload_ends_at'];
                     $load_starts_at = $load['job']['load_starts_at'];
@@ -246,7 +273,8 @@ class QET
                             $load['quantity'] = 0;
                         }
 
-                        $qet[] = [
+                        $this->qet[] = [
+                            'id' => uniqid(mt_rand(), true),
                             'unload_job' => [
                                 'subject' => $unload['job']['subject'],
                                 'date' => $unload_ends_at->format('Y-m-d H:i:s'),
@@ -262,7 +290,5 @@ class QET
                 }
             }
         }
-
-        return $qet;
     }
 }

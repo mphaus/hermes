@@ -32,7 +32,7 @@ class QetIndex extends Component
             return;
         }
 
-        dd(QET::get($this->date));
+        $this->qet = QET::get($this->date);
     }
 
     public function render(): View
