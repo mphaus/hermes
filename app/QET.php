@@ -20,31 +20,33 @@ class QET
 
     protected array $qet = [];
 
-    public function get(string $date)
+    public function get(string $date): array|null|\GuzzleHttp\Exception\ClientException
     {
         $this->date = $date;
         $responses = $this->getJobs();
 
-        // Handle error from $responses if any
+        if ($responses instanceof \GuzzleHttp\Exception\ClientException) {
+            return $responses;
+        }
 
-        // $this->setJobs($responses);
+        $this->setJobs($responses);
 
-        // if (empty($this->jobsToLoad) || empty($this->jobsToUnload)) {
-        //     // RETURN EMPTY RESPONSE
-        // }
+        if (empty($this->jobsToLoad) || empty($this->jobsToUnload)) {
+            return null;
+        }
 
         $this->setItems();
 
-        // if (empty($this->itemsToLoad) || empty($this->itemsToUnload)) {
-        //     // RETURN EMPTY RESPONSE
-        // }
+        if (empty($this->itemsToLoad) || empty($this->itemsToUnload)) {
+            return null;
+        }
 
         $this->setQET();
 
         return $this->qet;
     }
 
-    private function getJobs(): array
+    private function getJobs(): array|\GuzzleHttp\Exception\ClientException
     {
         $startDate = Carbon::createFromFormat('Y-m-d', $this->date);
         $endDate = Carbon::createFromFormat('Y-m-d', $this->date);
@@ -85,7 +87,7 @@ class QET
             $responses = Promise\Utils::unwrap($promises);
             return $responses;
         } catch (\Throwable $th) {
-            // RETURN ERROR
+            return $th;
         }
     }
 
@@ -109,142 +111,55 @@ class QET
 
     private function setItems(): void
     {
-        // foreach ($this->jobsToLoad as $load) {
-        //     $items = array_values(array_filter($load['opportunity_items'], function ($item) {
-        //         return $item['item_id'] !== null && $item['has_shortage'] === true && $item['accessory_mode'] === null;
-        //     }));
+        foreach ($this->jobsToLoad as $load) {
+            $items = array_values(array_filter($load['opportunity_items'], function ($item) {
+                return $item['item_id'] !== null && $item['has_shortage'] === true && $item['accessory_mode'] === null;
+            }));
 
-        //     if (empty($items)) {
-        //         continue;
-        //     }
+            if (empty($items)) {
+                continue;
+            }
 
-        //     $this->itemsToLoad = [
-        //         ...$this->itemsToLoad,
-        //         ...array_map(function ($itemToLoad) use ($load) {
-        //             return [
-        //                 'item_id' => $itemToLoad['item_id'],
-        //                 'name' => $itemToLoad['name'],
-        //                 'quantity' => intval($itemToLoad['quantity']),
-        //                 'job' => [
-        //                     'subject' => $load['subject'],
-        //                     'load_starts_at' => Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z', $load['load_starts_at'], 'UTC')->setTimezone(config('app.timezone')),
-        //                 ],
-        //             ];
-        //         }, $items)
-        //     ];
-        // }
+            $this->itemsToLoad = [
+                ...$this->itemsToLoad,
+                ...array_map(function ($itemToLoad) use ($load) {
+                    return [
+                        'item_id' => $itemToLoad['item_id'],
+                        'name' => $itemToLoad['name'],
+                        'quantity' => intval($itemToLoad['quantity']),
+                        'job' => [
+                            'subject' => $load['subject'],
+                            'load_starts_at' => Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z', $load['load_starts_at'], 'UTC')->setTimezone(config('app.timezone')),
+                        ],
+                    ];
+                }, $items)
+            ];
+        }
 
-        // foreach ($this->jobsToUnload as $unload) {
-        //     $items = array_values(array_filter($unload['opportunity_items'], function ($item) {
-        //         return $item['item_id'] !== null && $item['accessory_mode'] === null;
-        //     }));
+        foreach ($this->jobsToUnload as $unload) {
+            $items = array_values(array_filter($unload['opportunity_items'], function ($item) {
+                return $item['item_id'] !== null && $item['accessory_mode'] === null;
+            }));
 
-        //     if (empty($items)) {
-        //         continue;
-        //     }
+            if (empty($items)) {
+                continue;
+            }
 
-        //     $this->itemsToUnload = [
-        //         ...$this->itemsToUnload,
-        //         ...array_map(function ($itemToUnload) use ($unload) {
-        //             return [
-        //                 'item_id' => $itemToUnload['item_id'],
-        //                 'name' => $itemToUnload['name'],
-        //                 'quantity' => intval($itemToUnload['quantity']),
-        //                 'job' => [
-        //                     'subject' => $unload['subject'],
-        //                     'unload_ends_at' => Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z', $unload['unload_ends_at'], 'UTC')->setTimezone(config('app.timezone')),
-        //                 ],
-        //             ];
-        //         }, $items)
-        //     ];
-        // }
-
-        $this->itemsToLoad = [
-            [
-                "item_id" => 830,
-                "name" => "EXE Rise 500kg Chain Hoist D8 Plus Double Break 4m/min 20m",
-                "quantity" => 7,
-                "job" => [
-                    "subject" => "Job A",
-                    "load_starts_at" => Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z', '2024-04-24T23:00:00.000Z', 'UTC')->setTimezone(config('app.timezone')),
-                ],
-            ],
-            [
-                "item_id" => 846,
-                "name" => "Chain Motor Controller (8 way)",
-                "quantity" => 1,
-                "job" => [
-                    "subject" => "Job B",
-                    "load_starts_at" => Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z', '2024-04-24T23:00:00.000Z', 'UTC')->setTimezone(config('app.timezone')),
-                ],
-            ],
-            [
-                "item_id" => 830,
-                "name" => "EXE Rise 500kg Chain Hoist D8 Plus Double Break 4m/min 20m",
-                "quantity" => 4,
-                "job" => [
-                    "subject" => "Job C",
-                    "load_starts_at" => Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z', '2024-04-24T23:00:00.000Z', 'UTC')->setTimezone(config('app.timezone')),
-                ],
-            ],
-            [
-                "item_id" => 2080,
-                "name" => "MPH Pre-rig 3.0m Touring Truss Black c/w Dolley v3",
-                "quantity" => 8,
-                "job" => [
-                    "subject" => "Job D",
-                    "load_starts_at" => Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z', '2024-04-24T23:00:00.000Z', 'UTC')->setTimezone(config('app.timezone')),
-                ],
-            ],
-            [
-                "item_id" => 830,
-                "name" => "EXE Rise 500kg Chain Hoist D8 Plus Double Break 4m/min 20m",
-                "quantity" => 7,
-                "job" => [
-                    "subject" => "Job E",
-                    "load_starts_at" => Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z', '2024-04-24T23:00:00.000Z', 'UTC')->setTimezone(config('app.timezone')),
-                ],
-            ],
-            [
-                "item_id" => 1535,
-                "name" => "FireFly Festoon 20m - Warm White",
-                "quantity" => 6,
-                "job" => [
-                    "subject" => "Job F",
-                    "load_starts_at" => Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z', '2024-04-24T23:00:00.000Z', 'UTC')->setTimezone(config('app.timezone')),
-                ],
-            ],
-        ];
-
-        $this->itemsToUnload = [
-            [
-                "item_id" => 830,
-                "name" => "EXE Rise 500kg Chain Hoist D8 Plus Double Break 4m/min 20m",
-                "quantity" => 30,
-                "job" => [
-                    "subject" => "Job G",
-                    "unload_ends_at" => Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z', '2024-04-24T21:00:00.000Z', 'UTC')->setTimezone(config('app.timezone')),
-                ],
-            ],
-            [
-                "item_id" => 846,
-                "name" => "Chain Motor Controller (8 way)",
-                "quantity" => 9,
-                "job" => [
-                    "subject" => "Job H",
-                    "unload_ends_at" => Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z', '2024-04-24T21:00:00.000Z', 'UTC')->setTimezone(config('app.timezone')),
-                ],
-            ],
-            [
-                "item_id" => 830,
-                "name" => "EXE Rise 500kg Chain Hoist D8 Plus Double Break 4m/min 20m",
-                "quantity" => 4,
-                "job" => [
-                    "subject" => "Job I",
-                    "unload_ends_at" => Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z', '2024-04-24T21:00:00.000Z', 'UTC')->setTimezone(config('app.timezone')),
-                ],
-            ],
-        ];
+            $this->itemsToUnload = [
+                ...$this->itemsToUnload,
+                ...array_map(function ($itemToUnload) use ($unload) {
+                    return [
+                        'item_id' => $itemToUnload['item_id'],
+                        'name' => $itemToUnload['name'],
+                        'quantity' => intval($itemToUnload['quantity']),
+                        'job' => [
+                            'subject' => $unload['subject'],
+                            'unload_ends_at' => Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z', $unload['unload_ends_at'], 'UTC')->setTimezone(config('app.timezone')),
+                        ],
+                    ];
+                }, $items)
+            ];
+        }
     }
 
     private function setQET(): void
