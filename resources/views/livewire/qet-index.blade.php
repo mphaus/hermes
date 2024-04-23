@@ -21,7 +21,7 @@
             @include('qet-skeleton')
         </div>
         @if ($this->qet['items']->isNotEmpty())
-            <section class="mt-8 flow" wire:loading.class="hidden" wire:target="setDate">
+            <section class="mt-8 flow" wire:loading.class="hidden" wire:target="setDate" wire:poll.300s>
                 <div class="flex flex-col gap-2 text-sm sm:flex-row sm:items-center sm:justify-between">
                     <p>{{ __('Quick Equipment Transfers for :date +24 hours', ['date' => now()->parse($date)->format('l d M Y')]) }}</p>
                     <p>{{ __('Last update: :time', ['time' => now()->format('Hi')]) }}</p>
