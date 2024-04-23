@@ -160,6 +160,97 @@ class QET
                 }, $items)
             ];
         }
+
+        // $this->itemsToLoad = [
+        //     [
+        //         "item_id" => 830,
+        //         "name" => "EXE Rise 500kg Chain Hoist D8 Plus Double Break 4m/min 20m",
+        //         "quantity" => 7,
+        //         "job" => [
+        //             "subject" => "Job A",
+        //             "load_starts_at" => Carbon::createFromFormat(
+        //                 'Y-m-d\TH:i:s.u\Z',
+        //                 '2024-04-23T17:45:00.000Z',
+        //                 'UTC'
+        //             )->setTimezone(config('app.timezone')),
+        //         ],
+        //     ],
+        //     [
+        //         "item_id" => 846,
+        //         "name" => "Chain Motor Controller (8 way)",
+        //         "quantity" => 1,
+        //         "job" => [
+        //             "subject" => "Job B",
+        //             "load_starts_at" => Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z', '2024-04-24T23:00:00.000Z', 'UTC')->setTimezone(config('app.timezone')),
+        //         ],
+        //     ],
+        //     [
+        //         "item_id" => 830,
+        //         "name" => "EXE Rise 500kg Chain Hoist D8 Plus Double Break 4m/min 20m",
+        //         "quantity" => 4,
+        //         "job" => [
+        //             "subject" => "Job C",
+        //             "load_starts_at" => Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z', '2024-04-24T23:00:00.000Z', 'UTC')->setTimezone(config('app.timezone')),
+        //         ],
+        //     ],
+        //     [
+        //         "item_id" => 2080,
+        //         "name" => "MPH Pre-rig 3.0m Touring Truss Black c/w Dolley v3",
+        //         "quantity" => 8,
+        //         "job" => [
+        //             "subject" => "Job D",
+        //             "load_starts_at" => Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z', '2024-04-24T23:00:00.000Z', 'UTC')->setTimezone(config('app.timezone')),
+        //         ],
+        //     ],
+        //     [
+        //         "item_id" => 830,
+        //         "name" => "EXE Rise 500kg Chain Hoist D8 Plus Double Break 4m/min 20m",
+        //         "quantity" => 7,
+        //         "job" => [
+        //             "subject" => "Job E",
+        //             "load_starts_at" => Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z', '2024-04-24T23:00:00.000Z', 'UTC')->setTimezone(config('app.timezone')),
+        //         ],
+        //     ],
+        //     [
+        //         "item_id" => 1535,
+        //         "name" => "FireFly Festoon 20m - Warm White",
+        //         "quantity" => 6,
+        //         "job" => [
+        //             "subject" => "Job F",
+        //             "load_starts_at" => Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z', '2024-04-24T23:00:00.000Z', 'UTC')->setTimezone(config('app.timezone')),
+        //         ],
+        //     ],
+        // ];
+
+        // $this->itemsToUnload = [
+        //     [
+        //         "item_id" => 830,
+        //         "name" => "EXE Rise 500kg Chain Hoist D8 Plus Double Break 4m/min 20m",
+        //         "quantity" => 30,
+        //         "job" => [
+        //             "subject" => "Job G",
+        //             "unload_ends_at" => Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z', '2024-04-23T16:15:00.000Z', 'UTC')->setTimezone(config('app.timezone')),
+        //         ],
+        //     ],
+        //     [
+        //         "item_id" => 846,
+        //         "name" => "Chain Motor Controller (8 way)",
+        //         "quantity" => 9,
+        //         "job" => [
+        //             "subject" => "Job H",
+        //             "unload_ends_at" => Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z', '2024-04-24T21:00:00.000Z', 'UTC')->setTimezone(config('app.timezone')),
+        //         ],
+        //     ],
+        //     [
+        //         "item_id" => 830,
+        //         "name" => "EXE Rise 500kg Chain Hoist D8 Plus Double Break 4m/min 20m",
+        //         "quantity" => 4,
+        //         "job" => [
+        //             "subject" => "Job I",
+        //             "unload_ends_at" => Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z', '2024-04-24T21:00:00.000Z', 'UTC')->setTimezone(config('app.timezone')),
+        //         ],
+        //     ],
+        // ];
     }
 
     private function setQET(): void

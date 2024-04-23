@@ -1,6 +1,10 @@
 @props(['qet'])
 
-<x-card>
+<x-card x-data="QetItem(
+    '{{ now()->format('Y-m-d H:i:s') }}',
+    '{{ now()->parse($qet['unload_job']['date'])->format('Y-m-d H:i:s') }}',
+    '{{ now()->parse($qet['load_job']['date'])->format('Y-m-d H:i:s') }}',
+)">
     <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-8 lg:gap-2">
         <div class="flex flex-col gap-1 text-sm lg:col-span-2">
             <p class="font-semibold lg:hidden">{{ __('Coming off Job') }}</p>
@@ -32,7 +36,7 @@
         </div>
         <div class="flex flex-col gap-1 text-sm">
             <p class="font-semibold lg:hidden">{{ __('Time remaining') }}</p>
-            <p>2h</p>
+            <p x-text="timeRemaining">{{ __('Calculating...') }}</p>
         </div>
     </div>
 </x-card>
