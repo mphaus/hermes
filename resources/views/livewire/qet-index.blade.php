@@ -1,6 +1,6 @@
 <x-slot name="title">{{ __('QET') }}</x-slot>
 <x-slot name="heading">{{ __('QET') }}</x-slot>
-<div class="flow" x-data="ActionStreamIndex">
+<div class="flow" x-data="Qet">
     @if ($this->qet['error'])
         <x-generic-error :message="$this->qet['error']" />
     @else
@@ -48,31 +48,3 @@
         @endif
     @endif
 </div>
-
-@script
-<script>
-    Alpine.data('ActionStreamIndex', () => {
-        let flatpickrInstance = null;
-
-        return {
-            init() {
-                flatpickrInstance = flatpickr(this.$refs.date, {
-                    dateFormat: 'd-M-Y',
-                    minDate: new Date,
-                    onChange: (selectedDates) => {
-                        console.log(selectedDates);
-                        const date = selectedDates.length > 0
-                            ? `${selectedDates[0].getFullYear()}-${(selectedDates[0].getMonth() + 1).toString().padStart(2, '0')}-${(selectedDates[0].getDate()).toString().padStart(2, '0')}`
-                            : '';
-                        
-                        this.$wire.setDate(date);
-                    }
-                });
-            },
-            clearDate() {
-                flatpickrInstance.clear();
-            }
-        };
-    });
-</script>
-@endscript
