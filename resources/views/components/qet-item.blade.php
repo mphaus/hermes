@@ -26,7 +26,7 @@
         </div>
         <div class="flex flex-col gap-1 text-sm">
             <p class="font-semibold lg:hidden">{{ __('Time remaining') }}</p>
-            <p x-text="timeRemaining">{{ __('Calculating...') }}</p>
+            <p x-ref="timeRemainingElement">{{ __('Calculating...') }}</p>
         </div>
     </div>
 </x-card>

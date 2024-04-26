@@ -9,7 +9,7 @@ export default function QetItem ( now, startDate, endDate ) {
     let timeRemainingInterval = null;
 
     return {
-        timeRemaining: 'Calculating...',
+        _timeRemaining: 'Calculating...',
         init () {
             this.initCountDown();
         },
@@ -21,7 +21,11 @@ export default function QetItem ( now, startDate, endDate ) {
 
             if ( currentTime < startTime ) {
                 hours = Math.abs( ( endTime - startTime ) / 36e5 );
-                this.timeRemaining = `${ hours }h`;
+                this._timeRemaining = `${ hours }h`;
+
+                this.$nextTick( () => {
+                    this.$refs.timeRemainingElement.textContent = this._timeRemaining;
+                } );
 
                 return;
             }
@@ -32,12 +36,20 @@ export default function QetItem ( now, startDate, endDate ) {
 
                 if ( distance < 0 ) {
                     clearInterval( timeRemainingInterval );
-                    this.timeRemaining = '0h';
+                    this._timeRemaining = '0h';
+
+                    this.$nextTick( () => {
+                        this.$refs.timeRemainingElement.textContent = this._timeRemaining;
+                    } );
+
                     return;
                 }
 
                 hours = Math.abs( distance / 36e5 );
-                this.timeRemaining = hours < 1 ? `-${ hours }h` : `${ hours }h`;
+                this._timeRemaining = hours < 1 ? `-${ hours }h` : `${ hours }h`;
+                this.$nextTick( () => {
+                    this.$refs.timeRemainingElement.textContent = this._timeRemaining;
+                } );
             }, 1000 );
         },
         destroy () {
