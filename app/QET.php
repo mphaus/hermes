@@ -122,17 +122,20 @@ class QET
 
             $this->itemsToLoad = [
                 ...$this->itemsToLoad,
-                ...array_map(function ($itemToLoad) use ($load) {
-                    return [
-                        'item_id' => $itemToLoad['item_id'],
-                        'name' => $itemToLoad['name'],
-                        'quantity' => intval($itemToLoad['quantity']),
-                        'job' => [
-                            'subject' => $load['subject'],
-                            'load_starts_at' => Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z', $load['load_starts_at'], 'UTC')->setTimezone(config('app.timezone')),
-                        ],
-                    ];
-                }, $items)
+                [
+                    'job' => [
+                        'id' => $load['id'],
+                        'subject' => $load['subject'],
+                        'load_starts_at' => Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z', $load['load_starts_at'], 'UTC')->setTimezone(config('app.timezone'))
+                    ],
+                    'items' => array_map(function ($itemToLoad) use ($load) {
+                        return [
+                            'item_id' => $itemToLoad['item_id'],
+                            'name' => $itemToLoad['name'],
+                            'quantity' => intval($itemToLoad['quantity']),
+                        ];
+                    }, $items)
+                ]
             ];
         }
 
@@ -160,141 +163,62 @@ class QET
                 }, $items)
             ];
         }
-
-        // $this->itemsToLoad = [
-        //     [
-        //         "item_id" => 830,
-        //         "name" => "EXE Rise 500kg Chain Hoist D8 Plus Double Break 4m/min 20m",
-        //         "quantity" => 7,
-        //         "job" => [
-        //             "subject" => "Job A",
-        //             "load_starts_at" => Carbon::createFromFormat(
-        //                 'Y-m-d\TH:i:s.u\Z',
-        //                 '2024-04-23T17:45:00.000Z',
-        //                 'UTC'
-        //             )->setTimezone(config('app.timezone')),
-        //         ],
-        //     ],
-        //     [
-        //         "item_id" => 846,
-        //         "name" => "Chain Motor Controller (8 way)",
-        //         "quantity" => 1,
-        //         "job" => [
-        //             "subject" => "Job B",
-        //             "load_starts_at" => Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z', '2024-04-24T23:00:00.000Z', 'UTC')->setTimezone(config('app.timezone')),
-        //         ],
-        //     ],
-        //     [
-        //         "item_id" => 830,
-        //         "name" => "EXE Rise 500kg Chain Hoist D8 Plus Double Break 4m/min 20m",
-        //         "quantity" => 4,
-        //         "job" => [
-        //             "subject" => "Job C",
-        //             "load_starts_at" => Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z', '2024-04-24T23:00:00.000Z', 'UTC')->setTimezone(config('app.timezone')),
-        //         ],
-        //     ],
-        //     [
-        //         "item_id" => 2080,
-        //         "name" => "MPH Pre-rig 3.0m Touring Truss Black c/w Dolley v3",
-        //         "quantity" => 8,
-        //         "job" => [
-        //             "subject" => "Job D",
-        //             "load_starts_at" => Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z', '2024-04-24T23:00:00.000Z', 'UTC')->setTimezone(config('app.timezone')),
-        //         ],
-        //     ],
-        //     [
-        //         "item_id" => 830,
-        //         "name" => "EXE Rise 500kg Chain Hoist D8 Plus Double Break 4m/min 20m",
-        //         "quantity" => 7,
-        //         "job" => [
-        //             "subject" => "Job E",
-        //             "load_starts_at" => Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z', '2024-04-24T23:00:00.000Z', 'UTC')->setTimezone(config('app.timezone')),
-        //         ],
-        //     ],
-        //     [
-        //         "item_id" => 1535,
-        //         "name" => "FireFly Festoon 20m - Warm White",
-        //         "quantity" => 6,
-        //         "job" => [
-        //             "subject" => "Job F",
-        //             "load_starts_at" => Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z', '2024-04-24T23:00:00.000Z', 'UTC')->setTimezone(config('app.timezone')),
-        //         ],
-        //     ],
-        // ];
-
-        // $this->itemsToUnload = [
-        //     [
-        //         "item_id" => 830,
-        //         "name" => "EXE Rise 500kg Chain Hoist D8 Plus Double Break 4m/min 20m",
-        //         "quantity" => 30,
-        //         "job" => [
-        //             "subject" => "Job G",
-        //             "unload_ends_at" => Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z', '2024-04-23T16:15:00.000Z', 'UTC')->setTimezone(config('app.timezone')),
-        //         ],
-        //     ],
-        //     [
-        //         "item_id" => 846,
-        //         "name" => "Chain Motor Controller (8 way)",
-        //         "quantity" => 9,
-        //         "job" => [
-        //             "subject" => "Job H",
-        //             "unload_ends_at" => Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z', '2024-04-24T21:00:00.000Z', 'UTC')->setTimezone(config('app.timezone')),
-        //         ],
-        //     ],
-        //     [
-        //         "item_id" => 830,
-        //         "name" => "EXE Rise 500kg Chain Hoist D8 Plus Double Break 4m/min 20m",
-        //         "quantity" => 4,
-        //         "job" => [
-        //             "subject" => "Job I",
-        //             "unload_ends_at" => Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z', '2024-04-24T21:00:00.000Z', 'UTC')->setTimezone(config('app.timezone')),
-        //         ],
-        //     ],
-        // ];
     }
 
     private function setQET(): void
     {
-        foreach ($this->itemsToLoad as &$load) {
-            foreach ($this->itemsToUnload as &$unload) {
-                if ($unload['item_id'] === $load['item_id']) {
-                    $unload_ends_at = $unload['job']['unload_ends_at'];
-                    $load_starts_at = $load['job']['load_starts_at'];
+        foreach ($this->itemsToLoad as $load) {
+            $items = [];
 
-                    if ($load_starts_at > $unload_ends_at && $load['quantity'] > 0 && $unload['quantity'] > 0) {
-                        $transfer = $load['quantity'] - $unload['quantity'];
-                        $count = 0;
+            foreach ($load['items'] as &$item) {
+                foreach ($this->itemsToUnload as &$unload) {
+                    if ($unload['item_id'] === $item['item_id']) {
+                        $unload_ends_at = $unload['job']['unload_ends_at'];
+                        $load_starts_at = $load['job']['load_starts_at'];
 
-                        if ($transfer > 0) {
-                            $count = $unload['quantity'];
-                            $unload['quantity'] = 0;
-                            $load['quantity'] = $transfer;
-                        } else if ($transfer === 0) {
-                            $count = $unload['quantity'];
-                            $unload['quantity'] = 0;
-                            $load['quantity'] = 0;
-                        } else if ($transfer < 0) {
-                            $count = $load['quantity'];
-                            $unload['quantity'] = abs($transfer);
-                            $load['quantity'] = 0;
+                        if ($load_starts_at > $unload_ends_at && $item['quantity'] > 0 && $unload['quantity'] > 0) {
+                            $transfer = $item['quantity'] - $unload['quantity'];
+                            $count = 0;
+
+                            if ($transfer > 0) {
+                                $count = $unload['quantity'];
+                                $unload['quantity'] = 0;
+                                $item['quantity'] = $transfer;
+                            } else if ($transfer === 0) {
+                                $count = $unload['quantity'];
+                                $unload['quantity'] = 0;
+                                $item['quantity'] = 0;
+                            } else if ($transfer < 0) {
+                                $count = $item['quantity'];
+                                $unload['quantity'] = abs($transfer);
+                                $item['quantity'] = 0;
+                            }
+
+                            $items[] = [
+                                'id' => uniqid(mt_rand(), true),
+                                'unload_job' => [
+                                    'subject' => $unload['job']['subject'],
+                                    'date' => $unload_ends_at->format('Y-m-d H:i:s'),
+                                ],
+                                'name' => $item['name'],
+                                'count' => $count,
+                            ];
                         }
-
-                        $this->qet[] = [
-                            'id' => uniqid(mt_rand(), true),
-                            'unload_job' => [
-                                'subject' => $unload['job']['subject'],
-                                'date' => $unload_ends_at->format('Y-m-d H:i:s'),
-                            ],
-                            'load_job' => [
-                                'subject' => $load['job']['subject'],
-                                'date' => $load_starts_at->format('Y-m-d H:i:s'),
-                            ],
-                            'item' => $load['name'],
-                            'count' => $count,
-                        ];
                     }
                 }
             }
+
+            if (empty($items)) {
+                continue;
+            }
+
+            $this->qet[] = [
+                'job' => [
+                    ...$load['job'],
+                    'date' => $load_starts_at->format('Y-m-d H:i:s'),
+                ],
+                'items' => [...$items],
+            ];
         }
     }
 }

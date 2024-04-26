@@ -21,12 +21,11 @@ class QetIndex extends Component
         $this->date = $date;
     }
 
-    #[Computed]
-    public function qet(): array
+    public function getQet(): array
     {
         $defaultResponse = [
             'error' => '',
-            'items' => collect([]),
+            'groups' => collect([]),
         ];
 
         if (empty($this->date)) {
@@ -42,18 +41,20 @@ class QetIndex extends Component
             ];
         }
 
-        if ($qet === null) {
+        if (empty($qet)) {
             return $defaultResponse;
         }
 
         return [
             ...$defaultResponse,
-            'items' => collect($qet),
+            'groups' => collect($qet),
         ];
     }
 
     public function render(): View
     {
-        return view('livewire.qet-index');
+        return view('livewire.qet-index', [
+            'qet' => $this->getQet(),
+        ]);
     }
 }
