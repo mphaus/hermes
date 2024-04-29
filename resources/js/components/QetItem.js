@@ -20,7 +20,7 @@ export default function QetItem ( now, startDate, endDate ) {
             let hours = 0;
 
             if ( currentTime < startTime ) {
-                hours = Math.abs( ( endTime - startTime ) / 36e5 );
+                hours = Math.floor( ( endTime - startTime ) / 36e5 );
                 this._timeRemaining = `${ hours }h`;
 
                 this.$nextTick( () => {
@@ -45,7 +45,8 @@ export default function QetItem ( now, startDate, endDate ) {
                     return;
                 }
 
-                hours = Math.abs( distance / 36e5 );
+                hours = Math.floor( distance / 36e5 );
+
                 this._timeRemaining = hours < 1 ? `-${ hours }h` : `${ hours }h`;
                 this.$nextTick( () => {
                     this.$refs.timeRemainingElement.textContent = this._timeRemaining;
