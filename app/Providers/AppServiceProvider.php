@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\OpportunityItems;
+use App\QET;
 use App\UploadLog;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Http;
@@ -17,6 +18,7 @@ class AppServiceProvider extends ServiceProvider
     {
         App::bind('opportunityitems', fn () => new OpportunityItems);
         App::bind('uploadlog', fn () => new UploadLog);
+        App::bind('qet', fn () => new QET);
     }
 
     /**

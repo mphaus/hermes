@@ -5,6 +5,7 @@
 use App\Livewire\ActionStreamIndex;
 use App\Livewire\JobsIndex;
 use App\Livewire\JobsShow;
+use App\Livewire\QetIndex;
 use App\Livewire\UploadLogsShow;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +29,7 @@ Route::middleware('auth')->group(function () {
     Route::get('jobs/{id}', JobsShow::class)->name('jobs.show');
     Route::get('logs/{id}', UploadLogsShow::class)->name('logs.show');
     Route::get('action-stream', ActionStreamIndex::class)->name('action-stream.index');
+    Route::get('qet', QetIndex::class)->name('qet.index');
 });
 
 require __DIR__ . '/auth.php';

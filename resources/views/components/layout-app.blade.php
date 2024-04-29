@@ -48,6 +48,6 @@
                 {{ session('alert')['message'] }}
             </x-alert>
         @endif
-        @livewireScripts
+        @livewireScriptConfig
     </body>
 </html>

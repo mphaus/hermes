@@ -1,6 +1,12 @@
 @use('Illuminate\Support\Js')
 
-<div x-data="ActionStreamFilters" class="space-y-3">
+<div x-data="ActionStreamFilters(
+        {{ Js::from($memberIds) }}, 
+        {{ Js::from($_actionTypes) }},
+        {{ Js::from($dateRange) }},
+        {{ Js::from($formattedDateRange) }},
+        {{ Js::from($timePeriod) }}
+    )" class="space-y-3">
     <div class="grid gap-2 lg:grid-cols-3 lg:items-end">
         <div class="space-y-1">
             <x-input-label value="{{ __('Members') }}" class="!text-xs" />
@@ -70,73 +76,3 @@
         >{{ __('Clear') }}</x-button>
     </div>
 </div>
-
-@script
-<script>
-    Alpine.data('ActionStreamFilters', (
-        initialMemberIds = {{ Js::from($memberIds) }}, 
-        initialActionTypes = {{ Js::from($_actionTypes) }},
-        initialDateRange = {{ Js::from($dateRange) }},
-        formattedDateRange = {{ Js::from($formattedDateRange) }},
-        initialTimePeriod = {{ Js::from($timePeriod) }}
-    ) => {
-        return {
-            memberIds: initialMemberIds,
-            actionTypes: initialActionTypes,
-            dateRange: initialDateRange,
-            timePeriod: initialTimePeriod,
-            _flatpickrInstance: null,
-            init() {
-                $(this.$refs.memberIds).select2({
-                    placeholder: 'Select or type one or more members',
-                    width: '100%',
-                }).on('change.select2', () => this.memberIds = $(this.$refs.memberIds).val());
-
-                if (this.memberIds.length > 0) {
-                    $(this.$refs.memberIds)
-                        .val(this.memberIds)
-                        .trigger('change');
-                }
-
-                $(this.$refs.actionTypes).select2({
-                    placeholder: 'Select or type one or more actions',
-                    width: '100%',
-                }).on('change.select2', () => this.actionTypes = $(this.$refs.actionTypes).val());
-
-                if (this.actionTypes.length > 0) {
-                    $(this.$refs.actionTypes)
-                        .val(this.actionTypes)
-                        .trigger('change');
-                }
-
-                this._flatpickrInstance = flatpickr(this.$refs.dateRange, {
-                    mode: 'range',
-                    dateFormat: 'd-M-Y',
-                    maxDate: new Date,
-                    defaultDate: [...formattedDateRange],
-                    onChange: (selectedDates) => {
-                        if (selectedDates.length === 0) {
-                            this.dateRange = [];
-                            return;
-                        }
-
-                        this.dateRange = selectedDates.map(selectedDate => `${selectedDate.getUTCFullYear()}-${(selectedDate.getUTCMonth() + 1).toString().padStart(2, '0')}-${(selectedDate.getUTCDate()).toString().padStart(2, '0')}`);
-                    },
-                });
-            },
-            clear() {
-                this.memberIds = [];
-                this.actionTypes = [];
-                this.dateRange = [];
-                this.timePeriod = '';
-
-                $(this.$refs.memberIds).val([]).trigger('change');
-                $(this.$refs.actionTypes).val([]).trigger('change');
-                this._flatpickrInstance.clear();
-
-                this.$wire.$parent.setFilters(this.memberIds, this.actionTypes, this.dateRange, this.timePeriod);
-            }
-        };
-    });
-</script>
-@endscript
