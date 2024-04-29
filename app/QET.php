@@ -156,6 +156,7 @@ class QET
                         'name' => $itemToUnload['name'],
                         'quantity' => intval($itemToUnload['quantity']),
                         'job' => [
+                            'id' => $unload['id'],
                             'subject' => $unload['subject'],
                             'unload_ends_at' => Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z', $unload['unload_ends_at'], 'UTC')->setTimezone(config('app.timezone')),
                         ],
@@ -194,8 +195,28 @@ class QET
                                 $item['quantity'] = 0;
                             }
 
+                            $existingItems = array_filter($items, function ($existingItem) use ($item, $unload) {
+                                return $existingItem['item_id'] === $item['item_id'] && $existingItem['unload_job_id'] === $unload['job']['id'];
+                            });
+
+                            $key = array_key_first($existingItems);
+
+                            if ($key !== null) {
+                                $currentItem = $items[$key];
+                                $newCount = $count + $currentItem['count'];
+
+                                $items[$key] = [
+                                    ...$currentItem,
+                                    'count' => $newCount,
+                                ];
+
+                                continue;
+                            }
+
                             $items[] = [
                                 'id' => uniqid(mt_rand(), true),
+                                'item_id' => $item['item_id'],
+                                'unload_job_id' => $unload['job']['id'],
                                 'unload_job' => [
                                     'subject' => $unload['job']['subject'],
                                     'date' => $unload_ends_at->format('Y-m-d H:i:s'),
