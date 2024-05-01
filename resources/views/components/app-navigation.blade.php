@@ -21,6 +21,9 @@
                     <x-nav-link :href="route('qet.index')" :active="request()->routeIs('qet.index')" wire:navigate>
                         {{ __('QET') }}
                     </x-nav-link>
+                    <x-nav-link href="https://mphaustralia.sharepoint.com/:w:/r/teams/MPHAdministration/_layouts/15/Doc.aspx?sourcedoc=%7B9d7fb799-bfce-4bd7-964a-9dbceff1b470%7D&action=editnew" target="_blank">
+                        {{ __('Help') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -81,6 +84,9 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('qet.index')" :active="request()->routeIs('qet.index')" wire:navigate>
                 {{ __('QET') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link href="https://mphaustralia.sharepoint.com/:w:/r/teams/MPHAdministration/_layouts/15/Doc.aspx?sourcedoc=%7B9d7fb799-bfce-4bd7-964a-9dbceff1b470%7D&action=editnew" target="_blank">
+                {{ __('Help') }}
             </x-responsive-nav-link>
         </div>
 
