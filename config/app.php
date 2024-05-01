@@ -188,7 +188,10 @@ return [
         'QET' => App\Facades\QET::class,
     ])->toArray(),
 
-    'mph_test_opportunity_id' => env('MPH_TEST_OPPORTUNITY_ID'),
+    'mph' => [
+        'opportunities_url' => 'https://mphaustralia.current-rms.com/opportunities/',
+        'test_opportunity_id' => env('MPH_TEST_OPPORTUNITY_ID')
+    ],
 
     'recaptcha_v3' => [
         'site_key' => env('RECAPTCHA_V3_SITE_KEY', ''),

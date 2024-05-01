@@ -32,7 +32,7 @@ class JobsIndex extends Component
                 'per_page' => 25,
                 'filtermode' => 'orders',
                 'q[status_eq]' => JobStatus::Open->value,
-                'q[id_not_eq]' => config('app.mph_test_opportunity_id'),
+                'q[id_not_eq]' => config('app.mph.test_opportunity_id'),
             ])
             ->get('opportunities');
 

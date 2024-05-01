@@ -19,10 +19,10 @@
                     <div class="flex flex-col col-span-2 gap-1 md:col-span-4">
                         <p class="text-sm font-semibold">{{ __('Opportunity link') }}</p>
                         <a 
-                            href="https://mphaustralia.current-rms.com/opportunities/{{ $this->job['opportunity']['id'] }}" 
+                            href="{{ config('app.mph.opportunities_url') }}{{ $this->job['opportunity']['id'] }}" 
                             target="_blank"
                         >
-                            https://mphaustralia.current-rms.com/opportunities/{{ $this->job['opportunity']['id'] }}
+                            {{ config('app.mph.opportunities_url') }}{{ $this->job['opportunity']['id'] }}
                         </a>
                     </div>
                     <div class="flex flex-col gap-1 text-sm">
