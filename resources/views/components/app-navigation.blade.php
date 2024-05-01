@@ -13,7 +13,7 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('jobs.index')" :active="request()->routeIs('jobs.index')" wire:navigate>
-                        {{ __('Jobs') }}
+                        {{ __('Equipment Import') }}
                     </x-nav-link>
                     <x-nav-link :href="route('action-stream.index')" :active="request()->routeIs('action-stream.index')" wire:navigate>
                         {{ __('Action Stream') }}
@@ -74,7 +74,7 @@
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('jobs.index')" :active="request()->routeIs('jobs.index')" wire:navigate>
-                {{ __('Jobs') }}
+                {{ __('Equipment Import') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('action-stream.index')" :active="request()->routeIs('action-stream.index')" wire:navigate>
                 {{ __('Action Stream') }}

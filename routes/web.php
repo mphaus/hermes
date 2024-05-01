@@ -25,8 +25,12 @@ Route::middleware('auth')->group(function () {
     // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('jobs', JobsIndex::class)->name('jobs.index');
-    Route::get('jobs/{id}', JobsShow::class)->name('jobs.show');
+    Route::get('equipment-import', JobsIndex::class)->name('jobs.index');
+    Route::permanentRedirect('/jobs', '/equipment-import');
+
+    Route::get('equipment-import/{id}', JobsShow::class)->name('jobs.show');
+    Route::permanentRedirect('/jobs/{id}', '/equipment-import/{id}');
+
     Route::get('logs/{id}', UploadLogsShow::class)->name('logs.show');
     Route::get('action-stream', ActionStreamIndex::class)->name('action-stream.index');
     Route::get('qet', QetIndex::class)->name('qet.index');
