@@ -39,7 +39,7 @@ class OpportunityItems
     {
         $this->job = $job;
         $this->filename = $filename;
-        $this->opportunityId = App::environment(['local', 'staging']) ? config('app.mph_test_opportunity_id') : $this->job['id'];
+        $this->opportunityId = App::environment(['local', 'staging']) ? config('app.mph.test_opportunity_id') : $this->job['id'];
         $this->fullPath = base_path() . '/storage/app/' . $this->path . '/';
 
         $this->prepareItems();

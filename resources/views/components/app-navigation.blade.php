@@ -13,13 +13,16 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('jobs.index')" :active="request()->routeIs('jobs.index')" wire:navigate>
-                        {{ __('Jobs') }}
+                        {{ __('Equipment Import') }}
                     </x-nav-link>
                     <x-nav-link :href="route('action-stream.index')" :active="request()->routeIs('action-stream.index')" wire:navigate>
                         {{ __('Action Stream') }}
                     </x-nav-link>
                     <x-nav-link :href="route('qet.index')" :active="request()->routeIs('qet.index')" wire:navigate>
                         {{ __('QET') }}
+                    </x-nav-link>
+                    <x-nav-link href="https://mphaustralia.sharepoint.com/:w:/r/teams/MPHAdministration/_layouts/15/Doc.aspx?sourcedoc=%7B9d7fb799-bfce-4bd7-964a-9dbceff1b470%7D&action=editnew" target="_blank">
+                        {{ __('Help') }}
                     </x-nav-link>
                 </div>
             </div>
@@ -74,13 +77,16 @@
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('jobs.index')" :active="request()->routeIs('jobs.index')" wire:navigate>
-                {{ __('Jobs') }}
+                {{ __('Equipment Import') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('action-stream.index')" :active="request()->routeIs('action-stream.index')" wire:navigate>
                 {{ __('Action Stream') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('qet.index')" :active="request()->routeIs('qet.index')" wire:navigate>
                 {{ __('QET') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link href="https://mphaustralia.sharepoint.com/:w:/r/teams/MPHAdministration/_layouts/15/Doc.aspx?sourcedoc=%7B9d7fb799-bfce-4bd7-964a-9dbceff1b470%7D&action=editnew" target="_blank">
+                {{ __('Help') }}
             </x-responsive-nav-link>
         </div>
 

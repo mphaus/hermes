@@ -1,6 +1,12 @@
 <x-card>
     <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-[28rem_1fr_1fr_1fr_1fr_1fr] xl:items-center xl:gap-3">
-        <p class="mb-2 sm:col-span-2 lg:col-span-4 xl:col-span-1 text-primary-500 xl:mb-0">{{ $action['name'] }}</p>
+        <a 
+            href="{{ config('app.mph.opportunities_url') }}{{ $action['subject_id'] }}" 
+            class="mb-2 blocj sm:col-span-2 lg:col-span-4 xl:col-span-1 xl:mb-0"
+            target="_blank"
+        >
+            {{ $action['name'] }}
+        </a>
         <div class="flex flex-col gap-1 text-sm">
             <p class="font-semibold xl:hidden">{{ __('User') }}</p>
             <p>{{ $action['member']['name'] }}</p>
