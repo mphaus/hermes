@@ -11,18 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('upload_logs', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('job_id');
-            $table->foreignId('user_id');
-            $table->enum('status', ['successful', 'warnings']);
-            $table->ipAddress()->nullable();
-            $table->text('user_agent')->nullable();
-            $table->json('data');
-            $table->timestamps();
+        if (!Schema::hasTable('upload_logs')) {
+            Schema::create('upload_logs', function (Blueprint $table) {
+                $table->id();
+                $table->unsignedBigInteger('job_id');
+                $table->foreignId('user_id');
+                $table->enum('status', ['successful', 'warnings']);
+                $table->ipAddress()->nullable();
+                $table->text('user_agent')->nullable();
+                $table->json('data');
+                $table->timestamps();
 
-            $table->index('job_id');
-        });
+                $table->index('job_id');
+            });
+        }
     }
 
     /**
