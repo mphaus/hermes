@@ -1,66 +1,119 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# Hermes
 
-## About Laravel
+Tool that allows for the automation of the data entry of list equipment to any CurrentRMS job, among other features related to CurrentRMS.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Authors
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- [MPH Australia](https://mphaus.com/)
 
-## Learning Laravel
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Development Stack
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+The [Tall stack](https://tallstack.dev/) is being used for the development of Hermes, that is:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- [TailwindCSS](https://tailwindcss.com/)
+- [AlpineJS](https://alpinejs.dev/)
+- [Laravel](https://laravel.com/)
+- [Livewire](https://livewire.laravel.com/)
+## Project Dependencies
 
-## Laravel Sponsors
+The following dependencies must be installed in order to develop Hermes:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- [NodeJS](https://nodejs.org/en) (latest LTS version).
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
-### Premium Partners
+When using Windows, [WSL2](https://learn.microsoft.com/en-au/windows/wsl/install) (Windows Subsystem for Linux 2) must also be installed as it is the preferred way to develop Laravel applications.
+## Environment Variables
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+Apart from the environment variables that come with a Laravel 11 installation, to run this project locally the following variables must set in the .env file
 
-## Contributing
+`APP_TIMEZONE` = Australia/Melbourne
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+`MPH_TEST_OPPORTUNITY_ID` = 3132 (when running Hermes locally, all the data from CSV files will be uploaded to Opportunity 3132)
 
-## Code of Conduct
+`RECAPTCHA_V3_SITE_KEY`
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+`RECAPTCHA_V3_SECRET_KEY`
 
-## Security Vulnerabilities
+`CURRENT_RMS_SUBDOMAIN` = mphaustralia
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+`CURRENT_RMS_AUTH_KEY` (ask product owners for a CurrentRMS API key)
 
-## License
+`CURRENT_RMS_HOST` = https://api.current-rms.com/api/v1/
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+`DB_CONNECTION` = mysql
+
+`DB_HOST` = mysql
+
+`DB_PORT` = 3306
+
+`DB_DATABASE` = hermes
+
+`DB_USERNAME` = sail
+
+`DB_PASSWORD` = password
+
+
+## Run Locally
+
+After having installed the project dependencies clone the project using any of the following methods:
+
+Via HTTPS
+
+```bash
+  git clone https://github.com/mphaus/hermes.git
+```
+
+Via SSH
+
+```bash
+  git clone git@github.com:mphaus/hermes.git
+```
+
+Via GitHub CLI
+
+```bash
+  git clone gh repo clone mphaus/hermes
+```
+
+Go to the project directory (assuming the folder is named *hermes*)
+
+```bash
+  cd hermes
+```
+
+Start the server (it will take a while when it's done for the first time). If the *sail* command does not work follow the instructions indicated [here](https://laravel.com/docs/11.x/sail#configuring-a-shell-alias).
+
+```bash
+  sail up
+```
+
+Install the development dependencies
+
+```bash
+  sail npm install
+```
+
+Watch for file changes
+
+```bash
+  sail npm run dev
+```
+
+
+
+## Deployment
+
+Deployment is made through [Laravel Forge](https://forge.laravel.com/).
+
+Credentials for Laravel Forge must be provided by the product owners.
+
+There are two (2) sites on the Hermes server:
+
+- The **default** site is for the Staging environment.
+- The **hermes.mphaus.com** site is for the Production environment.
+
+According to the type of deployment being made (testing features or releasing features) the corresponding site must be selected.
+
