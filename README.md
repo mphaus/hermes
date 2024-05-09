@@ -39,7 +39,7 @@ Apart from the environment variables that come with a Laravel 11 installation, t
 
 `CURRENT_RMS_SUBDOMAIN` = mphaustralia
 
-`CURRENT_RMS_AUTH_KEY` (ask product owners for a CurrentRMS API key)
+`CURRENT_RMS_AUTH_KEY` (ask the product owners for a CurrentRMS API key)
 
 `CURRENT_RMS_HOST` = https://api.current-rms.com/api/v1/
 
@@ -53,7 +53,7 @@ Apart from the environment variables that come with a Laravel 11 installation, t
 
 `DB_USERNAME` = sail
 
-`DB_PASSWORD` = password
+`DB_PASSWORD` = (whatever the developer chooses for local development)
 
 
 ## Run Locally
@@ -116,4 +116,3 @@ There are two (2) sites on the Hermes server:
 - The **hermes.mphaus.com** site is for the Production environment.
 
 According to the type of deployment being made (testing features or releasing features) the corresponding site must be selected.
-
