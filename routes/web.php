@@ -27,7 +27,7 @@ Route::middleware('auth')->group(function () {
     Route::get('qet', QetIndex::class)->name('qet.index');
 
     Route::get('discussions/create', DiscussionsCreate::class)->name('discussions.create');
-    Route::get('discussion/json-upload', DiscussionsJsonCreate::class)->name('discussions.json.create');
+    Route::get('discussions/json-upload', DiscussionsJsonCreate::class)->name('discussions.json.create');
 });
 
 require __DIR__ . '/auth.php';
