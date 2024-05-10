@@ -35,10 +35,10 @@
                             </x-slot>
                             <x-slot name="content">
                                 <x-dropdown-link href="{{ route('discussions.create') }}" wire:navigate>
-                                    {{ __('Create discussions') }}
+                                    {{ __('Create Discussions') }}
                                 </x-dropdown-link>
-                                <x-dropdown-link href="{{ route('discussions.json.create') }}" wire:navigate>
-                                    {{ __('Upload JSON file') }}
+                                <x-dropdown-link href="{{ route('discussions.edit') }}" wire:navigate>
+                                    {{ __('Edit default Discussions') }}
                                 </x-dropdown-link>
                             </x-slot>
                         </x-dropdown>
@@ -119,10 +119,10 @@
 
             <div class="mt-3 space-y-1">
                 <x-responsive-nav-link href="{{ route('discussions.create') }}" wire:navigate>
-                    {{ __('Create discussions') }}
+                    {{ __('Create Discussions') }}
                 </x-responsive-nav-link>
-                <x-responsive-nav-link href="{{ route('discussions.json.create') }}" wire:navigate>
-                    {{ __('Upload JSON file') }}
+                <x-responsive-nav-link href="{{ route('discussions.edit') }}" wire:navigate>
+                    {{ __('Edit default Discussions') }}
                 </x-responsive-nav-link>
             </div>
         </div>
