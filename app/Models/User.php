@@ -50,6 +50,14 @@ class User extends Authenticatable
         ];
     }
 
+    /**
+     * Get the discussion mappings for the user.
+     */
+    public function discussionMappings(): HasMany
+    {
+        return $this->hasMany(DiscussionMapping::class);
+    }
+
     protected function fullName(): Attribute
     {
         return new Attribute(
