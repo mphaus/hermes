@@ -23,23 +23,5 @@
         <p>{{ __('Once downloaded, this file can be edited in a Text Editor (not Microsoft Word!). Windows Notepad is ideal, or code-editing tools like Notepad++, Brackets, or similar. .json files may not be associated with a text editor by default, but they are just text files.  ') }}</p>
         <p>{!! __('Be sure to follow the existing formatting exactly and refer to the <a href=":url" title=":title" target="_blank">Discussions Creator section of the Hermes Guide</a>. It is recommended to copy and paste people\'s names from CurrentRMS.', ['url' => 'https://mphaustralia.sharepoint.com/:w:/r/teams/MPHAdministration/_layouts/15/Doc.aspx?sourcedoc=%7B9d7fb799-bfce-4bd7-964a-9dbceff1b470%7D&action=editnew', 'title' => __('Discussions Creator section of the Hermes Guide')]) !!}</p>
     </x-card>
-    <x-card>
-        <form class="flow">
-            <p class="font-semibold">{{ __('Upload JSON file') }}</p>
-            <x-input 
-                type="file" 
-                class="mt-6" 
-                id=""
-                name=""
-                accept=""
-            />
-            <div class="space-y-1">
-                <x-input-label value="{{ __('Change notes') }}" class="!text-xs" />
-                <textarea name="0" id="" rows="3" class="block w-full"></textarea>
-            </div>
-            <div class="flex justify-end">
-                <x-button type="submit" variant="primary">{{ __('Upload') }}</x-button>
-            </div>
-        </form>
-    </x-card>   
+    <livewire:upload-discussion-mappings />  
 </div>
