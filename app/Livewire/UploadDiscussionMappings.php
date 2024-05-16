@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\DiscussionMapping;
 use App\Traits\WithHttpCurrentError;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Arr;
@@ -18,7 +19,7 @@ class UploadDiscussionMappings extends Component
     use WithFileUploads;
     use WithHttpCurrentError;
 
-    // #[Validate('required')]
+    #[Validate('required')]
     public string $comments;
 
     #[Validate('file', message: 'This field must be a file.')]
@@ -64,7 +65,7 @@ class UploadDiscussionMappings extends Component
             return $carry;
         }, [])));
 
-        $queryParams = preg_replace('/\[\d+\]/', '[]',  urldecode(http_build_query([
+        $queryParams = preg_replace('/\[\d+\]/', '[]', urldecode(http_build_query([
             'q[active_eq]' => true,
             'q[id_in]' => $participantsIds,
         ])));
@@ -73,7 +74,6 @@ class UploadDiscussionMappings extends Component
 
         if ($response->failed()) {
             $this->addError('jsonfile', $this->errorMessage(__('An unexpected error occurred while ingesting the JSON file. Please refresh the page and try again.'), $response->json()));
-
             return;
         }
 
@@ -90,6 +90,20 @@ class UploadDiscussionMappings extends Component
 
             return $this->redirectRoute(name: 'discussions.edit', navigate: true);
         }
+
+        $discussionMapping = new DiscussionMapping;
+
+        $discussionMapping->comments = $this->comments;
+        $discussionMapping->mappings = $mappings;
+        $discussionMapping->user()->associate(auth()->user());
+        $discussionMapping->save();
+
+        session()->flash('alert', [
+            'type' => 'success',
+            'message' => __('Success! Discussions JSON template changes appear valid. Subsequent Discussions created will be based on this new JSON file. A test is recommended before assuming it\'s correct.'),
+        ]);
+
+        return $this->redirectRoute(name: 'discussions.edit', navigate: true);
     }
 
     public function render(): View
