@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -44,7 +45,13 @@ class UploadDiscussionMappings extends Component
             }),
         ]);
 
-        dd($mappingsValidator->fails());
+        if ($mappingsValidator->fails()) {
+            foreach ($mappingsValidator->getMessageBag()->unique() as $message) {
+                $this->addError('jsonfile', $message);
+            }
+
+            return;
+        }
     }
 
     public function render(): View
