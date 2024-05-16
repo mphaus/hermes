@@ -16,9 +16,26 @@
             variant="primary" 
             class="inline-flex mt-8"
             title="{{ __('Download current JSON config file') }}"
+            wire:click="downloadJsonConfig"
+            wire:loading.attr="disabled"
+            wire:target="downloadJsonConfig"
         >
-            <span>{{ __('Current JSON config file') }}</span>
-            <x-icon-download class="w-4 h-4 fill-current" />
+            <span 
+                class="flex items-center gap-2" 
+                wire:loading.class="hidden" 
+                wire:target="downloadJsonConfig"
+            >
+                <x-icon-download class="w-4 h-4 fill-current" />
+                <span>{{ __('Current JSON config file') }}</span>
+            </span>
+            <span 
+                class="flex items-center gap-2" 
+                wire:loading.flex 
+                wire:target="downloadJsonConfig"
+            >
+                <x-icon-circle-notch class="w-4 h-4 fill-current animate-spin" />
+                <span>{{ __('Getting JSON config file...') }}</span>
+            </span>
         </x-button>
         <p>{{ __('Once downloaded, this file can be edited in a Text Editor (not Microsoft Word!). Windows Notepad is ideal, or code-editing tools like Notepad++, Brackets, or similar. .json files may not be associated with a text editor by default, but they are just text files.  ') }}</p>
         <p>{!! __('Be sure to follow the existing formatting exactly and refer to the <a href=":url" title=":title" target="_blank">Discussions Creator section of the Hermes Guide</a>. It is recommended to copy and paste people\'s names from CurrentRMS.', ['url' => 'https://mphaustralia.sharepoint.com/:w:/r/teams/MPHAdministration/_layouts/15/Doc.aspx?sourcedoc=%7B9d7fb799-bfce-4bd7-964a-9dbceff1b470%7D&action=editnew', 'title' => __('Discussions Creator section of the Hermes Guide')]) !!}</p>

@@ -40,7 +40,7 @@
         </div>
         <div class="mt-6 text-sm" wire:loading wire:target="save">
             <p class="font-semibold">{{ __('Ingesting and verifying...') }}</p>
-            <p class="mt-1">{{ __('This process typically takes ???. Do not navigate away from this page until a Success or Fail message is shown here.') }}</p>
+            <p class="mt-1">{{ __('This process typically takes less than 10 seconds. Do not navigate away from this page until a Success or Fail message is shown here.') }}</p>
         </div>
     </x-form>
 </x-card> 

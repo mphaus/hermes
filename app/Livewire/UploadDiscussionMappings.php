@@ -27,7 +27,7 @@ class UploadDiscussionMappings extends Component
     #[Validate('mimes:json', message: 'The file must be a file of type: :values.')]
     public $jsonfile;
 
-    public function save()
+    public function save(): mixed
     {
         $this->validate();
 
@@ -54,7 +54,7 @@ class UploadDiscussionMappings extends Component
                 $this->addError('jsonfile', $message);
             }
 
-            return;
+            return null;
         }
 
         $participantsIds = array_unique(Arr::flatten(array_reduce($mappings, function ($carry, $mapping) {
@@ -74,7 +74,7 @@ class UploadDiscussionMappings extends Component
 
         if ($response->failed()) {
             $this->addError('jsonfile', $this->errorMessage(__('An unexpected error occurred while ingesting the JSON file. Please refresh the page and try again.'), $response->json()));
-            return;
+            return null;
         }
 
         ['members' => $members] = $response->json();
