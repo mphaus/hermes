@@ -12,10 +12,7 @@
         <x-card class="flow">
             <p class="font-semibold">{{ __('Create Discussions') }}</p>
             <form class="flex flex-col gap-4 lg:flex-row lg:items-end">
-                <div class="space-y-1 lg:flex-1">
-                    <x-input-label value="{{ __('Opportunity') }}" class="!text-xs" />
-                    <select name="" id="" class="block w-full"></select>
-                </div>
+                <livewire:create-discussions-opportunity lazy />
                 <div class="space-y-1 lg:flex-1">
                     <x-input-label value="{{ __('Owner') }}" class="!text-xs" />
                     <select name="" id="" class="block w-full"></select>
