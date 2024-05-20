@@ -13,10 +13,7 @@
             <p class="font-semibold">{{ __('Create Discussions') }}</p>
             <form class="flex flex-col gap-4 lg:flex-row lg:items-end">
                 <livewire:create-discussions-opportunity lazy />
-                <div class="space-y-1 lg:flex-1">
-                    <x-input-label value="{{ __('Owner') }}" class="!text-xs" />
-                    <select name="" id="" class="block w-full"></select>
-                </div>
+                <livewire:create-discussions-owner lazy />
                 <x-button type="submit" variant="primary">{{ __('Create Discussions') }}</x-button>
             </form>
         </x-card>
