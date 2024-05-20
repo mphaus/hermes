@@ -3,7 +3,6 @@
 namespace App\Livewire;
 
 use App\Models\DiscussionMapping;
-use Illuminate\Contracts\Cache\Store;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
@@ -25,12 +24,18 @@ class DiscussionsEdit extends Component
         }
 
         $createdAt = now()->parse($config->created_at)->timezone(config('app.timezone'))->format('Y-m-d-H-i-s');
-        $filename = "Discussions-config-{$createdAt}.json";
-        $json = json_encode($config->mappings->jsonSerialize(), JSON_PRETTY_PRINT);
+        $filename = "discussions-config-{$createdAt}.json";
 
-        Storage::disk('local')->put($filename, $json);
-        Storage::download($filename, $filename, ['Content-Type' => 'application/json']);
-        Storage::delete($filename);
+        Storage::disk('local')->put(
+            path: $filename,
+            contents: json_encode($config->mappings->jsonSerialize(), JSON_PRETTY_PRINT)
+        );
+
+        return Storage::download(
+            path: $filename,
+            name: $filename,
+            headers: ['Content-Type' => 'application/json']
+        );
     }
 
     public function render(): View
