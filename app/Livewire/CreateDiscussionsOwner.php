@@ -41,6 +41,11 @@ class CreateDiscussionsOwner extends Component
             return $defaultResponse;
         }
 
+        $members = array_map(fn ($member) => [
+            'id' => $member['id'],
+            'name' => $member['name']
+        ], $members);
+
         return [
             ...$defaultResponse,
             'data' => $members,

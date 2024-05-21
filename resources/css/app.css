@@ -13,6 +13,10 @@
 }
 
 @layer components {
+    [x-cloak] {
+        @apply hidden;
+    }
+
     .flow > * + * {
         margin-block-start: var(--flow-spacing, 1em);
     }

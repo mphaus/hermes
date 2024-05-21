@@ -1,4 +1,4 @@
-<div class="space-y-1 lg:flex-1">
+<div class="space-y-1">
     @if ($this->jobs['error'])
         <x-generic-error :message="$this->jobs['error']" />
     @elseif (empty($this->jobs['opportunities']))
