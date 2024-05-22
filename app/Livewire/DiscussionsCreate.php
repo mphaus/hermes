@@ -14,7 +14,32 @@ class DiscussionsCreate extends Component
 
     public function save()
     {
-        $this->form->store();
+        $result = $this->form->store();
+
+        if ($result !== 'success') {
+            session()->flash('alert', [
+                'type' => 'danger',
+                'message' => __('The Discussions creation process failed.'),
+            ]);
+        }
+
+        if ($result === 'participants-check-failed') {
+            session()->flash('message-alert', [
+                'type' => 'danger',
+                'title' => __('Fail'),
+                'message' => __('The Discussions creation failed with this message: an error occurred while checking the existence of the participants. Please refresh the page and try again.'),
+            ]);
+        }
+
+        if ($result === 'participants-validation-failed') {
+            session()->flash('message-alert', [
+                'type' => 'danger',
+                'title' => __('Fail'),
+                'message' => __('The Discussions creation failed with this message: the participants do not match those listed in CurrentRMS.'),
+            ]);
+        }
+
+        return $this->redirectRoute(name: 'discussions.create', navigate: true);
     }
 
     public function render(): View

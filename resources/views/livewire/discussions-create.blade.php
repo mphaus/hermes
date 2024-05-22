@@ -20,8 +20,18 @@
                     <livewire:create-discussions-owner lazy />
                     <x-input-error class="mt-2" :messages="$errors->get('form.userId')" />
                 </div>
-                <x-button type="submit" variant="primary">{{ __('Create Discussions') }}</x-button>
+                <x-button type="submit" variant="primary">
+                    <span wire:loading.class="hidden" wire:target="save">{{ __('Create Discussions') }}</span>
+                    <span class="items-center gap-2" wire:loading.flex wire:target="save">
+                        <x-icon-circle-notch class="w-4 h-4 fill-current animate-spin" />
+                        <span>{{ __('Creating Discussions...') }}</span>
+                    </span>
+                </x-button>
             </form>
+            <div class="mt-6 text-sm" wire:loading wire:target="save">
+                <p class="font-semibold">{{ __('Processing...') }}</p>
+                <p class="mt-1">{{ __('This process typically takes ???. Do not navigate away from this page until a Success or Fail message is shown here.') }}</p>
+            </div>
         </x-card>
         <x-card 
             class="flow"
