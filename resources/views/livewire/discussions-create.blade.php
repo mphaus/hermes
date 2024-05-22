@@ -14,9 +14,11 @@
             <form class="flex flex-col gap-4 lg:flex-row lg:items-end" wire:submit="save">
                 <div class="space-y-1 lg:flex-1">
                     <livewire:create-discussions-opportunity lazy />
+                    <x-input-error class="mt-2" :messages="$errors->get('form.opportunityId')" />
                 </div>
                 <div class="space-y-1 lg:flex-1">
                     <livewire:create-discussions-owner lazy />
+                    <x-input-error class="mt-2" :messages="$errors->get('form.userId')" />
                 </div>
                 <x-button type="submit" variant="primary">{{ __('Create Discussions') }}</x-button>
             </form>
