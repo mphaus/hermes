@@ -30,8 +30,11 @@
             </form>
             <div class="mt-6 text-sm" wire:loading wire:target="save">
                 <p class="font-semibold">{{ __('Processing...') }}</p>
-                <p class="mt-1">{{ __('This process typically takes ???. Do not navigate away from this page until a Success or Fail message is shown here.') }}</p>
+                <p class="mt-1">{{ __('This process typically takes less than 30 seconds. Do not navigate away from this page until a Success or Fail message is shown here.') }}</p>
             </div>
+            @if (session('message-alert'))
+                <x-message-alert class="mt-6" :alert="session('message-alert')" />
+            @endif
         </x-card>
         <x-card 
             class="flow"

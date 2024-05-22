@@ -4,9 +4,8 @@ namespace App\Livewire\Forms;
 
 use App\Models\DiscussionMapping;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
@@ -18,7 +17,7 @@ class CreateDiscussionsForm extends Form
     #[Validate('required|numeric', as: 'owner')]
     public int $userId;
 
-    public function store(): mixed
+    public function store(): string
     {
         $this->validate();
 
@@ -54,5 +53,30 @@ class CreateDiscussionsForm extends Form
         if (empty($diffIds) === false) {
             return 'participants-validation-failed';
         }
+
+        foreach ($mappings as $mapping) {
+            Http::current()->post('discussions', [
+                'discussion' => [
+                    'discussable_id' => App::environment(['local', 'staging']) ? intval(config('app.mph.test_opportunity_id')) : $this->opportunityId,
+                    'discussable_type' => 'Opportunity',
+                    'subject' => $mapping['title'],
+                    'created_by' => $this->userId,
+                    'first_comment' => [
+                        'remark' => $mapping['first_message'],
+                        'created_by' => $this->userId,
+                    ],
+                    'participants' => empty($mapping['participants'])
+                        ? [['member_id' => $this->userId, 'mute' => true]]
+                        : ($mapping['include_opportunity_owner_as_participant']
+                            ? [
+                                ['member_id' => $this->userId, 'mute' => true],
+                                ...array_map(fn ($participant) => ['member_id' => $participant['id'], 'mute' => true], $mapping['participants']),
+                            ]
+                            : array_map(fn ($participant) => ['member_id' => $participant['id'], 'mute' => true], $mapping['participants'])),
+                ],
+            ]);
+        }
+
+        return 'success';
     }
 }
