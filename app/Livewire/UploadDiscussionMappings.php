@@ -85,7 +85,13 @@ class UploadDiscussionMappings extends Component
         if (empty($diffIds) === false) {
             session()->flash('alert', [
                 'type' => 'danger',
-                'message' => __('The ingestion failed. Either the JSON is not valid, or the users do not match those listed in CurrentRMS.'),
+                'message' => __('The ingestion process failed.'),
+            ]);
+
+            session()->flash('message-alert', [
+                'type' => 'danger',
+                'title' => __('Fail'),
+                'message' => __('The ingestion failed. Either the JSON is not valid, or the users do not match those listed in CurrentRMS.')
             ]);
 
             return $this->redirectRoute(name: 'discussions.edit', navigate: true);
@@ -100,7 +106,13 @@ class UploadDiscussionMappings extends Component
 
         session()->flash('alert', [
             'type' => 'success',
-            'message' => __('Success! Discussions JSON template changes appear valid. Subsequent Discussions created will be based on this new JSON file. A test is recommended before assuming it\'s correct.'),
+            'message' => __('The ingestion succeeded.'),
+        ]);
+
+        session()->flash('message-alert', [
+            'type' => 'success',
+            'title' => __('Success'),
+            'message' => __('Discussions JSON template changes appear valid. Subsequent Discussions created will be based on this new JSON file. A test is recommended before assuming it\'s correct.')
         ]);
 
         return $this->redirectRoute(name: 'discussions.edit', navigate: true);

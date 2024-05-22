@@ -42,5 +42,8 @@
             <p class="font-semibold">{{ __('Ingesting and verifying...') }}</p>
             <p class="mt-1">{{ __('This process typically takes less than 10 seconds. Do not navigate away from this page until a Success or Fail message is shown here.') }}</p>
         </div>
+        @if (session('message-alert'))
+            <x-message-alert class="mt-6" :alert="session('message-alert')" />
+        @endif
     </x-form>
 </x-card> 
