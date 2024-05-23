@@ -23,7 +23,7 @@
                             @endforeach
                         @endif
                     </td>
-                    <td class="p-3 space-y-2 border border-slate-500">{!! $mapping['first_message'] !!}</td>
+                    <td class="p-3 border flow border-slate-500">{!! $mapping['first_message'] !!}</td>
                 </tr>
             @endforeach
         </tbody>

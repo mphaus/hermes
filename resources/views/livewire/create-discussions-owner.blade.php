@@ -6,9 +6,9 @@
             <p>{{ __('There are no Users to display.') }}</p>
         </x-card>
     @else
-        <x-input-label value="{{ __('Owner') }}" class="!text-xs" />
+        <x-input-label value="{{ __('Account Manager') }}" class="!text-xs" />
         <select class="block w-full" x-data="CreateDiscussionsOwner" data-members="{{ json_encode($this->members['data']) }}">
-            <option value="">{{ __('Select a User') }}</option>
+            <option value="">{{ __('Select an Account Manager') }}</option>
             @foreach ($this->members['data'] as $member)
                 <option value="{{ $member['id'] }}">{{ $member['name'] }}</option>
             @endforeach

@@ -11,7 +11,7 @@ export default function CreateDiscussionsOwner () {
             const members = JSON.parse( this.$root.dataset.members );
 
             $( this.$root ).select2( {
-                placeholder: 'Select an Owner',
+                placeholder: 'Select an Account Manager',
                 width: '100%',
             } ).on( 'change.select2', () => {
                 /** @type {number} */
