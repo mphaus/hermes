@@ -4,12 +4,16 @@ import.meta.glob( [
 
 import { Livewire, Alpine } from "./../../vendor/livewire/livewire/dist/livewire.esm";
 import ActionStreamFilters from "./components/ActionStreamFilters";
+import CreateDiscussionsOpportunity from "./components/CreateDiscussionsOpportunity";
+import CreateDiscussionsOwner from "./components/CreateDiscussionsOwner";
 import ItemsCreateForm from "./components/ItemsCreateForm";
 import Qet from "./components/Qet";
 import QetItem from "./components/QetItem";
 import UploadLog from "./components/UploadLog";
 
 Alpine.data( 'ActionStreamFilters', ActionStreamFilters );
+Alpine.data( 'CreateDiscussionsOpportunity', CreateDiscussionsOpportunity );
+Alpine.data( 'CreateDiscussionsOwner', CreateDiscussionsOwner );
 Alpine.data( 'ItemsCreateForm', ItemsCreateForm );
 Alpine.data( 'Qet', Qet );
 Alpine.data( 'QetItem', QetItem );

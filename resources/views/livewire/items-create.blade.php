@@ -5,7 +5,7 @@
     x-on:items-created="submitting = false"
 >
     <fieldset wire:loading.class="opacity-50 pointer-events-none" wire:target="save">
-        <legend>{{ __('Upload file') }}</legend>
+        <legend class="font-semibold">{{ __('Upload file') }}</legend>
         <div class="mt-2 space-y-2 text-sm">
             <p>{{ __('Hermes imports a CSV list of equipment (typically rigging and cabling) into the specified CurrentRMS Opportunity, so it can be checked for stock availability and so it will appear on the Picking List.') }}</p>
             <p>{{ __('Imported CSV files must be four columns; the CurrentRMS "Item id", the associated CurrentRMS "Item name", the "Quantity", and "Group name". Errors are reported below. ') }}</p>
