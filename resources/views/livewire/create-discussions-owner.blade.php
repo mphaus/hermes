@@ -6,7 +6,7 @@
             <p>{{ __('There are no Users to display.') }}</p>
         </x-card>
     @else
-        <x-input-label value="{{ __('Account Manager') }}" class="!text-xs" />
+        <x-input-label class="!text-xs">{{ __('Account Manager (as listed as the Opportunity "Owner" in CurrentRMS)') }}</x-input-label>
         <select class="block w-full" x-data="CreateDiscussionsOwner" data-members="{{ json_encode($this->members['data']) }}">
             <option value="">{{ __('Select an Account Manager') }}</option>
             @foreach ($this->members['data'] as $member)
