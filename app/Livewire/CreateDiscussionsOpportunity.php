@@ -21,14 +21,21 @@ class CreateDiscussionsOpportunity extends Component
             'opportunities' => [],
         ];
 
+        $queryParams = preg_replace('/\[\d+\]/', '[]', urldecode(http_build_query([
+            'per_page' => 25,
+            // 'filtermode' => 'orders',
+            'q' => [
+                'status_in' => [
+                    JobStatus::Open->value,
+                    JobStatus::Reserved->value,
+                ]
+            ],
+            // 'q[id_not_eq]' => config('app.mph.test_opportunity_id'),
+        ])));
+
         $response = Http::current()
-            ->withQueryParameters([
-                'per_page' => 25,
-                'filtermode' => 'orders',
-                'q[status_eq]' => JobStatus::Open->value,
-                'q[id_not_eq]' => config('app.mph.test_opportunity_id'),
-            ])
-            ->get('opportunities');
+            // ->withQueryParameters($queryParams)
+            ->get("opportunities?{$queryParams}");
 
         if ($response->failed()) {
             return [
