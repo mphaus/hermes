@@ -24,8 +24,8 @@ class CreateDiscussionsOpportunity extends Component
         $response = Http::current()
             ->withQueryParameters([
                 'per_page' => 25,
-                'filtermode' => 'orders',
-                'q[status_eq]' => JobStatus::Open->value,
+                'filtermode' => 'quotations',
+                'q[status_eq]' => JobStatus::Reserved->value,
                 'q[id_not_eq]' => config('app.mph.test_opportunity_id'),
             ])
             ->get('opportunities');
