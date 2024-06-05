@@ -7,7 +7,6 @@ use App\Models\DiscussionMapping;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Http;
-use Livewire\Attributes\On;
 use Livewire\Component;
 
 class DiscussionsCreate extends Component

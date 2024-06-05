@@ -2,6 +2,7 @@
 
 // use App\Http\Controllers\ProfileController;
 
+use App\Http\Controllers\OpportunityController;
 use App\Livewire\ActionStreamIndex;
 use App\Livewire\DiscussionsCreate;
 use App\Livewire\DiscussionsEdit;
@@ -28,6 +29,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('discussions/create', DiscussionsCreate::class)->name('discussions.create');
     Route::get('discussions/edit', DiscussionsEdit::class)->name('discussions.edit');
+
+    Route::get('opportunities/search', [OpportunityController::class, 'search'])->name('opportunities.search');
 });
 
 require __DIR__ . '/auth.php';
