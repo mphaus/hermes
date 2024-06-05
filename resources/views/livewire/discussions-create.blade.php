@@ -11,12 +11,12 @@
     @else
         <x-card class="flow">
             <p class="font-semibold">{{ __('Create Discussions') }}</p>
-            <form class="flex flex-col gap-4 lg:flex-row lg:items-end" wire:submit="save">
-                <div class="space-y-1 lg:flex-1">
-                    <livewire:create-discussions-opportunity lazy />
+            <form class="space-y-4 lg:space-y-0 lg:grid lg:gap-4 lg:grid-cols-5 lg:items-end" wire:submit="save">
+                <div class="space-y-1 lg:col-span-2">
+                    <livewire:create-discussions-opportunity />
                     <x-input-error class="mt-2" :messages="$errors->get('form.opportunityId')" />
                 </div>
-                <div class="space-y-1 lg:flex-1">
+                <div class="space-y-1 lg:col-span-2">
                     <livewire:create-discussions-owner lazy />
                     <x-input-error class="mt-2" :messages="$errors->get('form.userId')" />
                 </div>
