@@ -22,7 +22,8 @@ The [Tall stack](https://tallstack.dev/) is being used for the development of He
 The following dependencies must be installed in order to develop Hermes:
 
 - [NodeJS](https://nodejs.org/en) (latest LTS version).
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+- [PHP](https://www.php.net/)
+- [MySQL](https://dev.mysql.com/downloads/mysql/)
 
 When using Windows, [WSL2](https://learn.microsoft.com/en-au/windows/wsl/install) (Windows Subsystem for Linux 2) must also be installed as it is the preferred way to develop Laravel applications.
 ## Environment Variables
@@ -45,13 +46,13 @@ Apart from the environment variables that come with a Laravel 11 installation, t
 
 `DB_CONNECTION` = mysql
 
-`DB_HOST` = mysql
+`DB_HOST` = (whatever the developer chooses for local development, almost always 127.0.0.1)
 
 `DB_PORT` = 3306
 
-`DB_DATABASE` = hermes
+`DB_DATABASE` = (whatever the developer chooses for local development)
 
-`DB_USERNAME` = sail
+`DB_USERNAME` = (whatever the developer chooses for local development)
 
 `DB_PASSWORD` = (whatever the developer chooses for local development)
 
@@ -84,22 +85,22 @@ Go to the project directory (assuming the folder is named *hermes*)
   cd hermes
 ```
 
-Start the server (it will take a while when it's done for the first time). If the *sail* command does not work follow the instructions indicated [here](https://laravel.com/docs/11.x/sail#configuring-a-shell-alias).
+Start the server
 
 ```bash
-  sail up
+  php artisan serve
 ```
 
 Install the development dependencies
 
 ```bash
-  sail npm install
+  npm install
 ```
 
 Watch for file changes
 
 ```bash
-  sail npm run dev
+  npm run dev
 ```
 
 
