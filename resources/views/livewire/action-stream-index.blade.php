@@ -20,7 +20,7 @@
             >
                 <div class="hidden xl:block">
                     <div class="gap-2 px-6 text-sm font-semibold grid grid-cols-[28rem_1fr_1fr_1fr_1fr_1fr]">
-                        <p>{{ __('Job') }}</p>
+                        <p>{{ __('Action subject') }}</p>
                         <p>{{ __('User') }}</p>
                         <p>{{ __('Action') }}</p>
                         <p class="col-span-2">{{ __('Description') }}</p>

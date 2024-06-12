@@ -30,6 +30,28 @@ class ActionStreamItem extends Component
         return $types[0]['value'];
     }
 
+    public function subjectUrl(string $key): string
+    {
+        $opportunitiesUrl = config('app.mph.opportunities_url');
+        $purchaseOrdersUrl = config('app.mph.purchase_orders_url');
+        $discussionsUrl = config('app.mph.discussions_url');
+        $membersUrl = config('app.mph.members_url');
+
+        return match ($key) {
+            'create_item',
+            'discuss',
+            'destroy',
+            'update',
+            'mark_as_postponed',
+            'mark_as_dead',
+            'mark_as_lost' => "{$opportunitiesUrl}{$this->action['subject_id']}",
+            'cancel' => "{$purchaseOrdersUrl}{$this->action['subject_id']}",
+            'comment' => "{$discussionsUrl}{$this->action['subject_id']}",
+            'discussion_create' => "{$membersUrl}{$this->action['subject_id']}",
+            'erase' => '',
+        };
+    }
+
     /**
      * Get the view / contents that represent the component.
      */
