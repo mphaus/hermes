@@ -1,9 +1,11 @@
+import "./bootstrap";
 import.meta.glob( [
     './../images/**',
 ] );
 
 import { Livewire, Alpine } from "./../../vendor/livewire/livewire/dist/livewire.esm";
 import ActionStreamFilters from "./components/ActionStreamFilters";
+import ActionStreamItem from "./components/ActionStreamItem";
 import CreateDiscussionsOpportunity from "./components/CreateDiscussionsOpportunity";
 import CreateDiscussionsOwner from "./components/CreateDiscussionsOwner";
 import ItemsCreateForm from "./components/ItemsCreateForm";
@@ -12,6 +14,7 @@ import QetItem from "./components/QetItem";
 import UploadLog from "./components/UploadLog";
 
 Alpine.data( 'ActionStreamFilters', ActionStreamFilters );
+Alpine.data( 'ActionStreamItem', ActionStreamItem );
 Alpine.data( 'CreateDiscussionsOpportunity', CreateDiscussionsOpportunity );
 Alpine.data( 'CreateDiscussionsOwner', CreateDiscussionsOwner );
 Alpine.data( 'ItemsCreateForm', ItemsCreateForm );

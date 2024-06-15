@@ -31,4 +31,12 @@ class OpportunityController extends Controller
             'text' => $opportunity['subject'],
         ], $opportunities);
     }
+
+    public function show(int $id)
+    {
+        $response = Http::current()->get("opportunities/{$id}");
+        ['opportunity' => $opportunity] = $response->json();
+
+        return $opportunity;
+    }
 }
