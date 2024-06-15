@@ -31,6 +31,7 @@ Route::middleware('auth')->group(function () {
     Route::get('discussions/edit', DiscussionsEdit::class)->name('discussions.edit');
 
     Route::get('opportunities/search', [OpportunityController::class, 'search'])->name('opportunities.search');
+    Route::get('opportunities/{id}', [OpportunityController::class, 'show'])->name('opportunities.show');
 });
 
 require __DIR__ . '/auth.php';

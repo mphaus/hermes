@@ -1,7 +1,9 @@
 @php
-    $url = $subjectUrl($action['action_type']);
+    $type = $action['action_type'];
+    $url = $subjectUrl($type);
+    $jobId = $type === 'comment' ? intval($action['subject']['discussable_id']) : 0;
 @endphp
-<x-card>
+<x-card x-data="ActionStreamItem({{ $jobId }})">
     <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-[28rem_1fr_1fr_1fr_1fr_1fr] xl:items-center xl:gap-3">
         @if ($url === '')
             <p class="mb-2 sm:col-span-2 lg:col-span-4 xl:col-span-1 xl:mb-0">{{ $action['name'] }}</p>    
@@ -12,6 +14,9 @@
                 target="_blank"
             >
                 {{ $action['name'] }}
+                @if ($type === 'comment')
+                    (<span x-text="jobName"></span>)
+                @endif
             </a>    
         @endif
         <div class="flex flex-col gap-1 text-sm">
