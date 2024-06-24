@@ -11,7 +11,10 @@ use Livewire\Form;
 
 class CreateDiscussionsForm extends Form
 {
-    #[Validate('required|numeric', as: 'opportunity')]
+    #[Validate('boolean', as: 'create on project')]
+    public bool $createOnProject = false;
+
+    #[Validate('required|numeric', as: 'opportunity or project')]
     public int $opportunityId;
 
     #[Validate('required|numeric', as: 'owner')]

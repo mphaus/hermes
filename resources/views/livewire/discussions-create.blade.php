@@ -13,6 +13,14 @@
             <p class="font-semibold">{{ __('Create Discussions') }}</p>
             <form class="space-y-4 lg:space-y-0 lg:grid lg:gap-4 lg:grid-cols-5 lg:items-end" wire:submit="save">
                 <div class="space-y-1 lg:col-span-2">
+                    <div class="flex items-center gap-2 mb-4">
+                        <x-input-checkbox 
+                            id="discussions-project-check" 
+                            wire:model="form.createOnProject" 
+                            x-on:change="$dispatch('hermes:create-discussions-create-on-project-change', { createOnProject: $event.target.checked })"
+                        />
+                        <x-input-label for="discussions-project-check" value="{{ __('Create Discussions on Project instead') }}" class="!text-xs font-semibold" />
+                    </div>
                     <livewire:create-discussions-opportunity />
                     <x-input-error class="mt-2" :messages="$errors->get('form.opportunityId')" />
                 </div>

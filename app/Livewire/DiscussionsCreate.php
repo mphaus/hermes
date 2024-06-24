@@ -15,6 +15,8 @@ class DiscussionsCreate extends Component
 
     public function save()
     {
+        dd($this->form);
+
         $result = $this->form->store();
 
         if ($result !== 'success') {
