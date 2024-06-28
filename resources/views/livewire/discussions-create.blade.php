@@ -21,8 +21,8 @@
                         />
                         <x-input-label for="discussions-project-check" value="{{ __('Create Discussions on Project instead') }}" class="!text-xs font-semibold" />
                     </div>
-                    <livewire:create-discussions-opportunity />
-                    <x-input-error class="mt-2" :messages="$errors->get('form.opportunityId')" />
+                    <livewire:create-discussions-object />
+                    <x-input-error class="mt-2" :messages="$errors->get('form.objectId')" />
                 </div>
                 <div class="space-y-1 lg:col-span-2">
                     <livewire:create-discussions-owner lazy />
