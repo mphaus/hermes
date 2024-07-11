@@ -28,7 +28,7 @@ class DiscussionsCreate extends Component
             session()->flash('message-alert', [
                 'type' => 'danger',
                 'title' => __('Fail'),
-                'message' => __('The Discussions creation failed with this message: an error occurred while checking the existence of the participants. Please refresh the page and try again.'),
+                'message' => __('The Discussions creation failed with this message: an error occurred while checking the existence of the participants. Please try again.'),
             ]);
         }
 
@@ -37,6 +37,16 @@ class DiscussionsCreate extends Component
                 'type' => 'danger',
                 'title' => __('Fail'),
                 'message' => __('The Discussions creation failed with this message: the participants do not match those listed in CurrentRMS.'),
+            ]);
+        }
+
+        if ($result === 'discussions-existance-check-failed') {
+            $object = $this->form->createOnProject ? 'Project' : 'Opportunity';
+
+            session()->flash('message-alert', [
+                'type' => 'danger',
+                'title' => __('Fail'),
+                'message' => __('The Discussions creation failed with this message: an error occurred while checking if discussions already exist on the selected :object. Please try again.', ['object' => $object]),
             ]);
         }
 

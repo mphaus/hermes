@@ -57,6 +57,26 @@ class CreateDiscussionsForm extends Form
             return 'participants-validation-failed';
         }
 
+        // CHECK IF DISCUSSIONS EXIST ON THE DISCUSSABLE ID AND DELETE THEM IF NECESSARY
+        $queryParams = preg_replace('/\[\d+\]/', '[]', urldecode(http_build_query([
+            'q[discussable_id_eq]' => App::environment(['local', 'staging'])
+                ? (
+                    $this->createOnProject
+                    ? intval(config('app.mph.test_project_id'))
+                    : intval(config('app.mph.test_opportunity_id'))
+                )
+                : $this->objectId,
+            'q[discussable_type_eq]' => $this->createOnProject ? 'Project' : 'Opportunity',
+        ])));
+
+        $response = Http::current()->get("discussions?{$queryParams}");
+
+        if ($response->failed()) {
+            return 'discussions-existance-check-failed';
+        }
+
+        dd($mappings, $response->json());
+
         foreach ($mappings as $mapping) {
             Http::current()->post('discussions', [
                 'discussion' => [
