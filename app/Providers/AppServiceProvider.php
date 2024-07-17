@@ -26,13 +26,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $macroCallback = function () {
+        Http::macro('current', function () {
             return Http::withHeaders([
                 'X-AUTH-TOKEN' => config('app.current_rms.auth_token'),
                 'X-SUBDOMAIN' => config('app.current_rms.subdomain'),
             ])->baseUrl(config('app.current_rms.host'));
-        };
-
-        Http::macro('current', $macroCallback);
+        });
     }
 }

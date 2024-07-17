@@ -3,6 +3,7 @@
 namespace App\Livewire\Forms;
 
 use App\Models\DiscussionMapping;
+use Illuminate\Http\Client\Pool;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Http;
@@ -75,7 +76,18 @@ class CreateDiscussionsForm extends Form
             return 'discussions-existance-check-failed';
         }
 
-        dd($mappings, $response->json());
+        ['discussions' => $discussions] = $response->json();
+
+        if (!empty($discussions)) {
+            Http::pool(function (Pool $pool) use ($discussions) {
+                return array_map(function ($discussion) use ($pool) {
+                    return $pool->withHeaders([
+                        'X-AUTH-TOKEN' => config('app.current_rms.auth_token'),
+                        'X-SUBDOMAIN' => config('app.current_rms.subdomain'),
+                    ])->delete(config('app.current_rms.host') . 'discussions/' . $discussion['id']);
+                }, $discussions);
+            });
+        }
 
         foreach ($mappings as $mapping) {
             Http::current()->post('discussions', [

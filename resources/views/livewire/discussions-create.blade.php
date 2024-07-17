@@ -32,13 +32,13 @@
                     <span wire:loading.class="hidden" wire:target="save">{{ __('Create Discussions') }}</span>
                     <span class="items-center gap-2" wire:loading.flex wire:target="save">
                         <x-icon-circle-notch class="w-4 h-4 fill-current animate-spin" />
-                        <span>{{ __('Creating Discussions...') }}</span>
+                        <span>{{ __('Creating...') }}</span>
                     </span>
                 </x-button>
             </form>
             <div class="mt-6 text-sm" wire:loading wire:target="save">
                 <p class="font-semibold">{{ __('Processing...') }}</p>
-                <p class="mt-1">{{ __('This process typically takes less than 30 seconds. Do not navigate away from this page until a Success or Fail message is shown here.') }}</p>
+                <p class="mt-1">{{ __('This process typically takes less than 40 seconds. Do not navigate away from this page until a Success or Fail message is shown here.') }}</p>
             </div>
             @if (session('message-alert'))
                 <x-message-alert class="mt-6" :alert="session('message-alert')" />
