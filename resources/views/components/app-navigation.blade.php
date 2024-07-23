@@ -43,6 +43,9 @@
                             </x-slot>
                         </x-dropdown>
                     </div>
+                    <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')" wire:navigate>
+                        {{ __('Users') }}
+                    </x-nav-link>
                     <x-nav-link href="https://mphaustralia.sharepoint.com/:w:/r/teams/MPHAdministration/_layouts/15/Doc.aspx?sourcedoc=%7B9d7fb799-bfce-4bd7-964a-9dbceff1b470%7D&action=editnew" target="_blank">
                         {{ __('Help') }}
                     </x-nav-link>
@@ -107,9 +110,6 @@
             <x-responsive-nav-link :href="route('qet.index')" :active="request()->routeIs('qet.index')" wire:navigate>
                 {{ __('QET') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link href="https://mphaustralia.sharepoint.com/:w:/r/teams/MPHAdministration/_layouts/15/Doc.aspx?sourcedoc=%7B9d7fb799-bfce-4bd7-964a-9dbceff1b470%7D&action=editnew" target="_blank">
-                {{ __('Help') }}
-            </x-responsive-nav-link>
         </div>
 
         <div class="pt-2 pb-1">
@@ -125,6 +125,15 @@
                     {{ __('Edit default Discussions') }}
                 </x-responsive-nav-link>
             </div>
+        </div>
+
+        <div class="pt-2 pb-3 space-y-1">
+            <x-responsive-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')" wire:navigate>
+                {{ __('Users') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link href="https://mphaustralia.sharepoint.com/:w:/r/teams/MPHAdministration/_layouts/15/Doc.aspx?sourcedoc=%7B9d7fb799-bfce-4bd7-964a-9dbceff1b470%7D&action=editnew" target="_blank">
+                {{ __('Help') }}
+            </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->
