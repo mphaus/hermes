@@ -142,4 +142,11 @@ return [
         'host' => env('CURRENT_RMS_HOST', ''),
     ],
 
+    'mph_user' => [
+        'first_name' => env('MPH_USER_FIRST_NAME', ''),
+        'last_name' => env('MPH_USER_LAST_NAME', ''),
+        'username' => env('MPH_USER_USERNAME', ''),
+        'email' => env('MPH_USER_EMAIL', ''),
+        'password' => env('MPH_USER_PASSWORD', ''),
+    ],
 ];
