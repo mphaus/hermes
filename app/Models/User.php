@@ -73,6 +73,6 @@ class User extends Authenticatable
 
     public function scopeExceptSuperAdmin(Builder $query): void
     {
-        $query->where('username', '!=', config('app.mph_user.username'));
+        $query->where('username', '!=', config('app.super_user.username'));
     }
 }
