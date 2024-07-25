@@ -10,6 +10,7 @@ use App\Livewire\JobsIndex;
 use App\Livewire\JobsShow;
 use App\Livewire\QetIndex;
 use App\Livewire\UploadLogsShow;
+use App\Livewire\UsersCreate;
 use App\Livewire\UsersIndex;
 use Illuminate\Support\Facades\Route;
 
@@ -35,6 +36,7 @@ Route::middleware('auth')->group(function () {
     Route::get('opportunities/{id}', [OpportunityController::class, 'show'])->name('opportunities.show');
 
     Route::get('users', UsersIndex::class)->name('users.index');
+    Route::get('users/create', UsersCreate::class)->name('users.create');
 });
 
 require __DIR__ . '/auth.php';

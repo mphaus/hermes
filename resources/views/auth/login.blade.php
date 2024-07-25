@@ -7,7 +7,7 @@
             <x-input-label for="username" :value="__('Username')" />
             <x-input 
                 id="username" 
-                class="block w-full mt-1" 
+                class="mt-1" 
                 type="text" 
                 name="username" 
                 :value="old('username')" 
@@ -21,7 +21,7 @@
             <x-input-label for="password" :value="__('Password')" />
             <x-input 
                 id="password" 
-                class="block w-full mt-1"
+                class="mt-1"
                 type="password"
                 name="password"
                 required autocomplete="current-password" 
