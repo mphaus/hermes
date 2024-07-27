@@ -16,11 +16,11 @@
         </div>
         <div class="grid gap-1 text-sm lg:block">
             <p class="font-semibold lg:hidden">{{ __('Is admin') }}</p>
-            <p>{{ $user['is_admin'] }}</p>
+            <p>{{ $user['is_admin'] === 1 ? __('Yes') : __('No') }}</p>
         </div>
         <div class="grid gap-1 text-sm lg:block">
             <p class="font-semibold lg:hidden">{{ __('Is enabled') }}</p>
-            <p>{{ $user['is_enabled'] }}</p>
+            <p>{{ $user['is_enabled'] === 1 ? __('Yes') : __('No') }}</p>
         </div>
         <div class="flex items-center justify-end gap-4">
             <a href="#" title="{{ __('Edit') }}">

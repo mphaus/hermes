@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->boolean('is_admin')->default(true)->after('password');
-            $table->json('permissions')->default(null)->after('is_admin');
+            $table->boolean('is_enabled')->default(true)->after('is_admin');
+            $table->json('permissions')->default(null)->after('is_enabled');
         });
     }
 
@@ -24,6 +25,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('is_admin');
+            $table->dropColumn('is_enabled');
             $table->dropColumn('permissions');
         });
     }
