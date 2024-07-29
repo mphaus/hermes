@@ -2,8 +2,9 @@
     class="max-w-screen-md mx-auto flow" 
     wire:submit="save" 
     x-data="UserForm"
-    x-effect="normalizeUsername(first_name, last_name)"
 >
+    <template hidden x-effect="normalizeUsername(firstName, lastName)"></template>
+    <template hidden x-effect="toggleFunctionAccess($wire.form.is_admin)"></template>
     <section class="grid gap-4 md:grid-cols-2">
         <div class="space-y-1">
             <x-input-label
@@ -14,7 +15,7 @@
                 type="text"
                 id="first_name"
                 wire:model="form.first_name"
-                x-model="first_name"
+                x-model="firstName"
             />
             <x-input-error :messages="$errors->get('form.first_name')" />
         </div>
@@ -27,7 +28,7 @@
                 type="text"
                 id="last_name"
                 wire:model="form.last_name"
-                x-model="last_name"
+                x-model="lastName"
             />
             <x-input-error :messages="$errors->get('form.last_name')" />
         </div>
@@ -78,7 +79,7 @@
         <p class="font-semibold">{{ __('Function access') }}</p>
         <ul class="space-y-4">
             <li class="flex items-center gap-2">
-                <x-input-checkbox id="crud_users" value="crud-users" wire:model="form.permissions" />
+                <x-input-checkbox id="crud_users" value="crud-users" wire:model="form.permissions" x-bind:disabled="functionAccessDisabled" />
                 <x-input-label
                     for="crud_users"
                     class="cursor-pointer"
@@ -86,7 +87,7 @@
                 />
             </li>
             <li class="flex items-center gap-2">
-                <x-input-checkbox id="equipment_import" value="access-equipment-import" wire:model="form.permissions" />
+                <x-input-checkbox id="equipment_import" value="access-equipment-import" wire:model="form.permissions" x-bind:disabled="functionAccessDisabled" />
                 <x-input-label
                     for="equipment_import"
                     class="cursor-pointer"
@@ -94,7 +95,7 @@
                 />
             </li>
             <li class="flex items-center gap-2">
-                <x-input-checkbox id="action_stream" value="access-action-stream" wire:model="form.permissions" />
+                <x-input-checkbox id="action_stream" value="access-action-stream" wire:model="form.permissions" x-bind:disabled="functionAccessDisabled" />
                 <x-input-label
                     for="action_stream"
                     class="cursor-pointer"
@@ -102,7 +103,7 @@
                 />
             </li>
             <li class="flex items-center gap-2">
-                <x-input-checkbox id="create_default_discussions" value="create-default-discussions" wire:model="form.permissions" />
+                <x-input-checkbox id="create_default_discussions" value="create-default-discussions" wire:model="form.permissions" x-bind:disabled="functionAccessDisabled" />
                 <x-input-label
                     for="create_default_discussions"
                     class="cursor-pointer"
@@ -110,7 +111,7 @@
                 />
             </li>
             <li class="flex items-center gap-2">
-                <x-input-checkbox id="update_default_discussions" value="update-default-discussions" wire:model="form.permissions" />
+                <x-input-checkbox id="update_default_discussions" value="update-default-discussions" wire:model="form.permissions" x-bind:disabled="functionAccessDisabled" />
                 <x-input-label
                     for="update_default_discussions"
                     class="cursor-pointer"
