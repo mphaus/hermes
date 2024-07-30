@@ -12,8 +12,6 @@ use App\Livewire\QetIndex;
 use App\Livewire\UploadLogsShow;
 use App\Livewire\UsersCreate;
 use App\Livewire\UsersIndex;
-use App\Mail\NewAccount;
-use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
@@ -39,11 +37,6 @@ Route::middleware('auth')->group(function () {
 
     Route::get('users', UsersIndex::class)->name('users.index');
     Route::get('users/create', UsersCreate::class)->name('users.create');
-
-    Route::get('new-account-email', function () {
-        $user = User::find(2);
-        return new NewAccount($user);
-    });
 });
 
 require __DIR__ . '/auth.php';
