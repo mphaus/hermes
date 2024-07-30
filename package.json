@@ -3,8 +3,7 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "vite build",
-        "new-account-email": "mjml -w mjml/new-account.mjml -o mjml/new-account.html --config.minify"
+        "build": "vite build"
     },
     "devDependencies": {
         "@tailwindcss/forms": "^0.5.7",
@@ -15,7 +14,6 @@
         "vite": "^5.2.12"
     },
     "dependencies": {
-        "axios": "^1.7.2",
-        "mjml": "^4.15.3"
+        "axios": "^1.7.2"
     }
 }

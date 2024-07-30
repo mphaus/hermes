@@ -2,8 +2,10 @@
 
 namespace App\Livewire\Forms;
 
+use App\Mail\NewAccount;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 use Livewire\Form;
 
@@ -81,5 +83,7 @@ class UserForm extends Form
         $user->is_enabled = $validated['is_enabled'];
         $user->permissions = $validated['permissions'];
         $user->save();
+
+        Mail::to($user->email)->send(new NewAccount($user));
     }
 }

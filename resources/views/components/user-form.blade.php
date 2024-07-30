@@ -122,6 +122,9 @@
         <x-input-error :messages="$errors->get('form.permissions')" />
     </div>
     <div class="flex justify-end">
-        <x-button type="submit" variant="primary">{{ __('Save') }}</x-button>
+        <x-button type="submit" variant="primary">
+            <span wire:loading.class="hidden" wire:target="save">{{ __('Save') }}</span>
+            <span wire:loading wire:target="save">{{ __('Saving...') }}</span>
+        </x-button>
     </div>
 </x-form>
