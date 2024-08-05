@@ -4,7 +4,7 @@
     <div class="grid gap-4 lg:grid-cols-10">
         <div class="grid gap-1 lg:block lg:col-span-2">
             <p class="text-sm font-semibold lg:hidden">{{ __('Name') }}</p>
-            <p>{{ $user['full_name'] }}</p>
+            <a href="{{ route('users.show', ['user' => $user['id']]) }}" wire:navigate title="{{ $user['full_name'] }}">{{ $user['full_name'] }}</a>
         </div>
         <div class="grid gap-1 text-sm lg:block lg:col-span-2">
             <p class="font-semibold lg:hidden">{{ __('Username') }}</p>
@@ -16,11 +16,11 @@
         </div>
         <div class="grid gap-1 text-sm lg:block">
             <p class="font-semibold lg:hidden">{{ __('Is admin') }}</p>
-            <p>{{ $user['is_admin'] === 1 ? __('Yes') : __('No') }}</p>
+            <p>{{ $user['is_admin'] ? __('Yes') : __('No') }}</p>
         </div>
         <div class="grid gap-1 text-sm lg:block">
             <p class="font-semibold lg:hidden">{{ __('Is enabled') }}</p>
-            <p>{{ $user['is_enabled'] === 1 ? __('Yes') : __('No') }}</p>
+            <p>{{ $user['is_enabled'] ? __('Yes') : __('No') }}</p>
         </div>
         <div class="flex items-center justify-end gap-4">
             <a href="#" title="{{ __('Edit') }}">
