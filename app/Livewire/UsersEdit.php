@@ -1,0 +1,26 @@
+<?php
+
+namespace App\Livewire;
+
+use App\Livewire\Forms\UserForm;
+use App\Models\User;
+use App\Traits\WithFunctionAccess;
+use Illuminate\Contracts\View\View;
+use Livewire\Component;
+
+class UsersEdit extends Component
+{
+    use WithFunctionAccess;
+
+    public UserForm $form;
+
+    public function mount(User $user): void
+    {
+        $this->form->setUser($user);
+    }
+
+    public function render(): View
+    {
+        return view('livewire.users-edit');
+    }
+}

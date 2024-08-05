@@ -36,6 +36,17 @@ class UserForm extends Form
 
     public array $permissions = [];
 
+    public function setUser(User $user): void
+    {
+        $this->first_name = $user->first_name;
+        $this->last_name = $user->last_name;
+        $this->username = $user->username;
+        $this->email = $user->email;
+        $this->is_admin = $user->is_admin;
+        $this->is_enabled = $user->is_enabled;
+        $this->permissions = $user->permissions->toArray();
+    }
+
     public function rules(): array
     {
         return [

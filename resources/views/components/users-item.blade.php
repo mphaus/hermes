@@ -23,7 +23,7 @@
             <p>{{ $user['is_enabled'] ? __('Yes') : __('No') }}</p>
         </div>
         <div class="flex items-center justify-end gap-4">
-            <a href="#" title="{{ __('Edit') }}">
+            <a href="{{ route('users.edit', ['user' => $user['id']]) }}" title="{{ __('Edit') }}" wire:navigate>
                 <x-icon-pen-to-square class="w-5 h-5 fill-current" />
             </a>
             <button type="button" class="text-primary-500 hover:text-primary-600" title="{{ __('Delete') }}">

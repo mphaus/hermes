@@ -2,8 +2,6 @@ import { normalizeString } from "../utils";
 
 export default function UserForm () {
     return {
-        firstName: '',
-        lastName: '',
         functionAccessDisabled: false,
         /**
          * @param {string} firstName
