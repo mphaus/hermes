@@ -15,6 +15,10 @@ class UsersShow extends Component
 
     public function mount(User $user): void
     {
+        if ($user->username === config('app.super_user.username')) {
+            abort(404);
+        }
+
         $this->user = $user;
     }
 

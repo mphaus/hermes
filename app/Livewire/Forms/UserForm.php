@@ -103,7 +103,7 @@ class UserForm extends Form
 
     public function update(): void
     {
-        if ($this->user->id === auth()->user()->id || $this->user->username === config('app.super_user.username')) {
+        if ($this->user->id === auth()->user()->id) {
             abort(403);
         }
 
