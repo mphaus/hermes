@@ -22,6 +22,8 @@ use Livewire\Form;
 
 class UserForm extends Form
 {
+    public ?User $user = null;
+
     public string $first_name = '';
 
     public string $last_name = '';
@@ -38,6 +40,8 @@ class UserForm extends Form
 
     public function setUser(User $user): void
     {
+        $this->user = $user;
+
         $this->first_name = $user->first_name;
         $this->last_name = $user->last_name;
         $this->username = $user->username;
@@ -55,12 +59,12 @@ class UserForm extends Form
             'username' => [
                 'required',
                 'min:5',
-                Rule::unique('users', 'username'),
+                $this->user ? Rule::unique('users', 'username')->ignore($this->user->id) : Rule::unique('users', 'username'),
             ],
             'email' => [
                 'required',
                 'email:rfc,dns',
-                Rule::unique('users', 'email'),
+                $this->user ? Rule::unique('users', 'email')->ignore($this->user->id) : Rule::unique('users', 'email'),
             ],
             'is_admin' => 'boolean',
             'is_enabled' => 'boolean',
@@ -78,7 +82,7 @@ class UserForm extends Form
         ];
     }
 
-    public function store()
+    public function store(): void
     {
         $validated = $this->validate();
 
@@ -89,12 +93,25 @@ class UserForm extends Form
         $user->username = $validated['username'];
         $user->email = $validated['email'];
         $user->password = Hash::make($validated['username']);
-        $user->permissions = $validated['permissions'];
         $user->is_admin = $validated['is_admin'];
         $user->is_enabled = $validated['is_enabled'];
         $user->permissions = $validated['permissions'];
         $user->save();
 
         Mail::to($user->email)->send(new NewAccount($user));
+    }
+
+    public function update()
+    {
+        $validated = $this->validate();
+
+        $this->user->first_name = $validated['first_name'];
+        $this->user->last_name = $validated['last_name'];
+        $this->user->username = $validated['username'];
+        $this->user->email = $validated['email'];
+        $this->user->is_admin = $validated['is_admin'];
+        $this->user->is_enabled = $validated['is_enabled'];
+        $this->user->permissions = $validated['permissions'];
+        $this->user->save();
     }
 }

@@ -19,6 +19,18 @@ class UsersEdit extends Component
         $this->form->setUser($user);
     }
 
+    public function save()
+    {
+        $this->form->update();
+
+        session()->flash('alert', [
+            'type' => 'success',
+            'message' => __('User has been updated successfully.'),
+        ]);
+
+        $this->redirectRoute(name: 'users.index', navigate: true);
+    }
+
     public function render(): View
     {
         return view('livewire.users-edit');
