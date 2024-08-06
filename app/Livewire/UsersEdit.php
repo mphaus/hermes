@@ -19,7 +19,7 @@ class UsersEdit extends Component
         $this->form->setUser($user);
     }
 
-    public function save()
+    public function save(): mixed
     {
         $this->form->update();
 
@@ -28,7 +28,7 @@ class UsersEdit extends Component
             'message' => __('User has been updated successfully.'),
         ]);
 
-        $this->redirectRoute(name: 'users.index', navigate: true);
+        return $this->redirectRoute(name: 'users.index', navigate: true);
     }
 
     public function render(): View

@@ -48,7 +48,7 @@ class UserForm extends Form
         $this->email = $user->email;
         $this->is_admin = $user->is_admin;
         $this->is_enabled = $user->is_enabled;
-        $this->permissions = $user->permissions->toArray();
+        $this->permissions = $user->permissions === null ? [] : $user->permissions->toArray();
     }
 
     public function rules(): array
@@ -101,8 +101,12 @@ class UserForm extends Form
         Mail::to($user->email)->send(new NewAccount($user));
     }
 
-    public function update()
+    public function update(): void
     {
+        if ($this->user->id === auth()->user()->id || $this->user->username === config('app.super_user.username')) {
+            abort(403);
+        }
+
         $validated = $this->validate();
 
         $this->user->first_name = $validated['first_name'];
