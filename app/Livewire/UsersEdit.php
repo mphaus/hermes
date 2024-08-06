@@ -16,7 +16,7 @@ class UsersEdit extends Component
 
     public function mount(User $user): void
     {
-        if ($user->username === config('app.super_user.username')) {
+        if ($user->id === auth()->user()->id || $user->username === config('app.super_user.username')) {
             abort(404);
         }
 

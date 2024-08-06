@@ -22,13 +22,15 @@
             <p class="font-semibold lg:hidden">{{ __('Is enabled') }}</p>
             <p>{{ $user['is_enabled'] ? __('Yes') : __('No') }}</p>
         </div>
-        <div class="flex items-center justify-end gap-4">
-            <a href="{{ route('users.edit', ['user' => $user['id']]) }}" title="{{ __('Edit') }}" wire:navigate>
-                <x-icon-pen-to-square class="w-5 h-5 fill-current" />
-            </a>
-            <button type="button" class="text-primary-500 hover:text-primary-600" title="{{ __('Delete') }}">
-                <x-icon-trash-can class="w-5 h-5 fill-current" />
-            </button>
-        </div>
+        @unless ($user['id'] === auth()->user()->id)
+            <div class="flex items-center justify-end gap-4">
+                <a href="{{ route('users.edit', ['user' => $user['id']]) }}" title="{{ __('Edit') }}" wire:navigate>
+                    <x-icon-pen-to-square class="w-5 h-5 fill-current" />
+                </a>
+                <button type="button" class="text-primary-500 hover:text-primary-600" title="{{ __('Delete') }}">
+                    <x-icon-trash-can class="w-5 h-5 fill-current" />
+                </button>
+            </div>    
+        @endunless
     </div>
 </x-card>
