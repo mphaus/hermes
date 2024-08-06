@@ -5,6 +5,7 @@
 >
     <template hidden x-effect="normalizeUsername($wire.form.first_name, $wire.form.last_name)"></template>
     <template hidden x-effect="toggleFunctionAccess($wire.form.is_admin)"></template>
+    <template hidden x-effect="toggleAdmin($wire.form.permissions.length)"></template>
     <section class="grid gap-4 md:grid-cols-2">
         <div class="space-y-1">
             <x-input-label
@@ -75,7 +76,7 @@
     </section>
     <div class="mt-6 flow">
         <p class="font-semibold">{{ __('Function access') }}</p>
-        <ul class="space-y-4">
+        <ul class="space-y-4" x-ref="permissionsList">
             @foreach ($this->getPermissions() as $permission)
                 <li class="flex items-center gap-2">
                     <x-input-checkbox id="{{ $permission['key'] }}" value="{{ $permission['key'] }}" wire:model="form.permissions" x-bind:disabled="functionAccessDisabled" />
