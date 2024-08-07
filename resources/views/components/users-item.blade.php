@@ -1,6 +1,10 @@
 @props(['user'])
 
-<x-card>
+<x-card 
+    x-data="{ userIsBeingDeleted: false }" 
+    x-on:hermes:user-delete.window="userIsBeingDeleted = true" 
+    x-bind:class="{ 'pointer-events-none opacity-50': userIsBeingDeleted }"
+>
     <div class="grid gap-4 lg:grid-cols-10">
         <div class="grid gap-1 lg:block lg:col-span-2">
             <p class="text-sm font-semibold lg:hidden">{{ __('Name') }}</p>

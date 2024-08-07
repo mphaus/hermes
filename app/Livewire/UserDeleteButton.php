@@ -10,6 +10,22 @@ class UserDeleteButton extends Component
 {
     public User $user;
 
+    public function delete(): mixed
+    {
+        if ($this->user->id === auth()->user()->id || $this->user->username === config('app.super_user.username')) {
+            abort(403);
+        }
+
+        $this->user->delete();
+
+        session()->flash('alert', [
+            'type' => 'success',
+            'message' => __('User :full_name has been deleted.', ['full_name' => $this->user->full_name]),
+        ]);
+
+        return $this->redirectRoute(name: 'users.index', navigate: true);
+    }
+
     public function render(): View
     {
         return view('livewire.user-delete-button');

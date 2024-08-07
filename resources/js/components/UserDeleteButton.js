@@ -6,7 +6,8 @@ export default function UserDeleteButton () {
                     return;
                 }
 
-                console.log( 'It should delete the user.' );
+                this.$dispatch( 'hermes:user-delete' );
+                this.$wire.delete();
             } );
         },
         showDialog () {

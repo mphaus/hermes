@@ -4,7 +4,11 @@
     'max-w-screen-md mx-auto',
     'grid gap-4 md:grid-cols-2' => !$user->is_admin,
     'space-y-4' => $user->is_admin,
-])>
+])
+    x-data="{ userIsBeingDeleted: false }" 
+    x-on:hermes:user-delete.window="userIsBeingDeleted = true" 
+    x-bind:class="{ 'pointer-events-none opacity-50': userIsBeingDeleted }"
+>
     <section class="flow">
         <div class="space-y-1">
             <p class="text-sm font-semibold">{{ __('Username:') }}</p>
