@@ -41,9 +41,7 @@
             <a href="{{ route('users.edit', ['user' => $user['id']]) }}" title="{{ __('Edit') }}" wire:navigate>
                 <x-icon-pen-to-square class="w-5 h-5 fill-current" />
             </a>
-            <button type="button" class="text-primary-500 hover:text-primary-600" title="{{ __('Delete') }}">
-                <x-icon-trash-can class="w-5 h-5 fill-current" />
-            </button>
+            <livewire:user-delete-button :user="$user" />
         </section>
     @endunless
 </x-card>
