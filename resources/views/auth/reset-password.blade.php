@@ -8,14 +8,14 @@
         <!-- Email Address -->
         <div>
             <x-input-label for="email" :value="__('Email')" />
-            <x-input id="email" class="block w-full mt-1" type="email" name="email" :value="old('email', $request->email)" required autofocus autocomplete="username" />
+            <x-input id="email" class="block w-full mt-1" type="email" name="email" :value="old('email', $request->email)" required autocomplete="username" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
         <!-- Password -->
         <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />
-            <x-input id="password" class="block w-full mt-1" type="password" name="password" required autocomplete="new-password" />
+            <x-input id="password" class="block w-full mt-1" type="password" name="password" required autofocus autocomplete="new-password" />
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 

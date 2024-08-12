@@ -13,7 +13,7 @@ Set password
 
 If the button does not work, copy and paste the following link into your browser:
 
-{{ $link }}
+<a href="{{ $link }}" target="_blank">{{ $link }}</a>
 
 Do not reply to this email. This account is not monitored.
 </x-mail::message>

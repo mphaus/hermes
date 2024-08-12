@@ -42,7 +42,7 @@ class NewAccount extends Mailable
             markdown: 'mail.new-account',
             with: [
                 'logo' => Vite::asset('resources/images/mph-logo.png'),
-                'link' => route('password.reset', ['token' => app('auth.password.broker')->createToken($this->user)]),
+                'link' => route('password.reset', ['token' => app('auth.password.broker')->createToken($this->user), 'email' => $this->user->email]),
             ]
         );
     }
