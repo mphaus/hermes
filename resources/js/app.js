@@ -14,6 +14,7 @@ import QetItem from "./components/QetItem";
 import UploadLog from "./components/UploadLog";
 import UserForm from "./components/UserForm";
 import UserDeleteButton from "./components/UserDeleteButton";
+import ResetPasswordForm from "./components/ResetPasswordForm";
 
 Alpine.data( 'ActionStreamFilters', ActionStreamFilters );
 Alpine.data( 'ActionStreamItem', ActionStreamItem );
@@ -25,5 +26,6 @@ Alpine.data( 'QetItem', QetItem );
 Alpine.data( 'UploadLog', UploadLog );
 Alpine.data( 'UserForm', UserForm );
 Alpine.data( 'UserDeleteButton', UserDeleteButton );
+Alpine.data( 'ResetPasswordForm', ResetPasswordForm );
 
 Livewire.start();
