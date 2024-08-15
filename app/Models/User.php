@@ -51,7 +51,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'is_admin' => 'boolean',
-            'is_enbaled' => 'boolean',
+            'is_enabled' => 'boolean',
             'permissions' => AsArrayObject::class,
         ];
     }
