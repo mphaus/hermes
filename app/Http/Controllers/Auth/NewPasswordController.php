@@ -40,9 +40,9 @@ class NewPasswordController extends Controller
 
         $user = Password::getUser(['email' => $request->email]);
 
-        if ($user && !$user->is_enabled) {
+        if ($user && (!$user->is_enabled || $user->username === config('app.super_user.username'))) {
             return back()->withInput($request->only('email'))
-                ->withErrors(['email' => __('We could not set a new password for you, your account is not enabled.')]);
+                ->withErrors(['email' => __('We were unable to set a new password for you, your account is not enabled or available to set a password.')]);
         }
 
         // Here we will attempt to reset the user's password. If it is successful we
