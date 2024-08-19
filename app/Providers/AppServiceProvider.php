@@ -2,12 +2,14 @@
 
 namespace App\Providers;
 
+use App\Http\Middleware\EnsureEnabled;
 use App\OpportunityItems;
 use App\QET;
 use App\UploadLog;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\ServiceProvider;
+use Livewire\Livewire;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -16,9 +18,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        App::bind('opportunityitems', fn () => new OpportunityItems);
-        App::bind('uploadlog', fn () => new UploadLog);
-        App::bind('qet', fn () => new QET);
+        App::bind('opportunityitems', fn() => new OpportunityItems);
+        App::bind('uploadlog', fn() => new UploadLog);
+        App::bind('qet', fn() => new QET);
     }
 
     /**
@@ -26,6 +28,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Livewire::addPersistentMiddleware([
+            EnsureEnabled::class,
+        ]);
+
         $macroCallback = function () {
             return Http::withHeaders([
                 'X-AUTH-TOKEN' => config('app.current_rms.auth_token'),
