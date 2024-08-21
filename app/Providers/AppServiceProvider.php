@@ -3,10 +3,12 @@
 namespace App\Providers;
 
 use App\Http\Middleware\EnsureUserIsEnabled;
+use App\Models\User;
 use App\OpportunityItems;
 use App\QET;
 use App\UploadLog;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
