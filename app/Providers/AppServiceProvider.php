@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Http\Middleware\EnsureEnabled;
+use App\Http\Middleware\EnsureUserIsEnabled;
 use App\OpportunityItems;
 use App\QET;
 use App\UploadLog;
@@ -29,7 +29,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Livewire::addPersistentMiddleware([
-            EnsureEnabled::class,
+            EnsureUserIsEnabled::class,
         ]);
 
         $macroCallback = function () {

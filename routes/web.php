@@ -21,26 +21,26 @@ Route::middleware(['auth', 'is_enabled'])->group(function () {
     // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('equipment-import', JobsIndex::class)->name('jobs.index');
+    Route::get('equipment-import', JobsIndex::class)->name('jobs.index')->middleware('permission:access-equipment-import');
     Route::permanentRedirect('/jobs', '/equipment-import');
 
-    Route::get('equipment-import/{id}', JobsShow::class)->name('jobs.show');
+    Route::get('equipment-import/{id}', JobsShow::class)->name('jobs.show')->middleware('permission:access-equipment-import');
     Route::permanentRedirect('/jobs/{id}', '/equipment-import/{id}');
 
-    Route::get('logs/{id}', UploadLogsShow::class)->name('logs.show');
-    Route::get('action-stream', ActionStreamIndex::class)->name('action-stream.index');
+    Route::get('logs/{id}', UploadLogsShow::class)->name('logs.show')->middleware('permission:access-equipment-import');
+    Route::get('action-stream', ActionStreamIndex::class)->name('action-stream.index')->middleware('permission:access-action-stream');
     Route::get('qet', QetIndex::class)->name('qet.index');
 
-    Route::get('discussions/create', DiscussionsCreate::class)->name('discussions.create');
-    Route::get('discussions/edit', DiscussionsEdit::class)->name('discussions.edit');
+    Route::get('discussions/create', DiscussionsCreate::class)->name('discussions.create')->middleware('permission:create-default-discussions');
+    Route::get('discussions/edit', DiscussionsEdit::class)->name('discussions.edit')->middleware('permission:update-default-discussions');
 
     Route::get('opportunities/search', [OpportunityController::class, 'search'])->name('opportunities.search');
     Route::get('opportunities/{id}', [OpportunityController::class, 'show'])->name('opportunities.show');
 
-    Route::get('users', UsersIndex::class)->name('users.index');
-    Route::get('users/create', UsersCreate::class)->name('users.create');
-    Route::get('users/{user}', UsersShow::class)->name('users.show');
-    Route::get('users/{user}/edit', UsersEdit::class)->name('users.edit');
+    Route::get('users', UsersIndex::class)->name('users.index')->middleware('permission:crud-users');
+    Route::get('users/create', UsersCreate::class)->name('users.create')->middleware('permission:crud-users');
+    Route::get('users/{user}', UsersShow::class)->name('users.show')->middleware('permission:crud-users');
+    Route::get('users/{user}/edit', UsersEdit::class)->name('users.edit')->middleware('permission:crud-users');
 });
 
 require __DIR__ . '/auth.php';

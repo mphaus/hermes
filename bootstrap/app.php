@@ -1,7 +1,8 @@
 <?php
 
 use App\Http\Middleware\CreateApplicationSuperUser;
-use App\Http\Middleware\EnsureEnabled;
+use App\Http\Middleware\EnsureUserHasPermission;
+use App\Http\Middleware\EnsureUserIsEnabled;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -14,7 +15,8 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-            'is_enabled' => EnsureEnabled::class,
+            'is_enabled' => EnsureUserIsEnabled::class,
+            'permission' => EnsureUserHasPermission::class,
         ]);
 
         $middleware->append(CreateApplicationSuperUser::class);
