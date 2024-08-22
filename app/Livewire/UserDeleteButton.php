@@ -4,15 +4,16 @@ namespace App\Livewire;
 
 use App\Models\User;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class UserDeleteButton extends Component
 {
     public User $user;
 
-    public function delete(): mixed
+    public function delete()
     {
-        if ($this->user->id === auth()->user()->id || $this->user->username === config('app.super_user.username')) {
+        if ($this->user->id === Auth::user()->id || $this->user->username === config('app.super_user.username')) {
             abort(403);
         }
 

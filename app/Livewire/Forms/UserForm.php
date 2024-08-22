@@ -4,6 +4,7 @@ namespace App\Livewire\Forms;
 
 use App\Mail\NewAccount;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
@@ -70,7 +71,7 @@ class UserForm extends Form
             'is_enabled' => 'boolean',
             'permissions' => [
                 'array',
-                Rule::requiredIf(fn () => $this->is_admin === false),
+                Rule::requiredIf(fn() => $this->is_admin === false),
             ],
         ];
     }
@@ -103,7 +104,7 @@ class UserForm extends Form
 
     public function update(): void
     {
-        if ($this->user->id === auth()->user()->id) {
+        if ($this->user->id === Auth::user()->id) {
             abort(403);
         }
 

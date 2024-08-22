@@ -9,6 +9,7 @@ use App\QET;
 use App\UploadLog;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
@@ -34,13 +35,23 @@ class AppServiceProvider extends ServiceProvider
             EnsureUserIsEnabled::class,
         ]);
 
-        $macroCallback = function () {
+        Http::macro('current', function () {
             return Http::withHeaders([
                 'X-AUTH-TOKEN' => config('app.current_rms.auth_token'),
                 'X-SUBDOMAIN' => config('app.current_rms.subdomain'),
             ])->baseUrl(config('app.current_rms.host'));
-        };
+        });
 
-        Http::macro('current', $macroCallback);
+        Gate::before(fn(User $user) => $user->username === config('app.super_user.username') || $user->is_admin);
+
+        Gate::define('crud-users', fn(User $user) => in_array('crud-users', $user->permissions->toArray()));
+
+        Gate::define('access-equipment-import', fn(User $user) => in_array('access-equipment-import', $user->permissions->toArray()));
+
+        Gate::define('access-action-stream', fn(User $user) => in_array('access-action-stream', $user->permissions->toArray()));
+
+        Gate::define('create-default-discussions', fn(User $user) => in_array('create-default-discussions', $user->permissions->toArray()));
+
+        Gate::define('update-default-discussions', fn(User $user) => in_array('update-default-discussions', $user->permissions->toArray()));
     }
 }

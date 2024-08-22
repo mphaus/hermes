@@ -6,6 +6,7 @@ use App\Facades\OpportunityItems;
 use App\Facades\UploadLog;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\ValidationException;
@@ -31,8 +32,12 @@ class ItemsCreate extends Component
         $this->jobId = $jobId;
     }
 
-    public function save(): mixed
+    public function save()
     {
+        if (Gate::denies('access-equipment-import')) {
+            abort(403);
+        }
+
         if (!$this->csvfile) {
             throw ValidationException::withMessages(['csvfile' => __('Please, select a csv file to upload.')]);
         }

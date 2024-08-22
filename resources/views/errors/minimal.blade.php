@@ -12,7 +12,7 @@
 
     @vite(['resources/css/app.css'])
 </head>
-<body class="font-sans antialiased">
+<body class="font-sans antialiased bg-white">
     <div class="container">
         <div class="flex flex-col items-center justify-center min-h-screen gap-6 text-center">
             <a href="{{ route('login') }}" class="block w-24 mx-auto">

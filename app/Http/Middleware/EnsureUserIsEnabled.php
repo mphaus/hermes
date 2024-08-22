@@ -16,7 +16,7 @@ class EnsureUserIsEnabled
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!auth()->user()->is_enabled) {
+        if (!Auth::user()->is_enabled) {
             Auth::logout();
             $request->session()->invalidate();
             $request->session()->regenerateToken();

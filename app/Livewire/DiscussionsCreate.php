@@ -6,6 +6,7 @@ use App\Livewire\Forms\CreateDiscussionsForm;
 use App\Models\DiscussionMapping;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Http;
 use Livewire\Component;
 
@@ -15,6 +16,10 @@ class DiscussionsCreate extends Component
 
     public function save()
     {
+        if (Gate::denies('create-default-discussions')) {
+            abort(403);
+        }
+
         $result = $this->form->store();
 
         if ($result !== 'success') {
