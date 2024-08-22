@@ -45,6 +45,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(route('jobs.index', absolute: false));
+        return redirect(get_redirect_route());
     }
 }

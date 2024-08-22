@@ -21,7 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->append(CreateApplicationSuperUser::class);
         $middleware->redirectGuestsTo(fn() => route('login'));
-        $middleware->redirectUsersTo(fn() => route('jobs.index'));
+        $middleware->redirectUsersTo(fn() => get_redirect_route());
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

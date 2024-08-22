@@ -28,7 +28,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('jobs.index', absolute: false));
+        return redirect()->intended(get_redirect_route());
     }
 
     /**
