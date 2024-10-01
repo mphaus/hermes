@@ -3,6 +3,7 @@
 namespace App\Livewire\Forms;
 
 use App\Models\DiscussionMapping;
+use Illuminate\Http\Client\Pool;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Http;
@@ -11,8 +12,11 @@ use Livewire\Form;
 
 class CreateDiscussionsForm extends Form
 {
-    #[Validate('required|numeric', as: 'opportunity')]
-    public int $opportunityId;
+    #[Validate('boolean', as: 'create on project')]
+    public bool $createOnProject = false;
+
+    #[Validate('required|numeric', as: 'opportunity or project')]
+    public int $objectId;
 
     #[Validate('required|numeric', as: 'owner')]
     public int $userId;
@@ -54,11 +58,48 @@ class CreateDiscussionsForm extends Form
             return 'participants-validation-failed';
         }
 
+        // CHECK IF DISCUSSIONS EXIST ON THE DISCUSSABLE ID AND DELETE THEM IF NECESSARY
+        $queryParams = preg_replace('/\[\d+\]/', '[]', urldecode(http_build_query([
+            'q[discussable_id_eq]' => App::environment(['local', 'staging'])
+                ? (
+                    $this->createOnProject
+                    ? intval(config('app.mph.test_project_id'))
+                    : intval(config('app.mph.test_opportunity_id'))
+                )
+                : $this->objectId,
+            'q[discussable_type_eq]' => $this->createOnProject ? 'Project' : 'Opportunity',
+        ])));
+
+        $response = Http::current()->get("discussions?{$queryParams}");
+
+        if ($response->failed()) {
+            return 'discussions-existance-check-failed';
+        }
+
+        ['discussions' => $discussions] = $response->json();
+
+        if (!empty($discussions)) {
+            Http::pool(function (Pool $pool) use ($discussions) {
+                return array_map(function ($discussion) use ($pool) {
+                    return $pool->withHeaders([
+                        'X-AUTH-TOKEN' => config('app.current_rms.auth_token'),
+                        'X-SUBDOMAIN' => config('app.current_rms.subdomain'),
+                    ])->delete(config('app.current_rms.host') . 'discussions/' . $discussion['id']);
+                }, $discussions);
+            });
+        }
+
         foreach ($mappings as $mapping) {
             Http::current()->post('discussions', [
                 'discussion' => [
-                    'discussable_id' => App::environment(['local', 'staging']) ? intval(config('app.mph.test_opportunity_id')) : $this->opportunityId,
-                    'discussable_type' => 'Opportunity',
+                    'discussable_id' => App::environment(['local', 'staging'])
+                        ? (
+                            $this->createOnProject
+                            ? intval(config('app.mph.test_project_id'))
+                            : intval(config('app.mph.test_opportunity_id'))
+                        )
+                        : $this->objectId,
+                    'discussable_type' => $this->createOnProject ? 'Project' : 'Opportunity',
                     'subject' => $mapping['title'],
                     'created_by' => $this->userId,
                     'first_comment' => [

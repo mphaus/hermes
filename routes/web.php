@@ -3,6 +3,7 @@
 // use App\Http\Controllers\ProfileController;
 
 use App\Http\Controllers\OpportunityController;
+use App\Http\Controllers\ProjectController;
 use App\Livewire\ActionStreamIndex;
 use App\Livewire\DiscussionsCreate;
 use App\Livewire\DiscussionsEdit;
@@ -32,6 +33,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('opportunities/search', [OpportunityController::class, 'search'])->name('opportunities.search');
     Route::get('opportunities/{id}', [OpportunityController::class, 'show'])->name('opportunities.show');
+
+    Route::get('projects/search', [ProjectController::class, 'search'])->name('projects.search');
 });
 
 require __DIR__ . '/auth.php';
