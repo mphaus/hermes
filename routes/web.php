@@ -3,6 +3,7 @@
 // use App\Http\Controllers\ProfileController;
 
 use App\Http\Controllers\OpportunityController;
+use App\Http\Controllers\ProjectController;
 use App\Livewire\ActionStreamIndex;
 use App\Livewire\DiscussionsCreate;
 use App\Livewire\DiscussionsEdit;
@@ -41,6 +42,8 @@ Route::middleware(['auth', 'is_enabled'])->group(function () {
     Route::get('users/create', UsersCreate::class)->name('users.create')->middleware('permission:crud-users');
     Route::get('users/{user}', UsersShow::class)->name('users.show')->middleware('permission:crud-users');
     Route::get('users/{user}/edit', UsersEdit::class)->name('users.edit')->middleware('permission:crud-users');
+
+    Route::get('projects/search', [ProjectController::class, 'search'])->name('projects.search');
 });
 
 require __DIR__ . '/auth.php';

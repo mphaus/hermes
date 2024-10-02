@@ -13,8 +13,16 @@
             <p class="font-semibold">{{ __('Create Discussions') }}</p>
             <form class="space-y-4 lg:space-y-0 lg:grid lg:gap-4 lg:grid-cols-5 lg:items-end" wire:submit="save">
                 <div class="space-y-1 lg:col-span-2">
-                    <livewire:create-discussions-opportunity />
-                    <x-input-error class="mt-2" :messages="$errors->get('form.opportunityId')" />
+                    <div class="flex items-center gap-2 mb-4">
+                        <x-input-checkbox 
+                            id="discussions-project-check" 
+                            wire:model="form.createOnProject" 
+                            x-on:change="$dispatch('hermes:create-discussions-create-on-project-change', { createOnProject: $event.target.checked })"
+                        />
+                        <x-input-label for="discussions-project-check" value="{{ __('Create Discussions on Project instead') }}" class="!text-xs font-semibold" />
+                    </div>
+                    <livewire:create-discussions-object />
+                    <x-input-error class="mt-2" :messages="$errors->get('form.objectId')" />
                 </div>
                 <div class="space-y-1 lg:col-span-2">
                     <livewire:create-discussions-owner lazy />
@@ -24,13 +32,13 @@
                     <span wire:loading.class="hidden" wire:target="save">{{ __('Create Discussions') }}</span>
                     <span class="items-center gap-2" wire:loading.flex wire:target="save">
                         <x-icon-circle-notch class="w-4 h-4 fill-current animate-spin" />
-                        <span>{{ __('Creating Discussions...') }}</span>
+                        <span>{{ __('Creating...') }}</span>
                     </span>
                 </x-button>
             </form>
             <div class="mt-6 text-sm" wire:loading wire:target="save">
                 <p class="font-semibold">{{ __('Processing...') }}</p>
-                <p class="mt-1">{{ __('This process typically takes less than 30 seconds. Do not navigate away from this page until a Success or Fail message is shown here.') }}</p>
+                <p class="mt-1">{{ __('This process typically takes less than 40 seconds. Do not navigate away from this page until a Success or Fail message is shown here.') }}</p>
             </div>
             @if (session('message-alert'))
                 <x-message-alert class="mt-6" :alert="session('message-alert')" />

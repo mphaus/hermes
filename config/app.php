@@ -128,7 +128,8 @@ return [
         'purchase_orders_url' => 'https://mphaustralia.current-rms.com/purchase_orders/',
         'discussions_url' => 'https://mphaustralia.current-rms.com/discussions/',
         'members_url' => 'https://mphaustralia.current-rms.com/members/',
-        'test_opportunity_id' => env('MPH_TEST_OPPORTUNITY_ID')
+        'test_opportunity_id' => env('MPH_TEST_OPPORTUNITY_ID'),
+        'test_project_id' => env('MPH_TEST_PROJECT_ID'),
     ],
 
     'recaptcha_v3' => [

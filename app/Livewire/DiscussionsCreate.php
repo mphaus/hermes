@@ -33,7 +33,7 @@ class DiscussionsCreate extends Component
             session()->flash('message-alert', [
                 'type' => 'danger',
                 'title' => __('Fail'),
-                'message' => __('The Discussions creation failed with this message: an error occurred while checking the existence of the participants. Please refresh the page and try again.'),
+                'message' => __('The Discussions creation failed with this message: an error occurred while checking the existence of the participants. Please try again.'),
             ]);
         }
 
@@ -45,15 +45,33 @@ class DiscussionsCreate extends Component
             ]);
         }
 
+        if ($result === 'discussions-existance-check-failed') {
+            $object = $this->form->createOnProject ? 'Project' : 'Opportunity';
+
+            session()->flash('message-alert', [
+                'type' => 'danger',
+                'title' => __('Fail'),
+                'message' => __('The Discussions creation failed with this message: an error occurred while checking if discussions already exist on the selected :object. Please try again.', ['object' => $object]),
+            ]);
+        }
+
         if ($result === 'success') {
-            $opportunityId = App::environment(['local', 'staging']) ? intval(config('app.mph.test_opportunity_id')) : $this->form->opportunityId;
-            $response = Http::current()->get("opportunities/{$opportunityId}");
+            $objectId = App::environment(['local', 'staging'])
+                ? (
+                    $this->form->createOnProject
+                    ? intval(config('app.mph.test_project_id'))
+                    : intval(config('app.mph.test_opportunity_id'))
+                )
+                : $this->form->objectId;
+            $response = $this->form->createOnProject ? Http::current()->get("projects/{$objectId}") : Http::current()->get("opportunities/{$objectId}");
 
             if ($response->failed()) {
-                $message = __('Discussions have been added to the Opportunity in CurrentRMS.');
+                $message = $this->form->createOnProject ? __('Discussions have been added to the Project in CurrentRMS.') : __('Discussions have been added to the Opportunity in CurrentRMS.');
             } else {
-                ['opportunity' => $opportunity] = $response->json();
-                $message = __('Discussions have been added to the Opportunity in CurrentRMS. Check to make sure they are as-expected: <a href=":url" title=":subject" class="font-semibold" target="_blank">:subject</a>.', ['url' => "https://mphaustralia.current-rms.com/opportunities/{$opportunity['id']}", 'subject' => $opportunity['subject']]);
+                $result = $response->json();
+                $message = $this->form->createOnProject
+                    ? __('Discussions have been added to the Project in CurrentRMS. Check to make sure they are as-expected: <a href=":url" title=":subject" class="font-semibold" target="_blank">:subject</a>.', ['url' => "https://mphaustralia.current-rms.com/projects/{$result['project']['id']}", 'subject' => $result['project']['name']])
+                    : __('Discussions have been added to the Opportunity in CurrentRMS. Check to make sure they are as-expected: <a href=":url" title=":subject" class="font-semibold" target="_blank">:subject</a>.', ['url' => "https://mphaustralia.current-rms.com/opportunities/{$result['opportunity']['id']}", 'subject' => $result['opportunity']['subject']]);
             }
 
             session()->flash('alert', [
