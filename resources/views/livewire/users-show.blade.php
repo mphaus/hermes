@@ -11,6 +11,10 @@
 >
     <section class="flow">
         <div class="space-y-1">
+            <p class="text-sm font-semibold">{{ __('User system number:') }}</p>
+            <p>{{ $user->id }}</p>
+        </div>
+        <div class="space-y-1">
             <p class="text-sm font-semibold">{{ __('Username:') }}</p>
             <p>{{ $user->username }}</p>
         </div>
@@ -20,11 +24,21 @@
         </div>
         <div class="space-y-1">
             <p class="text-sm font-semibold">{{ __('Is admin:') }}</p>
-            <p>{{ $user->is_admin ? __('Yes') : __('No') }}</p>
+            @if ($user->is_admin)
+                <div>
+                    <x-icon-flexed-biceps class="w-5 h-5" />
+                </div>
+            @endif
         </div>
         <div class="space-y-1">
             <p class="text-sm font-semibold">{{ __('Is enabled:') }}</p>
-            <p>{{ $user->is_enabled ? __('Yes') : __('No') }}</p>
+            <div>
+                @if ($user->is_enabled)
+                    <x-icon-check-mark-button class="w-5 h-5" />
+                @else
+                    <x-icon-heavy-multiplication-x class="w-5 h-5" />
+                @endif
+            </div>
         </div>
     </section>
     @unless ($user->is_admin)
