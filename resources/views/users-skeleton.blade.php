@@ -2,7 +2,7 @@
     <x-slot name="title">{{ __('Users') }}</x-slot>
     <x-slot name="heading">
         <span>{{ __('Users') }}</span>
-        <span class="block mt-2 text-sm font-normal">{{ __('New users can be created and exiting users edited (or deleted) here.') }}</span>
+        <span class="block mt-2 text-sm font-normal">{{ __('Create, Rename, Update and Delete (CRUD) Hermes system users.') }}</span>
     </x-slot>
     <div class="space-y-4">
         <div class="hidden lg:block">
