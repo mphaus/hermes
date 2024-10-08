@@ -90,7 +90,8 @@
         </ul>
         <x-input-error :messages="$errors->get('form.permissions')" />
     </div>
-    <div class="flex justify-end">
+    <div class="flex items-center justify-end gap-2">
+        <x-button href="{{ route('users.index') }}" variant="outline-primary" wire:loading.class="disabled" wire:target="save">{{ __('Cancel') }}</x-button>
         <x-button type="submit" variant="primary">
             <span wire:loading.class="hidden" wire:target="save">{{ __('Save') }}</span>
             <span wire:loading wire:target="save">{{ __('Saving...') }}</span>
