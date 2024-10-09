@@ -33,7 +33,7 @@ class PasswordResetLinkController extends Controller
 
         if ($user && (!$user->is_enabled || $user->username === config('app.super_user.username'))) {
             return back()->withInput($request->only('email'))
-                ->withErrors(['email' => __('We were unable to send you a link to reset your password, your account is not enabled or available to use the forgotten password feature.')]);
+                ->withErrors(['email' => __('We were unable to send you a link to reset your password, your account is not enabled or available to use the password recovery feature.')]);
         }
 
         // We will send the password reset link to this user. Once we have attempted

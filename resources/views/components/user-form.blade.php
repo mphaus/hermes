@@ -58,12 +58,6 @@
     </section>
     <section class="space-y-8">
         <div>
-            {{-- <x-input-label for="{{ $permission['key'] }}" class="space-y-1 cursor-pointer">
-                <p class="!font-semibold">{{ $permission['value'] }}</span>
-                @if ($permission['description'])
-                    <p class="text-xs leading-5">{{ $permission['description'] }}</p>
-                @endif
-            </x-input-label> --}}
             <div class="flex items-start gap-2">
                 <x-input-checkbox id="is_admin" class="mt-0.5" wire:model="form.is_admin" />
                 <x-input-label for="is_admin" class="space-y-1 cursor-pointer">

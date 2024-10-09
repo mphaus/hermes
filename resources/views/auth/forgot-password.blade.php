@@ -1,6 +1,6 @@
 <x-layout-guest>
     <div class="mb-4 text-sm text-gray-600">
-        {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
+        {{ __('Enter the email address associated with :app_name and the system will email you a password reset link. This message should arrive in under five minutes, but may be in your spam folder.', ['app_name' => config('app.name')]) }}
     </div>
 
     <!-- Session Status -->
