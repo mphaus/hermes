@@ -82,6 +82,7 @@
     </section>
     <div class="mt-6 flow">
         <p class="font-semibold">{{ __('Function access') }}</p>
+        <p class="mt-2 text-xs">{!! __('See the <a href=":url" target="_blank" rel="nofollow">Hermes Guide</a> for more info on Hermes functions.', ['url' => 'https://mphaustralia.sharepoint.com/:w:/r/teams/MPHAdministration/_layouts/15/Doc.aspx?sourcedoc=%7B9d7fb799-bfce-4bd7-964a-9dbceff1b470%7D&action=editnew']) !!}</p>
         <ul class="space-y-4" x-ref="permissionsList">
             @foreach ($this->getPermissions() as $permission)
                 <li class="flex items-center gap-2">
