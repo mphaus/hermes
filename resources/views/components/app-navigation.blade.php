@@ -24,9 +24,11 @@
                         </x-nav-link>    
                     @endif
 
-                    <x-nav-link :href="route('qet.index')" :active="request()->routeIs('qet.index')" wire:navigate>
-                        {{ __('QET') }}
-                    </x-nav-link>
+                    @if (usercan('access-qet'))
+                        <x-nav-link :href="route('qet.index')" :active="request()->routeIs('qet.index')" wire:navigate>
+                            {{ __('QET') }}
+                        </x-nav-link>    
+                    @endif
 
                     @if (usercan('create-default-discussions') || usercan('update-default-discussions'))
                         <div class="flex items-center">
@@ -131,9 +133,11 @@
                 </x-responsive-nav-link>
             @endif            
             
-            <x-responsive-nav-link :href="route('qet.index')" :active="request()->routeIs('qet.index')" wire:navigate>
-                {{ __('QET') }}
-            </x-responsive-nav-link>
+            @if (usercan('access-qet'))
+                <x-responsive-nav-link :href="route('qet.index')" :active="request()->routeIs('qet.index')" wire:navigate>
+                    {{ __('QET') }}
+                </x-responsive-nav-link>    
+            @endif
         </div>
 
         @if (usercan('create-default-discussions') || usercan('update-default-discussions'))

@@ -30,7 +30,7 @@ Route::middleware(['auth', 'is_enabled'])->group(function () {
 
     Route::get('logs/{id}', UploadLogsShow::class)->name('logs.show')->middleware('permission:access-equipment-import');
     Route::get('action-stream', ActionStreamIndex::class)->name('action-stream.index')->middleware('permission:access-action-stream');
-    Route::get('qet', QetIndex::class)->name('qet.index');
+    Route::get('qet', QetIndex::class)->name('qet.index')->middleware('permission:access-qet');
 
     Route::get('discussions/create', DiscussionsCreate::class)->name('discussions.create')->middleware('permission:create-default-discussions');
     Route::get('discussions/edit', DiscussionsEdit::class)->name('discussions.edit')->middleware('permission:update-default-discussions');

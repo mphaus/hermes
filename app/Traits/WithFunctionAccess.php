@@ -18,6 +18,10 @@ trait WithFunctionAccess
             'value' => 'Action Stream',
         ],
         [
+            'key' => 'access-qet',
+            'value' => 'QET',
+        ],
+        [
             'key' => 'create-default-discussions',
             'value' => 'Create template Discussions',
         ],

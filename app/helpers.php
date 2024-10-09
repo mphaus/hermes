@@ -22,13 +22,19 @@ if (!function_exists('get_redirect_route')) {
         $permissions = $user->permissions->toArray();
 
         if (empty($permissions)) {
-            return route('qet.index');
+            Auth::guard('web')->logout();
+
+            request()->session()->invalidate();
+            request()->session()->regenerateToken();
+
+            return route('login');
         }
 
         $routeMappings = [
             'crud-users' => route('users.index'),
             'access-equipment-import' => route('jobs.index'),
             'access-action-stream' => route('action-stream.index'),
+            'access-qet' => route('qet.index'),
             'create-default-discussions' => route('discussions.create'),
             'update-default-discussions' => route('discussions.edit'),
         ];

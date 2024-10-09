@@ -50,6 +50,8 @@ class AppServiceProvider extends ServiceProvider
 
         Gate::define('access-action-stream', fn(User $user) => in_array('access-action-stream', $user->permissions->toArray()));
 
+        Gate::define('access-qet', fn(User $user) => in_array('access-qet', $user->permissions->toArray()));
+
         Gate::define('create-default-discussions', fn(User $user) => in_array('create-default-discussions', $user->permissions->toArray()));
 
         Gate::define('update-default-discussions', fn(User $user) => in_array('update-default-discussions', $user->permissions->toArray()));
