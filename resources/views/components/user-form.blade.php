@@ -105,4 +105,7 @@
             <span wire:loading wire:target="save">{{ __('Saving...') }}</span>
         </x-button>
     </div>
+    @if (request()->routeIs('users.create'))
+        <p wire:loading wire:target="save" class="text-sm">{{ __('The user will be emailed with the subject \'Welcome to MPH Hermes, your new account is ready\' with a prompt to set their password. Users can reset their password at any time.') }}</p>    
+    @endif
 </x-form>
