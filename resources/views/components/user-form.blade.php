@@ -56,22 +56,28 @@
             <x-input-error :messages="$errors->get('form.email')" />
         </div>
     </section>
-    <section class="flex items-center gap-8">
-        <div class="flex items-center gap-2">
-            <x-input-checkbox id="is_admin" wire:model="form.is_admin" />
-            <x-input-label
-                for="is_admin"
-                class="cursor-pointer"
-                value="{{ __('Is admin') }}"
-            />
+    <section class="space-y-8">
+        <div>
+            <div class="flex items-center gap-2">
+                <x-input-checkbox id="is_admin" wire:model="form.is_admin" />
+                <x-input-label
+                    for="is_admin"
+                    class="cursor-pointer"
+                    value="{{ __('Is admin') }}"
+                />
+            </div>
+            <p class="mt-2 text-xs">{{ __('Gives the user full access to all current and future functions of Hermes, including CRUD of users. Typically suitable for executive staff.') }}</p>
         </div>
-        <div class="flex items-center gap-2">
-            <x-input-checkbox id="is_enabled" wire:model="form.is_enabled" />
-            <x-input-label
-                for="is_enabled"
-                class="cursor-pointer"
-                value="{{ __('Is enabled') }}"
-            />
+        <div>
+            <div class="flex items-center gap-2">
+                <x-input-checkbox id="is_enabled" wire:model="form.is_enabled" />
+                <x-input-label
+                    for="is_enabled"
+                    class="cursor-pointer"
+                    value="{{ __('Is enabled') }}"
+                />
+            </div>
+            <p class="mt-2 text-xs">{{ __('Allows this user to log in when checked.') }}</p>
         </div>
     </section>
     <div class="mt-6 flow">
@@ -91,7 +97,7 @@
         <x-input-error :messages="$errors->get('form.permissions')" />
     </div>
     <div class="flex items-center justify-end gap-2">
-        <x-button href="{{ route('users.index') }}" variant="outline-primary" wire:loading.class="disabled" wire:target="save">{{ __('Cancel') }}</x-button>
+        <x-button href="{{ route('users.index') }}" variant="outline-primary" wire:navigate wire:loading.class="disabled" wire:target="save">{{ __('Cancel') }}</x-button>
         <x-button type="submit" variant="primary">
             <span wire:loading.class="hidden" wire:target="save">{{ __('Save') }}</span>
             <span wire:loading wire:target="save">{{ __('Saving...') }}</span>

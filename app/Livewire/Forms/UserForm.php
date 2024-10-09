@@ -35,7 +35,7 @@ class UserForm extends Form
 
     public bool $is_admin = false;
 
-    public bool $is_enabled = false;
+    public bool $is_enabled = true;
 
     public array $permissions = [];
 
