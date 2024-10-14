@@ -23,7 +23,7 @@ trait WithFunctionAccess
         [
             'key' => 'access-qet',
             'value' => 'QET',
-            'description' => '',
+            'description' => 'The Quick Equipment Transfers function (QET) is primarily used by Warehouse staff and Production Administrators to see what equipment needs to be quickly transferred to new Jobs in busy periods.',
         ],
         [
             'key' => 'create-default-discussions',
