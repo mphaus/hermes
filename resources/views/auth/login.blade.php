@@ -7,7 +7,7 @@
             <x-input-label for="username" :value="__('Username')" />
             <x-input 
                 id="username" 
-                class="block w-full mt-1" 
+                class="mt-1" 
                 type="text" 
                 name="username" 
                 :value="old('username')" 
@@ -21,14 +21,14 @@
             <x-input-label for="password" :value="__('Password')" />
             <x-input 
                 id="password" 
-                class="block w-full mt-1"
+                class="mt-1"
                 type="password"
                 name="password"
                 required autocomplete="current-password" 
             />
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
-        <div class="block mt-4">
+        <div class="mt-4">
             <label for="remember_me" class="inline-flex items-center">
                 <x-input-checkbox 
                     id="remember_me"
@@ -36,6 +36,9 @@
                 />
                 <span class="text-sm text-gray-600 ms-2">{{ __('Remember me') }}</span>
             </label>
+        </div>
+        <div class="mt-4">
+            <a href="{{ route('password.request') }}" class="text-sm">{{ __('Forgot password?') }}</a>
         </div>
         <div class="flex justify-end mt-4">
             <x-button

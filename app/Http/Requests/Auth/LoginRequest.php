@@ -52,6 +52,16 @@ class LoginRequest extends FormRequest
             throw ValidationException::withMessages([
                 'username' => trans('auth.failed'),
             ]);
+        } else if (!Auth::user()->is_enabled) {
+            RateLimiter::hit($this->throttleKey());
+
+            Auth::logout();
+            request()->session()->invalidate();
+            request()->session()->regenerateToken();
+
+            throw ValidationException::withMessages([
+                'username' => __('We could not log you in, your account is not enabled.'),
+            ]);
         }
 
         RateLimiter::clear($this->throttleKey());

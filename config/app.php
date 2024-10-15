@@ -143,4 +143,11 @@ return [
         'host' => env('CURRENT_RMS_HOST', ''),
     ],
 
+    'super_user' => [
+        'first_name' => env('SUPER_USER_FIRST_NAME', ''),
+        'last_name' => env('SUPER_USER_LAST_NAME', ''),
+        'username' => env('SUPER_USER_USERNAME', ''),
+        'email' => env('SUPER_USER_EMAIL', ''),
+        'password' => env('SUPER_USER_PASSWORD', ''),
+    ],
 ];

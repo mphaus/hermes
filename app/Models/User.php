@@ -4,6 +4,9 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Notifications\ResetPasswordNotification;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -47,6 +50,9 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_admin' => 'boolean',
+            'is_enabled' => 'boolean',
+            'permissions' => AsArrayObject::class,
         ];
     }
 
@@ -61,12 +67,22 @@ class User extends Authenticatable
     protected function fullName(): Attribute
     {
         return new Attribute(
-            get: fn (mixed $value, array $attributes) => "{$attributes['first_name']} {$attributes['last_name']}"
+            get: fn(mixed $value, array $attributes) => "{$attributes['first_name']} {$attributes['last_name']}"
         );
     }
 
     public function uploadLogs(): HasMany
     {
         return $this->hasMany(UploadLog::class);
+    }
+
+    public function scopeExceptSuperAdmin(Builder $query): void
+    {
+        $query->where('username', '!=', config('app.super_user.username'));
+    }
+
+    public function sendPasswordResetNotification($token): void
+    {
+        $this->notify(new ResetPasswordNotification($token));
     }
 }

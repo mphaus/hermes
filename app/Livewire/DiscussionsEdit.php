@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\DiscussionMapping;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 
@@ -11,6 +12,10 @@ class DiscussionsEdit extends Component
 {
     public function downloadJsonConfig()
     {
+        if (Gate::denies('update-default-discussions')) {
+            abort(403);
+        }
+
         /** @var DiscussionMapping */
         $config = DiscussionMapping::latest()->first();
 

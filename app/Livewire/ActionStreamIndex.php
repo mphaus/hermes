@@ -7,6 +7,7 @@ use App\Traits\WithHttpCurrentError;
 use App\Traits\WithMember;
 use Illuminate\Contracts\View\View;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Http;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Lazy;
@@ -46,18 +47,18 @@ class ActionStreamIndex extends Component
             'page' => $this->getPage(),
             'per_page' => 20,
             'include[]' => 'all',
-            'q[member_id_in]' => array_map(fn ($member) => $member['id'], $this->getMembers()),
-            'q[action_type_in]' => array_map(fn ($type) => $type['key'], $this->getActionTypes()),
+            'q[member_id_in]' => array_map(fn($member) => $member['id'], $this->getMembers()),
+            'q[action_type_in]' => array_map(fn($type) => $type['key'], $this->getActionTypes()),
             'q[updated_at_gteq]' => now()->timezone('UTC')->subDays(3)->format('Y-m-d'), // LAST THREE DAYS
             'q[updated_at_lteq_date]' => now()->timezone('UTC')->format('Y-m-d'), // TODAY
         ];
 
         if ($this->memberIds) {
-            $queryParams['q[member_id_in]'] = array_map(fn ($member) => $member, $this->memberIds);
+            $queryParams['q[member_id_in]'] = array_map(fn($member) => $member, $this->memberIds);
         }
 
         if ($this->actionTypes) {
-            $queryParams['q[action_type_in]'] = array_map(fn ($type) => $type, $this->actionTypes);
+            $queryParams['q[action_type_in]'] = array_map(fn($type) => $type, $this->actionTypes);
         }
 
         if ($this->dateRange) {
@@ -112,6 +113,10 @@ class ActionStreamIndex extends Component
 
     public function setFilters(array $memberIds = [], array $actionTypes = [], array $dateRange = [], string $timePeriod = '')
     {
+        if (Gate::denies('access-action-stream')) {
+            abort(403);
+        }
+
         $this->resetPage();
         $this->memberIds = $memberIds;
         $this->actionTypes = $actionTypes;

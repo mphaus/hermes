@@ -6,6 +6,8 @@ use App\Models\DiscussionMapping;
 use App\Traits\WithHttpCurrentError;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -29,6 +31,10 @@ class UploadDiscussionMappings extends Component
 
     public function save(): mixed
     {
+        if (Gate::denies('update-default-discussions')) {
+            abort(403);
+        }
+
         $this->validate();
 
         $filename = $this->jsonfile->store();
@@ -42,9 +48,9 @@ class UploadDiscussionMappings extends Component
                     'title' => 'required',
                     'first_message' => 'required',
                     'include_opportunity_owner_as_participant' => 'required|boolean',
-                    'participants' => ['array', Rule::requiredIf(fn () => $includeOpportunityOwnerAsParticipant === false)],
-                    'participants.*.id' => ['numeric', Rule::requiredIf(fn () => $includeOpportunityOwnerAsParticipant === false)],
-                    'participants.*.full_name' => Rule::requiredIf(fn () => $includeOpportunityOwnerAsParticipant === false),
+                    'participants' => ['array', Rule::requiredIf(fn() => $includeOpportunityOwnerAsParticipant === false)],
+                    'participants.*.id' => ['numeric', Rule::requiredIf(fn() => $includeOpportunityOwnerAsParticipant === false)],
+                    'participants.*.full_name' => Rule::requiredIf(fn() => $includeOpportunityOwnerAsParticipant === false),
                 ];
             }),
         ]);
@@ -59,7 +65,7 @@ class UploadDiscussionMappings extends Component
 
         $participantsIds = array_unique(Arr::flatten(array_reduce($mappings, function ($carry, $mapping) {
             if (empty($mapping['participants']) === false) {
-                $carry[] = array_map(fn ($participant) => $participant['id'], $mapping['participants']);
+                $carry[] = array_map(fn($participant) => $participant['id'], $mapping['participants']);
             }
 
             return $carry;
@@ -79,7 +85,7 @@ class UploadDiscussionMappings extends Component
 
         ['members' => $members] = $response->json();
 
-        $memberIds = array_map(fn ($member) => $member['id'], $members);
+        $memberIds = array_map(fn($member) => $member['id'], $members);
         $diffIds = array_diff($participantsIds, $memberIds);
 
         if (empty($diffIds) === false) {
@@ -101,7 +107,7 @@ class UploadDiscussionMappings extends Component
 
         $discussionMapping->comments = $this->comments;
         $discussionMapping->mappings = $mappings;
-        $discussionMapping->user()->associate(auth()->user());
+        $discussionMapping->user()->associate(Auth::user());
         $discussionMapping->save();
 
         session()->flash('alert', [
