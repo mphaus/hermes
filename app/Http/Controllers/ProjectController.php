@@ -13,7 +13,6 @@ class ProjectController extends Controller
             ->withQueryParameters([
                 'per_page' => 20,
                 'filtermode' => 'active',
-                'q[id_not_eq]' => config('app.mph.test_project_id'),
                 'q[name_cont]' => $request->get('q'),
             ])
             ->get('projects');
@@ -24,7 +23,7 @@ class ProjectController extends Controller
             return [];
         }
 
-        return array_map(fn ($project) => [
+        return array_map(fn($project) => [
             'id' => $project['id'],
             'text' => $project['name'],
         ], $projects);
