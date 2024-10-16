@@ -9,11 +9,17 @@
             <p class="text-sm">{!! __('No default Discussion mappings are currently found. To proceed, please create a new set on the <a href=":url" title=":title" wire:navigate>Edit default Discussions</a> page.', ['url' => route('discussions.edit'), 'title' => __('Edit default Discussions')]) !!}</p>
         </x-card>
     @else
-        <x-card class="flow">
+        <x-card class="max-w-screen-md mx-auto flow">
             <p class="font-semibold">{{ __('Create Discussions') }}</p>
-            <form class="space-y-4 lg:space-y-0 lg:grid lg:gap-4 lg:grid-cols-5 lg:items-end" wire:submit="save">
-                <div class="space-y-1 lg:col-span-2">
-                    <div class="flex items-center gap-2 mb-4">
+            <form class="space-y-8" wire:submit="save">
+                <div class="space-y-1">
+                    <x-input-label>{{ __('Short Job or Project name') }}</x-input-label>
+                    <x-input type="text" wire:model="form.shortJoborProjectName" />
+                    <x-input-error :messages="$errors->get('form.shortJoborProjectName')" />
+                    <p class="text-xs font-semibold">{!! __('The Short Job or Project Name selected here will appear in email Subjects for Discussions about this Job or Project. It must match the requirements in the <a href=":url" target="_blank" rel="nofollow">Process_ MPH Production 01 Quoting phase.docx</a>, and be the same as is specified in the Short Job or Project Name Discussion.', ['url' => 'https://mphaustralia.sharepoint.com/:w:/r/teams/MPHAdministration/Shared%20Documents/Process/In%20development/Process_%20MPH%20Production%2001%20Quoting%20phase.docx?d=w96250bcb65df4ee397314e534ca7e7e1&csf=1&web=1&e=j2aXB9&nav=eyJoIjoiODU3ODg4NDUwIn0']) !!}</p>
+                </div>
+                <div class="space-y-2 lg:col-span-2">
+                    <div class="flex items-center gap-2">
                         <x-input-checkbox 
                             id="discussions-project-check" 
                             wire:model="form.createOnProject" 
@@ -22,26 +28,28 @@
                         <x-input-label for="discussions-project-check" value="{{ __('Create Discussions on Project instead') }}" class="!text-xs font-semibold" />
                     </div>
                     <livewire:create-discussions-object />
-                    <x-input-error class="mt-2" :messages="$errors->get('form.objectId')" />
+                    <x-input-error :messages="$errors->get('form.objectId')" />
                 </div>
                 <div class="space-y-1 lg:col-span-2">
                     <livewire:create-discussions-owner lazy />
-                    <x-input-error class="mt-2" :messages="$errors->get('form.userId')" />
+                    <x-input-error :messages="$errors->get('form.userId')" />
                 </div>
-                <x-button type="submit" variant="primary">
-                    <span wire:loading.class="hidden" wire:target="save">{{ __('Create Discussions') }}</span>
-                    <span class="items-center gap-2" wire:loading.flex wire:target="save">
-                        <x-icon-circle-notch class="w-4 h-4 fill-current animate-spin" />
-                        <span>{{ __('Creating...') }}</span>
-                    </span>
-                </x-button>
+                <div class="flex justify-end">
+                    <x-button type="submit" variant="primary">
+                        <span wire:loading.class="hidden" wire:target="save">{{ __('Create Discussions') }}</span>
+                        <span class="items-center gap-2" wire:loading.flex wire:target="save">
+                            <x-icon-circle-notch class="w-4 h-4 fill-current animate-spin" />
+                            <span>{{ __('Creating...') }}</span>
+                        </span>
+                    </x-button>
+                </div>
             </form>
             <div class="mt-6 text-sm" wire:loading wire:target="save">
                 <p class="font-semibold">{{ __('Processing...') }}</p>
                 <p class="mt-1">{{ __('This process typically takes less than 40 seconds. Do not navigate away from this page until a Success or Fail message is shown here.') }}</p>
             </div>
             @if (session('message-alert'))
-                <x-message-alert class="mt-6" :alert="session('message-alert')" />
+                <x-message-alert class="mt-6" :alert="session('message-alert')" wire:loading.class="hidden" wire:target="save" />
             @endif
         </x-card>
         <x-card 
