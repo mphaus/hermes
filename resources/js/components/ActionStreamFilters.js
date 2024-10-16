@@ -17,7 +17,7 @@ export default function ActionStreamFilters (
                 width: '100%',
             } ).on( 'change.select2', () => this.memberIds = $( this.$refs.memberIds ).val() );
 
-            if ( this.memberIds.length > 0 ) {
+            if ( this.memberIds !== null && this.memberIds.length > 0 ) {
                 $( this.$refs.memberIds )
                     .val( this.memberIds )
                     .trigger( 'change' );
@@ -28,7 +28,7 @@ export default function ActionStreamFilters (
                 width: '100%',
             } ).on( 'change.select2', () => this.actionTypes = $( this.$refs.actionTypes ).val() );
 
-            if ( this.actionTypes.length > 0 ) {
+            if ( this.actionTypes !== null && this.actionTypes.length > 0 ) {
                 $( this.$refs.actionTypes )
                     .val( this.actionTypes )
                     .trigger( 'change' );
@@ -38,7 +38,7 @@ export default function ActionStreamFilters (
                 mode: 'range',
                 dateFormat: 'd-M-Y',
                 maxDate: new Date,
-                defaultDate: [ ...formattedDateRange ],
+                defaultDate: formattedDateRange !== null ? [ ...formattedDateRange ] : [],
                 onChange: ( selectedDates ) => {
                     if ( selectedDates.length === 0 ) {
                         this.dateRange = [];
