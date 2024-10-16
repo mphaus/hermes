@@ -15,7 +15,6 @@ class OpportunityController extends Controller
                 'per_page' => 25,
                 'filtermode' => 'quotations',
                 'q[status_eq]' => JobStatus::Reserved->value,
-                'q[id_not_eq]' => config('app.mph.test_opportunity_id'),
                 'q[subject_cont]' => $request->get('q'),
             ])
             ->get('opportunities');
@@ -26,7 +25,7 @@ class OpportunityController extends Controller
             return [];
         }
 
-        return array_map(fn ($opportunity) => [
+        return array_map(fn($opportunity) => [
             'id' => $opportunity['id'],
             'text' => $opportunity['subject'],
         ], $opportunities);
