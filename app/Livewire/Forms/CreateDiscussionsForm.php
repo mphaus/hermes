@@ -12,13 +12,16 @@ use Livewire\Form;
 
 class CreateDiscussionsForm extends Form
 {
+    #[Validate('required', as: 'Short Job or Project Name')]
+    public string $shortJoborProjectName = '';
+
     #[Validate('boolean', as: 'create on project')]
     public bool $createOnProject = false;
 
-    #[Validate('required|numeric', as: 'opportunity or project')]
+    #[Validate('required|numeric', as: 'Opportunity or Project')]
     public int $objectId;
 
-    #[Validate('required|numeric', as: 'owner')]
+    #[Validate('required|numeric', as: 'Owner')]
     public int $userId;
 
     public function store(): string
@@ -30,7 +33,7 @@ class CreateDiscussionsForm extends Form
         $participantsIds = array_unique([
             ...Arr::flatten(array_reduce($mappings, function ($carry, $mapping) {
                 if (empty($mapping['participants']) === false) {
-                    $carry[] = array_map(fn ($participant) => $participant['id'], $mapping['participants']);
+                    $carry[] = array_map(fn($participant) => $participant['id'], $mapping['participants']);
                 }
 
                 return $carry;
@@ -51,7 +54,7 @@ class CreateDiscussionsForm extends Form
 
         ['members' => $members] = $response->json();
 
-        $memberIds = array_map(fn ($member) => $member['id'], $members);
+        $memberIds = array_map(fn($member) => $member['id'], $members);
         $diffIds = array_diff($participantsIds, $memberIds);
 
         if (empty($diffIds) === false) {
@@ -100,7 +103,7 @@ class CreateDiscussionsForm extends Form
                         )
                         : $this->objectId,
                     'discussable_type' => $this->createOnProject ? 'Project' : 'Opportunity',
-                    'subject' => $mapping['title'],
+                    'subject' => "{$mapping['title']} - {$this->shortJoborProjectName}",
                     'created_by' => $this->userId,
                     'first_comment' => [
                         'remark' => $mapping['first_message'],
@@ -111,9 +114,9 @@ class CreateDiscussionsForm extends Form
                         : ($mapping['include_opportunity_owner_as_participant']
                             ? [
                                 ['member_id' => $this->userId, 'mute' => true],
-                                ...array_map(fn ($participant) => ['member_id' => $participant['id'], 'mute' => true], $mapping['participants']),
+                                ...array_map(fn($participant) => ['member_id' => $participant['id'], 'mute' => true], $mapping['participants']),
                             ]
-                            : array_map(fn ($participant) => ['member_id' => $participant['id'], 'mute' => true], $mapping['participants'])),
+                            : array_map(fn($participant) => ['member_id' => $participant['id'], 'mute' => true], $mapping['participants'])),
                 ],
             ]);
         }
