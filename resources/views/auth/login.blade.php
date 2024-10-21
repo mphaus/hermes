@@ -15,7 +15,6 @@
                 autofocus 
                 autocomplete="username" 
             />
-            <x-input-error :messages="$errors->get('username')" class="mt-2" />
         </div>
         <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />
@@ -26,7 +25,6 @@
                 name="password"
                 required autocomplete="current-password" 
             />
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
         <div class="mt-4">
             <label for="remember_me" class="inline-flex items-center">
@@ -37,6 +35,7 @@
                 <span class="text-sm text-gray-600 ms-2">{{ __('Remember me') }}</span>
             </label>
         </div>
+        <x-input-error :messages="$errors->get('username')" class="mt-2" />
         <div class="mt-4">
             <a href="{{ route('password.request') }}" class="text-sm">{{ __('Forgot password?') }}</a>
         </div>
