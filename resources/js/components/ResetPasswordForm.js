@@ -1,5 +1,5 @@
 export default function ResetPasswordForm () {
-    const passwordPattern = /^(?=.*[A-Z].*[A-Z])(?=.*[a-z].*[a-z])(?=.*\d.*\d)(?=.*[!@#$%^&*()\-_+=]).{12,24}$/;
+    const passwordPattern = /^(?=.*[A-Z].*[A-Z])(?=.*[a-z].*[a-z])(?=.*\d.*\d)(?=.*[!@#$%^&*()\-_+=].*[!@#$%^&*()\-_+=]).{12,24}$/;
     const lengthPattern = /.{12,24}/;
     const twoUppercaseLettersPattern = /(?=.*[A-Z].*[A-Z])/g;
     const twoLowercaseLettersPattern = /(?=.*[a-z].*[a-z])/g;
