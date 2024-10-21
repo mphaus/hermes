@@ -34,7 +34,7 @@ class NewPasswordController extends Controller
             'password' => [
                 'required',
                 'confirmed',
-                'regex:/^(?=.*[A-Z].*[A-Z])(?=.*[a-z].*[a-z])(?=.*\d.*\d)(?=.*[!@#$%^&*()\-_+=]).{12,24}$/',
+                'regex:/^(?=.*[A-Z].*[A-Z])(?=.*[a-z].*[a-z])(?=.*\d.*\d)(?=.*[!@#$%^&*()\-_+=].*[!@#$%^&*()\-_+=]).{12,24}$/',
             ],
         ]);
 
