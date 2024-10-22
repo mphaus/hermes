@@ -5,7 +5,6 @@ namespace App\Livewire;
 use App\Livewire\Forms\UserForm;
 use App\Traits\WithFunctionAccess;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
 
 class UsersCreate extends Component
@@ -16,7 +15,7 @@ class UsersCreate extends Component
 
     public function save(): void
     {
-        if (Gate::denies('crud-users')) {
+        if (!usercan('crud-users')) {
             abort(403);
         }
 

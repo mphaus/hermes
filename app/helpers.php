@@ -31,12 +31,12 @@ if (!function_exists('get_redirect_route')) {
         }
 
         $routeMappings = [
-            'crud-users' => route('users.index'),
             'access-equipment-import' => route('jobs.index'),
             'access-action-stream' => route('action-stream.index'),
             'access-qet' => route('qet.index'),
             'create-default-discussions' => route('discussions.create'),
             'update-default-discussions' => route('discussions.edit'),
+            'crud-users' => route('users.index'),
         ];
 
         return $routeMappings[$permissions[0]];

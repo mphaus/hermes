@@ -7,7 +7,6 @@ use App\Traits\WithHttpCurrentError;
 use App\Traits\WithMember;
 use Illuminate\Contracts\View\View;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Http;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Lazy;
@@ -113,7 +112,7 @@ class ActionStreamIndex extends Component
 
     public function setFilters(array $memberIds = [], array $actionTypes = [], array $dateRange = [], string $timePeriod = '')
     {
-        if (Gate::denies('access-action-stream')) {
+        if (!usercan('access-action-stream')) {
             abort(403);
         }
 
