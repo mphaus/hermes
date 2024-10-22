@@ -7,7 +7,6 @@ use App\Traits\WithHttpCurrentError;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -31,7 +30,7 @@ class UploadDiscussionMappings extends Component
 
     public function save(): mixed
     {
-        if (Gate::denies('update-default-discussions')) {
+        if (!usercan('update-default-discussions')) {
             abort(403);
         }
 

@@ -7,7 +7,6 @@ use App\Models\User;
 use App\Traits\WithFunctionAccess;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
 
 class UsersEdit extends Component
@@ -27,7 +26,7 @@ class UsersEdit extends Component
 
     public function save()
     {
-        if (Gate::denies('crud-users')) {
+        if (!usercan('crud-users')) {
             abort(403);
         }
 

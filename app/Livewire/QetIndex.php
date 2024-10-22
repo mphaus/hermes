@@ -5,8 +5,6 @@ namespace App\Livewire;
 use App\Facades\QET;
 use App\Traits\WithHttpCurrentError;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Gate;
-use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
 

@@ -6,9 +6,7 @@ use App\Facades\OpportunityItems;
 use App\Facades\UploadLog;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Validate;
@@ -34,7 +32,7 @@ class ItemsCreate extends Component
 
     public function save()
     {
-        if (Gate::denies('access-equipment-import')) {
+        if (!usercan('access-equipment-import')) {
             abort(403);
         }
 
