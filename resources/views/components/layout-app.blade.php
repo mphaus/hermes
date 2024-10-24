@@ -29,8 +29,6 @@
     </head>
     <body class="font-sans antialiased">
         <div class="bg-gray-100 min-h-dvh">
-            {{-- <x-app-navigation /> --}}
-
             <!-- Page Content -->
             <main>
                 <x-side-menu />
