@@ -33,13 +33,13 @@
 
             <!-- Page Content -->
             <main>
-                <aside class="fixed top-0 left-0 z-40 p-4 overflow-y-auto transition-transform -translate-x-full bg-white w-72 h-dvh xl:translate-x-0"></aside>
-                <section class="xl:ml-72">
+                <x-side-menu />
+                <section class="xl:ml-64">
                     <!-- Page Heading -->
                     @if (isset($heading))
                         <x-app-header :heading="$heading" />
                     @endif
-                    <div class="px-4 py-6">{{ $slot }}</div>
+                    <div class="px-4 py-6 xl:px-8">{{ $slot }}</div>
                 </section>
             </main>
         </div>
@@ -48,6 +48,8 @@
                 {{ session('alert')['message'] }}
             </x-alert>
         @endif
+        <x-side-menu-open-button />
+        <x-side-menu-backdrop />
         @livewireScriptConfig
     </body>
 </html>
