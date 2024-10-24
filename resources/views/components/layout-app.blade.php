@@ -28,21 +28,19 @@
         @livewireStyles
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
+        <div class="bg-gray-100 min-h-dvh">
             {{-- <x-app-navigation /> --}}
-
-            <!-- Page Heading -->
-            @if (isset($heading))
-                <x-app-header :heading="$heading" />
-            @endif
 
             <!-- Page Content -->
             <main>
-                <div class="container">
-                    <div class="py-6">
-                        {{ $slot }}
-                    </div>
-                </div>
+                <aside class="fixed top-0 left-0 z-40 p-4 overflow-y-auto transition-transform -translate-x-full bg-white w-72 h-dvh xl:translate-x-0"></aside>
+                <section class="xl:ml-72">
+                    <!-- Page Heading -->
+                    @if (isset($heading))
+                        <x-app-header :heading="$heading" />
+                    @endif
+                    <div class="px-4 py-6">{{ $slot }}</div>
+                </section>
             </main>
         </div>
         @if (session('alert'))
