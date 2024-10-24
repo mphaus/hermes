@@ -29,7 +29,7 @@
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
-            <x-app-navigation />
+            {{-- <x-app-navigation /> --}}
 
             <!-- Page Heading -->
             @if (isset($heading))
