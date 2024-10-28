@@ -35,6 +35,11 @@ trait WithFunctionAccess
             'value' => 'Edit default Discussions',
             'description' => 'Typically used by executive staff to edit the details of the Discussions (JSON templates) that get added using the "Create template Discussions" tool.',
         ],
+        [
+            'key' => 'access-quarantine-intake',
+            'value' => 'Quarantine Intake',
+            'description' => 'Used primarily by Warehouse Technicians and the Production Assistant to submit new quarantine items to CurrentRMS, along with the Opportunity / Project name and Technical Supervisor.',
+        ],
     ];
 
     public function getPermissions(): array
