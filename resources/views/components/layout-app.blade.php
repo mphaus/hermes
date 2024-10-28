@@ -37,7 +37,7 @@
                     @if (isset($heading))
                         <x-app-header :heading="$heading" />
                     @endif
-                    <div class="px-4 py-6 xl:px-8">{{ $slot }}</div>
+                    <div class="px-4 py-6 mx-auto max-w-screen-2xl xl:px-8">{{ $slot }}</div>
                 </section>
             </main>
         </div>
