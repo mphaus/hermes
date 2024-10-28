@@ -28,21 +28,17 @@
         @livewireStyles
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
-            <x-app-navigation />
-
-            <!-- Page Heading -->
-            @if (isset($heading))
-                <x-app-header :heading="$heading" />
-            @endif
-
+        <div class="bg-gray-100 min-h-dvh">
             <!-- Page Content -->
             <main>
-                <div class="container">
-                    <div class="py-6">
-                        {{ $slot }}
-                    </div>
-                </div>
+                <x-side-menu />
+                <section class="xl:ml-64">
+                    <!-- Page Heading -->
+                    @if (isset($heading))
+                        <x-app-header :heading="$heading" />
+                    @endif
+                    <div class="px-4 py-6 mx-auto max-w-screen-2xl xl:px-8">{{ $slot }}</div>
+                </section>
             </main>
         </div>
         @if (session('alert'))
@@ -50,6 +46,8 @@
                 {{ session('alert')['message'] }}
             </x-alert>
         @endif
+        <x-side-menu-open-button />
+        <x-side-menu-backdrop />
         @livewireScriptConfig
     </body>
 </html>
