@@ -25,7 +25,7 @@
                             wire:model="form.createOnProject" 
                             x-on:change="$dispatch('hermes:create-discussions-create-on-project-change', { createOnProject: $event.target.checked })"
                         />
-                        <x-input-label for="discussions-project-check" value="{{ __('Create Discussions on Project instead') }}" class="!text-xs font-semibold" />
+                        <x-input-label for="discussions-project-check" value="{{ __('Create Discussions on Project instead') }}" class="!text-xs font-semibold cursor-pointer" />
                     </div>
                     <livewire:create-discussions-object />
                     <x-input-error :messages="$errors->get('form.objectId')" />
