@@ -68,8 +68,8 @@ class SideMenu extends Component
                 'subitems' => [
                     [
                         'text' => __('Quarantine Intake'),
-                        'route' => route('quarantine-intake.index'),
-                        'active' => request()->routeIs('quarantine-intake.index'),
+                        'route' => route('quarantine-intake.create'),
+                        'active' => request()->routeIs('quarantine-intake.create'),
                         'permission' => 'access-quarantine-intake',
                     ],
                 ],
