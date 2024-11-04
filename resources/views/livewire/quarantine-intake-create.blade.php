@@ -10,10 +10,7 @@
             x-data="{ serialNumberRemainingCharacters: 256, descriptionRemainingCharacters: 512 }"
             wire:submit="save"
         >
-            <div class="space-y-1">
-                <x-input-label>{{ __('Opportunity or Project') }}</x-input-label>
-                <select class="block w-full"></select>
-            </div>
+            <livewire:quarantine-intake-object />
             <div class="flow">
                 <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
                     <div class="flex items-center gap-1">
@@ -29,12 +26,10 @@
                         <x-input-label class="cursor-pointer" for="not-serialised">{{ __('Equipment is not serialised') }}</x-input-label>
                     </div>
                 </div>
-                <div class="space-y-1">
+                <div class="space-y-1" x-cloak x-show="$wire.form.serial_number_status === 'serial-number-exists'">
                     <x-input
                         type="text"
                         placeholder="{{ __('Serial number') }}"
-                        x-cloak
-                        x-show="$wire.form.serial_number_status === 'serial-number-exists'"
                         x-on:input="serialNumberRemainingCharacters = 256 - $wire.form.serial_number.length"
                         wire:model="form.serial_number"
                     />

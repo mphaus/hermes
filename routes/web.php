@@ -3,6 +3,7 @@
 // use App\Http\Controllers\ProfileController;
 
 use App\Http\Controllers\OpportunityController;
+use App\Http\Controllers\OpportunityProjectController;
 use App\Http\Controllers\ProjectController;
 use App\Livewire\ActionStreamIndex;
 use App\Livewire\DiscussionsCreate;
@@ -47,6 +48,8 @@ Route::middleware(['auth', 'is_enabled'])->group(function () {
     Route::get('quarantine-intake', QuarantineIntakeCreate::class)->name('quarantine-intake.create')->middleware('permission:access-quarantine-intake');
 
     Route::get('projects/search', [ProjectController::class, 'search'])->name('projects.search');
+
+    Route::get('opportunities-projects/search', [OpportunityProjectController::class, 'search'])->name('opportunities.projects.search');
 });
 
 require __DIR__ . '/auth.php';
