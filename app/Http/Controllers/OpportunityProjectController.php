@@ -54,7 +54,7 @@ class OpportunityProjectController extends Controller
                 'object_type' => 'project',
                 'items' => array_map(fn($project) => [
                     'id' => $project['id'],
-                    'text' => $project['name'],
+                    'text' => '⚓' . ' ' . $project['name'],
                 ], $projects),
             ];
         }
@@ -64,7 +64,7 @@ class OpportunityProjectController extends Controller
                 'object_type' => 'opportunity',
                 'items' => array_map(fn($opportunity) => [
                     'id' => $opportunity['id'],
-                    'text' => $opportunity['subject'],
+                    'text' => '🛠' . ' ' . $opportunity['subject'],
                 ], $opportunities),
             ];
         }
