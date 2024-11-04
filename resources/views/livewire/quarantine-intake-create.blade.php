@@ -56,10 +56,7 @@
                     {{ __('This option is selected if this type of equipment is never serialised at all. Notify the Warehouse and SRMM Managers by email about this (as well as registering it here in Quarantine) - they will plan to serialise this type of equipment.') }}
                 </p>
             </div>
-            <div class="space-y-1">
-                <x-input-label>{{ __('Product') }}</x-input-label>
-                <select class="block w-full"></select>
-            </div>
+            <livewire:quarantine-intake-product />
             <div class="space-y-1">
                 <x-input-label>{{ __('Fault description') }}</x-input-label>
                 <x-textarea 
