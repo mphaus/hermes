@@ -16,6 +16,7 @@ import UserForm from "./components/UserForm";
 import UserDeleteButton from "./components/UserDeleteButton";
 import ResetPasswordForm from "./components/ResetPasswordForm";
 import SideMenu from "./components/SideMenu";
+import QuarantineIntakeObject from "./components/QuarantineIntakeObject";
 
 Alpine.data( 'ActionStreamFilters', ActionStreamFilters );
 Alpine.data( 'ActionStreamItem', ActionStreamItem );
@@ -28,6 +29,7 @@ Alpine.data( 'UploadLog', UploadLog );
 Alpine.data( 'UserForm', UserForm );
 Alpine.data( 'UserDeleteButton', UserDeleteButton );
 Alpine.data( 'ResetPasswordForm', ResetPasswordForm );
-Alpine.data('SideMenu', SideMenu);
+Alpine.data( 'SideMenu', SideMenu );
+Alpine.data('QuarantineIntakeObject', QuarantineIntakeObject);
 
 Livewire.start();

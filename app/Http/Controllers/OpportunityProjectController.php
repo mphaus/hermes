@@ -43,12 +43,15 @@ class OpportunityProjectController extends Controller
         ['opportunities' => $opportunities] = $responses['opportunities']->json();
 
         if (empty($projects) && empty($opportunities)) {
-            return [];
+            return [
+                'object_type' => '',
+                'items' => [],
+            ];
         }
 
         if ($projects) {
             return [
-                'object' => 'project',
+                'object_type' => 'project',
                 'items' => array_map(fn($project) => [
                     'id' => $project['id'],
                     'text' => $project['name'],
@@ -58,7 +61,7 @@ class OpportunityProjectController extends Controller
 
         if ($opportunities) {
             return [
-                'object' => 'opportunity',
+                'object_type' => 'opportunity',
                 'items' => array_map(fn($opportunity) => [
                     'id' => $opportunity['id'],
                     'text' => $opportunity['subject'],

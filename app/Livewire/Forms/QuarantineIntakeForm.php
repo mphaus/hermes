@@ -9,6 +9,8 @@ class QuarantineIntakeForm extends Form
 {
     public int $object_id;
 
+    public string $object_type;
+
     public string $serial_number_status = 'serial-number-exists';
 
     public string $serial_number;
