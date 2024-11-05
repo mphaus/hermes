@@ -18,6 +18,7 @@ import ResetPasswordForm from "./components/ResetPasswordForm";
 import SideMenu from "./components/SideMenu";
 import QuarantineIntakeObject from "./components/QuarantineIntakeObject";
 import QuarantineIntakeProduct from "./components/QuarantineIntakeProduct";
+import QuarantineIntakeForm from "./components/QuarantineIntakeForm";
 
 Alpine.data( 'ActionStreamFilters', ActionStreamFilters );
 Alpine.data( 'ActionStreamItem', ActionStreamItem );
@@ -33,5 +34,6 @@ Alpine.data( 'ResetPasswordForm', ResetPasswordForm );
 Alpine.data( 'SideMenu', SideMenu );
 Alpine.data( 'QuarantineIntakeObject', QuarantineIntakeObject );
 Alpine.data( 'QuarantineIntakeProduct', QuarantineIntakeProduct );
+Alpine.data( 'QuarantineIntakeForm', QuarantineIntakeForm );
 
 Livewire.start();

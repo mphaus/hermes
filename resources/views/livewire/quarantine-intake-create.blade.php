@@ -7,7 +7,8 @@
         <p class="font-semibold">{{ __('Quarantine Intake') }}</p>
         <x-form 
             class="flow" 
-            x-data="{ serialNumberRemainingCharacters: 256, descriptionRemainingCharacters: 512 }"
+            x-data="QuarantineIntakeForm"
+            x-effect="maybeClearSerialNumber($wire.form.serial_number_status)"
             wire:submit="save"
         >
             <livewire:quarantine-intake-object />

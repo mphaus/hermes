@@ -12,7 +12,9 @@ class QuarantineIntakeCreate extends Component
 
     public function save(): void
     {
-        dd($this->form);
+        if (!usercan('access-quarantine-intake')) {
+            abort(403);
+        }
     }
 
     public function render(): View
