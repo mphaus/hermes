@@ -25,6 +25,7 @@ class ProductController extends Controller
         return array_map(fn($product) => [
             'id' => $product['id'],
             'text' => $product['name'],
+            'thumb_url' => $product['icon'] ? $product['icon']['thumb_url'] : '',
         ], $products);
     }
 }

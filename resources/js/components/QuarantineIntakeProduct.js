@@ -1,3 +1,10 @@
+/**
+ * @typedef {Object} State
+ * @property {number} [id]
+ * @property {string} text
+ * @property {string} [thumb_url]
+ */
+
 export default function QuarantineIntakeProduct () {
     return {
         init () { 
@@ -19,6 +26,16 @@ export default function QuarantineIntakeProduct () {
                         }
                     },
                     minimumInputLength: 1,
+                    /**
+                     * @param {State | undefined} state
+                     */
+                    templateResult ( state ) {
+                        if (state.id === undefined || (state.thumb_url !== undefined && state.thumb_url === '')) {
+                            return state.text;
+                        }
+
+                        return $(/* html */`<span class="flex items-center gap-2"><img src="${state.thumb_url}"><span>${state.text}</span></span>`);
+                    },
                 } )
                 .on( 'change.select2', () => this.$wire.$parent.form.product_id = $( this.$refs.product ).val() );
         },
