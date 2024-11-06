@@ -3,6 +3,7 @@
 namespace App\Livewire\Forms;
 
 use App\Rules\UniqueSerialNumber;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
@@ -63,7 +64,26 @@ class QuarantineIntakeForm extends Form
 
     public function store(): void
     {
-        $this->validate();
+        $validated = $this->validate();
+        $reference = match ($this->serial_number_status) {
+            'serial-number-exists' => $validated['serial_number'],
+            'missing-serial-numbe' => 'Missing serial number',
+            'not-serialised' => 'Equipment needs to be serialised',
+        };
+
+        Http::current()->dd()->post('quarantines', [
+            'quarantine' => [
+                'item_id' => $validated['product_id'],
+                'store_id' => $this->store,
+                'reference' => $reference,
+                'description' => $validated['description'],
+                'starts_at' => '',
+                'quantity' => $this->quantity_booked_in,
+                'quarantine_type' => $this->type,
+                'open_ended' => $this->open_ended,
+                'stock_type' => $this->stock_type,
+            ],
+        ]);
 
         dd('Success');
     }
