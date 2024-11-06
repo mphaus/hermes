@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Forms;
 
+use App\Rules\UniqueSerialNumber;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
@@ -53,6 +54,7 @@ class QuarantineIntakeForm extends Form
                 Rule::requiredIf(fn() => $this->serial_number_status === 'serial-number-exists'),
                 'max:256',
                 'regex:/^[a-zA-Z0-9\/.-]+$/',
+                new UniqueSerialNumber($this->serial_number_status),
             ],
             'product_id' => ['required', 'numeric'],
             'description' => ['required', 'max:512'],

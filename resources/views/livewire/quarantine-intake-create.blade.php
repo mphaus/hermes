@@ -35,7 +35,7 @@
                         type="text"
                         placeholder="{{ __('Serial number') }}"
                         x-on:input="serialNumberRemainingCharacters = 256 - $wire.form.serial_number.length"
-                        wire:model="form.serial_number"
+                        wire:model.blur="form.serial_number"
                     />
                     <p 
                         class="text-xs font-semibold"
