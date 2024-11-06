@@ -11,7 +11,10 @@
             x-effect="maybeClearSerialNumber($wire.form.serial_number_status)"
             wire:submit="save"
         >
-            <livewire:quarantine-intake-object />
+            <div class="space-y-1">
+                <livewire:quarantine-intake-object />
+                <x-input-error :messages="$errors->get('form.object_id')" />
+            </div>
             <div class="flow">
                 <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
                     <div class="flex items-center gap-1">
@@ -37,10 +40,11 @@
                     <p 
                         class="text-xs font-semibold"
                         x-bind:class="{ 'text-red-500': serialNumberRemainingCharacters <= 0 }"
-                    >
+                        >
                         <span x-text="serialNumberRemainingCharacters"></span>
                         {!!  __('character<span x-show="serialNumberRemainingCharacters !== 1">s</span> left') !!}
                     </p>
+                    <x-input-error :messages="$errors->get('form.serial_number')" />
                 </div>
                 <p 
                     class="text-xs font-semibold"
@@ -57,7 +61,10 @@
                     {{ __('This option is selected if this type of equipment is never serialised at all. Notify the Warehouse and SRMM Managers by email about this (as well as registering it here in Quarantine) - they will plan to serialise this type of equipment.') }}
                 </p>
             </div>
-            <livewire:quarantine-intake-product />
+            <div class="space-y-1">
+                <livewire:quarantine-intake-product />
+                <x-input-error :messages="$errors->get('form.product_id')" />
+            </div>
             <div class="space-y-1">
                 <x-input-label>{{ __('Fault description') }}</x-input-label>
                 <x-textarea 
@@ -73,6 +80,7 @@
                     <span x-text="descriptionRemainingCharacters"></span>
                     {!!  __('character<span x-show="descriptionRemainingCharacters !== 1">s</span> left') !!}
                 </p>
+                <x-input-error :messages="$errors->get('form.description')" />
             </div>
             <div class="flex items-center justify-end gap-2">
                 <x-button type="button" variant="outline-primary">{{ __('Clear form') }}</x-button>

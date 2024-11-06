@@ -15,6 +15,8 @@ class QuarantineIntakeCreate extends Component
         if (!usercan('access-quarantine-intake')) {
             abort(403);
         }
+
+        $this->form->store();
     }
 
     public function render(): View
