@@ -2,9 +2,23 @@
  * @typedef {Object} Item
  * @property {number} id
  * @property {string} text
+ * @property {number} technical_supervisor_id
  */
 
-export default function QuarantineIntakeObject () {
+/**
+ * @typedef {Object} TechnicalSupervisor
+ * @property {number} id
+ * @property {string} name
+ */
+
+/**
+ * @export
+ * @param {TechnicalSupervisor[]} technicalSupervisors
+ */
+export default function QuarantineIntakeObject ( technicalSupervisors ) {
+    /** @type {Item[]} */
+    let itemResults = [];
+
     return {
         init () {
             this.initSelect2();
@@ -23,7 +37,9 @@ export default function QuarantineIntakeObject () {
                          */
                         processResults: data => {
                             const { object_type, items } = data;
-                            
+
+                            itemResults = items;
+
                             this.$wire.$parent.form.object_type = object_type;
 
                             return {
@@ -33,8 +49,9 @@ export default function QuarantineIntakeObject () {
                     },
                     minimumInputLength: 1,
                 } )
-                .on( 'change.select2', () => {
-                    this.$wire.$parent.form.object_id = $( this.$refs.object ).val();
+                .on( 'change.select2', ( e ) => {
+                    const selectedValue = $( this.$refs.object ).val()
+                    this.$wire.$parent.form.object_id = selectedValue;
                 });
         },
     };

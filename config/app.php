@@ -130,6 +130,7 @@ return [
         'members_url' => 'https://mphaustralia.current-rms.com/members/',
         'test_opportunity_id' => env('MPH_TEST_OPPORTUNITY_ID'),
         'test_project_id' => env('MPH_TEST_PROJECT_ID'),
+        'technical_supervisor_list_id' => env('MPH_TECHNICAL_SUPERVISOR_LIST_ID'),
     ],
 
     'recaptcha_v3' => [
