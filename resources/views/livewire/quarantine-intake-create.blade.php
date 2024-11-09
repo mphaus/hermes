@@ -4,9 +4,7 @@
 </x-slot>
 <div class="flow">
     @if (empty($this->technicalSupervisors))
-        <div class="max-w-screen-md p-6 mx-auto overflow-hidden text-white bg-yellow-500 rounded-lg shadow-sm">
-            <p>{{ __('In order to submit a Quarantine, one or more Technical Supervisors must have been previously created using the Technical Supervisor CRUD. It is also recommended that a Technical Supervisor has been assigned to Projects or Opportunities.') }}</p>
-        </div>
+        <x-generic-error class="max-w-screen-md mx-auto" message="{{ __('In order to submit a Quarantine, one or more Technical Supervisors must have been previously created using the Technical Supervisor CRUD. It is also recommended that a Technical Supervisor has been assigned to Projects or Opportunities.') }}" />
     @else
         <x-card class="max-w-screen-md mx-auto flow">
         <p class="font-semibold">{{ __('Quarantine Intake') }}</p>
