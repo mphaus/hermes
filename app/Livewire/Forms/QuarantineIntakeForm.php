@@ -15,7 +15,8 @@ class QuarantineIntakeForm extends Form
 
     public string $object_type;
 
-    // public string $technical_supervisor;
+    #[Validate(as: 'Technical Supervisor')]
+    public string $technical_supervisor;
 
     public string $serial_number_status = 'serial-number-exists';
 
@@ -41,7 +42,7 @@ class QuarantineIntakeForm extends Form
     public function rules(): array
     {
         return [
-            // 'technical_supervisor' => [],
+            'technical_supervisor' => ['required'],
             'object_id' => ['required', 'numeric'],
             'object_type' => [
                 'required',
@@ -70,6 +71,8 @@ class QuarantineIntakeForm extends Form
             'missing-serial-numbe' => 'Missing serial number',
             'not-serialised' => 'Equipment needs to be serialised',
         };
+
+        dd($validated);
 
         Http::current()->dd()->post('quarantines', [
             'quarantine' => [

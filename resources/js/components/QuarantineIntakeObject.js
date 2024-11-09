@@ -3,6 +3,7 @@
  * @property {number} id
  * @property {string} text
  * @property {number} technical_supervisor_id
+ * @property {boolean} [selected]
  */
 
 /**
@@ -20,6 +21,7 @@ export default function QuarantineIntakeObject ( technicalSupervisors ) {
     let itemResults = [];
 
     return {
+        technicalSupervisorDoesNotExist: false,
         init () {
             this.initSelect2();
         },
@@ -49,10 +51,29 @@ export default function QuarantineIntakeObject ( technicalSupervisors ) {
                     },
                     minimumInputLength: 1,
                 } )
-                .on( 'change.select2', ( e ) => {
+                .on( 'change.select2', () => {
+                    this.$wire.$parent.form.technical_supervisor = '';
+                    this.technicalSupervisorDoesNotExist = false;
+
                     const selectedValue = $( this.$refs.object ).val()
                     this.$wire.$parent.form.object_id = selectedValue;
-                });
+
+                    const selectedResult = itemResults.find( item => item.selected );
+
+                    if ( selectedResult === undefined ) {
+                        this.technicalSupervisorDoesNotExist = true;
+                        return;
+                    }
+
+                    const technicalSupervisor = technicalSupervisors.find( supervisor => supervisor.id === selectedResult.technical_supervisor_id );
+
+                    if ( technicalSupervisor === undefined ) {
+                        this.technicalSupervisorDoesNotExist = true;
+                        return;
+                    }
+
+                    this.$wire.$parent.form.technical_supervisor = technicalSupervisor.name;
+                } );
         },
     };
 }
