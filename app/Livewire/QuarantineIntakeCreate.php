@@ -14,6 +14,8 @@ class QuarantineIntakeCreate extends Component
 {
     public QuarantineIntakeForm $form;
 
+    public array $alert = [];
+
     #[Computed]
     public function technicalSupervisors()
     {
@@ -38,13 +40,30 @@ class QuarantineIntakeCreate extends Component
         ], $list_values);
     }
 
-    public function save(): void
+    public function save()
     {
         if (!usercan('access-quarantine-intake')) {
             abort(403);
         }
 
-        $this->form->store();
+        $result = $this->form->store();
+
+        if (!is_numeric($result)) {
+            $this->alert = [
+                'type' => 'error',
+                'message' => __('Fail! ❌ The item was not added to CurrentRMS because ":error". This item still needs to be added. You may wish to copy the Fault description of ":fault_description" to save re-typing it.', ['error' => $result[0], 'fault_description' => $this->form->description]),
+            ];
+
+            return;
+        }
+
+        $this->form->clear();
+        $this->alert = [
+            'type' => 'success',
+            'message' => __('Success! ✅ The item has been added to Quarantine (<a href=":url" target="_blank" rel="nofollow">in CurrentRMS</a>)', ['url' => "https://mphaustralia.current-rms.com/quarantines/{$result}"]),
+        ];
+
+        $this->dispatch('quarantine-intake-created');
     }
 
     public function placeholder(): View

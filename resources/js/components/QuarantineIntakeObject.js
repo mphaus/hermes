@@ -75,5 +75,8 @@ export default function QuarantineIntakeObject ( technicalSupervisors ) {
                     this.$wire.$parent.form.technical_supervisor = technicalSupervisor.name;
                 } );
         },
+        clear () {
+            $( this.$refs.object ).val( null ).trigger( 'change' );
+        }
     };
 }

@@ -12,7 +12,7 @@ use Livewire\Form;
 class QuarantineIntakeForm extends Form
 {
     #[Validate(as: 'Opportunity or Project')]
-    public int $object_id;
+    public int|null $object_id;
 
     public string $object_type;
 
@@ -25,7 +25,7 @@ class QuarantineIntakeForm extends Form
     public string $serial_number;
 
     #[Validate(as: 'product')]
-    public int $product_id;
+    public int|null $product_id;
 
     #[Validate(as: 'fault description')]
     public string $description;
@@ -39,6 +39,17 @@ class QuarantineIntakeForm extends Form
     private int $quantity_booked_in = 1;
 
     private bool $open_ended = true;
+
+    public function clear(): void
+    {
+        $this->object_id = null;
+        $this->object_type = '';
+        $this->technical_supervisor = '';
+        $this->serial_number_status = 'serial-number-exists';
+        $this->serial_number = '';
+        $this->product_id = null;
+        $this->description = '';
+    }
 
     public function rules(): array
     {
@@ -64,7 +75,7 @@ class QuarantineIntakeForm extends Form
         ];
     }
 
-    public function store(): void
+    public function store(): mixed
     {
         $validated = $this->validate();
         $reference = match ($this->serial_number_status) {
@@ -98,6 +109,13 @@ class QuarantineIntakeForm extends Form
             ],
         ]);
 
-        dd($response->json());
+        if ($response->failed()) {
+            ['errors' => $errors] = $response->json();
+            return $errors;
+        }
+
+        ['quarantine' => $quarantine] = $response->json();
+
+        return $quarantine['id'];
     }
 }

@@ -7,7 +7,7 @@
         <x-generic-error class="max-w-screen-md mx-auto" message="{{ __('In order to submit a Quarantine, one or more Technical Supervisors must have been previously created using the Technical Supervisor CRUD. It is also recommended that a Technical Supervisor has been assigned to Projects or Opportunities.') }}" />
     @else
         <x-card class="max-w-screen-md mx-auto flow">
-        <p class="font-semibold">{{ __('Quarantine Intake') }}</p>
+            <p class="font-semibold">{{ __('Quarantine Intake') }}</p>
             <x-form 
                 class="flow" 
                 x-data="QuarantineIntakeForm"
@@ -87,10 +87,25 @@
                     <x-input-error :messages="$errors->get('form.description')" />
                 </div>
                 <div class="flex items-center justify-end gap-2">
-                    <x-button type="button" variant="outline-primary">{{ __('Clear form') }}</x-button>
-                    <x-button type="submit" variant="primary">{{ __('Submit') }}</x-button>
+                    <x-button type="button" variant="outline-primary" wire:loading.attr="disabled" wire:target="save">{{ __('Clear form') }}</x-button>
+                    <x-button type="submit" variant="primary">
+                        <span wire:loading.class="hidden" wire:target="save">{{ __('Submit') }}</span>
+                        <span class="items-center gap-2" wire:loading.flex wire:target="save">
+                            <x-icon-circle-notch class="w-4 h-4 fill-current animate-spin" />
+                            <span>{{ __('Submitting...') }}</span>
+                        </span>
+                    </x-button>
                 </div>
             </x-form>
+            @if ($alert)
+                <div @class([
+                    'p-4 font-semibold rounded-lg',
+                    'bg-green-100 text-green-500' => $alert['type'] === 'success',
+                    'bg-red-100 text-red-500' => $alert['type'] === 'error',
+                ])>
+                    <p>{!! $alert['message'] !!}</p>
+                </div>    
+            @endif
         </x-card>
     @endif
 

@@ -7,7 +7,7 @@
 
 export default function QuarantineIntakeProduct () {
     return {
-        init () { 
+        init () {
             this.initSelect2();
         },
         initSelect2 () {
@@ -30,14 +30,17 @@ export default function QuarantineIntakeProduct () {
                      * @param {State | undefined} state
                      */
                     templateResult ( state ) {
-                        if (state.id === undefined || (state.thumb_url !== undefined && state.thumb_url === '')) {
+                        if ( state.id === undefined || ( state.thumb_url !== undefined && state.thumb_url === '' ) ) {
                             return state.text;
                         }
 
-                        return $(/* html */`<span class="flex items-center gap-2"><img src="${state.thumb_url}"><span>${state.text}</span></span>`);
+                        return $(/* html */`<span class="flex items-center gap-2"><img src="${ state.thumb_url }"><span>${ state.text }</span></span>` );
                     },
                 } )
                 .on( 'change.select2', () => this.$wire.$parent.form.product_id = $( this.$refs.product ).val() );
         },
+        clear () {
+            $( this.$refs.product ).val( null ).trigger( 'change' );
+        }
     };
 }
