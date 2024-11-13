@@ -15,7 +15,7 @@
     </div>
     <div class="space-y-1" x-cloak x-show="$wire.$parent.form.technical_supervisor">
         <x-input-label>{{ __('Technical Supervisor') }}</x-input-label>
-        <p x-text="$wire.$parent.form.technical_supervisor"></p>
+        <p x-text="technicalSupervisorName"></p>
         <div class="flex items-start gap-1">
             <x-icon-info class="w-5 h-5 text-blue-500" />
             <p class="text-xs font-semibold">{{ __('The Technical Supervisor is specified in the Opportunity or Project and cannot be changed here.') }}</p>

@@ -9,7 +9,7 @@
         <x-card class="max-w-screen-md mx-auto flow">
             <p class="font-semibold">{{ __('Quarantine Intake') }}</p>
             <x-form 
-                class="space-y-7 " 
+                class="space-y-7" 
                 x-data="QuarantineIntakeForm"
                 x-effect="maybeClearSerialNumber($wire.form.serial_number_status)"
                 wire:submit="save"

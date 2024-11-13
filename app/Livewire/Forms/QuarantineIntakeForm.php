@@ -17,7 +17,7 @@ class QuarantineIntakeForm extends Form
     public string $object_type;
 
     #[Validate(as: 'Technical Supervisor')]
-    public string $technical_supervisor;
+    public int|null $technical_supervisor;
 
     public string $serial_number_status = 'serial-number-exists';
 
@@ -44,7 +44,7 @@ class QuarantineIntakeForm extends Form
     {
         $this->object_id = null;
         $this->object_type = '';
-        $this->technical_supervisor = '';
+        $this->technical_supervisor = null;
         $this->serial_number_status = 'serial-number-exists';
         $this->serial_number = '';
         $this->product_id = null;
@@ -54,7 +54,7 @@ class QuarantineIntakeForm extends Form
     public function rules(): array
     {
         return [
-            'technical_supervisor' => ['required'],
+            'technical_supervisor' => ['required', 'numeric'],
             'object_id' => ['required', 'numeric'],
             'object_type' => [
                 'required',
@@ -86,7 +86,7 @@ class QuarantineIntakeForm extends Form
 
         $now = now('UTC');
 
-        $response = Http::current()->dd()->post('quarantines', [
+        $response = Http::current()->post('quarantines', [
             'quarantine' => [
                 'item_id' => App::environment(['local', 'staging']) ? intval(config('app.mph.test_product_id')) : intval($validated['product_id']),
                 'store_id' => $this->store,
@@ -98,16 +98,18 @@ class QuarantineIntakeForm extends Form
                 'open_ended' => $this->open_ended,
                 // 'stock_type' => $this->stock_type,
                 'custom_fields' => [
-                    'object_id' => App::environment(['local', 'staging'])
-                        ? ($validated['object_type'] === 'project'
-                            ? intval(config('app.mph.test_project_id'))
-                            : intval(config('app.mph.test_opportunity_id')))
-                        : intval($validated['object_id']),
-                    'object_type' => $validated['object_type'],
-                    'technical_supervisor' => $validated['technical_supervisor'],
+                    // 'object_id' => App::environment(['local', 'staging'])
+                    //     ? ($validated['object_type'] === 'project'
+                    //         ? intval(config('app.mph.test_project_id'))
+                    //         : intval(config('app.mph.test_opportunity_id')))
+                    //     : intval($validated['object_id']),
+                    // 'object_type' => $validated['object_type'],
+                    'mph_technical_supervisor' => $validated['technical_supervisor'],
                 ],
             ],
         ]);
+
+        dd($response->json());
 
         if ($response->failed()) {
             ['errors' => $errors] = $response->json();

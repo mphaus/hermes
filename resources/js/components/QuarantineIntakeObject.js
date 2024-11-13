@@ -21,6 +21,7 @@ export default function QuarantineIntakeObject ( technicalSupervisors ) {
     let itemResults = [];
 
     return {
+        technicalSupervisorName: '',
         technicalSupervisorDoesNotExist: false,
         init () {
             this.initSelect2();
@@ -52,6 +53,7 @@ export default function QuarantineIntakeObject ( technicalSupervisors ) {
                     minimumInputLength: 1,
                 } )
                 .on( 'change.select2', () => {
+                    this.technicalSupervisorName = '';
                     this.$wire.$parent.form.technical_supervisor = '';
                     this.technicalSupervisorDoesNotExist = false;
 
@@ -72,7 +74,8 @@ export default function QuarantineIntakeObject ( technicalSupervisors ) {
                         return;
                     }
 
-                    this.$wire.$parent.form.technical_supervisor = technicalSupervisor.name;
+                    this.technicalSupervisorName = technicalSupervisor.name;
+                    this.$wire.$parent.form.technical_supervisor = technicalSupervisor.id;
                 } );
         },
         clear () {
