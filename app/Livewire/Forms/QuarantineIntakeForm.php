@@ -86,7 +86,7 @@ class QuarantineIntakeForm extends Form
 
         $now = now('UTC');
 
-        $response = Http::current()->post('quarantines', [
+        $response = Http::current()->dd()->post('quarantines', [
             'quarantine' => [
                 'item_id' => App::environment(['local', 'staging']) ? intval(config('app.mph.test_product_id')) : intval($validated['product_id']),
                 'store_id' => $this->store,

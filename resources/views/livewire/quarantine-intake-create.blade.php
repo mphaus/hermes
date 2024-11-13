@@ -9,7 +9,7 @@
         <x-card class="max-w-screen-md mx-auto flow">
             <p class="font-semibold">{{ __('Quarantine Intake') }}</p>
             <x-form 
-                class="flow" 
+                class="space-y-7 " 
                 x-data="QuarantineIntakeForm"
                 x-effect="maybeClearSerialNumber($wire.form.serial_number_status)"
                 wire:submit="save"
@@ -35,6 +35,7 @@
                         </div>
                     </div>
                     <div class="space-y-1" x-cloak x-show="$wire.form.serial_number_status === 'serial-number-exists'">
+                        <x-input-label>{{ __('Missing') }}</x-input-label>
                         <x-input
                             type="text"
                             placeholder="{{ __('Serial number') }}"
