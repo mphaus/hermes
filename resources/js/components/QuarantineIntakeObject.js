@@ -36,17 +36,13 @@ export default function QuarantineIntakeObject ( technicalSupervisors ) {
                         dataType: 'json',
                         delay: 500,
                         /**
-                         * @param {{ object_type: string, items: Item[] }} data
+                         * @param {Item[]} data
                          */
                         processResults: data => {
-                            const { object_type, items } = data;
-
-                            itemResults = items;
-
-                            this.$wire.$parent.form.object_type = object_type;
+                            itemResults = data;
 
                             return {
-                                results: items,
+                                results: data,
                             };
                         },
                     },
@@ -58,7 +54,7 @@ export default function QuarantineIntakeObject ( technicalSupervisors ) {
                     this.technicalSupervisorDoesNotExist = false;
 
                     const selectedValue = $( this.$refs.object ).val()
-                    this.$wire.$parent.form.object_id = selectedValue;
+                    this.$wire.$parent.form.project_or_opportunity = selectedValue;
 
                     const selectedResult = itemResults.find( item => item.selected );
 

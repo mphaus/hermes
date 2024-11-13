@@ -12,9 +12,7 @@ use Livewire\Form;
 class QuarantineIntakeForm extends Form
 {
     #[Validate(as: 'Opportunity or Project')]
-    public int|null $object_id;
-
-    public string $object_type;
+    public string $project_or_opportunity;
 
     #[Validate(as: 'Technical Supervisor')]
     public int|null $technical_supervisor;
@@ -42,8 +40,7 @@ class QuarantineIntakeForm extends Form
 
     public function clear(): void
     {
-        $this->object_id = null;
-        $this->object_type = '';
+        $this->project_or_opportunity = '';
         $this->technical_supervisor = null;
         $this->serial_number_status = 'serial-number-exists';
         $this->serial_number = '';
@@ -55,11 +52,7 @@ class QuarantineIntakeForm extends Form
     {
         return [
             'technical_supervisor' => ['required', 'numeric'],
-            'object_id' => ['required', 'numeric'],
-            'object_type' => [
-                'required',
-                Rule::in(['project', 'opportunity']),
-            ],
+            'project_or_opportunity' => ['required'],
             'serial_number_status' => [
                 'required',
                 Rule::in(['serial-number-exists', 'missing-serial-number', 'not-serialised']),
@@ -98,12 +91,7 @@ class QuarantineIntakeForm extends Form
                 'open_ended' => $this->open_ended,
                 // 'stock_type' => $this->stock_type,
                 'custom_fields' => [
-                    // 'object_id' => App::environment(['local', 'staging'])
-                    //     ? ($validated['object_type'] === 'project'
-                    //         ? intval(config('app.mph.test_project_id'))
-                    //         : intval(config('app.mph.test_opportunity_id')))
-                    //     : intval($validated['object_id']),
-                    // 'object_type' => $validated['object_type'],
+                    'project_or_opportunity' => $validated['project_or_opportunity'],
                     'mph_technical_supervisor' => $validated['technical_supervisor'],
                 ],
             ],

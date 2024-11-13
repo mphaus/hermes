@@ -16,7 +16,7 @@
             >
                 <div class="space-y-1">
                     <livewire:quarantine-intake-object :technical-supervisors="$this->technicalSupervisors" />
-                    <x-input-error :messages="$errors->get('form.object_id')" />
+                    <x-input-error :messages="$errors->get('form.opportunity_or_project')" />
                     <x-input-error :messages="$errors->get('form.technical_supervisor')" />
                 </div>
                 <div class="flow">

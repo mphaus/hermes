@@ -43,32 +43,23 @@ class OpportunityProjectController extends Controller
         ['opportunities' => $opportunities] = $responses['opportunities']->json();
 
         if (empty($projects) && empty($opportunities)) {
-            return [
-                'object_type' => '',
-                'items' => [],
-            ];
+            return [];
         }
 
         if ($projects) {
-            return [
-                'object_type' => 'project',
-                'items' => array_map(fn($project) => [
-                    'id' => $project['id'],
-                    'text' => '⚓' . ' ' . $project['name'],
-                    'technical_supervisor_id' => $project['custom_fields']['mph_technical_supervisor'],
-                ], $projects),
-            ];
+            return array_map(fn($project) => [
+                'id' => '⚓' . ' ' . $project['name'],
+                'text' => '⚓' . ' ' . $project['name'],
+                'technical_supervisor_id' => $project['custom_fields']['mph_technical_supervisor'],
+            ], $projects);
         }
 
         if ($opportunities) {
-            return [
-                'object_type' => 'opportunity',
-                'items' => array_map(fn($opportunity) => [
-                    'id' => $opportunity['id'],
-                    'text' => '🛠' . ' ' . $opportunity['subject'],
-                    'technical_supervisor_id' => $opportunity['custom_fields']['mph_technical_supervisor'],
-                ], $opportunities),
-            ];
+            return array_map(fn($opportunity) => [
+                'id' => '🛠' . ' ' . $opportunity['subject'],
+                'text' => '🛠' . ' ' . $opportunity['subject'],
+                'technical_supervisor_id' => $opportunity['custom_fields']['mph_technical_supervisor'],
+            ], $opportunities);
         }
     }
 }
