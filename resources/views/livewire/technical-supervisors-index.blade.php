@@ -17,7 +17,7 @@
             @foreach (['John Doe', 'Jane Doe', 'Alex Doe', 'Arturo Doe', 'Anne Doe'] as $technical_supervisor)
                 <x-card class="relative">
                     <a
-                        href="#"
+                        href="{{ route('technical-supervisors.edit', ['id' => mt_rand()]) }}"
                         class="after:absolute after:inset-0 after:z-[1] after:content-['']"
                         title="{{ $technical_supervisor }}"
                         wire:navigate
