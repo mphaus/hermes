@@ -1,15 +1,15 @@
 <x-slot name="title">{{ __('Techinical Supervisors') }}</x-slot>
 <x-slot name="heading">{{ __('Techinical Supervisors') }}</x-slot>
 <div class="flow">
-    <header class="flex justify-end">
+    <header class="flex justify-end max-w-screen-xl mx-auto">
         <x-button
-            href="#"
+            href="{{ route('technical-supervisors.create') }}"
             variant="primary"
             wire:loading.class="disabled"
             wire:navigate
         >
             <x-icon-plus class="w-4 fill-current" />
-            <span>{{ __('Create Technical Supervisor') }}</span>
+            <span>{{ __('Add Technical Supervisor') }}</span>
         </x-button>
     </header>
     <section class="mt-8 flow">
