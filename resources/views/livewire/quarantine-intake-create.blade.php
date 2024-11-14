@@ -16,7 +16,7 @@
             >
                 <div class="space-y-1">
                     <livewire:quarantine-intake-object :technical-supervisors="$this->technicalSupervisors" />
-                    <x-input-error :messages="$errors->get('form.opportunity_or_project')" />
+                    <x-input-error :messages="$errors->get('form.project_or_opportunity')" />
                     <x-input-error :messages="$errors->get('form.technical_supervisor')" />
                 </div>
                 <div class="flow">
@@ -88,7 +88,15 @@
                     <x-input-error :messages="$errors->get('form.description')" />
                 </div>
                 <div class="flex items-center justify-end gap-2">
-                    <x-button type="button" variant="outline-primary" wire:loading.attr="disabled" wire:target="save">{{ __('Clear form') }}</x-button>
+                    <x-button 
+                        type="button" 
+                        variant="outline-primary" 
+                        wire:loading.attr="disabled" 
+                        wire:target="save"
+                        x-on:click="clear"
+                    >
+                        {{ __('Clear form') }}
+                    </x-button>
                     <x-button type="submit" variant="primary">
                         <span wire:loading.class="hidden" wire:target="save">{{ __('Submit') }}</span>
                         <span class="items-center gap-2" wire:loading.flex wire:target="save">

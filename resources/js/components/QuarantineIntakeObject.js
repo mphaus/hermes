@@ -54,6 +54,12 @@ export default function QuarantineIntakeObject ( technicalSupervisors ) {
                     this.technicalSupervisorDoesNotExist = false;
 
                     const selectedValue = $( this.$refs.object ).val()
+
+                    if ( !selectedValue ) {
+                        this.$wire.$parent.form.project_or_opportunity = '';
+                        return;
+                    }
+
                     this.$wire.$parent.form.project_or_opportunity = selectedValue;
 
                     const selectedResult = itemResults.find( item => item.selected );

@@ -51,8 +51,8 @@ class QuarantineIntakeForm extends Form
     public function rules(): array
     {
         return [
-            'technical_supervisor' => ['required', 'numeric'],
             'project_or_opportunity' => ['required'],
+            'technical_supervisor' => ['required', 'numeric'],
             'serial_number_status' => [
                 'required',
                 Rule::in(['serial-number-exists', 'missing-serial-number', 'not-serialised']),
@@ -96,8 +96,6 @@ class QuarantineIntakeForm extends Form
                 ],
             ],
         ]);
-
-        dd($response->json());
 
         if ($response->failed()) {
             ['errors' => $errors] = $response->json();
