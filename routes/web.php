@@ -13,6 +13,7 @@ use App\Livewire\JobsIndex;
 use App\Livewire\JobsShow;
 use App\Livewire\QetIndex;
 use App\Livewire\QuarantineIntakeCreate;
+use App\Livewire\TechnicalSupervisorsIndex;
 use App\Livewire\UploadLogsShow;
 use App\Livewire\UsersCreate;
 use App\Livewire\UsersEdit;
@@ -47,6 +48,8 @@ Route::middleware(['auth', 'is_enabled'])->group(function () {
     Route::get('users/{user}/edit', UsersEdit::class)->name('users.edit')->middleware('permission:crud-users');
 
     Route::get('quarantine-intake', QuarantineIntakeCreate::class)->name('quarantine-intake.create')->middleware('permission:access-quarantine-intake');
+
+    Route::get('technical-supervisors', TechnicalSupervisorsIndex::class)->name('technical-supervisors.index')->middleware('permission:crud-technical-supervisors');
 
     Route::get('projects/search', [ProjectController::class, 'search'])->name('projects.search');
 
