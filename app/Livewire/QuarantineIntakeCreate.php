@@ -42,6 +42,9 @@ class QuarantineIntakeCreate extends Component
 
     public function save()
     {
+        sleep(30);
+        return;
+
         if (!usercan('access-quarantine-intake')) {
             abort(403);
         }
