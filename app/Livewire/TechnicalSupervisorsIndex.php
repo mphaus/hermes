@@ -6,8 +6,10 @@ use App\Traits\WithHttpCurrentError;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Http;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Lazy;
 use Livewire\Component;
 
+#[Lazy]
 class TechnicalSupervisorsIndex extends Component
 {
     use WithHttpCurrentError;
@@ -37,6 +39,11 @@ class TechnicalSupervisorsIndex extends Component
             ...$default_response,
             'people' => collect(array_filter($list_values, fn($ts) => $ts['name'] !== '-- Select one --')),
         ];
+    }
+
+    public function placeholder(): View
+    {
+        return view('technical-supervisors-skeleton');
     }
 
     public function render(): View

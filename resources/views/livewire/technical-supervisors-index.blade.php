@@ -19,16 +19,7 @@
             <section class="mt-8 flow">
                 <div class="grid max-w-screen-xl gap-4 mx-auto md:grid-cols-2 lg:grid-cols-3">
                     @foreach ($this->technicalSupervisors['people'] as $person)
-                        <x-card class="relative">
-                            <a
-                                href="{{ route('technical-supervisors.edit', ['id' => $person['id']]) }}"
-                                class="after:absolute after:inset-0 after:z-[1] after:content-['']"
-                                title="{{ $person['name'] }}"
-                                wire:navigate
-                            >
-                                {{ $person['name'] }}
-                            </a>
-                        </x-card>
+                        <x-technical-supervisors-item :technicalSupervisor="$person" wire:key="{{ $person['id'] }}" />
                     @endforeach
                 </div>
             </section>
