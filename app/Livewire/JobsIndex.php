@@ -21,7 +21,7 @@ class JobsIndex extends Component
     #[Computed]
     public function jobs(): array
     {
-        $defaultResponse = [
+        $default_response = [
             'error' => '',
             'opportunities' => collect([]),
         ];
@@ -38,7 +38,7 @@ class JobsIndex extends Component
 
         if ($response->failed()) {
             return [
-                ...$defaultResponse,
+                ...$default_response,
                 'error' => $this->errorMessage(__('An unexpected error occurred while fetching the Jobs list. Please refresh the page and try again.'), $response->json()),
             ];
         }
@@ -49,11 +49,11 @@ class JobsIndex extends Component
         ] = $response->json();
 
         if (empty($opportunities)) {
-            return $defaultResponse;
+            return $default_response;
         }
 
         return [
-            ...$defaultResponse,
+            ...$default_response,
             'opportunities' => (new LengthAwarePaginator(
                 items: $opportunities,
                 total: $meta['total_row_count'],
