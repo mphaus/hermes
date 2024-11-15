@@ -1,12 +1,21 @@
 <x-slot name="title">{{ __('Edit Technical Supervisor') }}</x-slot>
-<x-slot name="heading">{{ __('Edit Technical Supervisor') }}</x-slot>
+<x-slot name="heading">
+    <span>{{ __('Edit Technical Supervisor name') }}</span>
+    <span class="block mt-2 text-sm font-normal">{{ __('Double check the spelling of the name') }}</span>
+</x-slot>
 <div>
     <x-card class="max-w-screen-sm mx-auto flow">
         <p class="font-semibold">{{ __('Edit Techical Supervisor') }}</p>
         <x-form class="flow">
-            <div class="space-y-1">
-                <x-input-label for="full-name">{{ __('Full Name') }}</x-input-label>
-                <x-input type="text" name="full_name" id="full-name" />
+            <div class="grid gap-4 md:grid-cols-2">
+                <div class="space-y-1">
+                    <x-input-label for="first-name">{{ __('First name') }}</x-input-label>
+                    <x-input type="text" name="first_name" id="first-name" />
+                </div>
+                <div class="space-y-1">
+                    <x-input-label for="last-name">{{ __('Last name') }}</x-input-label>
+                    <x-input type="text" name="last_name" id="last-name" />
+                </div>
             </div>
             <div class="flex justify-end">
                 <x-button type="submit" variant="primary">{{ __('Save') }}</x-button>
