@@ -40,6 +40,11 @@ trait WithFunctionAccess
             'value' => 'Quarantine Intake',
             'description' => 'Used primarily by Warehouse Technicians and the Production Assistant to submit new quarantine items to CurrentRMS, along with the Opportunity / Project name and Technical Supervisor.',
         ],
+        [
+            'key' => 'crud-technical-supervisors',
+            'value' => 'Technical Supervisors',
+            'description' => 'Used by the Production Assistant to add MPH Technical Supervisors to the drop-down list on the Opportunity / Project edit page in CurrentRMS (this in turn is used to ensure Quarantine items assigned to Jobs are also assigned to Technical Supervisors, so accurate Quarantine reporting is possible).',
+        ],
     ];
 
     public function getPermissions(): array
