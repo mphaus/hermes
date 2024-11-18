@@ -6,7 +6,11 @@
 <div>
     <x-card class="max-w-screen-sm mx-auto flow">
         <p class="font-semibold">{{ __('Technical Supervisor') }}</p>
-        <x-form class="flow" wire:submit="save">
+        <x-form 
+            class="flow" 
+            wire:submit="save"
+            x-on:submit.prevent="$wire.message = ''"
+        >
             <div class="grid gap-4 md:grid-cols-2">
                 <div class="space-y-1">
                     <x-input-label for="first-name">{{ __('First name') }}</x-input-label>
@@ -35,6 +39,9 @@
                     <span wire:loading wire:target="save">{{ __('Saving...') }}</span>
                 </x-button>
             </div>
+            @if ($message)
+                <x-generic-error :message="$message" x-show="$wire.message" />    
+            @endif
         </x-form>
     </x-card>
 </div>
