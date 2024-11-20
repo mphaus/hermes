@@ -14,6 +14,10 @@ class TechnicalSupervisorsCreate extends Component
 
     public function save(): mixed
     {
+        if (!usercan('crud-technical-supervisors')) {
+            abort(403);
+        }
+
         $this->message = '';
         $result = $this->form->store();
 
