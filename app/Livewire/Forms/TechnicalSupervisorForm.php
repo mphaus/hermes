@@ -8,7 +8,6 @@ use Livewire\Form;
 
 class TechnicalSupervisorForm extends Form
 {
-    #[Validate('numeric')]
     public int|null $id = null;
 
     #[Validate('required|alpha', as: 'first name')]
