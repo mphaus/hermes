@@ -1,5 +1,5 @@
 <x-form 
-    class="max-w-screen-md mx-auto flow" 
+    class="flow" 
     wire:submit="save" 
     x-data="UserForm"
 >

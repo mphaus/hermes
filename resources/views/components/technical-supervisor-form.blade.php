@@ -30,8 +30,20 @@
     <div class="flex items-center justify-end gap-2">
         <x-button href="{{ route('technical-supervisors.index') }}" variant="outline-primary" wire:navigate wire:loading.class="disabled" wire:target="save">{{ __('Cancel') }}</x-button>
         <x-button type="submit" variant="primary">
-            <span wire:loading.class="hidden" wire:target="save">{{ __('Add') }}</span>
-            <span wire:loading wire:target="save">{{ __('Adding...') }}</span>
+            <span wire:loading.class="hidden" wire:target="save">
+                @if (request()->routeIs('technical-supervisors.create'))
+                    {{ __('Add') }}
+                @else
+                    {{ __('Update') }}
+                @endif
+            </span>
+            <span wire:loading wire:target="save">
+                @if (request()->routeIs('technical-supervisors.create'))
+                    {{ __('Adding...') }}
+                @else
+                    {{ __('Updating...') }}
+                @endif
+            </span>
         </x-button>
     </div>
     @if ($message)
