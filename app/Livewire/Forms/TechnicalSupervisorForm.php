@@ -10,10 +10,10 @@ class TechnicalSupervisorForm extends Form
 {
     public int|null $id = null;
 
-    #[Validate('required|alpha', as: 'first name')]
+    #[Validate('required|alpha_dash', as: 'first name')]
     public string $first_name;
 
-    #[Validate('required|alpha', as: 'last name')]
+    #[Validate('required|alpha_dash', as: 'last name')]
     public string $last_name;
 
     public function setTechnicalSupervisor(array $technical_supervisor)
