@@ -3,6 +3,8 @@
 // use App\Http\Controllers\ProfileController;
 
 use App\Http\Controllers\OpportunityController;
+use App\Http\Controllers\OpportunityProjectController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProjectController;
 use App\Livewire\ActionStreamIndex;
 use App\Livewire\DiscussionsCreate;
@@ -10,6 +12,10 @@ use App\Livewire\DiscussionsEdit;
 use App\Livewire\JobsIndex;
 use App\Livewire\JobsShow;
 use App\Livewire\QetIndex;
+use App\Livewire\QuarantineIntakeCreate;
+use App\Livewire\TechnicalSupervisorsCreate;
+use App\Livewire\TechnicalSupervisorsEdit;
+use App\Livewire\TechnicalSupervisorsIndex;
 use App\Livewire\UploadLogsShow;
 use App\Livewire\UsersCreate;
 use App\Livewire\UsersEdit;
@@ -43,7 +49,17 @@ Route::middleware(['auth', 'is_enabled'])->group(function () {
     Route::get('users/{user}', UsersShow::class)->name('users.show')->middleware('permission:crud-users');
     Route::get('users/{user}/edit', UsersEdit::class)->name('users.edit')->middleware('permission:crud-users');
 
+    Route::get('quarantine-intake', QuarantineIntakeCreate::class)->name('quarantine-intake.create')->middleware('permission:access-quarantine-intake');
+
+    Route::get('technical-supervisors', TechnicalSupervisorsIndex::class)->name('technical-supervisors.index')->middleware('permission:crud-technical-supervisors');
+    Route::get('technical-supervisors/create', TechnicalSupervisorsCreate::class)->name('technical-supervisors.create')->middleware('permission:crud-technical-supervisors');
+    Route::get('technical-supervisors/{id}/edit', TechnicalSupervisorsEdit::class)->name('technical-supervisors.edit')->middleware('permission:crud-technical-supervisors');
+
     Route::get('projects/search', [ProjectController::class, 'search'])->name('projects.search');
+
+    Route::get('opportunities-projects/search', [OpportunityProjectController::class, 'search'])->name('opportunities.projects.search');
+
+    Route::get('products/search', [ProductController::class, 'search'])->name('products.search');
 });
 
 require __DIR__ . '/auth.php';

@@ -61,6 +61,26 @@ class SideMenu extends Component
                 ],
             ],
             [
+                'text' => __('Quarantine'),
+                'route' => null,
+                'active' => null,
+                'permission' => ['access-quarantine-intake'],
+                'subitems' => [
+                    [
+                        'text' => __('Quarantine Intake'),
+                        'route' => route('quarantine-intake.create'),
+                        'active' => request()->routeIs('quarantine-intake.create'),
+                        'permission' => 'access-quarantine-intake',
+                    ],
+                ],
+            ],
+            [
+                'text' => __('Technical Supervisor CRUD'),
+                'route' => route('technical-supervisors.index'),
+                'active' => request()->routeIs('technical-supervisors.index'),
+                'permission' => ['crud-technical-supervisors'],
+            ],
+            [
                 'text' => __('Users'),
                 'route' => route('users.index'),
                 'active' => request()->routeIs('users.index'),

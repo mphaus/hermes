@@ -11,7 +11,7 @@
     @else
         <x-card class="max-w-screen-md mx-auto flow">
             <p class="font-semibold">{{ __('Create Discussions') }}</p>
-            <form class="space-y-8" wire:submit="save">
+            <x-form class="space-y-8" wire:submit="save">
                 <div class="space-y-1">
                     <x-input-label>{{ __('Short Job or Project name') }}</x-input-label>
                     <x-input type="text" wire:model="form.shortJoborProjectName" />
@@ -43,7 +43,7 @@
                         </span>
                     </x-button>
                 </div>
-            </form>
+            </x-form>
             <div class="mt-6 text-sm" wire:loading wire:target="save">
                 <p class="font-semibold">{{ __('Processing...') }}</p>
                 <p class="mt-1">{{ __('This process typically takes less than 40 seconds. Do not navigate away from this page until a Success or Fail message is shown here.') }}</p>

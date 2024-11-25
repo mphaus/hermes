@@ -29,7 +29,7 @@
                                         <span>{{ $menuitem['text'] }}</span>
                                         <x-icon-chevron-down class="w-5 h-5" />
                                     </button>
-                                    <ul class="pl-6 mt-2 space-y-2" x-show="expanded" x-collapse>
+                                    <ul class="pl-6 mt-2 space-y-2" x-show="expanded" x-collapse x-cloak>
                                         @foreach ($menuitem['subitems'] as $subitem)
                                             @if ($canViewItem($subitem['permission']))
                                                 <li>
@@ -78,7 +78,7 @@
         </nav>
     </section>
     <footer class="px-3 py-6" x-data="{ expanded: false }">
-        <div x-show="expanded" x-collapse>
+        <div x-show="expanded" x-collapse x-cloak>
             <ul class="pl-2 text-sm">
                 <li>
                     <a 

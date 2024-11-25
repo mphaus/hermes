@@ -21,7 +21,7 @@ export default function CreateDiscussionsObject () {
                 ajax: {
                     url: createOnProject ? route( 'projects.search' ) : route( 'opportunities.search' ),
                     dataType: 'json',
-                    delay: 250,
+                    delay: 500,
                     processResults ( data ) {
                         return {
                             results: data,
