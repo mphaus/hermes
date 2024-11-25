@@ -27,7 +27,8 @@
             <x-input-error :messages="$errors->get('form.last_name')" />
         </div>
     </div>
-    <div class="flex justify-end">
+    <div class="flex items-center justify-end gap-2">
+        <x-button href="{{ route('technical-supervisors.index') }}" variant="outline-primary" wire:navigate wire:loading.class="disabled" wire:target="save">{{ __('Cancel') }}</x-button>
         <x-button type="submit" variant="primary">
             <span wire:loading.class="hidden" wire:target="save">{{ __('Add') }}</span>
             <span wire:loading wire:target="save">{{ __('Adding...') }}</span>
