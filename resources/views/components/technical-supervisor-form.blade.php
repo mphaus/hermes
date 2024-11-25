@@ -29,8 +29,8 @@
     </div>
     <div class="flex justify-end">
         <x-button type="submit" variant="primary">
-            <span wire:loading.class="hidden" wire:target="save">{{ __('Save') }}</span>
-            <span wire:loading wire:target="save">{{ __('Saving...') }}</span>
+            <span wire:loading.class="hidden" wire:target="save">{{ __('Add') }}</span>
+            <span wire:loading wire:target="save">{{ __('Adding...') }}</span>
         </x-button>
     </div>
     @if ($message)
