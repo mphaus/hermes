@@ -75,7 +75,7 @@ class SideMenu extends Component
                 ],
             ],
             [
-                'text' => __('Technical Supervisors'),
+                'text' => __('Technical Supervisor CRUD'),
                 'route' => route('technical-supervisors.index'),
                 'active' => request()->routeIs('technical-supervisors.index'),
                 'permission' => ['crud-technical-supervisors'],
