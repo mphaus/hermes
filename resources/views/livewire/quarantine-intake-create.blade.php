@@ -35,7 +35,6 @@
                         </div>
                     </div>
                     <div class="space-y-1" x-cloak x-show="$wire.form.serial_number_status === 'serial-number-exists'">
-                        <x-input-label>{{ __('Missing') }}</x-input-label>
                         <x-input
                             type="text"
                             placeholder="{{ __('Serial number') }}"
