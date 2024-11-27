@@ -6,20 +6,22 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <form method="POST" action="{{ route('password.email') }}">
-        @csrf
+    @unless (session('status') === 'We have emailed your password reset link.')
+        <form method="POST" action="{{ route('password.email') }}">
+            @csrf
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-input id="email" class="block w-full mt-1" type="email" name="email" :value="old('email')" required autofocus />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
+            <!-- Email Address -->
+            <div>
+                <x-input-label for="email" :value="__('Email')" />
+                <x-input id="email" class="block w-full mt-1" type="email" name="email" :value="old('email')" required autofocus />
+                <x-input-error :messages="$errors->get('email')" class="mt-2" />
+            </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <x-button variant="primary">
-                {{ __('Email Password Reset Link') }}
-            </x-button>
-        </div>
-    </form>
+            <div class="flex items-center justify-end mt-4">
+                <x-button variant="primary">
+                    {{ __('Email Password Reset Link') }}
+                </x-button>
+            </div>
+        </form>
+    @endunless
 </x-layout-guest>
