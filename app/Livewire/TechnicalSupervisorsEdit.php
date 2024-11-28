@@ -24,6 +24,11 @@ class TechnicalSupervisorsEdit extends Component
 
     public function mount(int $id)
     {
+        if ($id === intval(config('app.mph.technical_supervisor_not_yet_assigned_id'))) {
+            $this->technical_supervisor = null;
+            return;
+        }
+
         $technical_supervisors_list_id = config('app.mph.technical_supervisor_list_id');
 
         $response = Http::current()->get("list_names/{$technical_supervisors_list_id}");
