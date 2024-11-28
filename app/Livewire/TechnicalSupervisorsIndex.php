@@ -37,7 +37,7 @@ class TechnicalSupervisorsIndex extends Component
 
         return [
             ...$default_response,
-            'people' => collect(array_filter($list_values, fn($ts) => $ts['name'] !== '-- Select one --')),
+            'people' => collect(array_filter($list_values, fn($ts) => $ts['name'] !== 'Not yet assigned')),
         ];
     }
 
