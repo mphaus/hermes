@@ -42,6 +42,8 @@ class QuarantineIntakeCreate extends Component
 
     public function save()
     {
+        dd($this->form);
+
         if (!usercan('access-quarantine-intake')) {
             abort(403);
         }
@@ -63,7 +65,7 @@ class QuarantineIntakeCreate extends Component
             'message' => __('Success! ✅ The item has been added to Quarantine (<a href=":url" target="_blank" rel="nofollow">in CurrentRMS</a>)', ['url' => "https://mphaustralia.current-rms.com/quarantines/{$result}"]),
         ];
 
-        $this->dispatch('quarantine-intake-created');
+        $this->dispatch('hermes:quarantine-intake-created');
     }
 
     public function placeholder(): View

@@ -5,14 +5,27 @@
  * @property {string} [thumb_url]
  */
 
-export default function QuarantineIntakeProduct () {
+/**
+ * @typedef {Object} SelectProductProps
+ * @property {boolean} multiple
+ * @property {number | string[]} [initialValue]
+ */
+
+/**
+ * @export
+ * @param {SelectProductProps} props
+ */
+export default function SelectProduct ( props ) {
+    const { multiple } = props;
+
     return {
         init () {
             this.initSelect2();
         },
         initSelect2 () {
-            $( this.$refs.product )
+            $( this.$root )
                 .select2( {
+                    multiple,
                     placeholder: 'Type the name of a Product',
                     width: '100%',
                     ajax: {
@@ -23,7 +36,7 @@ export default function QuarantineIntakeProduct () {
                             return {
                                 results: data,
                             };
-                        }
+                        },
                     },
                     minimumInputLength: 1,
                     /**
@@ -37,10 +50,12 @@ export default function QuarantineIntakeProduct () {
                         return $(/* html */`<span class="flex items-center gap-2"><img src="${ state.thumb_url }"><span>${ state.text }</span></span>` );
                     },
                 } )
-                .on( 'change.select2', () => this.$wire.$parent.form.product_id = $( this.$refs.product ).val() );
+                .on( 'change.select2', () => {
+                    this.$dispatch( 'hermes:select-product-change', { value: $( this.$root ).val() } )
+                } );
         },
         clear () {
-            $( this.$refs.product ).val( null ).trigger( 'change' );
-        }
+            $( this.$root ).val( null ).trigger( 'change' );
+        },
     };
 }

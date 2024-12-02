@@ -8,10 +8,10 @@
             <x-button type="button" variant="outline-primary">{{ __('Last 90 days') }}</x-button>
             <x-input type="text" />
         </div>
-        <div class="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
+        <div class="grid gap-2 sm:grid-cols-2">
             <div class="space-y-1">
                 <x-input-label>{{ __('Products') }}</x-input-label>
-                <select name="" id="" class="w-full"></select>
+                <x-select-product :multiple="true" />
             </div>
             <div class="space-y-1">
                 <x-input-label>{{ __('Technical Supervisors') }}</x-input-label>

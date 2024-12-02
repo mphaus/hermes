@@ -21,7 +21,7 @@ export default function QuarantineIntakeForm () {
             this.$wire.form.product_id = null;
             this.$wire.form.description = '';
 
-            this.$dispatch( 'quarantine-intake-cleared' );
+            this.$dispatch( 'hermes:quarantine-intake-cleared' );
         },
     };
 }

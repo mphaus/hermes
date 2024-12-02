@@ -60,7 +60,8 @@
 }
 
 .select2-container--default.select2-container--focus .select2-selection--multiple,
-.select2-container--default.select2-container--focus .select2-selection--single {
+.select2-container--default.select2-container--focus .select2-selection--single,
+.select2-dropdown {
     @apply border-primary-500 ring-primary-500 ring-1;
 }
 

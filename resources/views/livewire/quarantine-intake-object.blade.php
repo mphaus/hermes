@@ -3,8 +3,8 @@
 <div 
     class="flow" 
     x-data="QuarantineIntakeObject({{ Js::from($technicalSupervisors) }})"
-    x-on:quarantine-intake-created.window="clear"
-    x-on:quarantine-intake-cleared.window="clear"
+    x-on:hermes:quarantine-intake-created.window="clear"
+    x-on:hermes:quarantine-intake-cleared.window="clear"
 >
     <div class="space-y-1">
         <x-input-label>{{ __('Opportunity or Project') }}</x-input-label>

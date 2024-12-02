@@ -10,9 +10,10 @@
             <p class="font-semibold">{{ __('Quarantine Intake') }}</p>
             <x-form 
                 class="space-y-7" 
+                wire:submit="save"
                 x-data="QuarantineIntakeForm"
                 x-effect="maybeClearSerialNumber($wire.form.serial_number_status)"
-                wire:submit="save"
+                x-on:hermes:select-product-change="$wire.form.product_id = $event.detail.value"
             >
                 <div class="space-y-1">
                     <livewire:quarantine-intake-object :technical-supervisors="$this->technicalSupervisors" />
@@ -46,7 +47,7 @@
                             x-bind:class="{ 'text-red-500': serialNumberRemainingCharacters <= 0 }"
                             >
                             <span x-text="serialNumberRemainingCharacters"></span>
-                            {!!  __('character<span x-show="serialNumberRemainingCharacters !== 1">s</span> left') !!}
+                            {!! __('character<span x-show="serialNumberRemainingCharacters !== 1">s</span> left') !!}
                         </p>
                         <x-input-error :messages="$errors->get('form.serial_number')" />
                     </div>
@@ -66,7 +67,11 @@
                     </p>
                 </div>
                 <div class="space-y-1">
-                    <livewire:quarantine-intake-product />
+                    <x-input-label>{{ __('Product') }}</x-input-label>
+                    <x-select-product
+                        x-on:hermes:quarantine-intake-created.window="clear"
+                        x-on:hermes:quarantine-intake-cleared.window="clear" 
+                    />
                     <x-input-error :messages="$errors->get('form.product_id')" />
                 </div>
                 <div class="space-y-1">
