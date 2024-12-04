@@ -19,6 +19,7 @@ import SideMenu from "./components/SideMenu";
 import QuarantineIntakeObject from "./components/QuarantineIntakeObject";
 import QuarantineIntakeForm from "./components/QuarantineIntakeForm";
 import SelectProduct from "./components/SelectProduct";
+import SelectObject from "./components/SelectObject";
 
 Alpine.data( 'ActionStreamFilters', ActionStreamFilters );
 Alpine.data( 'ActionStreamItem', ActionStreamItem );
@@ -35,5 +36,6 @@ Alpine.data( 'SideMenu', SideMenu );
 Alpine.data( 'QuarantineIntakeObject', QuarantineIntakeObject );
 Alpine.data( 'QuarantineIntakeForm', QuarantineIntakeForm );
 Alpine.data( 'SelectProduct', SelectProduct );
+Alpine.data( 'SelectObject', SelectObject );
 
 Livewire.start();

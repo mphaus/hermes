@@ -14,11 +14,11 @@
                 <x-select-product :multiple="true" />
             </div>
             <div class="space-y-1">
-                <x-input-label>{{ __('Technical Supervisors') }}</x-input-label>
-                <select name="" id="" class="w-full"></select>
+                <x-input-label>{{ __('Opportunities or Projects') }}</x-input-label>
+                <x-select-object :multiple="true" />
             </div>
             <div class="space-y-1">
-                <x-input-label>{{ __('Opportunities or Projects') }}</x-input-label>
+                <x-input-label>{{ __('Technical Supervisors') }}</x-input-label>
                 <select name="" id="" class="w-full"></select>
             </div>
             <div class="space-y-1">
