@@ -15,7 +15,7 @@
                 <option value="">{{ __('Select a Technical Supervisor') }}</option>
             @endunless
             @foreach ($this->data['technical_supervisors'] as $technical_supervisor)
-                <option value="{{ $technical_supervisor['id'] }}">{{ $technical_supervisor['name'] }}</option>
+                <option value="{{ $technical_supervisor['id'] }}" wire:key="{{ $technical_supervisor['id'] }}">{{ $technical_supervisor['name'] }}</option>
             @endforeach
         </select> 
     @else

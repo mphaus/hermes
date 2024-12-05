@@ -23,7 +23,7 @@
             </div>
             <div class="space-y-1">
                 <x-input-label>{{ __('Fault root cause') }}</x-input-label>
-                <select name="" id="" class="w-full"></select>
+                <livewire:select-fault-root-cause lazy :multiple="true" />
             </div>
         </div>
         <div class="flex flex-col items-end gap-4">

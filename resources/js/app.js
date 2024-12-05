@@ -21,6 +21,7 @@ import QuarantineIntakeForm from "./components/QuarantineIntakeForm";
 import SelectProduct from "./components/SelectProduct";
 import SelectObject from "./components/SelectObject";
 import SelectTechnicalSupervisor from "./components/SelectTechnicalSupervisor";
+import SelectFaultRootCause from "./components/SelectFaultRootCause";
 
 Alpine.data( 'ActionStreamFilters', ActionStreamFilters );
 Alpine.data( 'ActionStreamItem', ActionStreamItem );
@@ -39,5 +40,6 @@ Alpine.data( 'QuarantineIntakeForm', QuarantineIntakeForm );
 Alpine.data( 'SelectProduct', SelectProduct );
 Alpine.data( 'SelectObject', SelectObject );
 Alpine.data( 'SelectTechnicalSupervisor', SelectTechnicalSupervisor );
+Alpine.data( 'SelectFaultRootCause', SelectFaultRootCause );
 
 Livewire.start();
