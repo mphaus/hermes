@@ -8,4 +8,11 @@
     class="w-full"
     x-data="SelectObject({ multiple: {{ Js::from($multiple) }} })"
     {{ $attributes }}
-></select>
+    @if ($multiple)
+        multiple
+    @endif
+>
+    @unless ($multiple)
+    <option value="">{{ __('Select a Project or Opportunity') }}</option>
+    @endunless
+</select>
