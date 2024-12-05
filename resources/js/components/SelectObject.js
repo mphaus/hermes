@@ -1,7 +1,6 @@
 /** 
  * @typedef {object} SelectObjectProps
  * @property {boolean} multiple
- * @property {number | string[]} [initialValue]
  */
 
 /**

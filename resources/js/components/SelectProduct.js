@@ -8,7 +8,6 @@
 /**
  * @typedef {Object} SelectProductProps
  * @property {boolean} multiple
- * @property {number | string[]} [initialValue]
  */
 
 /**
