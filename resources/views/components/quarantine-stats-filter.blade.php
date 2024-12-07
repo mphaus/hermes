@@ -1,9 +1,37 @@
-<x-card class="space-y-4">
+<x-card 
+    class="space-y-4" 
+    x-data="QuarantineStatsFilter"
+    x-on:hermes:select-object-change="filter.object = $event.detail.value"
+>
     <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
-        <x-button type="button" variant="outline-primary">{{ __('Last week') }}</x-button>
-        <x-button type="button" variant="outline-primary">{{ __('Last 30 days') }}</x-button>
-        <x-button type="button" variant="outline-primary">{{ __('Last 90 days') }}</x-button>
-        <x-input type="date" />
+        <x-button 
+            type="button" 
+            variant="outline-primary"
+            data-time-period="last-week"
+            x-on:click="toggleTimePeriod"
+            x-bind:class="toggleTimePeriodClassname($el)"
+        >
+            {{ __('Last week') }}
+        </x-button>
+        <x-button 
+            type="button" 
+            variant="outline-primary"
+            data-time-period="last-30-days"
+            x-on:click="toggleTimePeriod"
+            x-bind:class="toggleTimePeriodClassname($el)"
+        >
+            {{ __('Last 30 days') }}
+        </x-button>
+        <x-button 
+            type="button" 
+            variant="outline-primary"
+            data-time-period="last-90-days"
+            x-on:click="toggleTimePeriod"
+            x-bind:class="toggleTimePeriodClassname($el)"
+        >
+            {{ __('Last 90 days') }}
+        </x-button>
+        <x-input type="text" x-ref="dateperiod" />
     </div>
     <div class="grid gap-2 sm:grid-cols-2">
         <div class="space-y-1">

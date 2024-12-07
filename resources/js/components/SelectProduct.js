@@ -49,7 +49,9 @@ export default function SelectProduct ( props ) {
                         return $(/* html */`<span class="flex items-center gap-2"><img src="${ state.thumb_url }"><span>${ state.text }</span></span>` );
                     },
                 } )
-                .on( 'change.select2', () => this.$dispatch( 'hermes:select-product-change', { value: $( this.$root ).val() } ) );
+                .on( 'change.select2', ( e ) => {
+                    this.$dispatch( 'hermes:select-product-change', { value: $( this.$root ).val() } )
+                } );
         },
         clear () {
             $( this.$root ).val( null ).trigger( 'change' );
