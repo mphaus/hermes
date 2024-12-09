@@ -59,12 +59,15 @@
             <x-input-checkbox id="show_items_currently_in_quarantine" class="mt-0.5" x-model="filter.show_items_currently_in_quarantine" />
             <x-input-label for="show_items_currently_in_quarantine" class="font-semibold cursor-pointer">{{ __('Show items currently in Quarantine') }}</x-input-label>
         </div>
-        <x-button 
-            type="button" 
-            variant="primary"
-            x-on:click="$dispatch('hermes:quarantine-stats-filter-change', { filter: filter })"
-        >
-            {{ __('Filter') }}
-        </x-button>
+        <div class="flex items-center gap-2">
+            <x-button variant="outline-primary" href="{{ route('quarantine-stats.index') }}" wire:navigate>{{ __('Clear') }}</x-button>
+            <x-button
+                type="button"
+                variant="primary"
+                x-on:click="$dispatch('hermes:quarantine-stats-filter-change', { filter: filter })"
+            >
+                {{ __('Filter') }}
+            </x-button>
+        </div>
     </div>
 </x-card>
