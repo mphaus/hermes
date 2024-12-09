@@ -21,7 +21,7 @@ export default function SelectTechnicalSupervisor ( props ) {
                     placeholder: 'Type the name of a Technical Supervisor',
                     width: '100%',
                 } )
-                .on( 'change.select2', () => this.$dispatch( 'hermes:select-technical-supervisor-change', { value: $( this.$root ).val() } ) );
+                .on( 'change.select2', () => { this.$dispatch( 'hermes:select-technical-supervisor-change', { value: $( this.$root ).val() } ) } );
         },
         clear () {
             $( this.$root ).val( null ).trigger( 'change' );

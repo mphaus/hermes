@@ -11,8 +11,4 @@
     @if ($multiple)
         multiple
     @endif
->
-    @unless ($multiple)
-    <option value="">{{ __('Select a Project or Opportunity') }}</option>
-    @endunless
-</select>
+></select>

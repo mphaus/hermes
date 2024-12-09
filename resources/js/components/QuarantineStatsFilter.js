@@ -3,7 +3,11 @@ export default function QuarantineStatsFilter () {
         filter: {
             time_period: '',
             date_period: '',
-            object: [],
+            products: [],
+            technical_supervisors: [],
+            objects: [],
+            fault_root_causes: [],
+            show_items_currently_in_quarantine: false,
         },
         init () {
             this.initFlatpickr();

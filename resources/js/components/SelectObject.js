@@ -43,7 +43,10 @@ export default function SelectObject ( props ) {
                     },
                     minimumInputLength: 1,
                 } )
-                .on( 'change.select2', () => this.$dispatch( 'hermes:select-object-change', { value: $( this.$root ).val() } ) );
+                .on( 'change.select2', e => {
+                    window.sessionStorage.setItem( 'hermes-select-object-html', JSON.stringify( e.target.innerHTML ) );
+                    this.$dispatch( 'hermes:select-object-change', { value: $( this.$root ).val() } );
+                } );
         },
         clear () {
             $( this.$root ).val( null ).trigger( 'change' );

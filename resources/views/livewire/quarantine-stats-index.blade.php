@@ -1,6 +1,6 @@
 <x-slot name="title">{{ __('Quarantine Stats') }}</x-slot>
 <x-slot name="heading">{{ __('Quarantine Stats') }}</x-slot>
-<div>
+<div x-on:hermes:quarantine-stats-filter-change="console.log($event)">
     <x-quarantine-stats-filter />
     <section class="mt-8 flow">
         <div class="hidden xl:block">
