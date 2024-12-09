@@ -51,7 +51,7 @@ class QuarantineIntakeCreate extends Component
         if (!is_numeric($result)) {
             $this->alert = [
                 'type' => 'error',
-                'message' => __('Fail! ❌ The item was not added to CurrentRMS because ":error". This item still needs to be added. You may wish to copy the Fault description of ":fault_description" to save re-typing it.', ['error' => $result[0], 'fault_description' => $this->form->description]),
+                'message' => __('<p>Fail! ❌ The Quarantine Item was not added to CurrentRMS because <span class="font-semibold">:error</span>. This item still needs to be added. It\'s fine to try again, but the same error may return.</p><p>See <a href=":url" target="_blank" rel="nofollow" title="Dealing with errors when adding items to Quarantine via Hermes section" class="font-semibold">Dealing with errors when adding items to Quarantine via Hermes section</a> in the Quarantine Intake Process for instructions on what to do next.</p>', ['error' => $result[0], 'url' => 'https://mphaustralia.sharepoint.com/:w:/r/teams/MPHAdministration/Shared%20Documents/Process/01%20In%20development/Process_%20Repairs%20Quarantine%20intake.docx?d=wc450b4cdc2e84c758363390091b56915&csf=1&web=1&e=sFkHAk&nav=eyJoIjoiMzg4NTM5MDQifQ'])
             ];
 
             return;
