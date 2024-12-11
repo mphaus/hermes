@@ -21,6 +21,4 @@
             @endif
         </div>
     @endif
-
-    
 </div>
