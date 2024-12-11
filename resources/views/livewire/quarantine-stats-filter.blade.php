@@ -64,7 +64,7 @@
             <x-button
                 type="button"
                 variant="primary"
-                x-on:click="$dispatch('hermes:quarantine-stats-filter-change', { filter: filter })"
+                x-on:click="$wire.$parent.setFilter(filter)"
             >
                 {{ __('Filter') }}
             </x-button>

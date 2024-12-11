@@ -1,7 +1,7 @@
 <x-slot name="title">{{ __('Quarantine Stats') }}</x-slot>
 <x-slot name="heading">{{ __('Quarantine Stats') }}</x-slot>
-<div x-on:hermes:quarantine-stats-filter-change="console.log($event)">
-    <x-quarantine-stats-filter />
+<div>
+    <livewire:quarantine-stats-filter />
     <section class="mt-8 flow">
         <div class="hidden xl:block">
             <div class="grid grid-cols-5 gap-2 px-6 text-sm font-semibold">
