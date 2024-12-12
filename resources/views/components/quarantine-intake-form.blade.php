@@ -79,9 +79,10 @@
         <div class="space-y-1">
             <x-input-label>{{ __('Ready for repairs') }}</x-input-label>
             <div wire:ignore>
-                <x-input type="text" x-ref="startDate" data-next-month-max-date="{{ now('UTC')->addMonths(1)->endOfMonth()->format('Y-m-d') }}" />
+                <x-input type="text" x-ref="startsAt" data-next-month-max-date="{{ now('UTC')->addMonths(1)->endOfMonth()->format('Y-m-d') }}" />
             </div>
             <p class="text-xs font-semibold">{{ __('Set the date this item is expected to be in the warehouse, available for Repairs Technicians to work on.') }}</p>
+            <x-input-error :messages="$errors->get('form.starts_at')" />
         </div>
     </x-card>
     <x-card>

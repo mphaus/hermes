@@ -3,6 +3,8 @@
 namespace App\Livewire\Forms;
 
 use App\Rules\UniqueSerialNumber;
+use Closure;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\Rule;
@@ -24,6 +26,9 @@ class QuarantineIntakeForm extends Form
 
     #[Validate(as: 'product')]
     public int|null $product_id;
+
+    #[Validate(as: 'ready for repairs')]
+    public string $starts_at;
 
     #[Validate(as: 'fault description')]
     public string $description;
@@ -64,6 +69,13 @@ class QuarantineIntakeForm extends Form
                 new UniqueSerialNumber($this->serial_number_status),
             ],
             'product_id' => ['required', 'numeric'],
+            'starts_at' => ['required', 'date', function (string $attribute, mixed $value, Closure $fail) {
+                $next_month_max_date = now('UTC')->addMonths(1)->endOfMonth()->format('Y-m-d');
+
+                if (Carbon::parse($value)->greaterThan($next_month_max_date)) {
+                    $fail(__('The :attribute field must not be greater than the last day of the next month.'));
+                }
+            }],
             'description' => ['required', 'max:512'],
         ];
     }
