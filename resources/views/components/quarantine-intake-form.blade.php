@@ -77,6 +77,15 @@
     </x-card>
     <x-card>
         <div class="space-y-1">
+            <x-input-label>{{ __('Ready for repairs') }}</x-input-label>
+            <div wire:ignore>
+                <x-input type="text" x-ref="startDate" data-next-month-max-date="{{ now('UTC')->addMonths(1)->endOfMonth()->format('Y-m-d') }}" />
+            </div>
+            <p class="text-xs font-semibold">{{ __('Set the date this item is expected to be in the warehouse, available for Repairs Technicians to work on.') }}</p>
+        </div>
+    </x-card>
+    <x-card>
+        <div class="space-y-1">
             <x-input-label>{{ __('Fault description') }}</x-input-label>
             <x-textarea
                 rows="5"

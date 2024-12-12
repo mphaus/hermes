@@ -1,7 +1,12 @@
 export default function QuarantineIntakeForm () {
+    const maxDate = this.$refs.startDate.dataset.nextMonthMaxDate;
+
     return {
         serialNumberRemainingCharacters: 256,
         descriptionRemainingCharacters: 512,
+        init () {
+            this.initStartDateFlatpickr();
+        },
         /**
          * @param {string} status
          */
@@ -22,6 +27,14 @@ export default function QuarantineIntakeForm () {
             this.$wire.form.description = '';
 
             this.$dispatch( 'hermes:quarantine-intake-cleared' );
+        },
+        initStartDateFlatpickr () {
+            flatpickr( this.$refs.startDate, {
+                altInput: true,
+                altFormat: 'd-M-Y',
+                minDate: 'today',
+                maxDate,
+            } );
         },
     };
 }
