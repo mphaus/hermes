@@ -4,6 +4,8 @@
     x-data="QuarantineIntakeForm"
     x-effect="maybeClearSerialNumber($wire.form.serial_number_status)"
     x-on:hermes:select-product-change="$wire.form.product_id = $event.detail.value"
+    x-on:hermes:quarantine-intake-created.window="clearStartsAtFlatpickr"
+    x-on:hermes:quarantine-intake-cleared.window="clearStartsAtFlatpickr"
 >
     <x-card>
         <div class="space-y-1">

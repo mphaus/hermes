@@ -1,5 +1,6 @@
 export default function QuarantineIntakeForm () {
     const maxDate = this.$refs.startsAt.dataset.nextMonthMaxDate;
+    let startsAtFlatpickrInstance = null;
 
     return {
         serialNumberRemainingCharacters: 256,
@@ -24,12 +25,13 @@ export default function QuarantineIntakeForm () {
             this.$wire.form.serial_number_status = 'serial-number-exists';
             this.$wire.form.serial_number = '';
             this.$wire.form.product_id = null;
+            this.$wire.form.starts_at = '';
             this.$wire.form.description = '';
 
             this.$dispatch( 'hermes:quarantine-intake-cleared' );
         },
         initStartsAtFlatpickr () {
-            flatpickr( this.$refs.startsAt, {
+            startsAtFlatpickrInstance = flatpickr( this.$refs.startsAt, {
                 altInput: true,
                 altFormat: 'd-M-Y',
                 minDate: 'today',
@@ -42,6 +44,13 @@ export default function QuarantineIntakeForm () {
                     this.$wire.form.starts_at = dateStr;
                 },
             } );
+        },
+        clearStartsAtFlatpickr () {
+            if ( startsAtFlatpickrInstance === null ) {
+                return;
+            }
+
+            startsAtFlatpickrInstance.clear();
         },
     };
 }
