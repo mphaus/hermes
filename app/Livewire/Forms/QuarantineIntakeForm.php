@@ -89,15 +89,13 @@ class QuarantineIntakeForm extends Form
             'not-serialised' => 'Equipment needs to be serialised',
         };
 
-        $now = now('UTC');
-
         $response = Http::current()->post('quarantines', [
             'quarantine' => [
                 'item_id' => App::environment(['local', 'staging']) ? intval(config('app.mph.test_product_id')) : intval($validated['product_id']),
                 'store_id' => $this->store,
                 'reference' => $reference,
                 'description' => $validated['description'],
-                'starts_at' => $now->format('Y-m-d\TH:i:s.\uZ'),
+                'starts_at' => Carbon::parse($this->starts_at)->setTime(12, 0, 0, 0)->setTimezone('UTC')->format('Y-m-d\TH:i:s'),
                 'quantity' => $this->quantity_booked_in,
                 'quarantine_type' => $this->type,
                 'open_ended' => $this->open_ended,
