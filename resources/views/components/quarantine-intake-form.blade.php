@@ -90,6 +90,17 @@
     </x-card>
     <x-card>
         <div class="space-y-1">
+            <x-input-label>{{ __('Primary fault classification') }}</x-input-label>
+            <div wire:ignore>
+                <select class="w-full">
+                    <option value=""></option>
+                </select>
+            </div>
+            <p class="text-xs font-semibold">{{ __('Classify the type of primary fault with this item (that is, if an item has multiple reasons for submission to Quarantine, which is the most prominent / serious?)') }}</p>
+        </div>
+    </x-card>
+    <x-card>
+        <div class="space-y-1">
             <x-input-label>{{ __('Fault description') }}</x-input-label>
             <x-textarea
                 rows="5"
