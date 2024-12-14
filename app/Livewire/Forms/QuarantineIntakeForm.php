@@ -73,7 +73,7 @@ class QuarantineIntakeForm extends Form
                 $next_month_max_date = now('UTC')->addMonths(1)->endOfMonth()->format('Y-m-d');
 
                 if (Carbon::parse($value)->greaterThan($next_month_max_date)) {
-                    $fail(__('The :attribute field must not be greater than the last day of the next month.'));
+                    $fail(__('The :attribute field must not be a greater date than the last day of the next month.'));
                 }
             }],
             'description' => ['required', 'max:512'],
@@ -89,13 +89,19 @@ class QuarantineIntakeForm extends Form
             'not-serialised' => 'Equipment needs to be serialised',
         };
 
+        $starts_at_description_text = __('Item expected to be back in the warehouse and available for repairs work on :date.', [
+            'date' => Carbon::parse($validated['starts_at'])->format('D d-M-Y'),
+        ]);
+
+        $description = $starts_at_description_text . PHP_EOL . PHP_EOL .  $validated['description'];
+
         $response = Http::current()->post('quarantines', [
             'quarantine' => [
                 'item_id' => App::environment(['local', 'staging']) ? intval(config('app.mph.test_product_id')) : intval($validated['product_id']),
                 'store_id' => $this->store,
                 'reference' => $reference,
-                'description' => $validated['description'],
-                'starts_at' => Carbon::parse($this->starts_at)->setTime(12, 0, 0, 0)->setTimezone('UTC')->format('Y-m-d\TH:i:s'),
+                'description' => $description,
+                'starts_at' => Carbon::parse($validated['starts_at'])->setTime(12, 0, 0, 0)->setTimezone('UTC')->format('Y-m-d\TH:i:s'),
                 'quantity' => $this->quantity_booked_in,
                 'quarantine_type' => $this->type,
                 'open_ended' => $this->open_ended,
