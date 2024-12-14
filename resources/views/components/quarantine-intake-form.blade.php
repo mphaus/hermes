@@ -6,6 +6,7 @@
     x-on:hermes:select-product-change="$wire.form.product_id = $event.detail.value"
     x-on:hermes:quarantine-intake-created.window="clearStartsAtFlatpickr"
     x-on:hermes:quarantine-intake-cleared.window="clearStartsAtFlatpickr"
+    x-on:submit.prevent="if ($refs.alert) $refs.alert.remove()"
 >
     <x-card>
         <div class="space-y-1">
@@ -125,4 +126,13 @@
             </span>
         </x-button>
     </div>
+    @if ($alert)
+        <div @class([
+            'p-4 rounded-lg',
+            'bg-green-100 text-green-500' => $alert['type'] === 'success',
+            'bg-red-100 text-red-500' => $alert['type'] === 'error',
+        ]) x-ref="alert">
+            <div class="flow">{!! $alert['message'] !!}</div>
+        </div>    
+    @endif
 </x-form>
