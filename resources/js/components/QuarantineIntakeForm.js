@@ -66,25 +66,27 @@ export default function QuarantineIntakeForm () {
             startsAtFlatpickrInstance.clear();
         },
         initPrimaryFaultClassificationSelect2 () {
-            $( this.$refs.primaryFaultClassification ).select2( {
-                placeholder: 'Select an option',
-                width: '100%',
-                /**
-                 * @param {State} state
-                 */
-                templateResult ( state ) {
-                    const { element, text } = state;
+            $( this.$refs.primaryFaultClassification )
+                .select2( {
+                    placeholder: 'Select an option',
+                    width: '100%',
+                    /**
+                     * @param {State} state
+                     */
+                    templateResult ( state ) {
+                        const { element, text } = state;
 
-                    if ( element === undefined ) {
-                        return state.text;
-                    }
+                        if ( element === undefined ) {
+                            return state.text;
+                        }
 
-                    /** @type {{ example: string }} */
-                    const { example } = element.dataset;
+                        /** @type {{ example: string }} */
+                        const { example } = element.dataset;
 
-                    return $( /* html */`<span class="font-semibold">${ text }</span><br><span class="text-sm">${ example }</span>` );
-                },
-            } );
+                        return $( /* html */`<span class="font-semibold">${ text }</span><br><span class="text-sm">${ example }</span>` );
+                    },
+                } )
+                .on( 'change.select2', () => this.$wire.form.classification = $( this.$refs.primaryFaultClassification ).val() );
         },
     };
 }

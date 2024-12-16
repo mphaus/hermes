@@ -94,13 +94,13 @@
             <div wire:ignore>
                 <select x-ref="primaryFaultClassification">
                     <option value=""></option>
-                    <option value="{{ __('Dangerous for people to handle or be around') }}" data-example="{{ __('For example, risk of electric shock, or being cut by glass.') }}">{{ __('Dangerous for people to handle or be around') }}</option>
-                    <option value="{{ __('Cannot deliver the results expected by the Client') }}" data-example="{{ __('For example, flickering LEDs, or does not zoom or no tilt.') }}">{{ __('Cannot deliver the results expected by the Client') }}</option>
-                    <option value="{{ __('Incorrectly commissioned') }}" data-example="{{ __('For example, needs re-painting or re-branding or new Test & Tag.') }}">{{ __('Incorrectly commissioned') }}</option>
-                    <option value="{{ __('Does not meet MPH quality standard') }}" data-example="{{ __('For example, cracked or missing panels, bent metal, water ingress.') }}">{{ __('Does not meet MPH quality standard') }}</option>
+                    @foreach ($this->getClassification() as $classification)
+                        <option value="{{ $classification['text'] }}" data-example="{{ $classification['example'] }}">{{ $classification['text'] }}</option>
+                    @endforeach
                 </select>
             </div>
             <p class="text-xs font-semibold">{{ __('Classify the type of primary fault with this item (that is, if an item has multiple reasons for submission to Quarantine, which is the most prominent / serious?)') }}</p>
+            <x-input-error :messages="$errors->get('form.classification')" />
         </div>
     </x-card>
     <x-card>
