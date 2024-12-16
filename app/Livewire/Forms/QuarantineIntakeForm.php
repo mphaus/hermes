@@ -104,9 +104,9 @@ class QuarantineIntakeForm extends Form
             'date' => Carbon::parse($validated['starts_at'])->format('D d-M-Y'),
         ]);
 
-        $description = $starts_at_description_text . PHP_EOL . PHP_EOL .  $validated['description'];
+        $description = $starts_at_description_text . PHP_EOL . PHP_EOL . ':' . $validated['classification'] . ':' . PHP_EOL . PHP_EOL .  $validated['description'];
 
-        $response = Http::current()->dd()->post('quarantines', [
+        $response = Http::current()->post('quarantines', [
             'quarantine' => [
                 'item_id' => App::environment(['local', 'staging']) ? intval(config('app.mph.test_product_id')) : intval($validated['product_id']),
                 'store_id' => $this->store,
