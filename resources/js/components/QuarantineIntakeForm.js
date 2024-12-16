@@ -88,5 +88,16 @@ export default function QuarantineIntakeForm () {
                 } )
                 .on( 'change.select2', () => this.$wire.form.classification = $( this.$refs.primaryFaultClassification ).val() );
         },
+        clearPrimaryFaultClassificationSelect2 () {
+            $( this.$refs.primaryFaultClassification ).val( '' ).trigger( 'change' );
+        },
+        handleQuarantineIntakeCreated () {
+            this.clearStartsAtFlatpickr();
+            this.clearPrimaryFaultClassificationSelect2();
+        },
+        handleQuarantineIntakeCleared () {
+            this.clearStartsAtFlatpickr();
+            this.clearPrimaryFaultClassificationSelect2();
+        },
     };
 }

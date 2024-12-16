@@ -4,8 +4,8 @@
     x-data="QuarantineIntakeForm"
     x-effect="maybeClearSerialNumber($wire.form.serial_number_status)"
     x-on:hermes:select-product-change="$wire.form.product_id = $event.detail.value"
-    x-on:hermes:quarantine-intake-created.window="clearStartsAtFlatpickr"
-    x-on:hermes:quarantine-intake-cleared.window="clearStartsAtFlatpickr"
+    x-on:hermes:quarantine-intake-created.window="handleQuarantineIntakeCreated"
+    x-on:hermes:quarantine-intake-cleared.window="handleQuarantineIntakeCleared"
     x-on:submit.prevent="if ($refs.alert) $refs.alert.remove()"
 >
     <x-card>
@@ -119,7 +119,6 @@
                 <span x-text="descriptionRemainingCharacters"></span>
                 {!!  __('character<span x-show="descriptionRemainingCharacters !== 1">s</span> left') !!}
             </p>
-            <p class="text-xs font-semibold">{{ __('Always mention the first name of the person making this Quarantine Intake submission, for example, "Submitted by Alex".') }}</p>
             <x-input-error :messages="$errors->get('form.description')" />
         </div>
     </x-card>
