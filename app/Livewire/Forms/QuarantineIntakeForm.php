@@ -7,6 +7,7 @@ use App\Traits\WithQuarantineIntakeClassification;
 use Closure;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
@@ -57,6 +58,7 @@ class QuarantineIntakeForm extends Form
         $this->serial_number = '';
         $this->product_id = null;
         $this->starts_at = '';
+        $this->classification = '';
         $this->description = '';
     }
 
@@ -100,11 +102,18 @@ class QuarantineIntakeForm extends Form
             'not-serialised' => 'Equipment needs to be serialised',
         };
 
-        $starts_at_description_text = __('Item expected to be back in the warehouse and available for repairs work on :date.', [
-            'date' => Carbon::parse($validated['starts_at'])->format('D d-M-Y'),
-        ]);
-
-        $description = $starts_at_description_text . PHP_EOL . PHP_EOL . ':' . $validated['classification'] . ':' . PHP_EOL . PHP_EOL .  $validated['description'];
+        $description = __('Item expected to be back in the warehouse and available for repairs work on :date.', ['date' => Carbon::parse($validated['starts_at'])->format('D d-M-Y')]) .
+            PHP_EOL .
+            PHP_EOL .
+            ':' .
+            $validated['classification'] .
+            ':' .
+            PHP_EOL .
+            PHP_EOL .
+            $validated['description'] .
+            PHP_EOL .
+            PHP_EOL .
+            __('Submitted by :first_name', ['first_name' => Auth::user()->first_name]);
 
         $response = Http::current()->post('quarantines', [
             'quarantine' => [
