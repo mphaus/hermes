@@ -1,3 +1,15 @@
+/**
+ * @typedef {Object} State
+ * @property {boolean} disabled
+ * @property {boolean} loading
+ * @property {HTMLOptionElement} [element]
+ * @property {string} [id]
+ * @property {boolean} [selected]
+ * @property {string} text
+ * @property {string} [title]
+ * @property {string} [_resultId]
+ */
+
 export default function QuarantineIntakeForm () {
     const maxDate = this.$refs.startsAt.dataset.nextMonthMaxDate;
     let startsAtFlatpickrInstance = null;
@@ -7,6 +19,7 @@ export default function QuarantineIntakeForm () {
         descriptionRemainingCharacters: 512,
         init () {
             this.initStartsAtFlatpickr();
+            this.initPrimaryFaultClassificationSelect2();
         },
         /**
          * @param {string} status
@@ -51,6 +64,40 @@ export default function QuarantineIntakeForm () {
             }
 
             startsAtFlatpickrInstance.clear();
+        },
+        initPrimaryFaultClassificationSelect2 () {
+            $( this.$refs.primaryFaultClassification )
+                .select2( {
+                    placeholder: 'Select an option',
+                    width: '100%',
+                    /**
+                     * @param {State} state
+                     */
+                    templateResult ( state ) {
+                        const { element, text } = state;
+
+                        if ( element === undefined ) {
+                            return state.text;
+                        }
+
+                        /** @type {{ example: string }} */
+                        const { example } = element.dataset;
+
+                        return $( /* html */`<span class="font-semibold">${ text }</span><br><span class="text-sm">${ example }</span>` );
+                    },
+                } )
+                .on( 'change.select2', () => this.$wire.form.classification = $( this.$refs.primaryFaultClassification ).val() );
+        },
+        clearPrimaryFaultClassificationSelect2 () {
+            $( this.$refs.primaryFaultClassification ).val( '' ).trigger( 'change' );
+        },
+        handleQuarantineIntakeCreated () {
+            this.clearStartsAtFlatpickr();
+            this.clearPrimaryFaultClassificationSelect2();
+        },
+        handleQuarantineIntakeCleared () {
+            this.clearStartsAtFlatpickr();
+            this.clearPrimaryFaultClassificationSelect2();
         },
     };
 }

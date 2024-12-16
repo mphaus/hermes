@@ -3,9 +3,11 @@
 namespace App\Livewire\Forms;
 
 use App\Rules\UniqueSerialNumber;
+use App\Traits\WithQuarantineIntakeClassification;
 use Closure;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
@@ -13,6 +15,8 @@ use Livewire\Form;
 
 class QuarantineIntakeForm extends Form
 {
+    use WithQuarantineIntakeClassification;
+
     #[Validate(as: 'Opportunity or Project')]
     public string $project_or_opportunity;
 
@@ -29,6 +33,9 @@ class QuarantineIntakeForm extends Form
 
     #[Validate(as: 'ready for repairs')]
     public string $starts_at;
+
+    #[Validate(as: 'primary fault classification')]
+    public string $classification;
 
     #[Validate(as: 'fault description')]
     public string $description;
@@ -50,6 +57,8 @@ class QuarantineIntakeForm extends Form
         $this->serial_number_status = 'serial-number-exists';
         $this->serial_number = '';
         $this->product_id = null;
+        $this->starts_at = '';
+        $this->classification = '';
         $this->description = '';
     }
 
@@ -76,6 +85,10 @@ class QuarantineIntakeForm extends Form
                     $fail(__('The :attribute field must not be a greater date than the last day of the next month.'));
                 }
             }],
+            'classification' => [
+                'required',
+                Rule::in($this->getClassificationTexts()),
+            ],
             'description' => ['required', 'max:512'],
         ];
     }
@@ -89,11 +102,18 @@ class QuarantineIntakeForm extends Form
             'not-serialised' => 'Equipment needs to be serialised',
         };
 
-        $starts_at_description_text = __('Item expected to be back in the warehouse and available for repairs work on :date.', [
-            'date' => Carbon::parse($validated['starts_at'])->format('D d-M-Y'),
-        ]);
-
-        $description = $starts_at_description_text . PHP_EOL . PHP_EOL .  $validated['description'];
+        $description = __('Item expected to be back in the warehouse and available for repairs work on :date.', ['date' => Carbon::parse($validated['starts_at'])->format('D d-M-Y')]) .
+            PHP_EOL .
+            PHP_EOL .
+            ':' .
+            $validated['classification'] .
+            ':' .
+            PHP_EOL .
+            PHP_EOL .
+            $validated['description'] .
+            PHP_EOL .
+            PHP_EOL .
+            __('Submitted by :first_name', ['first_name' => Auth::user()->first_name]);
 
         $response = Http::current()->post('quarantines', [
             'quarantine' => [

@@ -4,8 +4,8 @@
     x-data="QuarantineIntakeForm"
     x-effect="maybeClearSerialNumber($wire.form.serial_number_status)"
     x-on:hermes:select-product-change="$wire.form.product_id = $event.detail.value"
-    x-on:hermes:quarantine-intake-created.window="clearStartsAtFlatpickr"
-    x-on:hermes:quarantine-intake-cleared.window="clearStartsAtFlatpickr"
+    x-on:hermes:quarantine-intake-created.window="handleQuarantineIntakeCreated"
+    x-on:hermes:quarantine-intake-cleared.window="handleQuarantineIntakeCleared"
     x-on:submit.prevent="if ($refs.alert) $refs.alert.remove()"
 >
     <x-card>
@@ -90,6 +90,21 @@
     </x-card>
     <x-card>
         <div class="space-y-1">
+            <x-input-label>{{ __('Primary fault classification') }}</x-input-label>
+            <div wire:ignore>
+                <select x-ref="primaryFaultClassification">
+                    <option value=""></option>
+                    @foreach ($this->getClassification() as $classification)
+                        <option value="{{ $classification['text'] }}" data-example="{{ $classification['example'] }}">{{ $classification['text'] }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <p class="text-xs font-semibold">{{ __('Classify the type of primary fault with this item (that is, if an item has multiple reasons for submission to Quarantine, which is the most prominent / serious?)') }}</p>
+            <x-input-error :messages="$errors->get('form.classification')" />
+        </div>
+    </x-card>
+    <x-card>
+        <div class="space-y-1">
             <x-input-label>{{ __('Fault description') }}</x-input-label>
             <x-textarea
                 rows="5"
@@ -104,7 +119,6 @@
                 <span x-text="descriptionRemainingCharacters"></span>
                 {!!  __('character<span x-show="descriptionRemainingCharacters !== 1">s</span> left') !!}
             </p>
-            <p class="text-xs font-semibold">{{ __('Always mention the first name of the person making this Quarantine Intake submission, for example, "Submitted by Alex".') }}</p>
             <x-input-error :messages="$errors->get('form.description')" />
         </div>
     </x-card>
