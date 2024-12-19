@@ -3,7 +3,6 @@
 <div 
     class="flow" 
     x-data="QuarantineIntakeObject({{ Js::from($technicalSupervisors) }})"
-    x-on:hermes:quarantine-intake-created.window="clear"
     x-on:hermes:quarantine-intake-cleared.window="clear"
 >
     <div class="space-y-1">

@@ -60,13 +60,12 @@ class QuarantineIntakeCreate extends Component
             return;
         }
 
-        $this->form->clear();
-        $this->alert = [
+        session()->flash('alert', [
             'type' => 'success',
             'message' => __('Success! ✅ The item has been added to Quarantine (<a href=":url" target="_blank" rel="nofollow">in CurrentRMS</a>)', ['url' => "https://mphaustralia.current-rms.com/quarantines/{$result}"]),
-        ];
+        ]);
 
-        $this->dispatch('hermes:quarantine-intake-created');
+        $this->redirectRoute(name: 'quarantine-intake.create', navigate: true);
     }
 
     public function placeholder(): View

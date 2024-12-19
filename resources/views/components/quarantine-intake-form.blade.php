@@ -4,7 +4,6 @@
     x-data="QuarantineIntakeForm"
     x-effect="maybeClearSerialNumber($wire.form.serial_number_status)"
     x-on:hermes:select-product-change="$wire.form.product_id = $event.detail.value"
-    x-on:hermes:quarantine-intake-created.window="handleQuarantineIntakeCreated"
     x-on:hermes:quarantine-intake-cleared.window="handleQuarantineIntakeCleared"
     x-on:submit.prevent="if ($refs.alert) $refs.alert.remove()"
 >
@@ -70,10 +69,7 @@
         <div class="space-y-1">
             <x-input-label>{{ __('Product') }}</x-input-label>
             <div wire:ignore>
-                <x-select-product
-                    x-on:hermes:quarantine-intake-created.window="clear"
-                    x-on:hermes:quarantine-intake-cleared.window="clear"
-                />
+                <x-select-product x-on:hermes:quarantine-intake-cleared.window="clear" />
             </div>
             <x-input-error :messages="$errors->get('form.product_id')" />
         </div>

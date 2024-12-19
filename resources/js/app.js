@@ -4,6 +4,7 @@ import.meta.glob( [
 ] );
 
 import { Livewire, Alpine } from "./../../vendor/livewire/livewire/dist/livewire.esm";
+import Alert from "./components/Alert";
 import ActionStreamFilters from "./components/ActionStreamFilters";
 import ActionStreamItem from "./components/ActionStreamItem";
 import CreateDiscussionsObject from "./components/CreateDiscussionsObject";
@@ -24,6 +25,7 @@ import SelectTechnicalSupervisor from "./components/SelectTechnicalSupervisor";
 import SelectFaultRootCause from "./components/SelectFaultRootCause";
 import QuarantineStatsFilter from "./components/QuarantineStatsFilter";
 
+Alpine.data( 'Alert', Alert );
 Alpine.data( 'ActionStreamFilters', ActionStreamFilters );
 Alpine.data( 'ActionStreamItem', ActionStreamItem );
 Alpine.data( 'CreateDiscussionsObject', CreateDiscussionsObject );

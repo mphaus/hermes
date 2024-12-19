@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Forms;
 
+use App\Mail\QuarantineCreated;
 use App\Rules\UniqueSerialNumber;
 use App\Traits\WithQuarantineIntakeClassification;
 use Closure;
@@ -9,6 +10,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
@@ -139,6 +141,8 @@ class QuarantineIntakeForm extends Form
         }
 
         ['quarantine' => $quarantine] = $response->json();
+
+        Mail::to(['garion@mphaus.com', 'service.manager@mphaus.com'])->send(new QuarantineCreated($quarantine, $validated['classification'], Auth::user()));
 
         return $quarantine['id'];
     }
