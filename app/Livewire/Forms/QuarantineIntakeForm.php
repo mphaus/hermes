@@ -104,7 +104,12 @@ class QuarantineIntakeForm extends Form
             'not-serialised' => 'Equipment needs to be serialised',
         };
 
-        $description = __('Item expected to be back in the warehouse and available for repairs work on :date.', ['date' => Carbon::parse($validated['starts_at'])->format('D d-M-Y')]) .
+        $starts_at = now()->parse($validated['starts_at']);
+        $starts_at_text = $starts_at->setTime(12, 0, 0, 0)->setTimezone('UTC')->isToday()
+            ? __('Item is in on Quarantine Intake shelving and is available for repairs work right now.')
+            : __('Item expected to be back in the warehouse and available for repairs work on :date.', ['date' => $starts_at->format('D d-M-Y')]);
+
+        $description = $starts_at_text .
             PHP_EOL .
             PHP_EOL .
             ':' .
@@ -123,7 +128,7 @@ class QuarantineIntakeForm extends Form
                 'store_id' => $this->store,
                 'reference' => $reference,
                 'description' => $description,
-                'starts_at' => Carbon::parse($validated['starts_at'])->setTime(12, 0, 0, 0)->setTimezone('UTC')->format('Y-m-d\TH:i:s'),
+                'starts_at' => $starts_at->setTime(12, 0, 0, 0)->setTimezone('UTC')->format('Y-m-d\TH:i:s'),
                 'quantity' => $this->quantity_booked_in,
                 'quarantine_type' => $this->type,
                 'open_ended' => $this->open_ended,

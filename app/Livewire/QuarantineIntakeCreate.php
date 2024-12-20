@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Livewire\Forms\QuarantineIntakeForm;
 use App\Traits\WithQuarantineIntakeClassification;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Lazy;
