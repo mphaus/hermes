@@ -6,7 +6,7 @@
     x-on:hermes:quarantine-intake-cleared.window="clear"
 >
     <div class="space-y-1">
-        <x-input-label>{{ __('Opportunity or Project') }}</x-input-label>
+        <label class="block font-semibold">{{ __('Opportunity or Project') }}</label>
         <select class="block w-full" x-ref="object"></select>
         <div class="flex items-start gap-1">
             <x-icon-info class="w-5 h-5 text-blue-500" />
@@ -14,7 +14,7 @@
         </div>
     </div>
     <div class="space-y-1" x-cloak x-show="$wire.$parent.form.technical_supervisor">
-        <x-input-label>{{ __('Technical Supervisor') }}</x-input-label>
+        <label class="block font-semibold">{{ __('Technical Supervisor') }}</label>
         <p x-text="technicalSupervisorName"></p>
         <div class="flex items-start gap-1">
             <x-icon-info class="w-5 h-5 text-blue-500" />

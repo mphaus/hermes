@@ -16,7 +16,7 @@
     </x-card>
     <x-card>
         <div class="space-y-1">
-            <x-input-label>{{ __('Reference') }}</x-input-label>
+            <label class="block font-semibold">{{ __('Reference') }}</label>
             <div class="flow">
                 <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
                     <div class="flex items-center gap-1">
@@ -67,7 +67,7 @@
     </x-card>
     <x-card>
         <div class="space-y-1">
-            <x-input-label>{{ __('Product') }}</x-input-label>
+            <label class="block font-semibold">{{ __('Product') }}</label>
             <div wire:ignore>
                 <x-select-product x-on:hermes:quarantine-intake-cleared.window="clear" />
             </div>
@@ -76,7 +76,7 @@
     </x-card>
     <x-card>
         <div class="space-y-1">
-            <x-input-label>{{ __('Ready for repairs') }}</x-input-label>
+            <label class="block font-semibold">{{ __('Ready for repairs') }}</label>
             <div wire:ignore>
                 <x-input type="text" x-ref="startsAt" data-next-month-max-date="{{ now('UTC')->addMonths(1)->endOfMonth()->format('Y-m-d') }}" />
             </div>
@@ -86,7 +86,7 @@
     </x-card>
     <x-card>
         <div class="space-y-1">
-            <x-input-label>{{ __('Primary fault classification') }}</x-input-label>
+            <label class="block font-semibold">{{ __('Primary fault classification') }}</label>
             <div wire:ignore>
                 <select x-ref="primaryFaultClassification">
                     <option value=""></option>
@@ -101,7 +101,7 @@
     </x-card>
     <x-card>
         <div class="space-y-1">
-            <x-input-label>{{ __('Fault description') }}</x-input-label>
+            <label class="block font-semibold">{{ __('Fault description') }}</label>
             <x-textarea
                 rows="5"
                 placeholder="{{ __('Enter a concise, meaningful and objective fault description.') }}"
