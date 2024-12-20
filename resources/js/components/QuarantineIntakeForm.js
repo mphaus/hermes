@@ -66,12 +66,12 @@ export default function QuarantineIntakeForm () {
                 },
             } );
         },
-        clearStartsAtFlatpickr () {
+        resetStartsAtFlatpickr () {
             if ( startsAtFlatpickrInstance === null ) {
                 return;
             }
 
-            startsAtFlatpickrInstance.clear();
+            startsAtFlatpickrInstance.setDate( new Date, true );
         },
         initPrimaryFaultClassificationSelect2 () {
             $( this.$refs.primaryFaultClassification )
@@ -99,12 +99,8 @@ export default function QuarantineIntakeForm () {
         clearPrimaryFaultClassificationSelect2 () {
             $( this.$refs.primaryFaultClassification ).val( '' ).trigger( 'change' );
         },
-        handleQuarantineIntakeCreated () {
-            this.clearStartsAtFlatpickr();
-            this.clearPrimaryFaultClassificationSelect2();
-        },
         handleQuarantineIntakeCleared () {
-            this.clearStartsAtFlatpickr();
+            this.resetStartsAtFlatpickr();
             this.clearPrimaryFaultClassificationSelect2();
         },
     };
