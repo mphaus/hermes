@@ -20,6 +20,7 @@ class QuarantineCreated extends Mailable
     public function __construct(
         public array $quarantine,
         public string $fault_classification,
+        public string $description,
         public User $user
     ) {
         //

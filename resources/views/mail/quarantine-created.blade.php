@@ -11,6 +11,10 @@ A new item was submitted to Quarantine via Hermes on {{ now()->format('d-M-Y') }
 **Product:** {{ $quarantine['item']['name'] }}
 
 **Fault classification:** {{ $fault_classification }}
+
+**Fault:**
+
+{{ $description }}
 </x-mail::panel>                                  
 
 See <a href="https://mphaustralia.current-rms.com/quarantines/{{ $quarantine['id'] }}" target="_blank" rel="nofollow">item's Quarantine page in CurrentRMS</a>.

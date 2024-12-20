@@ -142,7 +142,7 @@ class QuarantineIntakeForm extends Form
 
         ['quarantine' => $quarantine] = $response->json();
 
-        Mail::to(['garion@mphaus.com', 'service.manager@mphaus.com'])->send(new QuarantineCreated($quarantine, $validated['classification'], Auth::user()));
+        Mail::to(['garion@mphaus.com', 'service.manager@mphaus.com'])->send(new QuarantineCreated($quarantine, $validated['classification'], $description, Auth::user()));
 
         return $quarantine['id'];
     }
