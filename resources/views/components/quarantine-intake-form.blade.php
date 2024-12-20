@@ -15,8 +15,9 @@
         </div>
     </x-card>
     <x-card>
-        <div class="space-y-1">
+        <div class="flow">
             <label class="block font-semibold">{{ __('Reference') }}</label>
+            <p class="mt-2 text-xs">{{ __('The item\'s serial number is used to uniquely identify the faulty item. Do not confuse this with the item\'s model number. If the serial number has hyphens (-) or slashes (/), enter them as shown on the serial number label.') }}</p>
             <div class="flow">
                 <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
                     <div class="flex items-center gap-1">
@@ -32,7 +33,7 @@
                         <x-input-label class="cursor-pointer" for="not-serialised">{{ __('Equipment is not serialised') }}</x-input-label>
                     </div>
                 </div>
-                <div class="space-y-1" x-cloak x-show="$wire.form.serial_number_status === 'serial-number-exists'">
+                <div class="space-y-2" x-cloak x-show="$wire.form.serial_number_status === 'serial-number-exists'">
                     <x-input
                         type="text"
                         placeholder="{{ __('Serial number') }}"
@@ -66,8 +67,9 @@
         </div>
     </x-card>
     <x-card>
-        <div class="space-y-1">
+        <div class="flow">
             <label class="block font-semibold">{{ __('Product') }}</label>
+            <p class="mt-2 text-xs">{{ __('Type the first few letters of the product and pause to let the system get info from CurrentRMS. Select the exact-match product. If the item cannot be found in this listing, double-check the spelling of the item name (per the info plate on the equipment), then ask the SRMM Manager for advice on how to proceed.') }}</p>
             <div wire:ignore>
                 <x-select-product x-on:hermes:quarantine-intake-cleared.window="clear" />
             </div>
@@ -75,18 +77,19 @@
         </div>
     </x-card>
     <x-card>
-        <div class="space-y-1">
+        <div class="flow">
             <label class="block font-semibold">{{ __('Ready for repairs') }}</label>
+            <p class="mt-2 text-xs">{{ __('Set the date this item is expected to be in the warehouse, available for Repairs Technicians to work on.') }}</p>
             <div wire:ignore>
                 <x-input type="text" x-ref="startsAt" data-next-month-max-date="{{ now('UTC')->addMonths(1)->endOfMonth()->format('Y-m-d') }}" />
             </div>
-            <p class="text-xs font-semibold">{{ __('Set the date this item is expected to be in the warehouse, available for Repairs Technicians to work on.') }}</p>
             <x-input-error :messages="$errors->get('form.starts_at')" />
         </div>
     </x-card>
     <x-card>
-        <div class="space-y-1">
+        <div class="flow">
             <label class="block font-semibold">{{ __('Primary fault classification') }}</label>
+            <p class="mt-2 text-xs">{{ __('Classify the type of primary fault with this item (that is, if an item has multiple reasons for submission to Quarantine, which is the most prominent / serious?)') }}</p>
             <div wire:ignore>
                 <select x-ref="primaryFaultClassification">
                     <option value=""></option>
@@ -95,16 +98,15 @@
                     @endforeach
                 </select>
             </div>
-            <p class="text-xs font-semibold">{{ __('Classify the type of primary fault with this item (that is, if an item has multiple reasons for submission to Quarantine, which is the most prominent / serious?)') }}</p>
             <x-input-error :messages="$errors->get('form.classification')" />
         </div>
     </x-card>
     <x-card>
-        <div class="space-y-1">
+        <div class="flow">
             <label class="block font-semibold">{{ __('Fault description') }}</label>
+            <p class="mt-2 text-xs">{{ __('Enter a concise, meaningful and objective fault description. Your name will be added to this report automatically, so there\'s no need to type it here.') }}</p>
             <x-textarea
                 rows="5"
-                placeholder="{{ __('Enter a concise, meaningful and objective fault description.') }}"
                 wire:model="form.description"
                 x-on:input="descriptionRemainingCharacters = 512 - $wire.form.description.length"
             ></x-textarea>
