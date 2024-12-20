@@ -47,8 +47,16 @@ export default function QuarantineIntakeForm () {
             startsAtFlatpickrInstance = flatpickr( this.$refs.startsAt, {
                 altInput: true,
                 altFormat: 'd-M-Y',
+                defaultDate: new Date,
                 minDate: 'today',
                 maxDate,
+                /**
+                 * @param {Date[]} _ 
+                 * @param {string} dateStr 
+                 */
+                onReady: ( _, dateStr ) => {
+                    this.$wire.form.starts_at = dateStr;
+                },
                 /**
                  * @param {Date[]} _ 
                  * @param {string} dateStr 

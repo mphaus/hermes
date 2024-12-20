@@ -79,7 +79,7 @@
     <x-card>
         <div class="flow">
             <label class="block font-semibold">{{ __('Ready for repairs') }}</label>
-            <p class="mt-2 text-xs">{{ __('Set the date this item is expected to be in the warehouse, available for Repairs Technicians to work on.') }}</p>
+            <p class="mt-2 text-xs">{{ __('Set the date this item is expected to be in the warehouse, available for Repairs Technicians to work on. If the faulty item is already in the Warehouse and is about to be placed on Quarantine Intake shelves, leave the date as today\'s.') }}</p>
             <div wire:ignore>
                 <x-input type="text" x-ref="startsAt" data-next-month-max-date="{{ now('UTC')->addMonths(1)->endOfMonth()->format('Y-m-d') }}" />
             </div>
