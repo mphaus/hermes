@@ -3,7 +3,6 @@
     wire:submit="save"
     x-data="QuarantineIntakeForm"
     x-effect="maybeClearSerialNumber($wire.form.serial_number_status)"
-    x-on:hermes:select-product-change="$wire.form.product_id = $event.detail.value"
     x-on:hermes:quarantine-intake-cleared.window="handleQuarantineIntakeCleared"
     x-on:submit.prevent="if ($refs.alert) $refs.alert.remove()"
 >
@@ -71,7 +70,7 @@
             <label class="block font-semibold">{{ __('Product') }}</label>
             <p class="mt-2 text-xs">{{ __('Type the first few letters of the product and pause to let the system get info from CurrentRMS. Select the exact-match product. If the item cannot be found in this listing, double-check the spelling of the item name (per the info plate on the equipment), then ask the SRMM Manager for advice on how to proceed.') }}</p>
             <div wire:ignore>
-                <x-select-product x-on:hermes:quarantine-intake-cleared.window="clear" />
+                <x-select-product wire:model="form.product_id" />
             </div>
             <x-input-error :messages="$errors->get('form.product_id')" />
         </div>
@@ -81,7 +80,7 @@
             <label class="block font-semibold">{{ __('Ready for repairs') }}</label>
             <p class="mt-2 text-xs">{{ __('Set the date this item is expected to be in the warehouse, available for Repairs Technicians to work on. If the faulty item is already in the Warehouse and is about to be placed on Quarantine Intake shelves, leave the date as today\'s.') }}</p>
             <div wire:ignore>
-                <x-input type="text" x-ref="startsAt" data-next-month-max-date="{{ now('UTC')->addMonths(1)->endOfMonth()->format('Y-m-d') }}" />
+                <x-qi-input-starts-at wire:model="form.starts_at" />
             </div>
             <x-input-error :messages="$errors->get('form.starts_at')" />
         </div>

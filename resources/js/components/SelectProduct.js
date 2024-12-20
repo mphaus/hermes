@@ -18,6 +18,7 @@ export default function SelectProduct ( props ) {
     const { multiple } = props;
 
     return {
+        value: null,
         init () {
             this.initSelect2();
         },
@@ -50,9 +51,22 @@ export default function SelectProduct ( props ) {
                     },
                 } )
                 .on( 'change.select2', e => {
-                    window.sessionStorage.setItem( 'hermes-select-product-html', JSON.stringify( e.target.innerHTML ) );
-                    this.$dispatch( 'hermes:select-product-change', { value: $( this.$root ).val() } );
+                    if ( $( this.$root ).val() ) {
+                        window.sessionStorage.setItem( 'hermes-select-product-html', JSON.stringify( e.target.innerHTML ) );
+                        this.value = $( this.$root ).val();
+
+                        return;
+                    }
+
+                    window.sessionStorage.removeItem( 'hermes-select-product-html' );
                 } );
+        },
+        checkValue ( value ) {
+            if ( value ) {
+                return;
+            }
+
+            this.clear();
         },
         clear () {
             $( this.$root ).val( null ).trigger( 'change' );

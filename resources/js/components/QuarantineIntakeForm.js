@@ -11,14 +11,10 @@
  */
 
 export default function QuarantineIntakeForm () {
-    const maxDate = this.$refs.startsAt.dataset.nextMonthMaxDate;
-    let startsAtFlatpickrInstance = null;
-
     return {
         serialNumberRemainingCharacters: 256,
         descriptionRemainingCharacters: 512,
         init () {
-            this.initStartsAtFlatpickr();
             this.initPrimaryFaultClassificationSelect2();
         },
         /**
@@ -42,36 +38,6 @@ export default function QuarantineIntakeForm () {
             this.$wire.form.description = '';
 
             this.$dispatch( 'hermes:quarantine-intake-cleared' );
-        },
-        initStartsAtFlatpickr () {
-            startsAtFlatpickrInstance = flatpickr( this.$refs.startsAt, {
-                altInput: true,
-                altFormat: 'd-M-Y',
-                defaultDate: new Date,
-                minDate: 'today',
-                maxDate,
-                /**
-                 * @param {Date[]} _ 
-                 * @param {string} dateStr 
-                 */
-                onReady: ( _, dateStr ) => {
-                    this.$wire.form.starts_at = dateStr;
-                },
-                /**
-                 * @param {Date[]} _ 
-                 * @param {string} dateStr 
-                 */
-                onChange: ( _, dateStr ) => {
-                    this.$wire.form.starts_at = dateStr;
-                },
-            } );
-        },
-        resetStartsAtFlatpickr () {
-            if ( startsAtFlatpickrInstance === null ) {
-                return;
-            }
-
-            startsAtFlatpickrInstance.setDate( new Date, true );
         },
         initPrimaryFaultClassificationSelect2 () {
             $( this.$refs.primaryFaultClassification )
@@ -100,7 +66,6 @@ export default function QuarantineIntakeForm () {
             $( this.$refs.primaryFaultClassification ).val( '' ).trigger( 'change' );
         },
         handleQuarantineIntakeCleared () {
-            this.resetStartsAtFlatpickr();
             this.clearPrimaryFaultClassificationSelect2();
         },
     };
