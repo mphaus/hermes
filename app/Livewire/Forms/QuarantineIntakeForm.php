@@ -112,6 +112,7 @@ class QuarantineIntakeForm extends Form
         $description = $starts_at_text .
             PHP_EOL .
             PHP_EOL .
+            'Primary fault classification type ' .
             ':' .
             $validated['classification'] .
             ':' .
