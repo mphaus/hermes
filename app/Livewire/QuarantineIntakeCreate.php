@@ -3,7 +3,9 @@
 namespace App\Livewire;
 
 use App\Livewire\Forms\QuarantineIntakeForm;
+use App\Traits\WithQuarantineIntakeClassification;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Lazy;
@@ -12,6 +14,8 @@ use Livewire\Component;
 #[Lazy]
 class QuarantineIntakeCreate extends Component
 {
+    use WithQuarantineIntakeClassification;
+
     public QuarantineIntakeForm $form;
 
     public array $alert = [];
@@ -57,13 +61,12 @@ class QuarantineIntakeCreate extends Component
             return;
         }
 
-        $this->form->clear();
-        $this->alert = [
+        session()->flash('alert', [
             'type' => 'success',
             'message' => __('Success! ✅ The item has been added to Quarantine (<a href=":url" target="_blank" rel="nofollow">in CurrentRMS</a>)', ['url' => "https://mphaustralia.current-rms.com/quarantines/{$result}"]),
-        ];
+        ]);
 
-        $this->dispatch('quarantine-intake-created');
+        $this->redirectRoute(name: 'quarantine-intake.create', navigate: true);
     }
 
     public function placeholder(): View

@@ -9,18 +9,7 @@
     @else
         <div class="max-w-screen-md mx-auto flow">
             <p class="font-semibold">{{ __('Quarantine Intake') }}</p>
-            <x-quarantine-intake-form />
-            @if ($alert)
-                <div @class([
-                    'p-4 rounded-lg',
-                    'bg-green-100 text-green-500' => $alert['type'] === 'success',
-                    'bg-red-100 text-red-500' => $alert['type'] === 'error',
-                ])>
-                    <div class="flow">{!! $alert['message'] !!}</div>
-                </div>    
-            @endif
+            <x-quarantine-intake-form :alert="$alert" />
         </div>
     @endif
-
-    
 </div>

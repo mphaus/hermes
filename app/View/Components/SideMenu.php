@@ -64,7 +64,7 @@ class SideMenu extends Component
                 'text' => __('Quarantine'),
                 'route' => null,
                 'active' => null,
-                'permission' => ['access-quarantine-intake'],
+                'permission' => ['access-quarantine-intake', 'access-quarantine-stats'],
                 'subitems' => [
                     [
                         'text' => __('Quarantine Intake'),
@@ -72,6 +72,12 @@ class SideMenu extends Component
                         'active' => request()->routeIs('quarantine-intake.create'),
                         'permission' => 'access-quarantine-intake',
                     ],
+                    // [
+                    //     'text' => __('Quarantine Stats'),
+                    //     'route' => route('quarantine-stats.index'),
+                    //     'active' => request()->routeIs('quarantine-stats.index'),
+                    //     'permission' => 'access-quarantine-stats',
+                    // ],
                 ],
             ],
             [

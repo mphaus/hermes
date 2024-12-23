@@ -4,6 +4,7 @@ import.meta.glob( [
 ] );
 
 import { Livewire, Alpine } from "./../../vendor/livewire/livewire/dist/livewire.esm";
+import Alert from "./components/Alert";
 import ActionStreamFilters from "./components/ActionStreamFilters";
 import ActionStreamItem from "./components/ActionStreamItem";
 import CreateDiscussionsObject from "./components/CreateDiscussionsObject";
@@ -17,9 +18,15 @@ import UserDeleteButton from "./components/UserDeleteButton";
 import ResetPasswordForm from "./components/ResetPasswordForm";
 import SideMenu from "./components/SideMenu";
 import QuarantineIntakeObject from "./components/QuarantineIntakeObject";
-import QuarantineIntakeProduct from "./components/QuarantineIntakeProduct";
 import QuarantineIntakeForm from "./components/QuarantineIntakeForm";
+import SelectProduct from "./components/SelectProduct";
+import SelectObject from "./components/SelectObject";
+import SelectTechnicalSupervisor from "./components/SelectTechnicalSupervisor";
+import SelectFaultRootCause from "./components/SelectFaultRootCause";
+import QuarantineStatsFilter from "./components/QuarantineStatsFilter";
+import QiInputStartsAt from "./components/QiInputStartsAt";
 
+Alpine.data( 'Alert', Alert );
 Alpine.data( 'ActionStreamFilters', ActionStreamFilters );
 Alpine.data( 'ActionStreamItem', ActionStreamItem );
 Alpine.data( 'CreateDiscussionsObject', CreateDiscussionsObject );
@@ -33,7 +40,12 @@ Alpine.data( 'UserDeleteButton', UserDeleteButton );
 Alpine.data( 'ResetPasswordForm', ResetPasswordForm );
 Alpine.data( 'SideMenu', SideMenu );
 Alpine.data( 'QuarantineIntakeObject', QuarantineIntakeObject );
-Alpine.data( 'QuarantineIntakeProduct', QuarantineIntakeProduct );
 Alpine.data( 'QuarantineIntakeForm', QuarantineIntakeForm );
+Alpine.data( 'SelectProduct', SelectProduct );
+Alpine.data( 'SelectObject', SelectObject );
+Alpine.data( 'SelectTechnicalSupervisor', SelectTechnicalSupervisor );
+Alpine.data( 'SelectFaultRootCause', SelectFaultRootCause );
+Alpine.data( 'QuarantineStatsFilter', QuarantineStatsFilter );
+Alpine.data( 'QiInputStartsAt', QiInputStartsAt );
 
 Livewire.start();

@@ -40,6 +40,11 @@ trait WithFunctionAccess
             'value' => 'Quarantine Intake',
             'description' => 'Used primarily by Warehouse Technicians and the Production Assistant to submit new quarantine items to CurrentRMS, along with the Opportunity / Project name and Technical Supervisor.',
         ],
+        // [
+        //     'key' => 'access-quarantine-stats',
+        //     'value' => 'Quarantine Stats',
+        //     'description' => 'Used by executives and managers to report on quarantine intake statistics.',
+        // ],
         [
             'key' => 'crud-technical-supervisors',
             'value' => 'Technical Supervisor CRUD',

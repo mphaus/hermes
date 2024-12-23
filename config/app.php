@@ -133,6 +133,7 @@ return [
         'test_product_id' => env('MPH_TEST_PRODUCT_ID'),
         'technical_supervisor_list_id' => env('MPH_TECHNICAL_SUPERVISOR_LIST_ID'),
         'technical_supervisor_not_yet_assigned_id' => env('MPH_TECHNICAL_SUPERVISOR_NOT_YET_ASSIGNED_ID'),
+        'fault_root_cause_list_id' => env('MPH_FAULT_ROOT_CAUSE_LIST_ID'),
     ],
 
     'recaptcha_v3' => [

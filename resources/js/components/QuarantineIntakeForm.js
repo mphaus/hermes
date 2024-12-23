@@ -1,7 +1,27 @@
+/**
+ * @typedef {Object} State
+ * @property {boolean} disabled
+ * @property {boolean} loading
+ * @property {HTMLOptionElement} [element]
+ * @property {string} [id]
+ * @property {boolean} [selected]
+ * @property {string} text
+ * @property {string} [title]
+ * @property {string} [_resultId]
+ */
+
 export default function QuarantineIntakeForm () {
+    const currentDate = this.$refs.startsAt.dataset.currentDate;
+    const maxDate = this.$refs.startsAt.dataset.nextMonthMaxDate;
+    let startsAtFlatpickrInstance = null;
+
     return {
         serialNumberRemainingCharacters: 256,
         descriptionRemainingCharacters: 512,
+        init () {
+            this.initStartsAtFlatpickr();
+            this.initPrimaryFaultClassificationSelect2();
+        },
         /**
          * @param {string} status
          */
@@ -19,9 +39,70 @@ export default function QuarantineIntakeForm () {
             this.$wire.form.serial_number_status = 'serial-number-exists';
             this.$wire.form.serial_number = '';
             this.$wire.form.product_id = null;
+            this.$wire.form.starts_at = '';
             this.$wire.form.description = '';
 
-            this.$dispatch( 'quarantine-intake-cleared' );
+            this.$dispatch( 'hermes:quarantine-intake-cleared' );
+        },
+        initStartsAtFlatpickr () {
+            startsAtFlatpickrInstance = flatpickr( this.$refs.startsAt, {
+                altInput: true,
+                altFormat: 'd-M-Y',
+                defaultDate: currentDate,
+                minDate: currentDate,
+                maxDate,
+                /**
+                 * @param {Date[]} _ 
+                 * @param {string} dateStr 
+                 */
+                onReady: ( _, dateStr ) => {
+                    this.$wire.form.starts_at = dateStr;
+                },
+                /**
+                 * @param {Date[]} _ 
+                 * @param {string} dateStr 
+                 */
+                onChange: ( _, dateStr ) => {
+                    this.$wire.form.starts_at = dateStr;
+                },
+            } );
+        },
+        resetStartsAtFlatpickr () {
+            if ( startsAtFlatpickrInstance === null ) {
+                return;
+            }
+
+            startsAtFlatpickrInstance.setDate( new Date, true );
+        },
+        initPrimaryFaultClassificationSelect2 () {
+            $( this.$refs.primaryFaultClassification )
+                .select2( {
+                    placeholder: 'Select an option',
+                    width: '100%',
+                    /**
+                     * @param {State} state
+                     */
+                    templateResult ( state ) {
+                        const { element, text } = state;
+
+                        if ( element === undefined ) {
+                            return state.text;
+                        }
+
+                        /** @type {{ example: string }} */
+                        const { example } = element.dataset;
+
+                        return $( /* html */`<span class="font-semibold">${ text }</span><br><span class="text-sm">${ example }</span>` );
+                    },
+                } )
+                .on( 'change.select2', () => this.$wire.form.classification = $( this.$refs.primaryFaultClassification ).val() );
+        },
+        clearPrimaryFaultClassificationSelect2 () {
+            $( this.$refs.primaryFaultClassification ).val( '' ).trigger( 'change' );
+        },
+        handleQuarantineIntakeCleared () {
+            this.resetStartsAtFlatpickr();
+            this.clearPrimaryFaultClassificationSelect2();
         },
     };
 }

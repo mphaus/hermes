@@ -5,10 +5,10 @@ namespace App\Livewire;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
-class QuarantineIntakeProduct extends Component
+class QuarantineStatsFilter extends Component
 {
     public function render(): View
     {
-        return view('livewire.quarantine-intake-product');
+        return view('livewire.quarantine-stats-filter');
     }
 }

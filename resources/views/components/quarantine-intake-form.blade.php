@@ -1,8 +1,10 @@
 <x-form 
     class="space-y-7" 
+    wire:submit="save"
     x-data="QuarantineIntakeForm"
     x-effect="maybeClearSerialNumber($wire.form.serial_number_status)"
-    wire:submit="save"
+    x-on:hermes:quarantine-intake-cleared.window="handleQuarantineIntakeCleared"
+    x-on:submit.prevent="if ($refs.alert) $refs.alert.remove()"
 >
     <x-card>
         <div class="space-y-1">
@@ -12,8 +14,12 @@
         </div>
     </x-card>
     <x-card>
-        <div class="space-y-1">
-            <x-input-label>{{ __('Reference') }}</x-input-label>
+        <div class="flow">
+            <label class="block font-semibold">{{ __('Reference') }}</label>
+            <div class="flex items-start gap-1 mt-2">
+                <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
+                <p class="text-xs">{{ __('The item\'s serial number is used to uniquely identify the faulty item. Do not confuse this with the item\'s model number. If the serial number has hyphens (-) or slashes (/), enter them as shown on the serial number label.') }}</p>
+            </div>
             <div class="flow">
                 <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
                     <div class="flex items-center gap-1">
@@ -29,7 +35,7 @@
                         <x-input-label class="cursor-pointer" for="not-serialised">{{ __('Equipment is not serialised') }}</x-input-label>
                     </div>
                 </div>
-                <div class="space-y-1" x-cloak x-show="$wire.form.serial_number_status === 'serial-number-exists'">
+                <div class="space-y-2" x-cloak x-show="$wire.form.serial_number_status === 'serial-number-exists'">
                     <x-input
                         type="text"
                         placeholder="{{ __('Serial number') }}"
@@ -45,35 +51,88 @@
                     </p>
                     <x-input-error :messages="$errors->get('form.serial_number')" />
                 </div>
-                <p
-                    class="text-xs font-semibold"
-                    x-cloak
+                <div 
+                    class="flex items-start gap-1" 
+                    x-cloak 
                     x-show="$wire.form.serial_number_status === 'missing-serial-number'"
                 >
-                    {{ __('This option is selected if this equipment normally has a serial number assigned, but it\'s unreadable or has fallen off. Add \'Assign manual serial number\' to the Fault description field (in addition to other faults this equipment has).') }}
-                </p>
-                <p
-                    class="text-xs font-semibold"
+                    <x-icon-triangle-alert class="flex-shrink-0 w-4 h-4 text-yellow-500" />
+                    <p class="text-xs">
+                        {{ __('This option is selected if this equipment normally has a serial number assigned, but it\'s unreadable or has fallen off. Add \'Assign manual serial number\' to the Fault description field (in addition to other faults this equipment has).') }}
+                    </p>
+                </div>
+                <div
+                    class="flex items-start gap-1"
                     x-cloak
                     x-show="$wire.form.serial_number_status === 'not-serialised'"
                 >
-                    {{ __('This option is selected if this type of equipment is never serialised at all. Notify the Warehouse and SRMM Managers by email about this (as well as registering it here in Quarantine) - they will plan to serialise this type of equipment.') }}
-                </p>
+                    <x-icon-triangle-alert class="flex-shrink-0 w-4 h-4 text-yellow-500" />
+                    <p class="text-xs">
+                        {{ __('This option is selected if this type of equipment is never serialised at all. Notify the Warehouse and SRMM Managers by email about this (as well as registering it here in Quarantine) - they will plan to serialise this type of equipment.') }}
+                    </p>
+                </div>
             </div>
         </div>
     </x-card>
     <x-card>
-        <div class="space-y-1">
-            <livewire:quarantine-intake-product />
+        <div class="flow">
+            <label class="block font-semibold">{{ __('Product') }}</label>
+            <div class="flex items-start gap-1 mt-2">
+                <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
+                <p class="text-xs">{{ __('Type the first few letters of the product and pause to let the system get info from CurrentRMS. Select the exact-match product. If the item cannot be found in this listing, double-check the spelling of the item name (per the info plate on the equipment), then ask the SRMM Manager for advice on how to proceed.') }}</p>
+            </div>
+            <div wire:ignore>
+                <x-select-product wire:model="form.product_id" />
+            </div>
             <x-input-error :messages="$errors->get('form.product_id')" />
         </div>
     </x-card>
     <x-card>
-        <div class="space-y-1">
-            <x-input-label>{{ __('Fault description') }}</x-input-label>
+        <div class="flow">
+            <label class="block font-semibold">{{ __('Ready for repairs') }}</label>
+            <div class="flex items-start gap-1 mt-2">
+                <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
+                <p class="text-xs">{{ __('Set the date this item is expected to be in the warehouse, available for Repairs Technicians to work on. If the faulty item is already in the Warehouse and is about to be placed on Quarantine Intake shelves, leave the date as today\'s.') }}</p>
+            </div>
+            <div wire:ignore>
+                <x-input 
+                    type="text" 
+                    x-ref="startsAt" 
+                    data-current-date="{{ now()->format('Y-m-d') }}"
+                    data-next-month-max-date="{{ now()->addMonths(1)->endOfMonth()->format('Y-m-d') }}" 
+                />
+                {{-- <x-qi-input-starts-at wire:model="form.starts_at" /> --}}
+            </div>
+            <x-input-error :messages="$errors->get('form.starts_at')" />
+        </div>
+    </x-card>
+    <x-card>
+        <div class="flow">
+            <label class="block font-semibold">{{ __('Primary fault classification') }}</label>
+            <div class="flex items-start gap-1 mt-2">
+                <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
+                <p class="text-xs">{{ __('Classify the type of primary fault with this item (that is, if an item has multiple reasons for submission to Quarantine, which is the most prominent / serious?)') }}</p>
+            </div>
+            <div wire:ignore>
+                <select x-ref="primaryFaultClassification">
+                    <option value=""></option>
+                    @foreach ($this->getClassification() as $classification)
+                        <option value="{{ $classification['text'] }}" data-example="{{ $classification['example'] }}">{{ $classification['text'] }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <x-input-error :messages="$errors->get('form.classification')" />
+        </div>
+    </x-card>
+    <x-card>
+        <div class="flow">
+            <label class="block font-semibold">{{ __('Fault description') }}</label>
+            <div class="flex items-start gap-1 mt-2">
+                <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
+                <p class="text-xs">{{ __('Enter a concise, meaningful and objective fault description. Your name will be added to this report automatically, so there\'s no need to type it here.') }}</p>
+            </div>
             <x-textarea
                 rows="5"
-                placeholder="{{ __('Enter a concise, meaningful and objective fault description.') }}"
                 wire:model="form.description"
                 x-on:input="descriptionRemainingCharacters = 512 - $wire.form.description.length"
             ></x-textarea>
@@ -84,7 +143,6 @@
                 <span x-text="descriptionRemainingCharacters"></span>
                 {!!  __('character<span x-show="descriptionRemainingCharacters !== 1">s</span> left') !!}
             </p>
-            <p class="text-xs font-semibold">{{ __('Always mention the first name of the person making this Quarantine Intake submission, for example, "Submitted by Alex".') }}</p>
             <x-input-error :messages="$errors->get('form.description')" />
         </div>
     </x-card>
@@ -106,4 +164,13 @@
             </span>
         </x-button>
     </div>
+    @if ($alert)
+        <div @class([
+            'p-4 rounded-lg',
+            'bg-green-100 text-green-500' => $alert['type'] === 'success',
+            'bg-red-100 text-red-500' => $alert['type'] === 'error',
+        ]) x-ref="alert">
+            <div class="flow">{!! $alert['message'] !!}</div>
+        </div>    
+    @endif
 </x-form>
