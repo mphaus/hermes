@@ -51,20 +51,26 @@
                     </p>
                     <x-input-error :messages="$errors->get('form.serial_number')" />
                 </div>
-                <p
-                    class="text-xs font-semibold"
-                    x-cloak
+                <div 
+                    class="flex items-start gap-1" 
+                    x-cloak 
                     x-show="$wire.form.serial_number_status === 'missing-serial-number'"
                 >
-                    {{ __('This option is selected if this equipment normally has a serial number assigned, but it\'s unreadable or has fallen off. Add \'Assign manual serial number\' to the Fault description field (in addition to other faults this equipment has).') }}
-                </p>
-                <p
-                    class="text-xs font-semibold"
+                    <x-icon-triangle-alert class="flex-shrink-0 w-4 h-4 text-yellow-500" />
+                    <p class="text-xs font-semibold">
+                        {{ __('This option is selected if this equipment normally has a serial number assigned, but it\'s unreadable or has fallen off. Add \'Assign manual serial number\' to the Fault description field (in addition to other faults this equipment has).') }}
+                    </p>
+                </div>
+                <div
+                    class="flex items-start gap-1"
                     x-cloak
                     x-show="$wire.form.serial_number_status === 'not-serialised'"
                 >
-                    {{ __('This option is selected if this type of equipment is never serialised at all. Notify the Warehouse and SRMM Managers by email about this (as well as registering it here in Quarantine) - they will plan to serialise this type of equipment.') }}
-                </p>
+                    <x-icon-triangle-alert class="flex-shrink-0 w-4 h-4 text-yellow-500" />
+                    <p class="text-xs font-semibold">
+                        {{ __('This option is selected if this type of equipment is never serialised at all. Notify the Warehouse and SRMM Managers by email about this (as well as registering it here in Quarantine) - they will plan to serialise this type of equipment.') }}
+                    </p>
+                </div>
             </div>
         </div>
     </x-card>
