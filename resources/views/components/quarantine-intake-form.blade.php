@@ -16,7 +16,10 @@
     <x-card>
         <div class="flow">
             <label class="block font-semibold">{{ __('Reference') }}</label>
-            <p class="mt-2 text-xs">{{ __('The item\'s serial number is used to uniquely identify the faulty item. Do not confuse this with the item\'s model number. If the serial number has hyphens (-) or slashes (/), enter them as shown on the serial number label.') }}</p>
+            <div class="flex items-start gap-1 mt-2">
+                <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
+                <p class="text-xs">{{ __('The item\'s serial number is used to uniquely identify the faulty item. Do not confuse this with the item\'s model number. If the serial number has hyphens (-) or slashes (/), enter them as shown on the serial number label.') }}</p>
+            </div>
             <div class="flow">
                 <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
                     <div class="flex items-center gap-1">
@@ -68,7 +71,10 @@
     <x-card>
         <div class="flow">
             <label class="block font-semibold">{{ __('Product') }}</label>
-            <p class="mt-2 text-xs">{{ __('Type the first few letters of the product and pause to let the system get info from CurrentRMS. Select the exact-match product. If the item cannot be found in this listing, double-check the spelling of the item name (per the info plate on the equipment), then ask the SRMM Manager for advice on how to proceed.') }}</p>
+            <div class="flex items-start gap-1 mt-2">
+                <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
+                <p class="text-xs">{{ __('Type the first few letters of the product and pause to let the system get info from CurrentRMS. Select the exact-match product. If the item cannot be found in this listing, double-check the spelling of the item name (per the info plate on the equipment), then ask the SRMM Manager for advice on how to proceed.') }}</p>
+            </div>
             <div wire:ignore>
                 <x-select-product wire:model="form.product_id" />
             </div>
@@ -78,9 +84,13 @@
     <x-card>
         <div class="flow">
             <label class="block font-semibold">{{ __('Ready for repairs') }}</label>
-            <p class="mt-2 text-xs">{{ __('Set the date this item is expected to be in the warehouse, available for Repairs Technicians to work on. If the faulty item is already in the Warehouse and is about to be placed on Quarantine Intake shelves, leave the date as today\'s.') }}</p>
+            <div class="flex items-start gap-1 mt-2">
+                <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
+                <p class="text-xs">{{ __('Set the date this item is expected to be in the warehouse, available for Repairs Technicians to work on. If the faulty item is already in the Warehouse and is about to be placed on Quarantine Intake shelves, leave the date as today\'s.') }}</p>
+            </div>
             <div wire:ignore>
-                <x-qi-input-starts-at wire:model="form.starts_at" />
+                <x-input type="text" x-ref="startsAt" data-next-month-max-date="{{ now('UTC')->addMonths(1)->endOfMonth()->format('Y-m-d') }}" />
+                {{-- <x-qi-input-starts-at wire:model="form.starts_at" /> --}}
             </div>
             <x-input-error :messages="$errors->get('form.starts_at')" />
         </div>
@@ -88,7 +98,10 @@
     <x-card>
         <div class="flow">
             <label class="block font-semibold">{{ __('Primary fault classification') }}</label>
-            <p class="mt-2 text-xs">{{ __('Classify the type of primary fault with this item (that is, if an item has multiple reasons for submission to Quarantine, which is the most prominent / serious?)') }}</p>
+            <div class="flex items-start gap-1 mt-2">
+                <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
+                <p class="text-xs">{{ __('Classify the type of primary fault with this item (that is, if an item has multiple reasons for submission to Quarantine, which is the most prominent / serious?)') }}</p>
+            </div>
             <div wire:ignore>
                 <select x-ref="primaryFaultClassification">
                     <option value=""></option>
@@ -103,7 +116,10 @@
     <x-card>
         <div class="flow">
             <label class="block font-semibold">{{ __('Fault description') }}</label>
-            <p class="mt-2 text-xs">{{ __('Enter a concise, meaningful and objective fault description. Your name will be added to this report automatically, so there\'s no need to type it here.') }}</p>
+            <div class="flex items-start gap-1 mt-2">
+                <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
+                <p class="text-xs">{{ __('Enter a concise, meaningful and objective fault description. Your name will be added to this report automatically, so there\'s no need to type it here.') }}</p>
+            </div>
             <x-textarea
                 rows="5"
                 wire:model="form.description"
