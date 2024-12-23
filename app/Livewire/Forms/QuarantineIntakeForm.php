@@ -109,16 +109,18 @@ class QuarantineIntakeForm extends Form
             ? __('Item is in on Quarantine Intake shelving and is available for repairs work right now.')
             : __('Item expected to be back in the warehouse and available for repairs work on :date.', ['date' => $starts_at->format('D d-M-Y')]);
 
-        $description = $starts_at_text .
+        $description = '"' .
+            $validated['description'] .
+            '"' .
+            PHP_EOL .
+            PHP_EOL .
+            $starts_at_text .
             PHP_EOL .
             PHP_EOL .
             'Primary fault classification type ' .
             ':' .
             $validated['classification'] .
             ':' .
-            PHP_EOL .
-            PHP_EOL .
-            $validated['description'] .
             PHP_EOL .
             PHP_EOL .
             __('Submitted by :first_name', ['first_name' => Auth::user()->first_name]);
