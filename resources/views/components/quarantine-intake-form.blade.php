@@ -57,7 +57,7 @@
                     x-show="$wire.form.serial_number_status === 'missing-serial-number'"
                 >
                     <x-icon-triangle-alert class="flex-shrink-0 w-4 h-4 text-yellow-500" />
-                    <p class="text-xs font-semibold">
+                    <p class="text-xs">
                         {{ __('This option is selected if this equipment normally has a serial number assigned, but it\'s unreadable or has fallen off. Add \'Assign manual serial number\' to the Fault description field (in addition to other faults this equipment has).') }}
                     </p>
                 </div>
@@ -67,7 +67,7 @@
                     x-show="$wire.form.serial_number_status === 'not-serialised'"
                 >
                     <x-icon-triangle-alert class="flex-shrink-0 w-4 h-4 text-yellow-500" />
-                    <p class="text-xs font-semibold">
+                    <p class="text-xs">
                         {{ __('This option is selected if this type of equipment is never serialised at all. Notify the Warehouse and SRMM Managers by email about this (as well as registering it here in Quarantine) - they will plan to serialise this type of equipment.') }}
                     </p>
                 </div>
