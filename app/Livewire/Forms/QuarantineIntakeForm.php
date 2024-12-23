@@ -105,7 +105,7 @@ class QuarantineIntakeForm extends Form
         };
 
         $starts_at = now()->parse($validated['starts_at']);
-        $starts_at_text = $starts_at->setTime(12, 0, 0, 0)->setTimezone('UTC')->isToday()
+        $starts_at_text = $starts_at->isSameDay(now())
             ? __('Item is in on Quarantine Intake shelving and is available for repairs work right now.')
             : __('Item expected to be back in the warehouse and available for repairs work on :date.', ['date' => $starts_at->format('D d-M-Y')]);
 

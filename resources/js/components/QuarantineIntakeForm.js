@@ -11,6 +11,7 @@
  */
 
 export default function QuarantineIntakeForm () {
+    const currentDate = this.$refs.startsAt.dataset.currentDate;
     const maxDate = this.$refs.startsAt.dataset.nextMonthMaxDate;
     let startsAtFlatpickrInstance = null;
 
@@ -47,8 +48,8 @@ export default function QuarantineIntakeForm () {
             startsAtFlatpickrInstance = flatpickr( this.$refs.startsAt, {
                 altInput: true,
                 altFormat: 'd-M-Y',
-                defaultDate: new Date,
-                minDate: 'today',
+                defaultDate: currentDate,
+                minDate: currentDate,
                 maxDate,
                 /**
                  * @param {Date[]} _ 

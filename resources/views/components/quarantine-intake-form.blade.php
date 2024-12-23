@@ -95,7 +95,12 @@
                 <p class="text-xs">{{ __('Set the date this item is expected to be in the warehouse, available for Repairs Technicians to work on. If the faulty item is already in the Warehouse and is about to be placed on Quarantine Intake shelves, leave the date as today\'s.') }}</p>
             </div>
             <div wire:ignore>
-                <x-input type="text" x-ref="startsAt" data-next-month-max-date="{{ now('UTC')->addMonths(1)->endOfMonth()->format('Y-m-d') }}" />
+                <x-input 
+                    type="text" 
+                    x-ref="startsAt" 
+                    data-current-date="{{ now()->format('Y-m-d') }}"
+                    data-next-month-max-date="{{ now()->addMonths(1)->endOfMonth()->format('Y-m-d') }}" 
+                />
                 {{-- <x-qi-input-starts-at wire:model="form.starts_at" /> --}}
             </div>
             <x-input-error :messages="$errors->get('form.starts_at')" />
