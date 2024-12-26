@@ -108,6 +108,22 @@
     </x-card>
     <x-card>
         <div class="flow">
+            <label class="block font-semibold">{{ __('Shelf location') }}</label>
+            <div class="flex items-start gap-1 mt-2">
+                <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
+                <p class="text-xs ">{{ __('Specify the shelf ID of where this fixture will be placed.') }}</p>
+            </div>
+            <x-input 
+                type="text" 
+                placeholder="{{ __('Ex: A-26') }}" 
+                x-mask="a-99" 
+                x-on:input="$event.target.value = $event.target.value.toUpperCase()" 
+            />
+            <x-input-error :messages="$errors->get('form.shelf_location')" />
+        </div>
+    </x-card>
+    <x-card>
+        <div class="flow">
             <label class="block font-semibold">{{ __('Primary fault classification') }}</label>
             <div class="flex items-start gap-1 mt-2">
                 <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
