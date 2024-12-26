@@ -37,7 +37,7 @@ class SelectFaultRootCause extends Component
 
         return [
             ...$default_response,
-            'fault_root_causes' => collect(array_filter($list_values, fn($fault_root_cause) => $fault_root_cause['name'] !== '-- Select one --')),
+            'fault_root_causes' => collect(array_filter($list_values, fn($fault_root_cause) => $fault_root_cause['name'] !== '-- Select one --' || $fault_root_cause['name'] !== 'Not yet assigned')),
         ];
     }
 

@@ -11,15 +11,10 @@
  */
 
 export default function QuarantineIntakeForm () {
-    const currentDate = this.$refs.startsAt.dataset.currentDate;
-    const maxDate = this.$refs.startsAt.dataset.nextMonthMaxDate;
-    let startsAtFlatpickrInstance = null;
-
     return {
         serialNumberRemainingCharacters: 256,
         descriptionRemainingCharacters: 512,
         init () {
-            this.initStartsAtFlatpickr();
             this.initPrimaryFaultClassificationSelect2();
         },
         /**
@@ -39,40 +34,11 @@ export default function QuarantineIntakeForm () {
             this.$wire.form.serial_number_status = 'serial-number-exists';
             this.$wire.form.serial_number = '';
             this.$wire.form.product_id = null;
-            this.$wire.form.starts_at = '';
+            this.$wire.form.starts_at = this.$root.dataset.currentDate;
+            this.$wire.form.shelf_location = '';
             this.$wire.form.description = '';
 
             this.$dispatch( 'hermes:quarantine-intake-cleared' );
-        },
-        initStartsAtFlatpickr () {
-            startsAtFlatpickrInstance = flatpickr( this.$refs.startsAt, {
-                altInput: true,
-                altFormat: 'd-M-Y',
-                defaultDate: currentDate,
-                minDate: currentDate,
-                maxDate,
-                /**
-                 * @param {Date[]} _ 
-                 * @param {string} dateStr 
-                 */
-                onReady: ( _, dateStr ) => {
-                    this.$wire.form.starts_at = dateStr;
-                },
-                /**
-                 * @param {Date[]} _ 
-                 * @param {string} dateStr 
-                 */
-                onChange: ( _, dateStr ) => {
-                    this.$wire.form.starts_at = dateStr;
-                },
-            } );
-        },
-        resetStartsAtFlatpickr () {
-            if ( startsAtFlatpickrInstance === null ) {
-                return;
-            }
-
-            startsAtFlatpickrInstance.setDate( new Date, true );
         },
         initPrimaryFaultClassificationSelect2 () {
             $( this.$refs.primaryFaultClassification )
@@ -101,7 +67,6 @@ export default function QuarantineIntakeForm () {
             $( this.$refs.primaryFaultClassification ).val( '' ).trigger( 'change' );
         },
         handleQuarantineIntakeCleared () {
-            this.resetStartsAtFlatpickr();
             this.clearPrimaryFaultClassificationSelect2();
         },
     };

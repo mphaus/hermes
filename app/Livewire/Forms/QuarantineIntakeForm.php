@@ -36,6 +36,9 @@ class QuarantineIntakeForm extends Form
     #[Validate(as: 'ready for repairs')]
     public string $starts_at;
 
+    #[Validate(as: 'shelf location')]
+    public string $shelf_location;
+
     #[Validate(as: 'primary fault classification')]
     public string $classification;
 
@@ -52,19 +55,7 @@ class QuarantineIntakeForm extends Form
 
     private bool $open_ended = true;
 
-    public function clear(): void
-    {
-        $this->project_or_opportunity = '';
-        $this->technical_supervisor = null;
-        $this->serial_number_status = 'serial-number-exists';
-        $this->serial_number = '';
-        $this->product_id = null;
-        $this->starts_at = '';
-        $this->classification = '';
-        $this->description = '';
-    }
-
-    public function rules(): array
+    protected function rules(): array
     {
         return [
             'project_or_opportunity' => ['required'],
@@ -87,6 +78,18 @@ class QuarantineIntakeForm extends Form
                     $fail(__('The :attribute field must not be a greater date than the last day of the next month.'));
                 }
             }],
+            'shelf_location' => [
+                Rule::requiredIf(fn() => $this->starts_at === now()->format('Y-m-d')),
+                function (string $attribute, mixed $value, Closure $fail) {
+                    if ($this->starts_at !== now()->format('Y-m-d')) {
+                        return;
+                    }
+
+                    if (!preg_match('/^[a-iA-I]-(?:[1-9]|[1-3][0-9]|4[0-5])$/', $value)) {
+                        $fail(__("The :attribute field format is invalid. Accepted letters from A to I. Accepted numbers from 1 to 45."));
+                    }
+                }
+            ],
             'classification' => [
                 'required',
                 Rule::in($this->getClassificationTexts()),
@@ -105,7 +108,8 @@ class QuarantineIntakeForm extends Form
         };
 
         $starts_at = now()->parse($validated['starts_at']);
-        $starts_at_text = $starts_at->isSameDay(now())
+        $is_same_day = $starts_at->isSameDay(now());
+        $starts_at_text = $is_same_day
             ? __('Item is in on Quarantine Intake shelving and is available for repairs work right now.')
             : __('Item expected to be back in the warehouse and available for repairs work on :date.', ['date' => $starts_at->format('D d-M-Y')]);
 
@@ -139,6 +143,7 @@ class QuarantineIntakeForm extends Form
                 'custom_fields' => [
                     'project_or_opportunity' => $validated['project_or_opportunity'],
                     'mph_technical_supervisor' => $validated['technical_supervisor'],
+                    'shelf_location' => $is_same_day ? mb_strtoupper($validated['shelf_location']) : __('TBC'),
                 ],
             ],
         ]);

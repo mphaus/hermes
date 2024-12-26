@@ -20,6 +20,11 @@ class QuarantineIntakeCreate extends Component
 
     public array $alert = [];
 
+    public function mount()
+    {
+        $this->form->starts_at = now()->format('Y-m-d');
+    }
+
     #[Computed]
     public function technicalSupervisors()
     {

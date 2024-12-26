@@ -1,5 +1,6 @@
 <x-form 
     class="space-y-7" 
+    data-current-date="{{ now()->format('Y-m-d') }}"
     wire:submit="save"
     x-data="QuarantineIntakeForm"
     x-effect="maybeClearSerialNumber($wire.form.serial_number_status)"
@@ -95,15 +96,28 @@
                 <p class="text-xs">{{ __('Set the date this item is expected to be in the warehouse, available for Repairs Technicians to work on. If the faulty item is already in the Warehouse and is about to be placed on Quarantine Intake shelves, leave the date as today\'s.') }}</p>
             </div>
             <div wire:ignore>
-                <x-input 
-                    type="text" 
-                    x-ref="startsAt" 
-                    data-current-date="{{ now()->format('Y-m-d') }}"
-                    data-next-month-max-date="{{ now()->addMonths(1)->endOfMonth()->format('Y-m-d') }}" 
-                />
-                {{-- <x-qi-input-starts-at wire:model="form.starts_at" /> --}}
+                <x-qi-input-starts-at wire:model="form.starts_at" />
             </div>
             <x-input-error :messages="$errors->get('form.starts_at')" />
+        </div>
+    </x-card>
+    <x-card x-show="$wire.form.starts_at === $root.dataset.currentDate">
+        <div class="flow">
+            <label class="block font-semibold">{{ __('Shelf location') }}</label>
+            <div class="flex items-start gap-1 mt-2">
+                <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
+                <p class="text-xs ">{{ __('Specify the shelf ID of where this fixture will be placed.') }}</p>
+            </div>
+            <div wire:ignore>
+                <x-input
+                    type="text"
+                    placeholder="{{ __('Ex: A-26') }}"
+                    x-mask="a-99"
+                    x-on:input="$event.target.value = $event.target.value.toUpperCase()" 
+                    wire:model="form.shelf_location"
+                />
+            </div>
+            <x-input-error :messages="$errors->get('form.shelf_location')" />
         </div>
     </x-card>
     <x-card>
