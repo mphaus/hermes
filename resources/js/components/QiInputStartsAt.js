@@ -1,4 +1,5 @@
 export default function QiInputStartsAt () {
+    const currentDate = this.$root.dataset.currentDate;
     const maxDate = this.$root.dataset.nextMonthMaxDate;
     let instance = null;
 
@@ -11,31 +12,17 @@ export default function QiInputStartsAt () {
             instance = flatpickr( this.$root, {
                 altInput: true,
                 altFormat: 'd-M-Y',
-                defaultDate: new Date,
-                minDate: 'today',
+                minDate: currentDate,
                 maxDate,
                 /**
                  * @param {Date[]} _ 
                  * @param {string} dateStr 
                  */
-                // onReady: ( _, dateStr ) => {
-                //     if ( !dateStr ) {
-                //         return;
-                //     }
-
-                //     this.value = dateStr;
-                // },
-                /**
-                 * @param {Date[]} _ 
-                 * @param {string} dateStr 
-                 */
                 onChange: ( _, dateStr ) => {
-                    console.log( dateStr );
-
-
-                    // if ( !dateStr ) {
-                    //     return;
-                    // }
+                    if ( !dateStr ) {
+                        this.value = currentDate;
+                        return;
+                    }
 
                     this.value = dateStr;
                 },
@@ -46,10 +33,11 @@ export default function QiInputStartsAt () {
                 return;
             }
 
-            instance.setDate( new Date, true );
+            instance.setDate( currentDate, true );
+            this.value = currentDate;
         },
         checkValue ( value ) {
-            if ( value ) {
+            if ( value !== currentDate ) {
                 return;
             }
 

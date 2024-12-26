@@ -36,6 +36,8 @@ class QuarantineIntakeForm extends Form
     #[Validate(as: 'ready for repairs')]
     public string $starts_at;
 
+    public string $shelf_location;
+
     #[Validate(as: 'primary fault classification')]
     public string $classification;
 
@@ -60,6 +62,7 @@ class QuarantineIntakeForm extends Form
         $this->serial_number = '';
         $this->product_id = null;
         $this->starts_at = '';
+        $this->shelf_location = '';
         $this->classification = '';
         $this->description = '';
     }
