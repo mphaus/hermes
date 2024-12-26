@@ -101,7 +101,7 @@
             <x-input-error :messages="$errors->get('form.starts_at')" />
         </div>
     </x-card>
-    <x-card>
+    <x-card x-show="$wire.form.starts_at === $root.dataset.currentDate">
         <div class="flow">
             <label class="block font-semibold">{{ __('Shelf location') }}</label>
             <div class="flex items-start gap-1 mt-2">
