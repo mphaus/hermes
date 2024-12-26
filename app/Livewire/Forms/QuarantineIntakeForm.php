@@ -80,20 +80,21 @@ class QuarantineIntakeForm extends Form
             }],
             'shelf_location' => [
                 Rule::requiredIf(fn() => $this->starts_at === now()->format('Y-m-d')),
-                'regex:/^[a-iA-I]-(?:[1-9]|[1-3][0-9]|4[0-5])$/'
+                function (string $attribute, mixed $value, Closure $fail) {
+                    if ($this->starts_at !== now()->format('Y-m-d')) {
+                        return;
+                    }
+
+                    if (!preg_match('/^[a-iA-I]-(?:[1-9]|[1-3][0-9]|4[0-5])$/', $value)) {
+                        $fail(__("The :attribute field format is invalid. Accepted letters from A to I. Accepted numbers from 1 to 45."));
+                    }
+                }
             ],
             'classification' => [
                 'required',
                 Rule::in($this->getClassificationTexts()),
             ],
             'description' => ['required', 'max:512'],
-        ];
-    }
-
-    protected function messages()
-    {
-        return [
-            'shelf_location.regex' => 'The :attribute field format is invalid. Accepted letters from A to I. Accepted numbers from 1 to 45.',
         ];
     }
 
@@ -107,7 +108,8 @@ class QuarantineIntakeForm extends Form
         };
 
         $starts_at = now()->parse($validated['starts_at']);
-        $starts_at_text = $starts_at->isSameDay(now())
+        $is_same_day = $starts_at->isSameDay(now());
+        $starts_at_text = $is_same_day
             ? __('Item is in on Quarantine Intake shelving and is available for repairs work right now.')
             : __('Item expected to be back in the warehouse and available for repairs work on :date.', ['date' => $starts_at->format('D d-M-Y')]);
 
@@ -127,7 +129,7 @@ class QuarantineIntakeForm extends Form
             PHP_EOL .
             __('Submitted by :first_name', ['first_name' => Auth::user()->first_name]);
 
-        $response = Http::current()->dd()->post('quarantines', [
+        $response = Http::current()->post('quarantines', [
             'quarantine' => [
                 'item_id' => App::environment(['local', 'staging']) ? intval(config('app.mph.test_product_id')) : intval($validated['product_id']),
                 'store_id' => $this->store,
@@ -141,6 +143,7 @@ class QuarantineIntakeForm extends Form
                 'custom_fields' => [
                     'project_or_opportunity' => $validated['project_or_opportunity'],
                     'mph_technical_supervisor' => $validated['technical_supervisor'],
+                    'shelf_location' => $is_same_day ? mb_strtoupper($validated['shelf_location']) : __('TBC'),
                 ],
             ],
         ]);
