@@ -36,6 +36,7 @@ class QuarantineIntakeForm extends Form
     #[Validate(as: 'ready for repairs')]
     public string $starts_at;
 
+    #[Validate(as: 'shelf location')]
     public string $shelf_location;
 
     #[Validate(as: 'primary fault classification')]
@@ -54,20 +55,7 @@ class QuarantineIntakeForm extends Form
 
     private bool $open_ended = true;
 
-    public function clear(): void
-    {
-        $this->project_or_opportunity = '';
-        $this->technical_supervisor = null;
-        $this->serial_number_status = 'serial-number-exists';
-        $this->serial_number = '';
-        $this->product_id = null;
-        $this->starts_at = '';
-        $this->shelf_location = '';
-        $this->classification = '';
-        $this->description = '';
-    }
-
-    public function rules(): array
+    protected function rules(): array
     {
         return [
             'project_or_opportunity' => ['required'],
@@ -90,11 +78,22 @@ class QuarantineIntakeForm extends Form
                     $fail(__('The :attribute field must not be a greater date than the last day of the next month.'));
                 }
             }],
+            'shelf_location' => [
+                Rule::requiredIf(fn() => $this->starts_at === now()->format('Y-m-d')),
+                'regex:/^[a-iA-I]-(?:[1-9]|[1-3][0-9]|4[0-5])$/'
+            ],
             'classification' => [
                 'required',
                 Rule::in($this->getClassificationTexts()),
             ],
             'description' => ['required', 'max:512'],
+        ];
+    }
+
+    protected function messages()
+    {
+        return [
+            'shelf_location.regex' => 'The :attribute field format is invalid. Accepted letters from A to I. Accepted numbers from 1 to 45.',
         ];
     }
 
@@ -128,7 +127,7 @@ class QuarantineIntakeForm extends Form
             PHP_EOL .
             __('Submitted by :first_name', ['first_name' => Auth::user()->first_name]);
 
-        $response = Http::current()->post('quarantines', [
+        $response = Http::current()->dd()->post('quarantines', [
             'quarantine' => [
                 'item_id' => App::environment(['local', 'staging']) ? intval(config('app.mph.test_product_id')) : intval($validated['product_id']),
                 'store_id' => $this->store,
