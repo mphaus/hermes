@@ -29,5 +29,15 @@ export default function QiSelectOpportunity () {
                     this.value = $( this.$root ).val();
                 } );
         },
+        checkValue ( value ) {
+            if ( value ) {
+                return;
+            }
+
+            this.clear();
+        },
+        clear () {
+            $( this.$root ).val( null ).trigger( 'change' );
+        }
     };
 }
