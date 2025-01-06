@@ -1,18 +1,32 @@
+@use('Illuminate\Support\Js')
+
 <x-form 
     class="space-y-7" 
     data-current-date="{{ now()->format('Y-m-d') }}"
     wire:submit="save"
-    x-data="QuarantineIntakeForm"
+    x-data="QuarantineIntakeForm({{ Js::from($this->technicalSupervisors) }})"
     x-effect="maybeClearSerialNumber($wire.form.serial_number_status)"
     x-on:hermes:quarantine-intake-cleared.window="handleQuarantineIntakeCleared"
+    x-on:hermes:qi-select-opportunity-change="handleSelectOpportunityChange"
     x-on:submit.prevent="if ($refs.alert) $refs.alert.remove()"
 >
-    <x-card>
-        <div class="space-y-1">
-            <livewire:quarantine-intake-object :technical-supervisors="$this->technicalSupervisors" />
-            <x-input-error :messages="$errors->get('form.project_or_opportunity')" />
-            <x-input-error :messages="$errors->get('form.technical_supervisor')" />
+    <x-card class="flow">
+        <div class="flow">
+            <label class="block font-semibold">{{ __('Opportunity') }}</label>
+            <div wire:ignore>
+                <x-qi-select-opportunity wire:model="form.opportunity" />
+            </div>
+            <x-input-error :messages="$errors->get('form.opportunity')" />
         </div>
+        <div class="flow" x-cloak x-show="$wire.form.technical_supervisor">
+            <label class="block font-semibold">{{ __('Technical Supervisor') }}</label>
+            <div class="flex items-start gap-1 mt-2">
+                <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
+                <p class="text-xs">{{ __('The Technical Supervisor is specified in the Opportunity and cannot be changed here.') }}</p>
+            </div>
+            <p x-text="technicalSupervisorName"></p>
+        </div>
+        <x-input-error :messages="$errors->get('form.technical_supervisor')" />
     </x-card>
     <x-card>
         <div class="flow">

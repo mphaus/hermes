@@ -4,7 +4,7 @@
 A new item was submitted to Quarantine via Hermes on {{ now()->format('d-M-Y') }} by {{ $user->fullname }};
 
 <x-mail::panel>
-**Opportunity / Project:** {{ $quarantine['custom_fields']['project_or_opportunity'] }}
+**Opportunity:** {{ $quarantine['custom_fields']['opportunity'] }}
 
 **Serial number:** {{ $quarantine['reference'] }}
 

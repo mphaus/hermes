@@ -3,9 +3,9 @@
 // use App\Http\Controllers\ProfileController;
 
 use App\Http\Controllers\OpportunityController;
-use App\Http\Controllers\OpportunityProjectController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\QiOpportunityController;
 use App\Livewire\ActionStreamIndex;
 use App\Livewire\DiscussionsCreate;
 use App\Livewire\DiscussionsEdit;
@@ -59,7 +59,7 @@ Route::middleware(['auth', 'is_enabled'])->group(function () {
 
     Route::get('projects/search', [ProjectController::class, 'search'])->name('projects.search');
 
-    Route::get('opportunities-projects/search', [OpportunityProjectController::class, 'search'])->name('opportunities.projects.search');
+    Route::get('qi-opportunities/search', [QiOpportunityController::class, 'search'])->name('qi-opportunities.search');
 
     Route::get('products/search', [ProductController::class, 'search'])->name('products.search');
 });

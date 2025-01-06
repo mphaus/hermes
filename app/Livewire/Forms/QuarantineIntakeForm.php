@@ -19,8 +19,8 @@ class QuarantineIntakeForm extends Form
 {
     use WithQuarantineIntakeClassification;
 
-    #[Validate(as: 'Opportunity or Project')]
-    public string $project_or_opportunity;
+    #[Validate(as: 'Opportunity')]
+    public string $opportunity;
 
     #[Validate(as: 'Technical Supervisor')]
     public int|null $technical_supervisor;
@@ -58,7 +58,7 @@ class QuarantineIntakeForm extends Form
     protected function rules(): array
     {
         return [
-            'project_or_opportunity' => ['required'],
+            'opportunity' => ['required'],
             'technical_supervisor' => ['required', 'numeric'],
             'serial_number_status' => [
                 'required',
@@ -141,7 +141,7 @@ class QuarantineIntakeForm extends Form
                 'open_ended' => $this->open_ended,
                 // 'stock_type' => $this->stock_type,
                 'custom_fields' => [
-                    'project_or_opportunity' => $validated['project_or_opportunity'],
+                    'opportunity' => $validated['opportunity'],
                     'mph_technical_supervisor' => $validated['technical_supervisor'],
                     'shelf_location' => $is_same_day ? mb_strtoupper($validated['shelf_location']) : __('TBC'),
                 ],
