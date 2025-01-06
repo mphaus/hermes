@@ -1,4 +1,14 @@
+/**
+ * @typedef {Object} Data
+ * @property {string} id
+ * @property {number} technical_supervisor_id
+ * @property {string} text
+ */
+
 export default function QiSelectOpportunity () {
+    /** @type {Data[]} */
+    let currentData = [];
+
     return {
         value: null,
         init () {
@@ -13,7 +23,12 @@ export default function QiSelectOpportunity () {
                         url: route( 'qi-opportunities.search' ),
                         dataType: 'json',
                         delay: 500,
+                        /**
+                         * @param {Data[]} data 
+                         */
                         processResults ( data ) {
+                            currentData = data;
+
                             return {
                                 results: data,
                             };
@@ -22,11 +37,14 @@ export default function QiSelectOpportunity () {
                     minimumInputLength: 1,
                 } )
                 .on( 'change.select2', () => {
-                    if ( !$( this.$root ).val() ) {
+                    const value = $( this.$root ).val();
+
+                    if ( !value ) {
                         return;
                     }
 
-                    this.value = $( this.$root ).val();
+                    this.value = value;
+                    this.$dispatch( 'hermes:qi-select-opportunity-change', { ...currentData.find( data => data.id === value ) } );
                 } );
         },
         checkValue ( value ) {
