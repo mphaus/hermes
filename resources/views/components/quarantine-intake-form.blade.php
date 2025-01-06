@@ -8,8 +8,12 @@
     x-on:submit.prevent="if ($refs.alert) $refs.alert.remove()"
 >
     <x-card>
-        <div class="space-y-1">
-            <livewire:quarantine-intake-object :technical-supervisors="$this->technicalSupervisors" />
+        <div class="flow">
+            {{-- <livewire:quarantine-intake-object :technical-supervisors="$this->technicalSupervisors" /> --}}
+            <label class="block font-semibold">{{ __('Opportunity') }}</label>
+            <div wire:ignore>
+                <x-qi-select-opportunity wire:model="form.project_or_opportunity" />
+            </div>
             <x-input-error :messages="$errors->get('form.project_or_opportunity')" />
             <x-input-error :messages="$errors->get('form.technical_supervisor')" />
         </div>

@@ -25,6 +25,7 @@ import SelectTechnicalSupervisor from "./components/SelectTechnicalSupervisor";
 import SelectFaultRootCause from "./components/SelectFaultRootCause";
 import QuarantineStatsFilter from "./components/QuarantineStatsFilter";
 import QiInputStartsAt from "./components/QiInputStartsAt";
+import QiSelectOpportunity from "./components/QiSelectOpportunity";
 
 Alpine.data( 'Alert', Alert );
 Alpine.data( 'ActionStreamFilters', ActionStreamFilters );
@@ -47,5 +48,6 @@ Alpine.data( 'SelectTechnicalSupervisor', SelectTechnicalSupervisor );
 Alpine.data( 'SelectFaultRootCause', SelectFaultRootCause );
 Alpine.data( 'QuarantineStatsFilter', QuarantineStatsFilter );
 Alpine.data( 'QiInputStartsAt', QiInputStartsAt );
+Alpine.data( 'QiSelectOpportunity', QiSelectOpportunity );
 
 Livewire.start();
