@@ -134,10 +134,7 @@
             </div>
             <div class="relative">
                 @if (!empty($this->form->starts_at) && !$errors->has('form.starts_at'))
-                    <x-icon-square-check 
-                        class="absolute w-5 h-5 -translate-x-full -translate-y-1/2 fill-green-500 top-1/2 -left-1" 
-                        data-element="square-check-icon"
-                    />    
+                    <x-icon-square-check class="absolute w-5 h-5 -translate-x-full -translate-y-1/2 fill-green-500 top-1/2 -left-1" />    
                 @endif
                 <div wire:ignore>
                     <x-qi-input-starts-at wire:model.live="form.starts_at" />
@@ -208,11 +205,14 @@
                         data-element="square-check-icon"
                     />    
                 @endif
-                <x-textarea
-                    rows="5"
-                    wire:model.live.debounce.500ms="form.description"
-                    x-on:input="descriptionRemainingCharacters = 512 - $wire.form.description.length"
-                ></x-textarea>
+                <div wire:ignore>
+                    <x-textarea
+                        rows="5"
+                        wire:model.live.debounce.500ms="form.description"
+                        {{-- wire:model.blur="form.description" --}}
+                        x-on:input="descriptionRemainingCharacters = 512 - $wire.form.description.length"
+                    ></x-textarea>
+                </div>
             </div>
             <p
                 class="text-xs font-semibold"

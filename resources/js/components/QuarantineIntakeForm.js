@@ -42,6 +42,10 @@ export default function QuarantineIntakeForm ( technicalSupervisors ) {
             this.$wire.form.classification = '';
             this.$wire.form.description = '';
             this.technicalSupervisorName = '';
+
+            /** @type {HTMLElement[]} */
+            const squareCheckIconElements = this.$root.querySelectorAll( '[data-element="square-check-icon"]' );
+            !!squareCheckIconElements.length && squareCheckIconElements.forEach( element => element.remove() );
         },
         /**
          * @param {CustomEvent<QiSelectOpportunityData | undefined>} e
