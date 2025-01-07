@@ -6,7 +6,6 @@
     wire:submit="save"
     x-data="QuarantineIntakeForm({{ Js::from($this->technicalSupervisors) }})"
     x-effect="maybeClearSerialNumber($wire.form.serial_number_status)"
-    x-on:hermes:quarantine-intake-cleared.window="handleQuarantineIntakeCleared"
     x-on:hermes:qi-select-opportunity-change="handleSelectOpportunityChange"
     x-on:submit.prevent="if ($refs.alert) $refs.alert.remove()"
 >
@@ -30,6 +29,7 @@
     </x-card>
     <x-card>
         <div class="flow">
+        
             <label class="block font-semibold">{{ __('Reference') }}</label>
             <div class="flex items-start gap-1 mt-2">
                 <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
@@ -142,12 +142,13 @@
                 <p class="text-xs">{{ __('Classify the type of primary fault with this item (that is, if an item has multiple reasons for submission to Quarantine, which is the most prominent / serious?)') }}</p>
             </div>
             <div wire:ignore>
-                <select x-ref="primaryFaultClassification">
+                <x-qi-select-primary-fault-classification wire:model="form.classification" />
+                {{-- <select x-ref="primaryFaultClassification">
                     <option value=""></option>
                     @foreach ($this->getClassification() as $classification)
                         <option value="{{ $classification['text'] }}" data-example="{{ $classification['example'] }}">{{ $classification['text'] }}</option>
                     @endforeach
-                </select>
+                </select> --}}
             </div>
             <x-input-error :messages="$errors->get('form.classification')" />
         </div>
