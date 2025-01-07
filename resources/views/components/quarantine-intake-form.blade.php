@@ -68,7 +68,7 @@
                         <x-input
                             type="text"
                             placeholder="{{ __('Serial number') }}"
-                            x-on:input="serialNumberRemainingCharacters = 256 - $wire.form.serial_number.length"
+                            x-on:input="serialNumberRemainingCharacters = 256 - $event.target.value.length"
                             wire:model.live.debounce.500ms="form.serial_number"
                         />
                     </div>
@@ -209,8 +209,7 @@
                     <x-textarea
                         rows="5"
                         wire:model.live.debounce.500ms="form.description"
-                        {{-- wire:model.blur="form.description" --}}
-                        x-on:input="descriptionRemainingCharacters = 512 - $wire.form.description.length"
+                        x-on:input="descriptionRemainingCharacters = 512 - $event.target.value.length"
                     ></x-textarea>
                 </div>
             </div>
