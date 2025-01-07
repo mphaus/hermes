@@ -22,7 +22,7 @@
             <label class="block font-semibold">{{ __('Technical Supervisor') }}</label>
             <div class="flex items-start gap-1 mt-2">
                 <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
-                <p class="text-xs">{{ __('The Technical Supervisor is specified in the Opportunity and cannot be changed here.') }}</p>
+                <p class="text-xs">{{ __('The Technical Supervisor is specified in Opportunity in CurrentRMS and cannot be edited here.') }}</p>
             </div>
             <p x-text="technicalSupervisorName"></p>
         </div>
