@@ -10,7 +10,7 @@ export default function QiSelectOpportunity () {
     let currentData = [];
 
     return {
-        value: null,
+        value: '',
         init () {
             this.initSelect2();
         },
@@ -47,6 +47,9 @@ export default function QiSelectOpportunity () {
                     this.$dispatch( 'hermes:qi-select-opportunity-change', { ...currentData.find( data => data.id === value ) } );
                 } );
         },
+        clear () {
+            $( this.$root ).val( '' ).trigger( 'change' );
+        },
         checkValue ( value ) {
             if ( value ) {
                 return;
@@ -54,8 +57,5 @@ export default function QiSelectOpportunity () {
 
             this.clear();
         },
-        clear () {
-            $( this.$root ).val( null ).trigger( 'change' );
-        }
     };
 }
