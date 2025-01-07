@@ -11,8 +11,10 @@
  */
 
 export default function QiSelectPrimaryFaultClassification () {
+    let isDirty = false;
+
     return {
-        value: null,
+        value: '',
         init () {
             this.initSelect2();
         },
@@ -37,13 +39,16 @@ export default function QiSelectPrimaryFaultClassification () {
                         return $( /* html */`<span class="font-semibold">${ text }</span><br><span class="text-sm">${ example }</span>` );
                     },
                 } )
-                .on( 'change.select2', () => this.value = $( this.$root ).val() );
+                .on( 'change.select2', () => {
+                    this.value = $( this.$root ).val();
+                    isDirty = true;
+                } );
         },
         clear () {
             $( this.$root ).val( '' ).trigger( 'change' );
         },
         checkValue ( value ) {
-            if ( value ) {
+            if ( value || !isDirty ) {
                 return;
             }
 

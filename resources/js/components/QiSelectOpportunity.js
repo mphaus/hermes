@@ -10,7 +10,7 @@ export default function QiSelectOpportunity () {
     let currentData = [];
 
     return {
-        value: null,
+        value: '',
         init () {
             this.initSelect2();
         },
@@ -48,7 +48,7 @@ export default function QiSelectOpportunity () {
                 } );
         },
         clear () {
-            $( this.$root ).val( null ).trigger( 'change' );
+            $( this.$root ).val( '' ).trigger( 'change' );
         },
         checkValue ( value ) {
             if ( value ) {

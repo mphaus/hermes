@@ -9,11 +9,19 @@
     x-on:hermes:qi-select-opportunity-change="handleSelectOpportunityChange"
     x-on:submit.prevent="if ($refs.alert) $refs.alert.remove()"
 >
-    <x-card class="flow">
+    <x-card class="px-8 flow">
         <div class="flow">
             <label class="block font-semibold">{{ __('Opportunity') }}</label>
-            <div wire:ignore>
-                <x-qi-select-opportunity wire:model="form.opportunity" />
+            <div class="relative">
+                @if (!empty($this->form->opportunity) && !$errors->has('form.opportunity'))
+                    <x-icon-square-check 
+                        class="absolute w-5 h-5 -translate-x-full -translate-y-1/2 fill-green-500 top-1/2 -left-1" 
+                        data-element="square-check-icon"
+                    />    
+                @endif
+                <div wire:ignore>
+                    <x-qi-select-opportunity wire:model.live="form.opportunity" />
+                </div>
             </div>
             <x-input-error :messages="$errors->get('form.opportunity')" />
         </div>
@@ -27,9 +35,8 @@
         </div>
         <x-input-error :messages="$errors->get('form.technical_supervisor')" />
     </x-card>
-    <x-card>
+    <x-card class="px-8">
         <div class="flow">
-        
             <label class="block font-semibold">{{ __('Reference') }}</label>
             <div class="flex items-start gap-1 mt-2">
                 <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
@@ -51,12 +58,20 @@
                     </div>
                 </div>
                 <div class="space-y-2" x-cloak x-show="$wire.form.serial_number_status === 'serial-number-exists'">
-                    <x-input
-                        type="text"
-                        placeholder="{{ __('Serial number') }}"
-                        x-on:input="serialNumberRemainingCharacters = 256 - $wire.form.serial_number.length"
-                        wire:model.blur="form.serial_number"
-                    />
+                    <div class="relative">
+                        @if (!empty($this->form->serial_number) && !$errors->has('form.serial_number'))
+                            <x-icon-square-check 
+                                class="absolute w-5 h-5 -translate-x-full -translate-y-1/2 fill-green-500 top-1/2 -left-1" 
+                                data-element="square-check-icon"
+                            />    
+                        @endif
+                        <x-input
+                            type="text"
+                            placeholder="{{ __('Serial number') }}"
+                            x-on:input="serialNumberRemainingCharacters = 256 - $wire.form.serial_number.length"
+                            wire:model.live.debounce.500ms="form.serial_number"
+                        />
+                    </div>
                     <p
                         class="text-xs font-semibold"
                         x-bind:class="{ 'text-red-500': serialNumberRemainingCharacters <= 0 }"
@@ -89,82 +104,116 @@
             </div>
         </div>
     </x-card>
-    <x-card>
+    <x-card class="px-8">
         <div class="flow">
             <label class="block font-semibold">{{ __('Product') }}</label>
             <div class="flex items-start gap-1 mt-2">
                 <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
                 <p class="text-xs">{{ __('Type the first few letters of the product and pause to let the system get info from CurrentRMS. Select the exact-match product. If the item cannot be found in this listing, double-check the spelling of the item name (per the info plate on the equipment), then ask the SRMM Manager for advice on how to proceed.') }}</p>
             </div>
-            <div wire:ignore>
-                <x-select-product wire:model="form.product_id" />
+            <div class="relative">
+                @if (!empty($this->form->product_id) && !$errors->has('form.product_id'))
+                    <x-icon-square-check 
+                        class="absolute w-5 h-5 -translate-x-full -translate-y-1/2 fill-green-500 top-1/2 -left-1" 
+                        data-element="square-check-icon"
+                    />    
+                @endif
+                <div wire:ignore>
+                    <x-select-product wire:model.live="form.product_id" />
+                </div>
             </div>
             <x-input-error :messages="$errors->get('form.product_id')" />
         </div>
     </x-card>
-    <x-card>
+    <x-card class="px-8">
         <div class="flow">
             <label class="block font-semibold">{{ __('Ready for repairs') }}</label>
             <div class="flex items-start gap-1 mt-2">
                 <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
                 <p class="text-xs">{{ __('Set the date this item is expected to be in the warehouse, available for Repairs Technicians to work on. If the faulty item is already in the Warehouse and is about to be placed on Quarantine Intake shelves, leave the date as today\'s.') }}</p>
             </div>
-            <div wire:ignore>
-                <x-qi-input-starts-at wire:model="form.starts_at" />
+            <div class="relative">
+                @if (!empty($this->form->starts_at) && !$errors->has('form.starts_at'))
+                    <x-icon-square-check 
+                        class="absolute w-5 h-5 -translate-x-full -translate-y-1/2 fill-green-500 top-1/2 -left-1" 
+                        data-element="square-check-icon"
+                    />    
+                @endif
+                <div wire:ignore>
+                    <x-qi-input-starts-at wire:model.live="form.starts_at" />
+                </div>
             </div>
             <x-input-error :messages="$errors->get('form.starts_at')" />
         </div>
     </x-card>
-    <x-card x-show="$wire.form.starts_at === $root.dataset.currentDate">
+    <x-card class="px-8" x-show="$wire.form.starts_at === $root.dataset.currentDate">
         <div class="flow">
             <label class="block font-semibold">{{ __('Shelf location') }}</label>
             <div class="flex items-start gap-1 mt-2">
                 <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
                 <p class="text-xs ">{{ __('Specify the shelf ID of where this fixture will be placed.') }}</p>
             </div>
-            <div wire:ignore>
-                <x-input
-                    type="text"
-                    placeholder="{{ __('Ex: A-26') }}"
-                    x-mask="a-99"
-                    x-on:input="$event.target.value = $event.target.value.toUpperCase()" 
-                    wire:model="form.shelf_location"
-                />
+            <div class="relative">
+                @if (!empty($this->form->shelf_location) && !$errors->has('form.shelf_location'))
+                    <x-icon-square-check 
+                        class="absolute w-5 h-5 -translate-x-full -translate-y-1/2 fill-green-500 top-1/2 -left-1" 
+                        data-element="square-check-icon"
+                    />    
+                @endif
+                <div wire:ignore>
+                    <x-input
+                        type="text"
+                        placeholder="{{ __('Ex: A-26') }}"
+                        x-mask="a-99"
+                        x-on:input="$event.target.value = $event.target.value.toUpperCase()"
+                        wire:model.live.500ms="form.shelf_location"
+                    />
+                </div>
             </div>
             <x-input-error :messages="$errors->get('form.shelf_location')" />
         </div>
     </x-card>
-    <x-card>
+    <x-card class="px-8">
         <div class="flow">
             <label class="block font-semibold">{{ __('Primary fault classification') }}</label>
             <div class="flex items-start gap-1 mt-2">
                 <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
                 <p class="text-xs">{{ __('Classify the type of primary fault with this item (that is, if an item has multiple reasons for submission to Quarantine, which is the most prominent / serious?)') }}</p>
             </div>
-            <div wire:ignore>
-                <x-qi-select-primary-fault-classification wire:model="form.classification" />
-                {{-- <select x-ref="primaryFaultClassification">
-                    <option value=""></option>
-                    @foreach ($this->getClassification() as $classification)
-                        <option value="{{ $classification['text'] }}" data-example="{{ $classification['example'] }}">{{ $classification['text'] }}</option>
-                    @endforeach
-                </select> --}}
+            <div class="relative">
+                @if (!empty($this->form->classification) && !$errors->has('form.classification'))
+                    <x-icon-square-check 
+                        class="absolute w-5 h-5 -translate-x-full -translate-y-1/2 fill-green-500 top-1/2 -left-1" 
+                        data-element="square-check-icon"
+                    />    
+                @endif
+                <div wire:ignore>
+                    <x-qi-select-primary-fault-classification wire:model.live="form.classification" />
+                </div>
             </div>
             <x-input-error :messages="$errors->get('form.classification')" />
         </div>
     </x-card>
-    <x-card>
+    <x-card class="px-8">
         <div class="flow">
             <label class="block font-semibold">{{ __('Fault description') }}</label>
             <div class="flex items-start gap-1 mt-2">
                 <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
                 <p class="text-xs">{{ __('Enter a concise, meaningful and objective fault description. Your name will be added to this report automatically, so there\'s no need to type it here.') }}</p>
             </div>
-            <x-textarea
-                rows="5"
-                wire:model="form.description"
-                x-on:input="descriptionRemainingCharacters = 512 - $wire.form.description.length"
-            ></x-textarea>
+            <div class="relative">
+                @if (!empty($this->form->description) && !$errors->has('form.description'))
+                    <x-icon-square-check 
+                        class="absolute w-5 h-5 -translate-x-full fill-green-500 -left-1 top-1" 
+                        data-element="square-check-icon"
+                    />    
+                @endif
+                <x-textarea
+                    rows="5"
+                    wire:model.live.debounce.500ms="form.description"
+                    x-on:input="descriptionRemainingCharacters = 512 - $wire.form.description.length"
+                ></x-textarea>
+            </div>
             <p
                 class="text-xs font-semibold"
                 x-bind:class="{ 'text-red-500': descriptionRemainingCharacters <= 0 }"
