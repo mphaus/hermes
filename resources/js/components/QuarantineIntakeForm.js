@@ -66,5 +66,15 @@ export default function QuarantineIntakeForm ( technicalSupervisors ) {
             this.$wire.form.technical_supervisor = technicalSupervisor.id;
             this.technicalSupervisorName = technicalSupervisor.name;
         },
+        /**
+         * @param {string} iconSelector
+         */
+        removeSquareCheckIcon ( iconSelector ) {
+            if ( !this.$root.querySelector( iconSelector ) ) {
+                return;
+            }
+
+            this.$root.querySelector( iconSelector ).remove();
+        },
     };
 }

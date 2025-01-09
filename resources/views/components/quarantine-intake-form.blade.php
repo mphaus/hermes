@@ -49,11 +49,11 @@
                         <x-input-label class="cursor-pointer" for="serial-number-exists">{{ __('Serial number') }}</x-input-label>
                     </div>
                     <div class="flex items-center gap-1">
-                        <input type="radio" id="missing-serial-number" value="missing-serial-number" wire:model="form.serial_number_status">
+                        <input type="radio" id="missing-serial-number" value="missing-serial-number" wire:model="form.serial_number_status" x-on:change="removeSquareCheckIcon('#serial-number-square-check-icon')">
                         <x-input-label class="cursor-pointer" for="missing-serial-number">{{ __('Missing serial number') }}</x-input-label>
                     </div>
                     <div class="flex items-center gap-1">
-                        <input type="radio" id="not-serialised" value="not-serialised" wire:model="form.serial_number_status">
+                        <input type="radio" id="not-serialised" value="not-serialised" wire:model="form.serial_number_status" x-on:change="removeSquareCheckIcon('#serial-number-square-check-icon')">
                         <x-input-label class="cursor-pointer" for="not-serialised">{{ __('Equipment is not serialised') }}</x-input-label>
                     </div>
                 </div>
@@ -62,6 +62,7 @@
                         @if (!empty($this->form->serial_number) && !$errors->has('form.serial_number'))
                             <x-icon-square-check 
                                 class="absolute w-5 h-5 -translate-x-full -translate-y-1/2 fill-green-500 top-1/2 -left-1" 
+                                id="serial-number-square-check-icon"
                                 data-element="square-check-icon"
                             />    
                         @endif
@@ -75,7 +76,7 @@
                     <p
                         class="text-xs font-semibold"
                         x-bind:class="{ 'text-red-500': serialNumberRemainingCharacters <= 0 }"
-                        >
+                    >
                         <span x-text="serialNumberRemainingCharacters"></span>
                         {!!  __('character<span x-show="serialNumberRemainingCharacters !== 1">s</span> left') !!}
                     </p>
