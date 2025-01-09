@@ -69,7 +69,7 @@
                             type="text"
                             placeholder="{{ __('Serial number') }}"
                             x-on:input="serialNumberRemainingCharacters = 256 - $event.target.value.length"
-                            wire:model.live.debounce.500ms="form.serial_number"
+                            wire:model.blur="form.serial_number"
                         />
                     </div>
                     <p
@@ -163,7 +163,7 @@
                         placeholder="{{ __('Ex: A-26') }}"
                         x-mask="a-99"
                         x-on:input="$event.target.value = $event.target.value.toUpperCase()"
-                        wire:model.live.500ms="form.shelf_location"
+                        wire:model.blur="form.shelf_location"
                     />
                 </div>
             </div>
@@ -208,7 +208,7 @@
                 <div wire:ignore>
                     <x-textarea
                         rows="5"
-                        wire:model.live.debounce.500ms="form.description"
+                        wire:model.blur="form.description"
                         x-on:input="descriptionRemainingCharacters = 512 - $event.target.value.length"
                     ></x-textarea>
                 </div>
