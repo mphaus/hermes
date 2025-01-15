@@ -10,7 +10,7 @@ trait WithQuarantineIntakeClassification
             'example' => 'For example, risk of electric shock, or being cut by glass.',
         ],
         [
-            'text' => 'Cannot deliver the results expected by the Client',
+            'text' => 'Cannot deliver results expected by Client',
             'example' => 'For example, flickering LEDs, or does not zoom or no tilt.',
         ],
         [
