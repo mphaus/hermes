@@ -19,6 +19,9 @@ class QuarantineIntakeForm extends Form
 {
     use WithQuarantineIntakeClassification;
 
+    #[Validate(as: 'Opportunity type')]
+    public string $opportunity_type = 'production-lighting-hire';
+
     #[Validate(as: 'Opportunity')]
     public string $opportunity;
 

@@ -12,7 +12,46 @@
     <x-card class="px-8 flow">
         <div class="flow">
             <label class="block font-semibold">{{ __('Opportunity') }}</label>
-            <div class="relative">
+            <div class="space-y-3">
+                <x-input-label>{{ __('Specify the Job this item was identified as faulty on') }}</x-input-label>
+                <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
+                    <div class="flex items-center gap-1">
+                        <input type="radio" id="production-lighting-hire" value="production-lighting-hire" wire:model="form.opportunity_type">
+                        <x-input-label class="cursor-pointer" for="production-lighting-hire">{{ __('A Production Lighting Hire Job') }}</x-input-label>
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <input type="radio" id="dry-hire" value="dry-hire" wire:model="form.opportunity_type">
+                        <x-input-label class="cursor-pointer" for="dry-hire">{{ __('A Dry Hire Job') }}</x-input-label>
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <input type="radio" id="not-associated" value="not-associated" wire:model="form.opportunity_type">
+                        <x-input-label class="cursor-pointer" for="not-associated">{{ __('Not associated with a Job') }}</x-input-label>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="flex items-start gap-1 mt-2" x-show="$wire.form.opportunity_type === 'production-lighting-hire'">
+                    <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
+                    <p class="text-xs">{{ __('Specify the Job this item was identified as faulty on - enter a few letters from the name of the Job and select from the shortlist.') }}</p>
+                </div>
+                <div class="flex items-start gap-1 mt-2" x-show="$wire.form.opportunity_type === 'dry-hire'" x-cloak>
+                    <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
+                    <p class="text-xs">{{ __('Enter the Quote number from the Picking List for this Job (shown at the top of the first page of the Picking List).') }}</p>
+                </div>
+                <div class="flex items-start gap-1 mt-2" x-show="$wire.form.opportunity_type === 'not-associated'" x-cloak>
+                    <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
+                    <div class="space-y-2">
+                        <p class="text-xs">{{ __('Allocating faulty equipment to Jobs is always best, but in some cases, it\'s appropriate to indicate that this fault was identified outside of a Job. Acceptable circumstances include:') }}</p>
+                        <ul class="pl-5 space-y-1 text-xs list-disc">
+                            <li>{{ __('The correct Job name cannot be found and allocated') }}</li>
+                            <li>{{ __('This fault was discovered after the item had been de-prepped') }}</li>
+                            <li>{{ __('This fault was discovered while being Picked for a Job') }}</li>
+                            <li>{{ __('This fault was discovered during Prep (that is, before the equipment was loaded onto a truck)') }}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="relative" x-show="$wire.form.opportunity_type !== 'not-associated'">
                 @if (!empty($this->form->opportunity) && !$errors->has('form.opportunity'))
                     <x-icon-square-check 
                         class="absolute w-5 h-5 -translate-x-full -translate-y-1/2 fill-green-500 top-1/2 -left-1" 
