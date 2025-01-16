@@ -61,8 +61,21 @@ class QuarantineIntakeForm extends Form
     protected function rules(): array
     {
         return [
-            'opportunity' => ['required'],
-            'technical_supervisor' => ['required', 'numeric'],
+            'opportunity_type' => [
+                'required',
+                Rule::in(['production-lighting-hire', 'dry-hire', 'not-associated']),
+            ],
+            'opportunity' => [Rule::requiredIf(fn() => $this->opportunity_type !== 'not-associated')],
+            'technical_supervisor' => [
+                // 'numeric',
+                Rule::requiredIf(fn() => $this->opportunity_type !== 'not-associated'),
+                function (string $attribute, mixed $value, Closure $fail) {
+                    if ($this->opportunity_type !== 'not-associated' && !is_numeric($value)) {
+                        $fail(__('The :attribute field must be a number.'));
+                    }
+                },
+                // The Technical Supervisor field must be a number.
+            ],
             'serial_number_status' => [
                 'required',
                 Rule::in(['serial-number-exists', 'missing-serial-number', 'not-serialised']),
@@ -132,7 +145,7 @@ class QuarantineIntakeForm extends Form
             PHP_EOL .
             __('Submitted by :first_name', ['first_name' => Auth::user()->first_name]);
 
-        $response = Http::current()->post('quarantines', [
+        $response = Http::current()->dd()->post('quarantines', [
             'quarantine' => [
                 'item_id' => App::environment(['local', 'staging']) ? intval(config('app.mph.test_product_id')) : intval($validated['product_id']),
                 'store_id' => $this->store,
