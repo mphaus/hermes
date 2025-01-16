@@ -145,7 +145,7 @@ class QuarantineIntakeForm extends Form
             PHP_EOL .
             __('Submitted by :first_name', ['first_name' => Auth::user()->first_name]);
 
-        $response = Http::current()->dd()->post('quarantines', [
+        $response = Http::current()->post('quarantines', [
             'quarantine' => [
                 'item_id' => App::environment(['local', 'staging']) ? intval(config('app.mph.test_product_id')) : intval($validated['product_id']),
                 'store_id' => $this->store,
@@ -157,7 +157,7 @@ class QuarantineIntakeForm extends Form
                 'open_ended' => $this->open_ended,
                 // 'stock_type' => $this->stock_type,
                 'custom_fields' => [
-                    'opportunity' => $validated['opportunity'],
+                    'opportunity' => $validated['opportunity_type'] !== 'not-associated' ? $validated['opportunity'] : __('Not associated with any Job'),
                     'mph_technical_supervisor' => $validated['technical_supervisor'],
                     'shelf_location' => $is_same_day ? mb_strtoupper($validated['shelf_location']) : __('TBC'),
                 ],
