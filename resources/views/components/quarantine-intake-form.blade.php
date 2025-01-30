@@ -1,4 +1,13 @@
+@use('App\Enums\JobStatus')
 @use('Illuminate\Support\Js')
+
+@php
+    $opportunity_query_params = [
+        'per_page' => 25,
+        'q[status_eq]' => JobStatus::Reserved->value,
+        'q[subject_cont]' => '?'
+    ];
+@endphp
 
 <x-form 
     class="space-y-7" 
@@ -59,7 +68,10 @@
                     />    
                 @endif
                 <div wire:ignore>
-                    <x-qi-select-opportunity wire:model.live="form.opportunity" />
+                    <x-select-opportunity
+                        :params="$opportunity_query_params"
+                        wire:model.live="form.opportunity" 
+                    />
                 </div>
             </div>
             <x-input-error :messages="$errors->get('form.opportunity')" />

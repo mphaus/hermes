@@ -10,13 +10,18 @@ class QiOpportunityController extends Controller
 {
     public function search(Request $request)
     {
-        $response = Http::current()
-            ->withQueryParameters([
-                'per_page' => 25,
-                'q[status_eq]' => JobStatus::Reserved->value,
-                'q[subject_cont]' => $request->get('q'),
-            ])
-            ->get('opportunities');
+        $request_collection = $request->collect();
+        $term = $request_collection->get('term');
+        $params = $request_collection->forget('term');
+
+        $url = 'opportunities';
+
+        if ($params->isNotEmpty()) {
+            $params = str_replace('?', $term, urldecode(http_build_query($params->toArray())));
+            $url = "{$url}?{$params}";
+        }
+
+        $response = Http::current()->get($url);
 
         ['opportunities' => $opportunities] = $response->json();
 
