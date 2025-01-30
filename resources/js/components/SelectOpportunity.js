@@ -20,6 +20,9 @@ export default function SelectOpportunity ( queryParams ) {
         init () {
             this.initSelect2();
         },
+        destroy () {
+            this.destroySelect2();
+        },
         initSelect2 () {
             $( this.$root )
                 .select2( {
@@ -70,6 +73,9 @@ export default function SelectOpportunity ( queryParams ) {
                     this.value = value;
                     this.$dispatch( 'hermes:qi-select-opportunity-change', { ...currentData.find( data => data.id === value ) } );
                 } );
+        },
+        destroySelect2 () {
+            $( this.$root ).select2( 'destroy' );
         },
         clear () {
             $( this.$root ).val( '' ).trigger( 'change' );
