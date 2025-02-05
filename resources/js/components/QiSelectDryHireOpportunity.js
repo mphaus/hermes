@@ -11,6 +11,21 @@
  * @property {string} _type
  */
 
+
+/**
+ * @param {InputEvent} e
+ */
+function handleDryHireSearchInput ( e ) {
+    /** @type {HTMLInputElement | null} */
+    const element = e.target;
+
+    if ( !element || element.value.length > 0 ) {
+        return;
+    }
+
+    element.value = 'Q';
+}
+
 export default function QiSelectDryHireOpportunity () {
     /** @type {Data[]} */
     let currentData = [];
@@ -26,7 +41,8 @@ export default function QiSelectDryHireOpportunity () {
         initSelect2 () {
             $( this.$root )
                 .select2( {
-                    placeholder: 'Type the name of an Opportunity',
+                    dropdownCssClass: 'hermes-qi-select-dry-hire-opportunity-dropdown',
+                    placeholder: 'Type the digits of the Opportunity\'s quote number',
                     width: '100%',
                     ajax: {
                         url: route( 'qi-opportunities.search' ),
@@ -65,6 +81,20 @@ export default function QiSelectDryHireOpportunity () {
 
                     this.value = value;
                     this.$dispatch( 'hermes:select-opportunity-change', { ...currentData.find( data => data.id === value ) } );
+                } )
+                .on( 'select2:open', () => {
+                    /** @type {HTMLInputElement} */
+                    const searchElement = document.querySelector( '.hermes-qi-select-dry-hire-opportunity-dropdown .select2-search__field' );
+
+                    searchElement.value = 'Q';
+                    searchElement.inputMode = 'numeric';
+                    searchElement.maxLength = 6;
+                    searchElement.addEventListener( 'input', handleDryHireSearchInput );
+                } )
+                .on( 'select2:closing', () => {
+                    /** @type {HTMLInputElement} */
+                    const searchElement = document.querySelector( '.hermes-qi-select-dry-hire-opportunity-dropdown .select2-search__field' );
+                    searchElement.removeEventListener( 'input', handleDryHireSearchInput );
                 } );
         },
         destroySelect2 () {
