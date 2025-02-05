@@ -28,12 +28,16 @@ class QiOpportunityController extends Controller
             return [];
         };
 
-        return array_map(fn($opportunity) => [
-            'id' => '🛠' . ' ' . $opportunity['subject'],
-            'text' => $request_collection->dot()->has('q.number_cont')
+        return array_map(function ($opportunity) use ($request_collection) {
+            $subject = $request_collection->dot()->has('q.number_cont')
                 ? '🛠' . ' ' . $opportunity['subject'] . ' ' . $opportunity['number']
-                : '🛠' . ' ' . $opportunity['subject'],
-            'technical_supervisor_id' => $opportunity['custom_fields']['mph_technical_supervisor'],
-        ], $opportunities);
+                : '🛠' . ' ' . $opportunity['subject'];
+
+            return [
+                'id' => $subject,
+                'text' => $subject,
+                'technical_supervisor_id' => $opportunity['custom_fields']['mph_technical_supervisor'],
+            ];
+        }, $opportunities);
     }
 }

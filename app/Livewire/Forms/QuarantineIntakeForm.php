@@ -67,14 +67,12 @@ class QuarantineIntakeForm extends Form
             ],
             'opportunity' => [Rule::requiredIf(fn() => $this->opportunity_type !== 'not-associated')],
             'technical_supervisor' => [
-                // 'numeric',
-                Rule::requiredIf(fn() => $this->opportunity_type !== 'not-associated'),
+                Rule::requiredIf(fn() => $this->opportunity_type === 'production-lighting-hire'),
                 function (string $attribute, mixed $value, Closure $fail) {
-                    if ($this->opportunity_type !== 'not-associated' && !is_numeric($value)) {
+                    if ($this->opportunity_type === 'production-lighting-hire' && !is_numeric($value)) {
                         $fail(__('The :attribute field must be a number.'));
                     }
                 },
-                // The Technical Supervisor field must be a number.
             ],
             'serial_number_status' => [
                 'required',

@@ -91,14 +91,16 @@
             </template>
             <x-input-error :messages="$errors->get('form.opportunity')" />
         </div>
-        <div class="flow" x-cloak x-show="$wire.form.technical_supervisor">
-            <label class="block font-semibold">{{ __('Technical Supervisor') }}</label>
-            <div class="flex items-start gap-1 mt-2">
-                <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
-                <p class="text-xs">{{ __('The Technical Supervisor is specified in Opportunity in CurrentRMS and cannot be edited here.') }}</p>
+        <template hidden x-if="$wire.form.technical_supervisor && $wire.form.opportunity_type === 'production-lighting-hire'">
+            <div class="flow">
+                <label class="block font-semibold">{{ __('Technical Supervisor') }}</label>
+                <div class="flex items-start gap-1 mt-2">
+                    <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
+                    <p class="text-xs">{{ __('The Technical Supervisor is specified in Opportunity in CurrentRMS and cannot be edited here.') }}</p>
+                </div>
+                <p x-text="technicalSupervisorName"></p>
             </div>
-            <p x-text="technicalSupervisorName"></p>
-        </div>
+        </template>
         <x-input-error :messages="$errors->get('form.technical_supervisor')" />
     </x-card>
     <x-card class="px-8">
