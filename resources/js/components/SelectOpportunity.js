@@ -71,7 +71,7 @@ export default function SelectOpportunity ( queryParams ) {
                     }
 
                     this.value = value;
-                    this.$dispatch( 'hermes:qi-select-opportunity-change', { ...currentData.find( data => data.id === value ) } );
+                    this.$dispatch( 'hermes:select-opportunity-change', { ...currentData.find( data => data.id === value ) } );
                 } );
         },
         destroySelect2 () {

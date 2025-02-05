@@ -15,7 +15,7 @@
     wire:submit="save"
     x-data="QuarantineIntakeForm({{ Js::from($this->technicalSupervisors) }})"
     x-effect="maybeClearSerialNumber($wire.form.serial_number_status)"
-    x-on:hermes:qi-select-opportunity-change="handleSelectOpportunityChange"
+    x-on:hermes:select-opportunity-change="handleSelectOpportunityChange"
     x-on:submit.prevent="if ($refs.alert) $refs.alert.remove()"
 >
     <x-card class="px-8 flow">
@@ -73,6 +73,19 @@
                             :params="$opportunity_query_params"
                             wire:model.live="form.opportunity" 
                         />
+                    </div>
+                </div>
+            </template>
+            <template hidden x-if="$wire.form.opportunity_type === 'dry-hire'">
+                <div class="relative">
+                    @if (!empty($this->form->opportunity) && !$errors->has('form.opportunity'))
+                        <x-icon-square-check 
+                            class="absolute w-5 h-5 -translate-x-full -translate-y-1/2 fill-green-500 top-1/2 -left-1" 
+                            data-element="square-check-icon"
+                        />    
+                    @endif
+                    <div wire:ignore>
+                        <x-qi-select-dry-hire-opportunity wire:model.live="form.opportunity" />
                     </div>
                 </div>
             </template>
