@@ -80,7 +80,6 @@ export default function QiSelectDryHireOpportunity () {
                     }
 
                     this.value = value;
-                    this.$dispatch( 'hermes:select-opportunity-change', { ...currentData.find( data => data.id === value ) } );
                 } )
                 .on( 'select2:open', () => {
                     /** @type {HTMLInputElement} */
