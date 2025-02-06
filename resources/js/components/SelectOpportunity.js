@@ -5,7 +5,13 @@
  * @property {string} text
  */
 
-export default function QiSelectOpportunity () {
+/**
+ * @typedef {Object} Params
+ * @property {string} term
+ * @property {string} _type
+ */
+
+export default function SelectOpportunity ( queryParams ) {
     /** @type {Data[]} */
     let currentData = [];
 
@@ -13,6 +19,9 @@ export default function QiSelectOpportunity () {
         value: '',
         init () {
             this.initSelect2();
+        },
+        destroy () {
+            this.destroySelect2();
         },
         initSelect2 () {
             $( this.$root )
@@ -23,6 +32,24 @@ export default function QiSelectOpportunity () {
                         url: route( 'qi-opportunities.search' ),
                         dataType: 'json',
                         delay: 500,
+                        /**
+                         * @param {Params} params 
+                         * @returns 
+                         */
+                        data ( params ) {
+                            let query = {
+                                term: params.term,
+                            };
+
+                            if ( queryParams ) {
+                                query = {
+                                    ...query,
+                                    ...queryParams,
+                                }
+                            }
+
+                            return query;
+                        },
                         /**
                          * @param {Data[]} data 
                          */
@@ -44,8 +71,11 @@ export default function QiSelectOpportunity () {
                     }
 
                     this.value = value;
-                    this.$dispatch( 'hermes:qi-select-opportunity-change', { ...currentData.find( data => data.id === value ) } );
+                    this.$dispatch( 'hermes:select-opportunity-change', { ...currentData.find( data => data.id === value ) } );
                 } );
+        },
+        destroySelect2 () {
+            $( this.$root ).select2( 'destroy' );
         },
         clear () {
             $( this.$root ).val( '' ).trigger( 'change' );

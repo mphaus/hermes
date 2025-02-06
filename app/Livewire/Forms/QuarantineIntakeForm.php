@@ -19,6 +19,9 @@ class QuarantineIntakeForm extends Form
 {
     use WithQuarantineIntakeClassification;
 
+    #[Validate(as: 'Opportunity type')]
+    public string $opportunity_type = 'production-lighting-hire';
+
     #[Validate(as: 'Opportunity')]
     public string $opportunity;
 
@@ -58,8 +61,19 @@ class QuarantineIntakeForm extends Form
     protected function rules(): array
     {
         return [
-            'opportunity' => ['required'],
-            'technical_supervisor' => ['required', 'numeric'],
+            'opportunity_type' => [
+                'required',
+                Rule::in(['production-lighting-hire', 'dry-hire', 'not-associated']),
+            ],
+            'opportunity' => [Rule::requiredIf(fn() => $this->opportunity_type !== 'not-associated')],
+            'technical_supervisor' => [
+                Rule::requiredIf(fn() => $this->opportunity_type === 'production-lighting-hire'),
+                function (string $attribute, mixed $value, Closure $fail) {
+                    if ($this->opportunity_type === 'production-lighting-hire' && !is_numeric($value)) {
+                        $fail(__('The :attribute field must be a number.'));
+                    }
+                },
+            ],
             'serial_number_status' => [
                 'required',
                 Rule::in(['serial-number-exists', 'missing-serial-number', 'not-serialised']),
@@ -141,7 +155,7 @@ class QuarantineIntakeForm extends Form
                 'open_ended' => $this->open_ended,
                 // 'stock_type' => $this->stock_type,
                 'custom_fields' => [
-                    'opportunity' => $validated['opportunity'],
+                    'opportunity' => $validated['opportunity_type'] !== 'not-associated' ? $validated['opportunity'] : __('Not associated with any Job'),
                     'mph_technical_supervisor' => $validated['technical_supervisor'],
                     'shelf_location' => $is_same_day ? mb_strtoupper($validated['shelf_location']) : __('TBC'),
                 ],

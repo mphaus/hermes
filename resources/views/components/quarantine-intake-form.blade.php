@@ -1,4 +1,13 @@
+@use('App\Enums\JobStatus')
 @use('Illuminate\Support\Js')
+
+@php
+    $opportunity_query_params = [
+        'per_page' => 25,
+        'q[status_eq]' => JobStatus::Reserved->value,
+        'q[subject_cont]' => '?'
+    ];
+@endphp
 
 <x-form 
     class="space-y-7" 
@@ -6,33 +15,92 @@
     wire:submit="save"
     x-data="QuarantineIntakeForm({{ Js::from($this->technicalSupervisors) }})"
     x-effect="maybeClearSerialNumber($wire.form.serial_number_status)"
-    x-on:hermes:qi-select-opportunity-change="handleSelectOpportunityChange"
+    x-on:hermes:select-opportunity-change="handleSelectOpportunityChange"
     x-on:submit.prevent="if ($refs.alert) $refs.alert.remove()"
 >
     <x-card class="px-8 flow">
         <div class="flow">
             <label class="block font-semibold">{{ __('Opportunity') }}</label>
-            <div class="relative">
-                @if (!empty($this->form->opportunity) && !$errors->has('form.opportunity'))
-                    <x-icon-square-check 
-                        class="absolute w-5 h-5 -translate-x-full -translate-y-1/2 fill-green-500 top-1/2 -left-1" 
-                        data-element="square-check-icon"
-                    />    
-                @endif
-                <div wire:ignore>
-                    <x-qi-select-opportunity wire:model.live="form.opportunity" />
+            <div class="space-y-3">
+                <x-input-label>{{ __('Specify the Job this item was identified as faulty on') }}</x-input-label>
+                <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
+                    <div class="flex items-center gap-1">
+                        <input type="radio" id="production-lighting-hire" value="production-lighting-hire" wire:model="form.opportunity_type" x-on:change="$wire.form.technical_supervisor = null">
+                        <x-input-label class="cursor-pointer" for="production-lighting-hire">{{ __('A Production Lighting Hire Job') }}</x-input-label>
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <input type="radio" id="dry-hire" value="dry-hire" wire:model="form.opportunity_type" x-on:change="$wire.form.technical_supervisor = null">
+                        <x-input-label class="cursor-pointer" for="dry-hire">{{ __('A Dry Hire Job') }}</x-input-label>
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <input type="radio" id="not-associated" value="not-associated" wire:model="form.opportunity_type" x-on:change="$wire.form.technical_supervisor = null">
+                        <x-input-label class="cursor-pointer" for="not-associated">{{ __('Not associated with a Job') }}</x-input-label>
+                    </div>
                 </div>
             </div>
+            <div>
+                <div class="flex items-start gap-1 mt-2" x-show="$wire.form.opportunity_type === 'production-lighting-hire'">
+                    <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
+                    <p class="text-xs">{{ __('Specify the Job this item was identified as faulty on - enter a few letters from the name of the Job and select from the shortlist.') }}</p>
+                </div>
+                <div class="flex items-start gap-1 mt-2" x-show="$wire.form.opportunity_type === 'dry-hire'" x-cloak>
+                    <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
+                    <p class="text-xs">{{ __('Enter the Quote number from the Picking List for this Job (shown at the top of the first page of the Picking List).') }}</p>
+                </div>
+                <div class="flex items-start gap-1 mt-2" x-show="$wire.form.opportunity_type === 'not-associated'" x-cloak>
+                    <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
+                    <div class="space-y-2">
+                        <p class="text-xs">{{ __('Allocating faulty equipment to Jobs is always best, but in some cases, it\'s appropriate to indicate that this fault was identified outside of a Job. Acceptable circumstances include:') }}</p>
+                        <ul class="pl-5 space-y-1 text-xs list-disc">
+                            <li>{{ __('The correct Job name cannot be found and allocated') }}</li>
+                            <li>{{ __('This fault was discovered after the item had been de-prepped') }}</li>
+                            <li>{{ __('This fault was discovered while being Picked for a Job') }}</li>
+                            <li>{{ __('This fault was discovered during Prep (that is, before the equipment was loaded onto a truck)') }}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <template hidden x-if="$wire.form.opportunity_type === 'production-lighting-hire'">
+                <div class="relative">
+                    @if (!empty($this->form->opportunity) && !$errors->has('form.opportunity'))
+                        <x-icon-square-check 
+                            class="absolute w-5 h-5 -translate-x-full -translate-y-1/2 fill-green-500 top-1/2 -left-1" 
+                            data-element="square-check-icon"
+                        />    
+                    @endif
+                    <div wire:ignore>
+                        <x-select-opportunity
+                            :params="$opportunity_query_params"
+                            wire:model.live="form.opportunity" 
+                        />
+                    </div>
+                </div>
+            </template>
+            <template hidden x-if="$wire.form.opportunity_type === 'dry-hire'">
+                <div class="relative">
+                    @if (!empty($this->form->opportunity) && !$errors->has('form.opportunity'))
+                        <x-icon-square-check 
+                            class="absolute w-5 h-5 -translate-x-full -translate-y-1/2 fill-green-500 top-1/2 -left-1" 
+                            data-element="square-check-icon"
+                        />    
+                    @endif
+                    <div wire:ignore>
+                        <x-qi-select-dry-hire-opportunity wire:model.live="form.opportunity" />
+                    </div>
+                </div>
+            </template>
             <x-input-error :messages="$errors->get('form.opportunity')" />
         </div>
-        <div class="flow" x-cloak x-show="$wire.form.technical_supervisor">
-            <label class="block font-semibold">{{ __('Technical Supervisor') }}</label>
-            <div class="flex items-start gap-1 mt-2">
-                <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
-                <p class="text-xs">{{ __('The Technical Supervisor is specified in Opportunity in CurrentRMS and cannot be edited here.') }}</p>
+        <template hidden x-if="$wire.form.technical_supervisor && $wire.form.opportunity_type === 'production-lighting-hire'">
+            <div class="flow">
+                <label class="block font-semibold">{{ __('Technical Supervisor') }}</label>
+                <div class="flex items-start gap-1 mt-2">
+                    <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
+                    <p class="text-xs">{{ __('The Technical Supervisor is specified in Opportunity in CurrentRMS and cannot be edited here.') }}</p>
+                </div>
+                <p x-text="technicalSupervisorName"></p>
             </div>
-            <p x-text="technicalSupervisorName"></p>
-        </div>
+        </template>
         <x-input-error :messages="$errors->get('form.technical_supervisor')" />
     </x-card>
     <x-card class="px-8">
@@ -234,7 +302,12 @@
         >
             {{ __('Clear form') }}
         </x-button>
-        <x-button type="submit" variant="primary">
+        <x-button 
+            type="submit" 
+            variant="primary"
+            wire:loading.attr="disabled" 
+            wire:target="save"
+        >
             <span wire:loading.class="hidden" wire:target="save">{{ __('Submit') }}</span>
             <span class="items-center gap-2" wire:loading.flex wire:target="save">
                 <x-icon-circle-notch class="w-4 h-4 fill-current animate-spin" />
