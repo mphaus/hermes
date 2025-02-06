@@ -302,7 +302,12 @@
         >
             {{ __('Clear form') }}
         </x-button>
-        <x-button type="submit" variant="primary">
+        <x-button 
+            type="submit" 
+            variant="primary"
+            wire:loading.attr="disabled" 
+            wire:target="save"
+        >
             <span wire:loading.class="hidden" wire:target="save">{{ __('Submit') }}</span>
             <span class="items-center gap-2" wire:loading.flex wire:target="save">
                 <x-icon-circle-notch class="w-4 h-4 fill-current animate-spin" />
