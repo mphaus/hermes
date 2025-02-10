@@ -41,7 +41,7 @@
             <div>
                 <div class="flex items-start gap-1 mt-2" x-show="$wire.form.opportunity_type === 'production-lighting-hire'">
                     <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
-                    <p class="text-xs">{{ __('Specify the Job this item was identified as faulty on - enter a few letters from the name of the Job and select from the shortlist.') }}</p>
+                    <p class="text-xs">{{ __('Enter a few letters from the name of the Job and select from the shortlist.') }}</p>
                 </div>
                 <div class="flex items-start gap-1 mt-2" x-show="$wire.form.opportunity_type === 'dry-hire'" x-cloak>
                     <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
@@ -50,7 +50,7 @@
                 <div class="flex items-start gap-1 mt-2" x-show="$wire.form.opportunity_type === 'not-associated'" x-cloak>
                     <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
                     <div class="space-y-2">
-                        <p class="text-xs">{{ __('Allocating faulty equipment to Jobs is always best, but in some cases, it\'s appropriate to indicate that this fault was identified outside of a Job. Acceptable circumstances include:') }}</p>
+                        <p class="text-xs">{{ __('Allocating faulty equipment to Jobs is always best, but sometimes faults are identified outside of a Job. Some examples include;') }}</p>
                         <ul class="pl-5 space-y-1 text-xs list-disc">
                             <li>{{ __('The correct Job name cannot be found and allocated') }}</li>
                             <li>{{ __('This fault was discovered after the item had been de-prepped') }}</li>
