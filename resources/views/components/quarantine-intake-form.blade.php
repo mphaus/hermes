@@ -89,7 +89,7 @@
                     </div>
                 </div>
             </template>
-            <x-input-error :messages="$errors->get('form.opportunity')" />
+            <x-input-error :messages="$errors->first('form.opportunity')" />
         </div>
         <template hidden x-if="$wire.form.technical_supervisor && $wire.form.opportunity_type === 'production-lighting-hire'">
             <div class="flow">
@@ -101,7 +101,7 @@
                 <p x-text="technicalSupervisorName"></p>
             </div>
         </template>
-        <x-input-error :messages="$errors->get('form.technical_supervisor')" />
+        <x-input-error :messages="$errors->first('form.technical_supervisor')" />
     </x-card>
     <x-card class="px-8">
         <div class="flow">
@@ -148,7 +148,7 @@
                         <span x-text="serialNumberRemainingCharacters"></span>
                         {!!  __('character<span x-show="serialNumberRemainingCharacters !== 1">s</span> left') !!}
                     </p>
-                    <x-input-error :messages="$errors->get('form.serial_number')" />
+                    <x-input-error :messages="$errors->first('form.serial_number')" />
                 </div>
                 <div 
                     class="flex items-start gap-1" 
@@ -191,7 +191,7 @@
                     <x-select-product wire:model.live="form.product_id" />
                 </div>
             </div>
-            <x-input-error :messages="$errors->get('form.product_id')" />
+            <x-input-error :messages="$errors->first('form.product_id')" />
         </div>
     </x-card>
     <x-card class="px-8">
@@ -209,7 +209,7 @@
                     <x-qi-input-starts-at wire:model.live="form.starts_at" />
                 </div>
             </div>
-            <x-input-error :messages="$errors->get('form.starts_at')" />
+            <x-input-error :messages="$errors->first('form.starts_at')" />
         </div>
     </x-card>
     <x-card class="px-8" x-show="$wire.form.starts_at === $root.dataset.currentDate">
@@ -236,7 +236,7 @@
                     />
                 </div>
             </div>
-            <x-input-error :messages="$errors->get('form.shelf_location')" />
+            <x-input-error :messages="$errors->first('form.shelf_location')" />
         </div>
     </x-card>
     <x-card class="px-8">
@@ -257,7 +257,7 @@
                     <x-qi-select-primary-fault-classification wire:model.live="form.classification" />
                 </div>
             </div>
-            <x-input-error :messages="$errors->get('form.classification')" />
+            <x-input-error :messages="$errors->first('form.classification')" />
         </div>
     </x-card>
     <x-card class="px-8">
@@ -289,7 +289,7 @@
                 <span x-text="descriptionRemainingCharacters"></span>
                 {!!  __('character<span x-show="descriptionRemainingCharacters !== 1">s</span> left') !!}
             </p>
-            <x-input-error :messages="$errors->get('form.description')" />
+            <x-input-error :messages="$errors->first('form.description')" />
         </div>
     </x-card>
     <div class="flex items-center justify-end gap-2">

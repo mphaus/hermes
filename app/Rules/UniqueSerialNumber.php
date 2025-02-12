@@ -29,7 +29,7 @@ class UniqueSerialNumber implements ValidationRule
             ['meta' => $meta] = $response->json();
 
             if ($meta['total_row_count'] > 0) {
-                $fail(__('An active Quarantine already exists with this serial number'));
+                $fail(__('<p>💥Ooops! There\'s been a "serial number collision" - an item with this serial number is already registered in Quarantine.</p><p>That\'s not... great 🫣. To move forward, add "-B" to the end of the serial number you entered above, and mention the problem in the Fault Description below. The SRMM team will sort it out. </p>'));
             }
         }
     }
