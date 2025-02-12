@@ -265,7 +265,7 @@
             <label class="block font-semibold">{{ __('Fault description') }}</label>
             <div class="flex items-start gap-1 mt-2">
                 <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
-                <p class="text-xs">{{ __('Enter a concise, meaningful and objective fault description. Your name will be added to this report automatically, so there\'s no need to type it here.') }}</p>
+                <p class="text-xs">{{ __('Enter a concise, meaningful and objective fault description.') }}</p>
             </div>
             <div class="relative">
                 @if (!empty($this->form->description) && !$errors->has('form.description'))
@@ -289,6 +289,14 @@
                 <span x-text="descriptionRemainingCharacters"></span>
                 {!!  __('character<span x-show="descriptionRemainingCharacters !== 1">s</span> left') !!}
             </p>
+            <div class="space-y-2 text-xs">
+                <p>{{ __('Other considerations') }}</p>
+                <ul>
+                    <li>{{ __('➡️ Your name will be added to this report automatically, so there\'s no need to add it here.') }}</li>
+                    <li>{{ __('➡️ Mention if the correct Job name could not be assigned, and why') }}</li>
+                    <li>{{ __('➡️ Mention if a serial number collision 💥 was reported, and what you did about it.') }}</li>
+                </ul>
+            </div>
             <x-input-error :messages="$errors->first('form.description')" />
         </div>
     </x-card>
