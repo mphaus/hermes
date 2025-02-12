@@ -81,7 +81,7 @@ class QuarantineIntakeForm extends Form
             'serial_number' => [
                 Rule::requiredIf(fn() => $this->serial_number_status === 'serial-number-exists'),
                 'max:256',
-                'regex:/^[a-zA-Z0-9\/.-]+$/',
+                'regex:/^[a-zA-Z0-9\/.\-\s]+$/',
                 new UniqueSerialNumber($this->serial_number_status),
             ],
             'product_id' => ['required', 'numeric'],
