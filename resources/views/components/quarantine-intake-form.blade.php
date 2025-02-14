@@ -105,6 +105,27 @@
     </x-card>
     <x-card class="px-8">
         <div class="flow">
+            <label class="block font-semibold">{{ __('Product') }}</label>
+            <div class="flex items-start gap-1 mt-2">
+                <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
+                <p class="text-xs">{{ __('Type the first few letters of the product and pause to let the system get info from CurrentRMS. Select the exact-match product. If the item cannot be found in this listing, double-check the spelling of the item name (per the info plate on the equipment), then ask the SRMM Manager for advice on how to proceed.') }}</p>
+            </div>
+            <div class="relative">
+                @if (!empty($this->form->product_id) && !$errors->has('form.product_id'))
+                    <x-icon-square-check 
+                        class="absolute w-5 h-5 -translate-x-full -translate-y-1/2 fill-green-500 top-1/2 -left-1" 
+                        data-element="square-check-icon"
+                    />    
+                @endif
+                <div wire:ignore>
+                    <x-select-product wire:model.live="form.product_id" />
+                </div>
+            </div>
+            <x-input-error :messages="$errors->first('form.product_id')" />
+        </div>
+    </x-card>
+    <x-card class="px-8">
+        <div class="flow">
             <label class="block font-semibold">{{ __('Reference') }}</label>
             <div class="flex items-start gap-1 mt-2">
                 <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
@@ -171,27 +192,6 @@
                     </p>
                 </div>
             </div>
-        </div>
-    </x-card>
-    <x-card class="px-8">
-        <div class="flow">
-            <label class="block font-semibold">{{ __('Product') }}</label>
-            <div class="flex items-start gap-1 mt-2">
-                <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
-                <p class="text-xs">{{ __('Type the first few letters of the product and pause to let the system get info from CurrentRMS. Select the exact-match product. If the item cannot be found in this listing, double-check the spelling of the item name (per the info plate on the equipment), then ask the SRMM Manager for advice on how to proceed.') }}</p>
-            </div>
-            <div class="relative">
-                @if (!empty($this->form->product_id) && !$errors->has('form.product_id'))
-                    <x-icon-square-check 
-                        class="absolute w-5 h-5 -translate-x-full -translate-y-1/2 fill-green-500 top-1/2 -left-1" 
-                        data-element="square-check-icon"
-                    />    
-                @endif
-                <div wire:ignore>
-                    <x-select-product wire:model.live="form.product_id" />
-                </div>
-            </div>
-            <x-input-error :messages="$errors->first('form.product_id')" />
         </div>
     </x-card>
     <x-card class="px-8">
