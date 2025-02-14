@@ -27,8 +27,8 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         @livewireStyles
     </head>
-    <body class="font-sans antialiased">
-        <div class="bg-gray-100 min-h-dvh">
+    <body class="font-sans antialiased max-[1279px]:pb-[62px] bg-gray-100 ">
+        <div class="min-h-dvh">
             <!-- Page Content -->
             <main>
                 <x-side-menu />
