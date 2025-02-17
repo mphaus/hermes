@@ -217,7 +217,7 @@
             <label class="block font-semibold">{{ __('Intake location') }}</label>
             <div class="flex items-start gap-1 mt-2">
                 <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
-                <p class="text-xs ">{{ __('Specify the shelf ID of where this fixture will be placed.') }}</p>
+                <p class="text-xs ">{{ __('Indicate where this item will be stored in the Quarantine Intake Area.') }}</p>
             </div>
             <div class="relative">
                 @if (!empty($this->form->intake_location) && !$errors->has('form.intake_location'))
