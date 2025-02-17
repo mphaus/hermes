@@ -39,6 +39,8 @@ class QuarantineIntakeForm extends Form
     #[Validate(as: 'ready for repairs')]
     public string $starts_at;
 
+    public string $intake_location_type = 'on-a-shelf';
+
     #[Validate(as: 'intake location')]
     public string $intake_location;
 
@@ -93,14 +95,14 @@ class QuarantineIntakeForm extends Form
                 }
             }],
             'intake_location' => [
-                Rule::requiredIf(fn() => $this->starts_at === now()->format('Y-m-d')),
+                Rule::requiredIf(fn() => $this->starts_at === now()->format('Y-m-d') && $this->intake_location_type === 'on-a-shelf'),
                 function (string $attribute, mixed $value, Closure $fail) {
                     if ($this->starts_at !== now()->format('Y-m-d')) {
                         return;
                     }
 
                     if (!preg_match('/^[a-iA-I]-(?:[1-9]|[1-3][0-9]|4[0-5])$/', $value)) {
-                        $fail(__("The :attribute field format is invalid. Accepted letters from A to I. Accepted numbers from 1 to 45."));
+                        $fail(__('The :attribute field format is invalid. Accepted letters from A to I. Accepted numbers from 1 to 45.'));
                     }
                 }
             ],
