@@ -239,13 +239,7 @@
                             />
                         @endif
                         <div wire:ignore>
-                            <x-input
-                                type="text"
-                                placeholder="{{ __('Ex: A-26') }}"
-                                x-mask="a-99"
-                                x-on:input="$event.target.value = $event.target.value.toUpperCase()"
-                                wire:model.blur="form.intake_location"
-                            />
+                            <x-qi-intake-location wire:model.blur="form.intake_location" />
                         </div>
                     </div>
                     <div class="flex items-start gap-1">
