@@ -159,7 +159,11 @@ class QuarantineIntakeForm extends Form
                 'custom_fields' => [
                     'opportunity' => $validated['opportunity_type'] !== 'not-associated' ? $validated['opportunity'] : __('Not associated with any Job'),
                     'mph_technical_supervisor' => $validated['technical_supervisor'],
-                    'intake_location' => $is_same_day ? mb_strtoupper($validated['intake_location']) : __('TBC'),
+                    'intake_location' => $this->intake_location_type === 'in-the-bulky-items-area'
+                        ? __('Bulky items area')
+                        : ($is_same_day
+                            ? mb_strtoupper($validated['intake_location'])
+                            : __('TBC')),
                 ],
             ],
         ]);
