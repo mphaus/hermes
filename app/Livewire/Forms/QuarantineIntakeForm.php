@@ -39,8 +39,8 @@ class QuarantineIntakeForm extends Form
     #[Validate(as: 'ready for repairs')]
     public string $starts_at;
 
-    #[Validate(as: 'shelf location')]
-    public string $shelf_location;
+    #[Validate(as: 'intake location')]
+    public string $intake_location;
 
     #[Validate(as: 'primary fault classification')]
     public string $classification;
@@ -92,7 +92,7 @@ class QuarantineIntakeForm extends Form
                     $fail(__('The :attribute field must not be a greater date than the last day of the next month.'));
                 }
             }],
-            'shelf_location' => [
+            'intake_location' => [
                 Rule::requiredIf(fn() => $this->starts_at === now()->format('Y-m-d')),
                 function (string $attribute, mixed $value, Closure $fail) {
                     if ($this->starts_at !== now()->format('Y-m-d')) {
@@ -143,7 +143,7 @@ class QuarantineIntakeForm extends Form
             PHP_EOL .
             __('Submitted by :first_name', ['first_name' => Auth::user()->first_name]);
 
-        $response = Http::current()->post('quarantines', [
+        $response = Http::current()->dd()->post('quarantines', [
             'quarantine' => [
                 'item_id' => App::environment(['local', 'staging']) ? intval(config('app.mph.test_product_id')) : intval($validated['product_id']),
                 'store_id' => $this->store,
@@ -157,7 +157,7 @@ class QuarantineIntakeForm extends Form
                 'custom_fields' => [
                     'opportunity' => $validated['opportunity_type'] !== 'not-associated' ? $validated['opportunity'] : __('Not associated with any Job'),
                     'mph_technical_supervisor' => $validated['technical_supervisor'],
-                    'shelf_location' => $is_same_day ? mb_strtoupper($validated['shelf_location']) : __('TBC'),
+                    'intake_location' => $is_same_day ? mb_strtoupper($validated['intake_location']) : __('TBC'),
                 ],
             ],
         ]);

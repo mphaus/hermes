@@ -214,13 +214,13 @@
     </x-card>
     <x-card class="px-8" x-show="$wire.form.starts_at === $root.dataset.currentDate">
         <div class="flow">
-            <label class="block font-semibold">{{ __('Shelf location') }}</label>
+            <label class="block font-semibold">{{ __('Intake location') }}</label>
             <div class="flex items-start gap-1 mt-2">
                 <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
                 <p class="text-xs ">{{ __('Specify the shelf ID of where this fixture will be placed.') }}</p>
             </div>
             <div class="relative">
-                @if (!empty($this->form->shelf_location) && !$errors->has('form.shelf_location'))
+                @if (!empty($this->form->intake_location) && !$errors->has('form.intake_location'))
                     <x-icon-square-check 
                         class="absolute w-5 h-5 -translate-x-full -translate-y-1/2 fill-green-500 top-1/2 -left-1" 
                         data-element="square-check-icon"
@@ -232,11 +232,11 @@
                         placeholder="{{ __('Ex: A-26') }}"
                         x-mask="a-99"
                         x-on:input="$event.target.value = $event.target.value.toUpperCase()"
-                        wire:model.blur="form.shelf_location"
+                        wire:model.blur="form.intake_location"
                     />
                 </div>
             </div>
-            <x-input-error :messages="$errors->first('form.shelf_location')" />
+            <x-input-error :messages="$errors->first('form.intake_location')" />
         </div>
     </x-card>
     <x-card class="px-8">

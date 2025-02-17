@@ -38,7 +38,7 @@ export default function QuarantineIntakeForm ( technicalSupervisors ) {
             this.$wire.form.serial_number = '';
             this.$wire.form.product_id = null;
             this.$wire.form.starts_at = this.$root.dataset.currentDate;
-            this.$wire.form.shelf_location = '';
+            this.$wire.form.instake_location = '';
             this.$wire.form.classification = '';
             this.$wire.form.description = '';
             this.technicalSupervisorName = '';
