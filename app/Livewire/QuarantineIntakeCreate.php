@@ -51,8 +51,6 @@ class QuarantineIntakeCreate extends Component
             abort(403);
         }
 
-        dd($this->form);
-
         $result = $this->form->store();
 
         if (!is_numeric($result)) {

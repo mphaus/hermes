@@ -101,8 +101,8 @@ class QuarantineIntakeForm extends Form
                         return;
                     }
 
-                    if (!preg_match('/^[a-iA-I]-(?:[1-9]|[1-3][0-9]|4[0-5])$/', $value)) {
-                        $fail(__('The :attribute field format is invalid. Accepted letters from A to I. Accepted numbers from 1 to 45.'));
+                    if (!preg_match('/^[a-iA-I]-(?:[1-9]|[1-3][0-9]|5[0-5])$/', $value)) {
+                        $fail(__('The :attribute field format is invalid. Accepted letters from A to I. Accepted numbers from 1 to 55.'));
                     }
                 }
             ],
