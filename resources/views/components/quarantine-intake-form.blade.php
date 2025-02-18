@@ -214,29 +214,57 @@
     </x-card>
     <x-card class="px-8" x-show="$wire.form.starts_at === $root.dataset.currentDate">
         <div class="flow">
-            <label class="block font-semibold">{{ __('Shelf location') }}</label>
+            <label class="block font-semibold">{{ __('Intake location') }}</label>
             <div class="flex items-start gap-1 mt-2">
                 <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
-                <p class="text-xs ">{{ __('Specify the shelf ID of where this fixture will be placed.') }}</p>
+                <p class="text-xs ">{{ __('Indicate where this item will be stored in the Quarantine Intake Area.') }}</p>
             </div>
-            <div class="relative">
-                @if (!empty($this->form->shelf_location) && !$errors->has('form.shelf_location'))
-                    <x-icon-square-check 
-                        class="absolute w-5 h-5 -translate-x-full -translate-y-1/2 fill-green-500 top-1/2 -left-1" 
-                        data-element="square-check-icon"
-                    />    
-                @endif
-                <div wire:ignore>
-                    <x-input
-                        type="text"
-                        placeholder="{{ __('Ex: A-26') }}"
-                        x-mask="a-99"
-                        x-on:input="$event.target.value = $event.target.value.toUpperCase()"
-                        wire:model.blur="form.shelf_location"
-                    />
+            <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
+                <div class="flex items-center gap-1">
+                    <input type="radio" id="on-a-shelf" value="on-a-shelf" wire:model="form.intake_location_type">
+                    <x-input-label class="cursor-pointer" for="on-a-shelf">{{ __('On a shelf') }}</x-input-label>
+                </div>
+                <div class="flex items-center gap-1">
+                    <input type="radio" id="in-the-bulky-items-area" value="in-the-bulky-items-area" wire:model="form.intake_location_type" x-on:change="$wire.form.intake_location = ''">
+                    <x-input-label class="cursor-pointer" for="in-the-bulky-items-area">{{ __('In the bulky items area') }}</x-input-label>
                 </div>
             </div>
-            <x-input-error :messages="$errors->first('form.shelf_location')" />
+            <template hidden x-if="$wire.form.intake_location_type === 'on-a-shelf'">
+                <div class="flow">
+                    <div class="relative">
+                        @if (!empty($this->form->intake_location) && !$errors->has('form.intake_location'))
+                            <x-icon-square-check
+                                class="absolute w-5 h-5 -translate-x-full -translate-y-1/2 fill-green-500 top-1/2 -left-1"
+                                data-element="square-check-icon"
+                            />
+                        @endif
+                        <div wire:ignore>
+                            <x-input
+                                type="text"
+                                placeholder="{{ __('Ex: A-26') }}"
+                                x-mask="a-99"
+                                x-on:input="$event.target.value = $event.target.value.toUpperCase()"
+                                wire:model.blur="form.intake_location"
+                            />
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-1">
+                        <x-icon-triangle-alert class="flex-shrink-0 w-4 h-4 text-yellow-500" />
+                        <p class="text-xs">
+                            {{ __('Specify the Quarantine Intake shelf ID of where this fixture will be placed. Look for a vacant shelf position before entering this information. Tend to use aisles A, B, C, D E and F (in that order) first. Enter one letter for the aisle, and a number for the position on that shelf. A hyphen is added added automatically.') }}
+                        </p>
+                    </div>
+                </div>
+            </template>
+            <template hidden x-if="$wire.form.intake_location_type === 'in-the-bulky-items-area'">
+                <div class="flex items-start gap-1">
+                    <x-icon-triangle-alert class="flex-shrink-0 w-4 h-4 text-yellow-500" />
+                    <p class="text-xs">
+                        {{ __('This item is to be placed in the Quarantine Intake area for bulky items. Ensure the OOS sticker is facing outwards, and the item does not cover OOS stickers on other items in the area, or prevent access to Repairs Nally bins.') }}
+                    </p>
+                </div>
+            </template>
+            <x-input-error :messages="$errors->first('form.intake_location')" />
         </div>
     </x-card>
     <x-card class="px-8">
