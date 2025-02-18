@@ -6,6 +6,7 @@ use App\Http\Controllers\OpportunityController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\QiOpportunityController;
+use App\Http\Controllers\QuarantineIntakeController;
 use App\Livewire\ActionStreamIndex;
 use App\Livewire\DiscussionsCreate;
 use App\Livewire\DiscussionsEdit;
@@ -51,6 +52,7 @@ Route::middleware(['auth', 'is_enabled'])->group(function () {
     Route::get('users/{user}/edit', UsersEdit::class)->name('users.edit')->middleware('permission:crud-users');
 
     Route::get('quarantine-intake', QuarantineIntakeCreate::class)->name('quarantine-intake.create')->middleware('permission:access-quarantine-intake');
+    Route::get('quarantine-intake-success', [QuarantineIntakeController::class, 'success'])->name('quarantine-intake-success.index');
     // Route::get('quarantine-stats', QuarantineStatsIndex::class)->name('quarantine-stats.index')->middleware('permission:access-quarantine-stats');
 
     Route::get('technical-supervisors', TechnicalSupervisorsIndex::class)->name('technical-supervisors.index')->middleware('permission:crud-technical-supervisors');
