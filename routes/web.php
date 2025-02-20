@@ -52,7 +52,8 @@ Route::middleware(['auth', 'is_enabled'])->group(function () {
     Route::get('users/{user}/edit', UsersEdit::class)->name('users.edit')->middleware('permission:crud-users');
 
     Route::get('quarantine-intake', QuarantineIntakeCreate::class)->name('quarantine-intake.create')->middleware('permission:access-quarantine-intake');
-    Route::get('quarantine-intake-success', [QuarantineIntakeController::class, 'success'])->name('quarantine-intake-success.index')->middleware('permission:access-quarantine-intake');;
+    Route::get('quarantine-intake-success', [QuarantineIntakeController::class, 'success'])->name('quarantine-intake-success.index')->middleware('permission:access-quarantine-intake');
+    Route::post('quarantine-intake/report-mistake', [QuarantineIntakeController::class, 'reportMistake'])->name('quarantine-intake-report-mistake.store')->middleware('permission:access-quarantine-intake');
     // Route::get('quarantine-stats', QuarantineStatsIndex::class)->name('quarantine-stats.index')->middleware('permission:access-quarantine-stats');
 
     Route::get('technical-supervisors', TechnicalSupervisorsIndex::class)->name('technical-supervisors.index')->middleware('permission:crud-technical-supervisors');
