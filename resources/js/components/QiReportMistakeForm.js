@@ -13,6 +13,7 @@ const intialForm = {
 
 export default function QiReportMistakeForm () {
     return {
+        message: '',
         submitting: false,
         remainingCharacters: 512,
         form: { ...intialForm },
@@ -22,12 +23,19 @@ export default function QiReportMistakeForm () {
                 return;
             }
 
+            this.message = '';
             this.errors = { ...intialForm };
             this.submitting = true;
 
             try {
                 const response = await window.axios.post( this.$root.action, this.form );
-                console.log( response.data );
+
+                /** @type {{ message: string }} */
+                const { message } = response.data;
+                this.message = message;
+
+                this.form.message = '';
+                this.$root.reset();
             } catch ( error ) {
                 if ( error.status === 422 ) {
                     const { errors } = error.response.data;

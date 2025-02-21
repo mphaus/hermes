@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\QIReportMistakeFormRequest;
+use App\Mail\QIReportMistakeCreated;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class QuarantineIntakeController extends Controller
 {
@@ -22,9 +25,10 @@ class QuarantineIntakeController extends Controller
     {
         $validated = $request->validated();
 
+        Mail::to('garion@mphaus.com')->send(new QIReportMistakeCreated($validated, Auth::user()));
+
         return response()->json([
-            'type' => 'success',
-            'request' => $validated,
+            'message' => __('Your message has been sent successfully.'),
         ]);
     }
 }
