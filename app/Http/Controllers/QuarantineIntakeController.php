@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\QIReportMistakeFormRequest;
 use Illuminate\Http\Request;
 
 class QuarantineIntakeController extends Controller
@@ -10,18 +11,20 @@ class QuarantineIntakeController extends Controller
     {
         $quarantine = $request->session()->get('quarantine', []);
 
-        // if (empty($quarantine)) {
-        //     return redirect()->route('quarantine-intake.create');
-        // }
+        if (empty($quarantine)) {
+            return redirect()->route('quarantine-intake.create');
+        }
 
         return view('quarantine-intake-success', compact('quarantine'));
     }
 
-    public function reportMistake(Request $request)
+    public function reportMistake(QIReportMistakeFormRequest $request)
     {
-        return response()->json(data: [
-            'type' => 'error',
-            'request' => $request->all()
-        ], status: 400);
+        $validated = $request->validated();
+
+        return response()->json([
+            'type' => 'success',
+            'request' => $validated,
+        ]);
     }
 }

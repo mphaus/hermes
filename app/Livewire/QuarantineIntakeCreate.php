@@ -62,7 +62,8 @@ class QuarantineIntakeCreate extends Component
             return;
         }
 
-        session()->flash('quarantine', $quarantine);
+        session(['quarantine' => $quarantine]);
+        // session()->flash('quarantine', $quarantine);
         return redirect()->route('quarantine-intake-success.index');
     }
 

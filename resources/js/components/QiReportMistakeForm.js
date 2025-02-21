@@ -1,31 +1,48 @@
-import axios from "axios";
+const intialForm = {
+    submitted: '',
+    quarantine_id: '',
+    job: '',
+    product: '',
+    serial: '',
+    ready_for_repairs: '',
+    primary_fault_classification: '',
+    fault_description: '',
+    intake_location: '',
+    message: '',
+};
 
 export default function QiReportMistakeForm () {
     return {
         submitting: false,
         remainingCharacters: 512,
-        form: {
-            message: '',
-        },
-        errors: {
-            message: '',
-        },
+        form: { ...intialForm },
+        errors: { ...intialForm },
         async send () {
             if ( this.submitting ) {
                 return;
             }
 
+            this.errors = { ...intialForm };
             this.submitting = true;
 
             try {
-                const response = await axios.post( this.$root.action, this.form );
+                const response = await window.axios.post( this.$root.action, this.form );
                 console.log( response.data );
             } catch ( error ) {
-                debugger;
-                // console.error( error );
-            }
+                if ( error.status === 422 ) {
+                    const { errors } = error.response.data;
 
-            this.submitting = false;
+                    for ( const key in errors ) {
+                        this.errors[ key ] = errors[ key ][ 0 ];
+                    }
+
+                    return;
+                }
+
+                console.log( error );
+            } finally {
+                this.submitting = false;
+            }
         },
     };
 }
