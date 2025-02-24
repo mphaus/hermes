@@ -188,6 +188,7 @@ class QuarantineIntakeForm extends Form
             'data' => [
                 ...$quarantine,
                 'primary_fault_classification' => $validated['classification'],
+                'ready_for_repairs' => $is_same_day ? __('Now') : $starts_at->setTime(12, 0, 0, 0)->setTimezone('UTC')->format('Y-m-d\TH:i:s'),
             ],
         ];
     }
