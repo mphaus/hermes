@@ -16,6 +16,7 @@ import QiInputStartsAt from "./components/QiInputStartsAt";
 import QiSelectPrimaryFaultClassification from "./components/QiSelectPrimaryFaultClassification";
 import QuarantineIntakeForm from "./components/QuarantineIntakeForm";
 // import QuarantineStatsFilter from "./components/QuarantineStatsFilter";
+import QiReportMistakeForm from "./components/QiReportMistakeForm";
 import QiSelectDryHireOpportunity from "./components/QiSelectDryHireOpportunity";
 import ResetPasswordForm from "./components/ResetPasswordForm";
 import SelectFaultRootCause from "./components/SelectFaultRootCause";
@@ -51,5 +52,6 @@ Alpine.data( 'SideMenu', SideMenu );
 Alpine.data( 'UploadLog', UploadLog );
 Alpine.data( 'UserDeleteButton', UserDeleteButton );
 Alpine.data( 'UserForm', UserForm );
+Alpine.data( 'QiReportMistakeForm', QiReportMistakeForm );
 
 Livewire.start();

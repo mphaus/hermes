@@ -51,23 +51,20 @@ class QuarantineIntakeCreate extends Component
             abort(403);
         }
 
-        $result = $this->form->store();
+        ['type' => $type, 'errors' => $errors, 'data' => $quarantine] = $this->form->store();
 
-        if (!is_numeric($result)) {
+        if ($type === 'error') {
             $this->alert = [
                 'type' => 'error',
-                'message' => __('<p>Fail! ❌ The Quarantine Item was not added to CurrentRMS because <span class="font-semibold">:error</span>. This item still needs to be added. It\'s fine to try again, but the same error may return.</p><p>See <a href=":url" target="_blank" rel="nofollow" title="Dealing with errors when adding items to Quarantine via Hermes section" class="font-semibold">Dealing with errors when adding items to Quarantine via Hermes section</a> in the Quarantine Intake Process for instructions on what to do next.</p>', ['error' => $result[0], 'url' => 'https://mphaustralia.sharepoint.com/:w:/r/teams/MPHAdministration/Shared%20Documents/Process/01%20In%20development/Process_%20Repairs%20Quarantine%20intake.docx?d=wc450b4cdc2e84c758363390091b56915&csf=1&web=1&e=sFkHAk&nav=eyJoIjoiMzg4NTM5MDQifQ'])
+                'message' => __('<p>Fail! ❌ The Quarantine Item was not added to CurrentRMS because <span class="font-semibold">:error</span>. This item still needs to be added. It\'s fine to try again, but the same error may return.</p><p>See <a href=":url" target="_blank" rel="nofollow" title="Dealing with errors when adding items to Quarantine via Hermes section" class="font-semibold">Dealing with errors when adding items to Quarantine via Hermes section</a> in the Quarantine Intake Process for instructions on what to do next.</p>', ['error' => $errors[0], 'url' => 'https://mphaustralia.sharepoint.com/:w:/r/teams/MPHAdministration/Shared%20Documents/Process/01%20In%20development/Process_%20Repairs%20Quarantine%20intake.docx?d=wc450b4cdc2e84c758363390091b56915&csf=1&web=1&e=sFkHAk&nav=eyJoIjoiMzg4NTM5MDQifQ'])
             ];
 
             return;
         }
 
-        session()->flash('alert', [
-            'type' => 'success',
-            'message' => __('Success! ✅ The item has been added to Quarantine (<a href=":url" target="_blank" rel="nofollow">in CurrentRMS</a>)', ['url' => "https://mphaustralia.current-rms.com/quarantines/{$result}"]),
-        ]);
-
-        $this->redirectRoute(name: 'quarantine-intake.create', navigate: true);
+        session(['quarantine' => $quarantine]);
+        // session()->flash('quarantine', $quarantine);
+        return redirect()->route('quarantine-intake-success.index');
     }
 
     public function placeholder(): View

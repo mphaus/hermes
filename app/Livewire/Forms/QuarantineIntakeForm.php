@@ -101,7 +101,7 @@ class QuarantineIntakeForm extends Form
                         return;
                     }
 
-                    if (!preg_match('/^[a-iA-I]-(?:[1-9]|[1-3][0-9]|5[0-5])$/', $value)) {
+                    if (!preg_match('/^[A-Ia-i]-(?:[1-9]|[1-4][0-9]|5[0-5])$/', $value)) {
                         $fail(__('The :attribute field format is invalid. Accepted letters from A to I. Accepted numbers from 1 to 55.'));
                     }
                 }
@@ -114,7 +114,7 @@ class QuarantineIntakeForm extends Form
         ];
     }
 
-    public function store(): mixed
+    public function store(): array
     {
         $validated = $this->validate();
         $reference = match ($this->serial_number_status) {
@@ -170,13 +170,26 @@ class QuarantineIntakeForm extends Form
 
         if ($response->failed()) {
             ['errors' => $errors] = $response->json();
-            return $errors;
+
+            return [
+                'type' => 'success',
+                'errors' => $errors,
+                'data' => [],
+            ];
         }
 
         ['quarantine' => $quarantine] = $response->json();
 
         Mail::to(['garion@mphaus.com', 'service.manager@mphaus.com'])->send(new QuarantineCreated($quarantine, $validated['classification'], $description, Auth::user()));
 
-        return $quarantine['id'];
+        return [
+            'type' => 'success',
+            'errors' => [],
+            'data' => [
+                ...$quarantine,
+                'primary_fault_classification' => $validated['classification'],
+                'ready_for_repairs' => $is_same_day ? __('Now') : $starts_at->setTime(12, 0, 0, 0)->setTimezone('UTC')->format('Y-m-d\TH:i:s'),
+            ],
+        ];
     }
 }
