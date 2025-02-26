@@ -10,6 +10,7 @@
                 <x-card class="space-y-4 !bg-[#333333] !text-[#FFFF00] xl:hidden text-center">
                     <h2 class="text-3xl font-semibold 2xl:text-4xl">{{ __('Intake Location') }}</h2>
                     <p @class([
+                        'font-bold',
                         'text-7xl 2xl:text-9xl' => $quarantine['custom_fields']['intake_location'] !== 'Bulky items area',
                         'text-3xl sm:text-4xl' => $quarantine['custom_fields']['intake_location'] === 'Bulky items area',
                     ])>{{ $quarantine['custom_fields']['intake_location'] }}</p>
@@ -82,8 +83,9 @@
         </div>
         @unless ($quarantine['custom_fields']['intake_location'] === 'TBC')
             <x-card class="space-y-4 !bg-[#333333] !text-[#FFFF00] hidden xl:block xl:col-span-2 xl:self-start text-center">
-                <h2 class="text-3xl font-semibold 2xl:text-4xl">{{ __('Intake Location') }}</h2>
+                <h2 class="text-3xl 2xl:text-4xl">{{ __('Intake Location') }}</h2>
                 <p @class([
+                    'font-bold',
                     'text-7xl 2xl:text-9xl' => $quarantine['custom_fields']['intake_location'] !== 'Bulky items area',
                     'text-3xl 2xl:text-4xl' => $quarantine['custom_fields']['intake_location'] === 'Bulky items area',
                 ])>{{ $quarantine['custom_fields']['intake_location'] }}</p>
