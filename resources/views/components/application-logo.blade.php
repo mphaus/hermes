@@ -1,5 +1,5 @@
 <img 
-    src="{{ Vite::asset('resources/images/mph-logo.png') }}" 
+    src="{{ Vite::asset('resources/images/hermes.png') }}" 
     alt="{{ config('app.name') }}"
     {{ $attributes }}
 >

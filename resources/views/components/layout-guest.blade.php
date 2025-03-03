@@ -8,7 +8,7 @@
 
         <title>{{ isset($title) ? config('app.name') . ' - ' . $title : config('app.name') }}</title>
 
-        <link rel="shortcut icon" href="{{ Vite::asset('resources/images/favicon.png') }}" type="image/png">
+        <link rel="shortcut icon" href="{{ Vite::asset('resources/images/hermes.png') }}" type="image/png">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -29,14 +29,15 @@
     </head>
     <body class="font-sans antialiased text-gray-900">
         <div class="flex flex-col items-center min-h-screen px-4 pt-6 bg-gray-100 sm:justify-center sm:pt-0">
-            <div>
-                <a href="/">
-                    <x-application-logo class="w-32" />
-                </a>
-            </div>
-
-            <div class="w-full px-6 py-4 mt-6 overflow-hidden bg-white shadow-md sm:max-w-md sm:rounded-lg">
-                {{ $slot }}
+            <div class="w-full sm:max-w-md">
+                <div>
+                    <a href="/">
+                        <x-application-logo class="w-32" />
+                    </a>
+                </div>
+                <div class="px-6 py-4 mt-6 overflow-hidden bg-white shadow-md sm:rounded-lg">
+                    {{ $slot }}
+                </div>
             </div>
         </div>
         @livewireScriptConfig
