@@ -32,7 +32,7 @@
             <div class="w-full sm:max-w-md">
                 <div>
                     <a href="/">
-                        <x-application-logo class="w-32" />
+                        <x-application-logo class="w-16" />
                     </a>
                 </div>
                 <div class="px-6 py-4 mt-6 overflow-hidden bg-white shadow-md sm:rounded-lg">
