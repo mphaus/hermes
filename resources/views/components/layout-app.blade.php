@@ -8,7 +8,7 @@
 
         <title>{{ isset($title) ? config('app.name') . ' - ' . $title : config('app.name') }}</title>
 
-        <link rel="shortcut icon" href="{{ Vite::asset('resources/images/hermes.png') }}" type="image/png">
+        <link rel="shortcut icon" href="{{ Vite::asset('resources/images/favicon.png') }}" type="image/png">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
