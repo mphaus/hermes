@@ -9,7 +9,7 @@
 >
     <header class="px-3 py-6">
         <a href="{{ route('login') }}" wire:navigate>
-            <x-application-logo class="w-24 mx-auto" />
+            <x-hermes-logo class="w-24 mx-auto" />
         </a>
     </header>
     <section class="flex-1 px-3 py-6">

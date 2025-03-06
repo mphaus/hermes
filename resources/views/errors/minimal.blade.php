@@ -16,7 +16,7 @@
     <div class="container">
         <div class="flex flex-col items-center justify-center min-h-screen gap-6 text-center">
             <a href="{{ route('login') }}" class="block w-24 mx-auto">
-                <x-application-logo />
+                <x-hermes-logo />
             </a>
             <p class="font-semibold text-7xl">@yield('code')</p>
             <p class="text-lg">@yield('message')</p>

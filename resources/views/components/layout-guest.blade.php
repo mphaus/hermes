@@ -30,12 +30,15 @@
     <body class="font-sans antialiased text-gray-900">
         <div class="flex flex-col items-center min-h-screen px-4 pt-6 bg-gray-100 sm:justify-center sm:pt-0">
             <div class="w-full sm:max-w-md">
-                <div>
+                <div class="relative">
+                    <a href="/" class="absolute bottom-0" title="{{ __('MPH Australia') }}">
+                        <x-mph-logo class="w-14" />
+                    </a>
                     <a href="/">
-                        <x-application-logo class="w-16" />
+                        <x-hermes-logo class="w-32 mx-auto" title="{{ __('Hermes') }}" />
                     </a>
                 </div>
-                <div class="px-6 py-4 mt-6 overflow-hidden bg-white shadow-md sm:rounded-lg">
+                <div class="px-6 py-4 mt-4 overflow-hidden bg-white shadow-md sm:rounded-lg">
                     {{ $slot }}
                 </div>
             </div>
