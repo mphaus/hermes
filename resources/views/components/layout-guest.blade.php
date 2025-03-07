@@ -29,18 +29,16 @@
     </head>
     <body class="font-sans antialiased text-gray-900">
         <div class="flex flex-col items-center min-h-screen px-4 pt-6 bg-gray-100 sm:justify-center sm:pt-0">
-            <div class="w-full sm:max-w-md">
-                <div class="relative">
-                    <a href="/" class="absolute bottom-0" title="{{ __('MPH Australia') }}">
-                        <x-mph-logo class="w-14" />
-                    </a>
-                    <a href="/">
-                        <x-hermes-logo class="w-32 mx-auto" title="{{ __('Hermes') }}" />
-                    </a>
-                </div>
-                <div class="px-6 py-4 mt-4 overflow-hidden bg-white shadow-md sm:rounded-lg">
+            <div class="flex flex-col w-full gap-4 sm:max-w-md">
+                <a href="/">
+                    <x-hermes-logo class="w-32" title="{{ __('Hermes') }}" />
+                </a>
+                <div class="px-6 py-4 overflow-hidden bg-white shadow-md sm:rounded-lg">
                     {{ $slot }}
                 </div>
+                <a href="/" class="self-end" title="{{ __('MPH Australia') }}">
+                    <x-mph-logo class="w-14" />
+                </a>
             </div>
         </div>
         @livewireScriptConfig
