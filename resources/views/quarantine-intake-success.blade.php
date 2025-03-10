@@ -4,7 +4,7 @@
     <div class="mx-auto xl:grid xl:gap-4 xl:grid-cols-7 max-w-screen-2xl">
         <div class="space-y-4 xl:col-span-5">
             <x-card class="self-start">
-                <p>{!! __('Your quarantine submission has been received and is logged in CurrentRMS - see <a href=":url" target="_blank" rel="nofollow">submission unique :quarantine_id number</a>. This link will only work for full-time MPH employees logged in to CurrentRMS. It\'s also possible for Casuals to access this from the Quarantine Intake Station in the warehouse.', ['url' => "https://mphaustralia.current-rms.com/quarantines/{$quarantine['id']}", 'quarantine_id' => $quarantine['id']]) !!}</p>
+                <p>{!! __('Your quarantine submission has been received and is logged in CurrentRMS - see <a href=":url" target="_blank" rel="nofollow">submission :quarantine_id</a>. This link will only work for full-time MPH employees logged in to CurrentRMS. It\'s also possible for Casuals to access this from the Quarantine Intake Station in the warehouse.', ['url' => "https://mphaustralia.current-rms.com/quarantines/{$quarantine['id']}", 'quarantine_id' => $quarantine['id']]) !!}</p>
             </x-card>
             @unless ($quarantine['custom_fields']['intake_location'] === 'TBC')
                 <x-card class="space-y-4 !bg-[#333333] !text-[#FFFF00] xl:hidden text-center">
