@@ -3,6 +3,7 @@
 // use App\Http\Controllers\ProfileController;
 
 use App\Http\Controllers\OpportunityController;
+use App\Http\Controllers\OpportunityItemsController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\QiOpportunityController;
@@ -35,6 +36,8 @@ Route::middleware(['auth', 'is_enabled'])->group(function () {
 
     Route::get('equipment-import/{id}', JobsShow::class)->name('jobs.show')->middleware('permission:access-equipment-import');
     Route::permanentRedirect('/jobs/{id}', '/equipment-import/{id}');
+
+    Route::post('opportunity-items', [OpportunityItemsController::class, 'store'])->middleware('permission:access-equipment-import')->name('opportunity-items.store');
 
     Route::get('logs/{id}', UploadLogsShow::class)->name('logs.show')->middleware('permission:access-equipment-import');
     Route::get('action-stream', ActionStreamIndex::class)->name('action-stream.index')->middleware('permission:access-action-stream');
