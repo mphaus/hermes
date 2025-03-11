@@ -9,6 +9,11 @@ const initialErrors = {
 };
 
 export default function EquipmentImportForm ( initialOpportunityId ) {
+    const beforeUnloadHandler = ( e ) => {
+        e.preventDefault();
+        e.returnValue = true;
+    };
+
     return {
         submitting: false,
         opportunityId: initialOpportunityId,
@@ -17,6 +22,19 @@ export default function EquipmentImportForm ( initialOpportunityId ) {
             opportunity_id: initialOpportunityId,
         },
         errors: { ...initialErrors },
+        alert: {},
+        init () {
+            this.$watch( 'submitting', isSubmitting => {
+                if ( isSubmitting ) {
+                    window.addEventListener( 'beforeunload', beforeUnloadHandler );
+                } else {
+                    window.removeEventListener( 'beforeunload', beforeUnloadHandler );
+                }
+            } );
+        },
+        destroy () {
+            this.submitting = false;
+        },
         /**
          * @param {File | undefined} file
          */
@@ -33,6 +51,7 @@ export default function EquipmentImportForm ( initialOpportunityId ) {
                 return;
             }
 
+            this.alert = {};
             this.errors = { ...initialErrors };
             this.submitting = true;
 
@@ -42,11 +61,25 @@ export default function EquipmentImportForm ( initialOpportunityId ) {
 
             try {
                 const response = await window.axios.post( this.$root.action, formData );
-            } catch ( error ) {
-                console.log( error );
+                const { redirect_to } = response.data;
 
-            } finally {
                 this.submitting = false;
+                this.$nextTick( () => window.location = redirect_to );
+            } catch ( error ) {
+                if ( error.status === 422 ) {
+                    const { errors } = error.response.data;
+
+                    for ( const key in errors ) {
+                        this.errors[ key ] = errors[ key ][ 0 ];
+                    }
+
+                    this.submitting = false;
+                    return;
+                }
+
+                console.error( error );
+                this.submitting = false;
+                this.$nextTick( () => this.alert = { ...error.response.data } );
             }
         },
     }

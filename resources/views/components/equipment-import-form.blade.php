@@ -5,10 +5,11 @@
 <x-form
     action="{{ route('opportunity-items.store') }}"
     method="POST"
+    novalidate
     x-data="EquipmentImportForm({{ Js::from($opportunityId) }})"
     x-on:submit.prevent="send"
 >
-    <fieldset wire:loading.class="opacity-50 pointer-events-none" wire:target="save">
+    <fieldset x-bind:class="{ 'opacity-50 pointer-events-none': submitting }">
         <legend class="font-semibold">{{ __('Upload file') }}</legend>
         <div class="mt-2 space-y-2 text-sm">
             <p>{{ __('Hermes imports a CSV list of equipment (typically rigging and cabling) into the specified CurrentRMS Opportunity, so it can be checked for stock availability and so it will appear on the Picking List.') }}</p>
@@ -25,8 +26,12 @@
             required
             x-on:change="setFile($event.target.files[0])"
         />
-        {{-- <x-input-error :messages="$errors->get('csvfile')" class="mt-2" />
-        <x-input-error :messages="$errors->get('item_process')" class="mt-2" /> --}}
+        <template hidden x-if="errors.opportunity_id">
+            <p class="mt-2 text-sm text-red-600" x-text="errors.opportunity_id"></p>
+        </template>
+        <template hidden x-if="errors.csv">
+            <p class="mt-2 text-sm text-red-600" x-text="errors.csv"></p>
+        </template>
     </fieldset>
     <div class="flex justify-end mt-6">
         <x-button 
@@ -41,10 +46,19 @@
             </span>
         </x-button>
     </div>
-    <div class="mt-6 text-sm" x-cloak x-show="submitting">
-        <p class="font-semibold">{{ __('Now ingesting...') }}</p>
-        <p class="mt-1">{!! __('CurrentRMS limits file uploads to a maximum of 60 rows a minute. Most CSV\'s are a few hundred rows, so this can take a few minutes. While you\'re waiting, you are encouraged to <br> <a href="https://wishlist.current-rms.com/c/52-customer-specific-api-throttling-other-api-ideas" class="font-semibold" target="_blank">ask CurrentRMS to increase this limit</a> - "Critical" is an appropriate response, because this limit is quite silly!') !!}</p>
-        <p class="mt-2">{{ __('Once the import is complete, the log below will be updated and the equipment list should be added to the Opportunity. Visual confirmation is strongly recommended. ') }}</p>
-        <p class="mt-2 font-semibold">{{ __('Leave this tab open until the import is completed.') }}</p>
-    </div>
+    <template hidden x-if="submitting">
+        <div class="mt-6 text-sm">
+            <p class="font-semibold">{{ __('Now ingesting...') }}</p>
+            <p class="mt-1">{!! __('CurrentRMS limits file uploads to a maximum of 60 rows a minute. Most CSV\'s are a few hundred rows, so this can take a few minutes. While you\'re waiting, you are encouraged to <br> <a href="https://wishlist.current-rms.com/c/52-customer-specific-api-throttling-other-api-ideas" class="font-semibold" target="_blank">ask CurrentRMS to increase this limit</a> - "Critical" is an appropriate response, because this limit is quite silly!') !!}</p>
+            <p class="mt-2">{{ __('Once the import is complete, the log below will be updated and the equipment list should be added to the Opportunity. Visual confirmation is strongly recommended. ') }}</p>
+            <p class="mt-2 font-semibold">{{ __('Leave this tab open until the import is completed.') }}</p>
+        </div>
+    </template>
+    <template hidden x-if="alert.message">
+        <div 
+            class="p-4 mt-4 font-semibold text-white bg-red-500 rounded-md"
+            x-bind:class="{ 'bg-red-500': alert.type === 'error', 'bg-green-500': alert.type === 'success' }"
+            x-text="alert.message"
+        ></div>
+    </template>
 </x-form>
