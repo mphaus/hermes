@@ -48,9 +48,13 @@ class OpportunityItemsController extends Controller
          * @var array $opportunity
          */
 
-        $opportunity_items_process = (new OpportunityItems($opportunity, $filename))->process();
+        ['log' => $log, 'diff' => $diff] = (new OpportunityItems($opportunity, $filename))->process();
 
-        if (empty($opportunity_items_process)) {
+        /**
+         * @var array $log
+         */
+
+        if (empty($log)) {
             session()->flash('alert', [
                 'type' => 'warning',
                 'message' =>  __('The data was uploaded and processed. However no changes were made.'),
@@ -61,7 +65,7 @@ class OpportunityItemsController extends Controller
             ]);
         }
 
-        $upload_log = new UploadLog($opportunity['id'], $opportunity_items_process);
+        $upload_log = new UploadLog($opportunity['id'], $log);
         $upload_log->save();
 
         if ($upload_log->getStatus() !== 'successful') {

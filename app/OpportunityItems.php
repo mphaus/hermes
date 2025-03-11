@@ -19,8 +19,6 @@ class OpportunityItems
 
     protected string $filename;
 
-    protected string $propertyName;
-
     protected int $opportunity_id = 0;
 
     protected string $path = 'csv_files';
@@ -35,12 +33,20 @@ class OpportunityItems
 
     protected array $groups = [];
 
-    protected $log = [];
+    protected array $log = [];
+
+    protected array $diff = [];
 
     public function __construct(array $opportunity, string $filename)
     {
         $this->opportunity = $opportunity;
         $this->filename = $filename;
+        $this->diff = [
+            'reduced' => [],
+            'increased' => [],
+            'removed' => [],
+            'added' => [],
+        ];
     }
 
     public function process()
@@ -137,16 +143,16 @@ class OpportunityItems
 
     private function maybeCreateNewGroups(): void
     {
-        $groupDiff = array_values(array_diff(
+        $group_diff = array_values(array_diff(
             $this->groups,
             array_map(fn($group) => $group['name'], $this->existing_groups),
         ));
 
-        if (count($groupDiff) <= 0) {
+        if (count($group_diff) <= 0) {
             return;
         }
 
-        $this->createGroups($groupDiff);
+        $this->createGroups($group_diff);
     }
 
     private function createGroups(array $groups): void
@@ -195,15 +201,15 @@ class OpportunityItems
                 continue;
             }
 
-            $newGroup = json_decode($response['value']->getBody()->getContents(), true);
+            $new_group = json_decode($response['value']->getBody()->getContents(), true);
             $existing_groups[] = [
-                'id' => $newGroup['opportunity_item']['id'],
-                'name' => $newGroup['opportunity_item']['name'],
+                'id' => $new_group['opportunity_item']['id'],
+                'name' => $new_group['opportunity_item']['name'],
             ];
 
             $this->addToLog([
-                'item_id' => $newGroup['opportunity_item']['id'],
-                'item_name' => $newGroup['opportunity_item']['name'],
+                'item_id' => $new_group['opportunity_item']['id'],
+                'item_name' => $new_group['opportunity_item']['name'],
                 'action' => 'creation',
                 'error' => [],
             ]);
@@ -214,7 +220,7 @@ class OpportunityItems
 
     private function storeItems(): array
     {
-        ['opportunity_items' => $opportunityItems] = $this->opportunity;
+        ['opportunity_items' => $opportunity_items] = $this->opportunity;
 
         foreach ($this->items as $item) {
             // PREPARE ITEM DATA
@@ -227,23 +233,35 @@ class OpportunityItems
             $quantity = intval($quantity);
 
             // CHECK IF ITEM ALREADY EXISTS IN THE JOB
-            $itemIds = array_column($opportunityItems, 'item_id');
-            $index = array_search($id, $itemIds);
+            $item_ids = array_column($opportunity_items, 'item_id');
+            $index = array_search($id, $item_ids);
 
             if ($index) {
-                $itemId = $opportunityItems[$index]['id'];
+                $item_id = $opportunity_items[$index]['id'];
 
                 // ITEM EXISTS, MAYBE DELETE IT OR CHECK QUANTITY, DELETE IT AND RE-CREATE IT.
                 if ($quantity <= 0) {
-                    $this->deleteItem($itemId, $item);
-                } else {
-                    $currentQuantity = intval($opportunityItems[$index]['quantity']);
+                    $deletion = $this->deleteItem($item_id, $item);
 
-                    if ($quantity !== $currentQuantity) {
-                        $deletion = $this->deleteItem($itemId, $item, true);
+                    if ($deletion) {
+                        $this->addToDiff('removed', $item);
+                    }
+                } else {
+                    $current_quantity = intval($opportunity_items[$index]['quantity']);
+
+                    if ($quantity !== $current_quantity) {
+                        $deletion = $this->deleteItem($item_id, $item, true);
 
                         if ($deletion) {
-                            $this->createItem($item, true);
+                            $creation = $this->createItem($item, true);
+
+                            if ($creation) {
+                                if ($quantity > $current_quantity) {
+                                    $this->addToDiff('increased', $item, $quantity - $current_quantity);
+                                } else {
+                                    $this->addToDiff('reduced', $item);
+                                }
+                            }
                         }
                     }
                 }
@@ -253,11 +271,18 @@ class OpportunityItems
                     continue;
                 }
 
-                $this->createItem($item);
+                $creation = $this->createItem($item);
+
+                if ($creation) {
+                    $this->addToDiff('added', $item);
+                }
             }
         }
 
-        return $this->log;
+        return [
+            'log' => $this->log,
+            'diff' => $this->diff,
+        ];
     }
 
     private function createItem(array $item, bool $recreated = false): bool
@@ -265,7 +290,7 @@ class OpportunityItems
         [
             'id' => $id,
             'quantity' => $quantity,
-            'group_name' => $groupName,
+            'group_name' => $group_name,
         ] = $item;
 
         $query = [
@@ -280,8 +305,8 @@ class OpportunityItems
         // GET GROUP ID TO BE ADDED TO
         $groupIds = array_values(array_map(function ($group) {
             return $group['id'];
-        }, array_filter($this->existing_groups, function ($group) use ($groupName) {
-            return $group['name'] === $groupName;
+        }, array_filter($this->existing_groups, function ($group) use ($group_name) {
+            return $group['name'] === $group_name;
         })));
 
         if (count($groupIds) > 0) {
@@ -352,5 +377,19 @@ class OpportunityItems
     private function addToLog(array $data)
     {
         $this->log[] = $data;
+    }
+
+    private function addToDiff(string $action, array $item, int $added_quantity = 0)
+    {
+        if ($action === 'increased') {
+            $this->diff[$action][] = [
+                ...$item,
+                'added_quantity' => $added_quantity,
+            ];
+
+            return;
+        }
+
+        $this->diff[$action][] = $item;
     }
 }
