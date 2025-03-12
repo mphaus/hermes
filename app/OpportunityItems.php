@@ -13,34 +13,46 @@ class OpportunityItems
 {
     use WithHttpCurrentError;
 
+    protected array $opportunity;
+
     protected array $job;
 
     protected string $filename;
 
-    protected string $propertyName;
-
-    protected int $opportunityId = 0;
+    protected int $opportunity_id = 0;
 
     protected string $path = 'csv_files';
 
-    protected string $fullPath;
+    protected string $full_path;
 
-    protected array $requiredHeadings = ['id', 'item_name', 'quantity', 'group_name'];
+    protected array $required_headings = ['id', 'item_name', 'quantity', 'group_name'];
 
     protected array $items = [];
 
-    protected array $existingGroups = [];
+    protected array $existing_groups = [];
 
     protected array $groups = [];
 
-    protected $log = [];
+    protected array $log = [];
 
-    public function process(array $job, string $filename)
+    protected array $diff = [];
+
+    public function __construct(array $opportunity, string $filename)
     {
-        $this->job = $job;
+        $this->opportunity = $opportunity;
         $this->filename = $filename;
-        $this->opportunityId = App::environment(['local', 'staging']) ? config('app.mph.test_opportunity_id') : $this->job['id'];
-        $this->fullPath = base_path() . '/storage/app/' . $this->path . '/';
+        $this->diff = [
+            'reduced' => [],
+            'increased' => [],
+            'removed' => [],
+            'added' => [],
+        ];
+    }
+
+    public function process()
+    {
+        $this->opportunity_id = App::environment(['local', 'staging']) ? config('app.mph.test_opportunity_id') : $this->opportunity['id'];
+        $this->full_path = base_path() . '/storage/app/' . $this->path . '/';
 
         $this->prepareItems();
         $this->prepareExistingGroups();
@@ -55,13 +67,13 @@ class OpportunityItems
         $headings = null;
         $items = [];
 
-        if (($handle = fopen($this->fullPath . $this->filename, "r")) !== FALSE) {
+        if (($handle = fopen($this->full_path . $this->filename, "r")) !== FALSE) {
             while (($row = fgetcsv($handle, 1000, ",")) !== FALSE) {
                 if ($headings === null) {
                     $headings = $row;
 
                     // VALIDATE HEADINGS
-                    $diff = array_diff($this->requiredHeadings, $headings);
+                    $diff = array_diff($this->required_headings, $headings);
 
                     if (count($diff) > 0) {
                         fclose($handle);
@@ -94,29 +106,29 @@ class OpportunityItems
 
     private function prepareExistingGroups(): void
     {
-        $existingGroups = array_values(
+        $existing_groups = array_values(
             array_map(
-                fn ($group) => ['id' => $group['id'], 'name' => $group['name']],
+                fn($group) => ['id' => $group['id'], 'name' => $group['name']],
                 array_filter(
-                    $this->job['opportunity_items'],
-                    fn ($item) => $item['opportunity_item_type_name'] === 'Group'
+                    $this->opportunity['opportunity_items'],
+                    fn($item) => $item['opportunity_item_type_name'] === 'Group'
                 )
             )
         );
 
-        $this->setExistingGroups($existingGroups);
+        $this->setExistingGroups($existing_groups);
     }
 
     private function setExistingGroups(array $groups): void
     {
-        $this->existingGroups = $groups;
+        $this->existing_groups = $groups;
     }
 
     private function prepareGroups(): void
     {
         $groups = array_unique(
             array_map(
-                fn ($item) => $item['group_name'],
+                fn($item) => $item['group_name'],
                 $this->items
             )
         );
@@ -131,23 +143,23 @@ class OpportunityItems
 
     private function maybeCreateNewGroups(): void
     {
-        $groupDiff = array_values(array_diff(
+        $group_diff = array_values(array_diff(
             $this->groups,
-            array_map(fn ($group) => $group['name'], $this->existingGroups),
+            array_map(fn($group) => $group['name'], $this->existing_groups),
         ));
 
-        if (count($groupDiff) <= 0) {
+        if (count($group_diff) <= 0) {
             return;
         }
 
-        $this->createGroups($groupDiff);
+        $this->createGroups($group_diff);
     }
 
     private function createGroups(array $groups): void
     {
-        $opportunityId = $this->opportunityId;
+        $opportunity_id = $this->opportunity_id;
         $client = new Client(['base_uri' => config('app.current_rms.host')]);
-        $promises = array_map(function ($group) use ($client, $opportunityId) {
+        $promises = array_map(function ($group) use ($client, $opportunity_id) {
             $headers = [
                 'X-AUTH-TOKEN' => config('app.current_rms.auth_token'),
                 'X-SUBDOMAIN' => config('app.current_rms.subdomain'),
@@ -155,21 +167,21 @@ class OpportunityItems
 
             $query = [
                 'opportunity_item' => [
-                    'opportunity_id' => $opportunityId,
+                    'opportunity_id' => $opportunity_id,
                     'opportunity_item_type_name' => 'Group',
                     'name' => $group,
                     'opportunity_item_type' => 0,
                 ],
             ];
 
-            return $client->postAsync("opportunities/{$opportunityId}/opportunity_items", [
+            return $client->postAsync("opportunities/{$opportunity_id}/opportunity_items", [
                 'headers' => $headers,
                 'query' => $query,
             ]);
         }, $groups);
 
         $responses = Promise\Utils::settle($promises)->wait();
-        $existingGroups = $this->existingGroups;
+        $existing_groups = $this->existing_groups;
 
         foreach ($responses as $key => $response) {
             if ($response['state'] !== 'fulfilled') {
@@ -189,26 +201,26 @@ class OpportunityItems
                 continue;
             }
 
-            $newGroup = json_decode($response['value']->getBody()->getContents(), true);
-            $existingGroups[] = [
-                'id' => $newGroup['opportunity_item']['id'],
-                'name' => $newGroup['opportunity_item']['name'],
+            $new_group = json_decode($response['value']->getBody()->getContents(), true);
+            $existing_groups[] = [
+                'id' => $new_group['opportunity_item']['id'],
+                'name' => $new_group['opportunity_item']['name'],
             ];
 
             $this->addToLog([
-                'item_id' => $newGroup['opportunity_item']['id'],
-                'item_name' => $newGroup['opportunity_item']['name'],
+                'item_id' => $new_group['opportunity_item']['id'],
+                'item_name' => $new_group['opportunity_item']['name'],
                 'action' => 'creation',
                 'error' => [],
             ]);
         }
 
-        $this->setExistingGroups($existingGroups);
+        $this->setExistingGroups($existing_groups);
     }
 
     private function storeItems(): array
     {
-        ['opportunity_items' => $opportunityItems] = $this->job;
+        ['opportunity_items' => $opportunity_items] = $this->opportunity;
 
         foreach ($this->items as $item) {
             // PREPARE ITEM DATA
@@ -221,23 +233,35 @@ class OpportunityItems
             $quantity = intval($quantity);
 
             // CHECK IF ITEM ALREADY EXISTS IN THE JOB
-            $itemIds = array_column($opportunityItems, 'item_id');
-            $index = array_search($id, $itemIds);
+            $item_ids = array_column($opportunity_items, 'item_id');
+            $index = array_search($id, $item_ids);
 
             if ($index) {
-                $itemId = $opportunityItems[$index]['id'];
+                $item_id = $opportunity_items[$index]['id'];
 
                 // ITEM EXISTS, MAYBE DELETE IT OR CHECK QUANTITY, DELETE IT AND RE-CREATE IT.
                 if ($quantity <= 0) {
-                    $this->deleteItem($itemId, $item);
-                } else {
-                    $currentQuantity = intval($opportunityItems[$index]['quantity']);
+                    $deletion = $this->deleteItem($item_id, $item);
 
-                    if ($quantity !== $currentQuantity) {
-                        $deletion = $this->deleteItem($itemId, $item, true);
+                    if ($deletion) {
+                        $this->addToDiff('removed', $item);
+                    }
+                } else {
+                    $current_quantity = intval($opportunity_items[$index]['quantity']);
+
+                    if ($quantity !== $current_quantity) {
+                        $deletion = $this->deleteItem($item_id, $item, true);
 
                         if ($deletion) {
-                            $this->createItem($item, true);
+                            $creation = $this->createItem($item, true);
+
+                            if ($creation) {
+                                if ($quantity > $current_quantity) {
+                                    $this->addToDiff('increased', $item, $quantity - $current_quantity);
+                                } else {
+                                    $this->addToDiff('reduced', $item);
+                                }
+                            }
                         }
                     }
                 }
@@ -247,11 +271,18 @@ class OpportunityItems
                     continue;
                 }
 
-                $this->createItem($item);
+                $creation = $this->createItem($item);
+
+                if ($creation) {
+                    $this->addToDiff('added', $item);
+                }
             }
         }
 
-        return $this->log;
+        return [
+            'log' => $this->log,
+            'diff' => $this->diff,
+        ];
     }
 
     private function createItem(array $item, bool $recreated = false): bool
@@ -259,12 +290,12 @@ class OpportunityItems
         [
             'id' => $id,
             'quantity' => $quantity,
-            'group_name' => $groupName,
+            'group_name' => $group_name,
         ] = $item;
 
         $query = [
             'opportunity_item' => [
-                'opportunity_id' => $this->opportunityId,
+                'opportunity_id' => $this->opportunity_id,
                 'item_id' => $id,
                 'quantity' => $quantity,
                 'price' => 0,
@@ -274,8 +305,8 @@ class OpportunityItems
         // GET GROUP ID TO BE ADDED TO
         $groupIds = array_values(array_map(function ($group) {
             return $group['id'];
-        }, array_filter($this->existingGroups, function ($group) use ($groupName) {
-            return $group['name'] === $groupName;
+        }, array_filter($this->existing_groups, function ($group) use ($group_name) {
+            return $group['name'] === $group_name;
         })));
 
         if (count($groupIds) > 0) {
@@ -283,7 +314,7 @@ class OpportunityItems
             $query['opportunity_item']['parent_opportunity_item_id'] = $groupId;
         }
 
-        $response = Http::current()->withQueryParameters($query)->post("opportunities/{$this->opportunityId}/opportunity_items");
+        $response = Http::current()->withQueryParameters($query)->post("opportunities/{$this->opportunity_id}/opportunity_items");
         $action = $recreated ? 're-creation' : 'creation';
 
         if ($response->failed()) {
@@ -314,7 +345,7 @@ class OpportunityItems
 
     private function deleteItem(int $id, array $item, bool $recreation = false): bool
     {
-        $response = Http::current()->delete("opportunities/{$this->opportunityId}/opportunity_items/{$id}");
+        $response = Http::current()->delete("opportunities/{$this->opportunity_id}/opportunity_items/{$id}");
         $quantity = $recreation ? 0 : intval($item['quantity']);
 
         if ($response->failed()) {
@@ -348,101 +379,17 @@ class OpportunityItems
         $this->log[] = $data;
     }
 
-    // private function storeItems(array $job)
-    // {
-    //     $client = new Client(['base_uri' => config('app.current_rms.host')]);
-    //     ['opportunity_items' => $opportunityItems] = $job;
+    private function addToDiff(string $action, array $item, int $added_quantity = 0)
+    {
+        if ($action === 'increased') {
+            $this->diff[$action][] = [
+                ...$item,
+                'added_quantity' => $added_quantity,
+            ];
 
-    //     $promiseItems = array_filter(array_map(function ($item) use ($client, $opportunityItems) {
-    //         // PREPARE ITEM DATA
-    //         [
-    //             'id' => $id,
-    //             'quantity' => $quantity,
-    //             'group_name' => $groupName,
-    //         ] = $item;
+            return;
+        }
 
-    //         $id = intval($id);
-    //         $quantity = intval($quantity);
-
-    //         $headers = [
-    //             'X-AUTH-TOKEN' => config('app.current_rms.auth_token'),
-    //             'X-SUBDOMAIN' => config('app.current_rms.subdomain'),
-    //         ];
-
-    //         // CHECK IF ITEM ALREADY EXISTS IN THE JOB
-    //         $itemIds = array_column($opportunityItems, 'item_id');
-    //         $index = array_search($id, $itemIds);
-
-    //         if ($index) {
-    //             $itemId = $opportunityItems[$index]['id'];
-
-    //             // ITEM EXISTS, CHECK QUANTITY, UPDATE IT OR DELETE IT.
-    //             if ($quantity <= 0) {
-    //                 return $this->prepareItemDelete($itemId, $headers, $client);
-    //             } else {
-    //                 return [
-    //                     $this->prepareItemDelete($itemId, $headers, $client),
-    //                     $this->prepareItemCreate($item, $headers, $client),
-    //                 ];
-    //             }
-    //         } else {
-    //             // ITEM DOES NOT EXIST, CHECK QUANTITY AND CREATE IT.
-    //             if ($quantity <= 0) {
-    //                 return false;
-    //             }
-
-    //             return $this->prepareItemCreate($item, $headers, $client);
-    //         }
-    //     }, $this->items));
-
-    //     $promises = [];
-
-    //     array_walk_recursive($promiseItems, function ($promiseItem) use (&$promises) {
-    //         $promises[] = $promiseItem;
-    //     });
-
-    //     $responses = Promise\Utils::settle($promises)->wait();
-
-    //     return $responses;
-    // }
-
-    // private function prepareItemCreate(array $item, array $headers, Client $client): \GuzzleHttp\Promise\PromiseInterface
-    // {
-    //     [
-    //         'id' => $id,
-    //         'quantity' => $quantity,
-    //         'group_name' => $groupName,
-    //     ] = $item;
-
-    //     $query = [
-    //         'opportunity_item' => [
-    //             'opportunity_id' => $this->opportunityId,
-    //             'item_id' => $id,
-    //             'quantity' => $quantity,
-    //             'price' => 0,
-    //         ],
-    //     ];
-
-    //     // GET GROUP ID TO BE ADDED TO
-    //     $groupIds = array_values(array_map(function ($group) {
-    //         return $group['id'];
-    //     }, array_filter($this->existingGroups, function ($group) use ($groupName) {
-    //         return $group['name'] === $groupName;
-    //     })));
-
-    //     if (count($groupIds) > 0) {
-    //         [$groupId] = $groupIds;
-    //         $query['opportunity_item']['parent_opportunity_item_id'] = $groupId;
-    //     }
-
-    //     return $client->postAsync("opportunities/{$this->opportunityId}/opportunity_items", [
-    //         'headers' => $headers,
-    //         'query' => $query,
-    //     ]);
-    // }
-
-    // private function prepareItemDelete(int $itemId, array $headers, Client $client): \GuzzleHttp\Promise\PromiseInterface
-    // {
-    //     return $client->deleteAsync("opportunities/{$this->opportunityId}/opportunity_items/{$itemId}", ['headers' => $headers]);
-    // }
+        $this->diff[$action][] = $item;
+    }
 }

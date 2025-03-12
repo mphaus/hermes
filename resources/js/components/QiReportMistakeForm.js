@@ -47,7 +47,7 @@ export default function QiReportMistakeForm () {
                     return;
                 }
 
-                console.log( error );
+                console.error( error );
             } finally {
                 this.submitting = false;
             }
