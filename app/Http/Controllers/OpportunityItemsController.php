@@ -119,7 +119,11 @@ class OpportunityItemsController extends Controller
                                 $remark .= '<ul>';
 
                                 foreach ($items as $item) {
-                                    $remark .= __('<li>:added_quantity x :item_name were added</li>', ['quantity' => $item['added_quantity'], 'item_name' => $item['item_name']]);
+                                    $remark .= __('<li>:added_quantity x :item_name were added (now :quantity are required)</li>', [
+                                        'added_quantity' => $item['added_quantity'],
+                                        'item_name' => $item['item_name'],
+                                        'quantity' => $item['quantity'],
+                                    ]);
                                 }
 
                                 $remark .= '</ul>';
@@ -161,7 +165,13 @@ class OpportunityItemsController extends Controller
                     }
 
                     $remark .= '</ul>';
-                    dd($remark);
+
+                    Http::current()->post("discussions/{$discussions[0]['id']}/comments", [
+                        'discussion_id' => $discussions[0]['id'],
+                        'remark' => $remark,
+                        'html' => true,
+                        'created_by' => $opportunity['owned_by'],
+                    ]);
                 }
             }
         }
