@@ -5,7 +5,6 @@
 <x-form
     action="{{ route('opportunity-items.store') }}"
     method="POST"
-    novalidate
     x-data="EquipmentImportForm({{ Js::from($opportunityId) }})"
     x-on:submit.prevent="send"
 >
