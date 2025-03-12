@@ -41,6 +41,14 @@
   ::file-selector-button {
     border-color: var(--color-gray-200, currentColor);
   }
+
+  dialog {
+    margin: auto;
+  }
+
+  button {
+    cursor: pointer;
+  }
 }
 
 @utility flow {
