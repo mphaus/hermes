@@ -95,15 +95,20 @@ class OpportunityItemsController extends Controller
                         switch ($action) {
                             case 'reduced':
                                 $remark .= '<li>';
-                                $remark .= __(':count :product with <strong>:action</strong> counts', [
+                                $remark .= __(':count :product with <strong>:action</strong> counts (:final_sentence)', [
                                     'count' => $count,
-                                    'product' => $count > 1 ? __('Products') : __('Product'),
-                                    'action' => $action
+                                    'product' => $count === 1 ? __('Product') : __('Products'),
+                                    'action' => $action,
+                                    'final_sentence' => $count === 1 ? __('fewer of this are required') : __('fewer of these are required')
                                 ]);
                                 $remark .= '<ul>';
 
                                 foreach ($items as $item) {
-                                    $remark .= __('<li>Now, only :quantity x :item_name are required</li>', ['quantity' => $item['quantity'], 'item_name' => $item['item_name']]);
+                                    $remark .= __('<li>Now, only :quantity x :item_name :present_tense required</li>', [
+                                        'quantity' => $item['quantity'],
+                                        'item_name' => $item['item_name'],
+                                        'present_tense' => $count === 1 ? __('is') : __('are'),
+                                    ]);
                                 }
 
                                 $remark .= '</ul>';
@@ -111,10 +116,11 @@ class OpportunityItemsController extends Controller
                                 break;
                             case 'increased':
                                 $remark .= '<li>';
-                                $remark .= __(':count :product with <strong>:action</strong> counts', [
+                                $remark .= __(':count :product with <strong>:action</strong> counts (:final_sentence)', [
                                     'count' => $count,
-                                    'product' => $count > 1 ? __('Products') : __('Product'),
-                                    'action' => $action
+                                    'product' => $count === 1 ? __('Product') : __('Products'),
+                                    'action' => $action,
+                                    'final_sentence' => $count === 1 ? __('more of this are required') : __('more of these are required'),
                                 ]);
                                 $remark .= '<ul>';
 
@@ -131,10 +137,11 @@ class OpportunityItemsController extends Controller
                                 break;
                             case 'removed':
                                 $remark .= '<li>';
-                                $remark .= __(':count :product were <strong>:action</strong>', [
+                                $remark .= __(':count :product :past_tense <strong>:action</strong> (none of these are required now)', [
                                     'count' => $count,
-                                    'product' => $count > 1 ? __('Products') : __('Product'),
-                                    'action' => $action
+                                    'product' => $count === 1 ? __('Product') : __('Products'),
+                                    'action' => $action,
+                                    'past_tense' => $count === 1 ? __('was') : __('were'),
                                 ]);
                                 $remark .= '<ul>';
 
@@ -147,15 +154,21 @@ class OpportunityItemsController extends Controller
                                 break;
                             case 'added':
                                 $remark .= '<li>';
-                                $remark .= __(':count :product were <strong>:action</strong>', [
+                                $remark .= __(':count :product :past_tense <strong>:action</strong> (:final_sentence)', [
                                     'count' => $count,
-                                    'product' => $count > 1 ? __('Products') : __('Product'),
-                                    'action' => $action
+                                    'product' => $count === 1 ? __('Product') : __('Products'),
+                                    'past_tense' => $count === 1 ? __('was') : __('were'),
+                                    'action' => $action,
+                                    'final_sentence' => $count === 1 ? __('it was not present before') : __('they were not present before')
                                 ]);
                                 $remark .= '<ul>';
 
                                 foreach ($items as $item) {
-                                    $remark .= __('<li>:quantity x :item_name have been added</li>', ['quantity' => $item['quantity'], 'item_name' => $item['item_name']]);
+                                    $remark .= __('<li>:quantity x :item_name :perfect_present been added</li>', [
+                                        'quantity' => $item['quantity'],
+                                        'item_name' => $item['item_name'],
+                                        'perfect_present' => $count === 1 ? __('has') : __('have')
+                                    ]);
                                 }
 
                                 $remark .= '</ul>';
