@@ -4,7 +4,7 @@
     <span class="block mt-2 text-sm font-normal">{{ __('Double check the spelling of the name') }}</span>
 </x-slot>
 <div>
-    <x-card class="max-w-screen-sm mx-auto flow animate-pulse">
+    <x-card class="max-w-(--breakpoint-sm) mx-auto flow animate-pulse">
         <div class="h-6 bg-gray-200 rounded-lg"></div>
         <div class="flow">
             <div class="grid gap-4 md:grid-cols-2">

@@ -40,15 +40,15 @@
             </div>
             <div>
                 <div class="flex items-start gap-1 mt-2" x-show="$wire.form.opportunity_type === 'production-lighting-hire'">
-                    <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
+                    <x-icon-info class="shrink-0 w-4 h-4 text-blue-500" />
                     <p class="text-xs">{{ __('Enter a few letters from the name of the Job and select from the shortlist.') }}</p>
                 </div>
                 <div class="flex items-start gap-1 mt-2" x-show="$wire.form.opportunity_type === 'dry-hire'" x-cloak>
-                    <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
+                    <x-icon-info class="shrink-0 w-4 h-4 text-blue-500" />
                     <p class="text-xs">{{ __('Enter the Quote number from the Picking List for this Job (shown at the top of the first page of the Picking List).') }}</p>
                 </div>
                 <div class="flex items-start gap-1 mt-2" x-show="$wire.form.opportunity_type === 'not-associated'" x-cloak>
-                    <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
+                    <x-icon-info class="shrink-0 w-4 h-4 text-blue-500" />
                     <div class="space-y-2">
                         <p class="text-xs">{{ __('Allocating faulty equipment to Jobs is always best, but sometimes faults are identified outside of a Job. Some examples include;') }}</p>
                         <ul class="pl-5 space-y-1 text-xs list-disc">
@@ -95,7 +95,7 @@
             <div class="flow">
                 <label class="block font-semibold">{{ __('Technical Supervisor') }}</label>
                 <div class="flex items-start gap-1 mt-2">
-                    <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
+                    <x-icon-info class="shrink-0 w-4 h-4 text-blue-500" />
                     <p class="text-xs">{{ __('The Technical Supervisor is specified in Opportunity in CurrentRMS and cannot be edited here.') }}</p>
                 </div>
                 <p x-text="technicalSupervisorName"></p>
@@ -107,7 +107,7 @@
         <div class="flow">
             <label class="block font-semibold">{{ __('Product') }}</label>
             <div class="flex items-start gap-1 mt-2">
-                <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
+                <x-icon-info class="shrink-0 w-4 h-4 text-blue-500" />
                 <p class="text-xs">{{ __('Type the first few letters of the product and pause to let the system get info from CurrentRMS. Select the exact-match product. If the item cannot be found in this listing, double-check the spelling of the item name (per the info plate on the equipment), then ask the SRMM Manager for advice on how to proceed.') }}</p>
             </div>
             <div class="relative">
@@ -128,7 +128,7 @@
         <div class="flow">
             <label class="block font-semibold">{{ __('Reference') }}</label>
             <div class="flex items-start gap-1 mt-2">
-                <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
+                <x-icon-info class="shrink-0 w-4 h-4 text-blue-500" />
                 <p class="text-xs">{{ __('The item\'s serial number is used to uniquely identify the faulty item. Do not confuse this with the item\'s model number. If the serial number has hyphens (-) or slashes (/), enter them as shown on the serial number label.') }}</p>
             </div>
             <div class="flow">
@@ -176,7 +176,7 @@
                     x-cloak 
                     x-show="$wire.form.serial_number_status === 'missing-serial-number'"
                 >
-                    <x-icon-triangle-alert class="flex-shrink-0 w-4 h-4 text-yellow-500" />
+                    <x-icon-triangle-alert class="shrink-0 w-4 h-4 text-yellow-500" />
                     <p class="text-xs">
                         {{ __('This option is selected if this equipment normally has a serial number assigned, but it\'s unreadable or has fallen off. Add \'Assign manual serial number\' to the Fault description field (in addition to other faults this equipment has).') }}
                     </p>
@@ -186,7 +186,7 @@
                     x-cloak
                     x-show="$wire.form.serial_number_status === 'not-serialised'"
                 >
-                    <x-icon-triangle-alert class="flex-shrink-0 w-4 h-4 text-yellow-500" />
+                    <x-icon-triangle-alert class="shrink-0 w-4 h-4 text-yellow-500" />
                     <p class="text-xs">
                         {{ __('This option is selected if this type of equipment is never serialised at all. Notify the Warehouse and SRMM Managers by email about this (as well as registering it here in Quarantine) - they will plan to serialise this type of equipment.') }}
                     </p>
@@ -198,7 +198,7 @@
         <div class="flow">
             <label class="block font-semibold">{{ __('Ready for repairs') }}</label>
             <div class="flex items-start gap-1 mt-2">
-                <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
+                <x-icon-info class="shrink-0 w-4 h-4 text-blue-500" />
                 <p class="text-xs">{{ __('Set the date this item is expected to be in the warehouse, available for Repairs Technicians to work on. If the faulty item is already in the Warehouse and is about to be placed on Quarantine Intake shelves, leave the date as today\'s.') }}</p>
             </div>
             <div class="relative">
@@ -216,7 +216,7 @@
         <div class="flow">
             <label class="block font-semibold">{{ __('Intake location') }}</label>
             <div class="flex items-start gap-1 mt-2">
-                <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
+                <x-icon-info class="shrink-0 w-4 h-4 text-blue-500" />
                 <p class="text-xs ">{{ __('Indicate where this item will be stored in the Quarantine Intake Area.') }}</p>
             </div>
             <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
@@ -249,7 +249,7 @@
                         </div>
                     </div>
                     <div class="flex items-start gap-1">
-                        <x-icon-triangle-alert class="flex-shrink-0 w-4 h-4 text-yellow-500" />
+                        <x-icon-triangle-alert class="shrink-0 w-4 h-4 text-yellow-500" />
                         <p class="text-xs">
                             {{ __('Specify the Quarantine Intake shelf ID of where this fixture will be placed. Look for a vacant shelf position before entering this information. Tend to use aisles A, B, C, D E and F (in that order) first. Enter one letter for the aisle, and a number for the position on that shelf. A hyphen is added added automatically.') }}
                         </p>
@@ -258,7 +258,7 @@
             </template>
             <template hidden x-if="$wire.form.intake_location_type === 'in-the-bulky-items-area'">
                 <div class="flex items-start gap-1">
-                    <x-icon-triangle-alert class="flex-shrink-0 w-4 h-4 text-yellow-500" />
+                    <x-icon-triangle-alert class="shrink-0 w-4 h-4 text-yellow-500" />
                     <p class="text-xs">
                         {{ __('This item is to be placed in the Quarantine Intake area for bulky items. Ensure the OOS sticker is facing outwards, and the item does not cover OOS stickers on other items in the area, or prevent access to Repairs Nally bins.') }}
                     </p>
@@ -271,7 +271,7 @@
         <div class="flow">
             <label class="block font-semibold">{{ __('Primary fault classification') }}</label>
             <div class="flex items-start gap-1 mt-2">
-                <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
+                <x-icon-info class="shrink-0 w-4 h-4 text-blue-500" />
                 <p class="text-xs">{{ __('Classify the type of primary fault with this item (that is, if an item has multiple reasons for submission to Quarantine, which is the most prominent / serious?)') }}</p>
             </div>
             <div class="relative">
@@ -292,7 +292,7 @@
         <div class="flow">
             <label class="block font-semibold">{{ __('Fault description') }}</label>
             <div class="flex items-start gap-1 mt-2">
-                <x-icon-info class="flex-shrink-0 w-4 h-4 text-blue-500" />
+                <x-icon-info class="shrink-0 w-4 h-4 text-blue-500" />
                 <p class="text-xs">{{ __('Enter a concise, meaningful and objective fault description.') }}</p>
             </div>
             <div class="relative">

@@ -28,7 +28,7 @@
         <div class="mt-8">{{ $this->jobs['opportunities']->links('pagination') }}</div>
     @else
         <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-            <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
+            <div class="overflow-hidden bg-white shadow-xs sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     {{ __('There are no active Jobs to display.') }}
                 </div>

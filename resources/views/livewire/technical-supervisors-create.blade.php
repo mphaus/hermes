@@ -4,7 +4,7 @@
     <span class="block mt-2 text-sm font-normal">{{ __('Double check the spelling of the name') }}</span>
 </x-slot>
 <div>
-    <x-card class="max-w-screen-sm mx-auto flow">
+    <x-card class="max-w-(--breakpoint-sm) mx-auto flow">
         <p class="font-semibold">{{ __('Technical Supervisor') }}</p>
         <x-technical-supervisor-form :message="$message" />
     </x-card>

@@ -8,7 +8,7 @@
 
         <title>{{ isset($title) ? config('app.name') . ' - ' . $title : config('app.name') }}</title>
 
-        <link rel="shortcut icon" href="{{ Vite::asset('resources/images/favicon.png') }}" type="image/png">
+        <link rel="shortcut icon" href="{{ Vite::asset('resources/images/hermes-logo.png') }}" type="image/png">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -37,7 +37,7 @@
                     @if (isset($heading))
                         <x-app-header :heading="$heading" />
                     @endif
-                    <div class="px-4 py-6 mx-auto max-w-screen-2xl xl:px-8">{{ $slot }}</div>
+                    <div class="px-4 py-6 mx-auto max-w-(--breakpoint-2xl) xl:px-8">{{ $slot }}</div>
                 </section>
             </main>
         </div>

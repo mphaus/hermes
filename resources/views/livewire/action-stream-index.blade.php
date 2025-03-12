@@ -33,7 +33,7 @@
                 <div class="mt-8">{{ $this->actions['log']->links('pagination') }}</div>
             </section>
         @else
-            <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg" wire:loading.class="hidden">
+            <div class="overflow-hidden bg-white shadow-xs sm:rounded-lg" wire:loading.class="hidden">
                 <div class="p-6 text-gray-900">
                     {{ __('There are no actions to display.') }}
                 </div>

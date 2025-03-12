@@ -20,7 +20,7 @@ $scrollIntoViewJsSnippet = ($scrollTo !== false)
                             {!! __('pagination.previous') !!}
                         </span>
                     @else
-                        <button type="button" wire:click="previousPage('{{ $paginator->getPageName() }}')" x-on:click="{{ $scrollIntoViewJsSnippet }}" wire:loading.attr="disabled" dusk="previousPage{{ $paginator->getPageName() == 'page' ? '' : '.' . $paginator->getPageName() }}.before" class="relative inline-flex items-center font-medium transition duration-150 ease-in-out focus:outline-none focus:ring text-primary-500 hover:text-primary-600">
+                        <button type="button" wire:click="previousPage('{{ $paginator->getPageName() }}')" x-on:click="{{ $scrollIntoViewJsSnippet }}" wire:loading.attr="disabled" dusk="previousPage{{ $paginator->getPageName() == 'page' ? '' : '.' . $paginator->getPageName() }}.before" class="relative inline-flex items-center font-medium transition duration-150 ease-in-out focus:outline-hidden focus:ring-3 text-primary-500 hover:text-primary-600">
                             {!! __('pagination.previous') !!}
                         </button>
                     @endif
@@ -28,7 +28,7 @@ $scrollIntoViewJsSnippet = ($scrollTo !== false)
 
                 <span>
                     @if ($paginator->hasMorePages())
-                        <button type="button" wire:click="nextPage('{{ $paginator->getPageName() }}')" x-on:click="{{ $scrollIntoViewJsSnippet }}" wire:loading.attr="disabled" dusk="nextPage{{ $paginator->getPageName() == 'page' ? '' : '.' . $paginator->getPageName() }}.before" class="relative inline-flex items-center font-medium transition duration-150 ease-in-out focus:outline-none focus:ring text-primary-500 hover:text-primary-600">
+                        <button type="button" wire:click="nextPage('{{ $paginator->getPageName() }}')" x-on:click="{{ $scrollIntoViewJsSnippet }}" wire:loading.attr="disabled" dusk="nextPage{{ $paginator->getPageName() == 'page' ? '' : '.' . $paginator->getPageName() }}.before" class="relative inline-flex items-center font-medium transition duration-150 ease-in-out focus:outline-hidden focus:ring-3 text-primary-500 hover:text-primary-600">
                             {!! __('pagination.next') !!}
                         </button>
                     @else
@@ -65,7 +65,7 @@ $scrollIntoViewJsSnippet = ($scrollTo !== false)
                                     </span>
                                 </span>
                             @else
-                                <button type="button" wire:click="previousPage('{{ $paginator->getPageName() }}')" x-on:click="{{ $scrollIntoViewJsSnippet }}" dusk="previousPage{{ $paginator->getPageName() == 'page' ? '' : '.' . $paginator->getPageName() }}.after" class="relative inline-flex items-center px-2 py-2 font-medium transition duration-150 ease-in-out focus:z-10 focus:outline-none text-primary-500 hover:text-primary-600" aria-label="{{ __('pagination.previous') }}">
+                                <button type="button" wire:click="previousPage('{{ $paginator->getPageName() }}')" x-on:click="{{ $scrollIntoViewJsSnippet }}" dusk="previousPage{{ $paginator->getPageName() == 'page' ? '' : '.' . $paginator->getPageName() }}.after" class="relative inline-flex items-center px-2 py-2 font-medium transition duration-150 ease-in-out focus:z-10 focus:outline-hidden text-primary-500 hover:text-primary-600" aria-label="{{ __('pagination.previous') }}">
                                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
                                     </svg>
@@ -91,7 +91,7 @@ $scrollIntoViewJsSnippet = ($scrollTo !== false)
                                                 <span class="relative inline-flex items-center px-4 py-2 -ml-px font-medium cursor-default text-primary-500">{{ $page }}</span>
                                             </span>
                                         @else
-                                            <button type="button" wire:click="gotoPage({{ $page }}, '{{ $paginator->getPageName() }}')" x-on:click="{{ $scrollIntoViewJsSnippet }}" class="relative inline-flex items-center px-4 py-2 -ml-px font-medium text-gray-400 transition duration-150 ease-in-out hover:text-primary-600 focus:z-10 focus:outline-none" aria-label="{{ __('Go to page :page', ['page' => $page]) }}">
+                                            <button type="button" wire:click="gotoPage({{ $page }}, '{{ $paginator->getPageName() }}')" x-on:click="{{ $scrollIntoViewJsSnippet }}" class="relative inline-flex items-center px-4 py-2 -ml-px font-medium text-gray-400 transition duration-150 ease-in-out hover:text-primary-600 focus:z-10 focus:outline-hidden" aria-label="{{ __('Go to page :page', ['page' => $page]) }}">
                                                 {{ $page }}
                                             </button>
                                         @endif
@@ -103,7 +103,7 @@ $scrollIntoViewJsSnippet = ($scrollTo !== false)
                         <span>
                             {{-- Next Page Link --}}
                             @if ($paginator->hasMorePages())
-                                <button type="button" wire:click="nextPage('{{ $paginator->getPageName() }}')" x-on:click="{{ $scrollIntoViewJsSnippet }}" dusk="nextPage{{ $paginator->getPageName() == 'page' ? '' : '.' . $paginator->getPageName() }}.after" class="relative inline-flex items-center px-2 py-2 -ml-px font-medium transition duration-150 ease-in-out focus:z-10 focus:outline-none text-primary-500 hover:text-primary-600" aria-label="{{ __('pagination.next') }}">
+                                <button type="button" wire:click="nextPage('{{ $paginator->getPageName() }}')" x-on:click="{{ $scrollIntoViewJsSnippet }}" dusk="nextPage{{ $paginator->getPageName() == 'page' ? '' : '.' . $paginator->getPageName() }}.after" class="relative inline-flex items-center px-2 py-2 -ml-px font-medium transition duration-150 ease-in-out focus:z-10 focus:outline-hidden text-primary-500 hover:text-primary-600" aria-label="{{ __('pagination.next') }}">
                                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
                                     </svg>

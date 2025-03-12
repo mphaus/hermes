@@ -5,9 +5,9 @@
 </x-slot>
 <div class="flow">
     @if (empty($this->technicalSupervisors))
-        <x-generic-error class="max-w-screen-md mx-auto" message="{{ __('In order to submit a Quarantine, one or more Technical Supervisors must have been previously created using the Technical Supervisor CRUD. It is also recommended that a Technical Supervisor has been assigned to Opportunities.') }}" />
+        <x-generic-error class="max-w-(--breakpoint-md) mx-auto" message="{{ __('In order to submit a Quarantine, one or more Technical Supervisors must have been previously created using the Technical Supervisor CRUD. It is also recommended that a Technical Supervisor has been assigned to Opportunities.') }}" />
     @else
-        <div class="max-w-screen-md mx-auto flow">
+        <div class="max-w-(--breakpoint-md) mx-auto flow">
             <p class="font-semibold">{{ __('Quarantine Intake') }}</p>
             <x-quarantine-intake-form :alert="$alert" />
         </div>

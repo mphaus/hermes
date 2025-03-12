@@ -6,7 +6,7 @@
     @else
         <section class="flex items-end gap-2">
             <div class="flex-1 space-y-1 max-w-64">
-                <x-input-label value="{{ __('Date') }}" class="!text-xs" />
+                <x-input-label value="{{ __('Date') }}" class="text-xs!" />
                 <x-input
                     type="text"
                     placeholder="{{ __('Select a date') }}"
@@ -31,7 +31,7 @@
                 @endforeach
             </section>
         @else
-            <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg" wire:loading.class="hidden">
+            <div class="overflow-hidden bg-white shadow-xs sm:rounded-lg" wire:loading.class="hidden">
                 <div class="p-6 text-gray-900">
                     {{ __('There is no QET to display. Please, select a date') }}
                 </div>
