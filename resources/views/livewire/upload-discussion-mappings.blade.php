@@ -14,7 +14,7 @@
             <x-input-label 
                 for="comments"
                 value="{{ __('Change notes') }}" 
-                class="!text-xs" 
+                class="text-xs!" 
             />
             <x-textarea 
                 class="block w-full" 

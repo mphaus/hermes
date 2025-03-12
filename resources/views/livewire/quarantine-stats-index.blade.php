@@ -17,7 +17,7 @@
                     <div class="space-y-1 text-sm">
                         <p class="font-semibold xl:hidden">{{ __('Product') }}</p>
                         <p>
-                            <a href="#" class="after:absolute after:inset-0 after:z-[1]">Lorem, ipsum dolor.</a>
+                            <a href="#" class="after:absolute after:inset-0 after:z-1">Lorem, ipsum dolor.</a>
                         </p>
                     </div>
                     <div class="space-y-1 text-sm xl:col-span-2">

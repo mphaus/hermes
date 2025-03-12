@@ -4,7 +4,7 @@
     <div class="flex flex-col gap-2 lg:grid lg:grid-cols-[28rem_1fr_1fr] xl:grid-cols-[45rem_1fr_1fr]">
         <a 
             href="{{ route('jobs.show', ['id' => $job['id']]) }}" 
-            class="after:absolute after:inset-0 after:z-[1] after:content-['']" 
+            class="after:absolute after:inset-0 after:z-1 after:content-['']" 
             title="{{ $job['subject'] }}" 
             wire:navigate
         >

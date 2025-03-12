@@ -9,7 +9,7 @@
             <p class="text-sm">{!! __('No default Discussion mappings are currently found. To proceed, please create a new set on the <a href=":url" title=":title" wire:navigate>Edit default Discussions</a> page.', ['url' => route('discussions.edit'), 'title' => __('Edit default Discussions')]) !!}</p>
         </x-card>
     @else
-        <x-card class="max-w-screen-md mx-auto flow">
+        <x-card class="max-w-(--breakpoint-md) mx-auto flow">
             <p class="font-semibold">{{ __('Create Discussions') }}</p>
             <x-form class="space-y-8" wire:submit="save">
                 <div class="space-y-1">
@@ -25,7 +25,7 @@
                             wire:model="form.createOnProject" 
                             x-on:change="$dispatch('hermes:create-discussions-create-on-project-change', { createOnProject: $event.target.checked })"
                         />
-                        <x-input-label for="discussions-project-check" value="{{ __('Create Discussions on Project instead') }}" class="!text-xs font-semibold cursor-pointer" />
+                        <x-input-label for="discussions-project-check" value="{{ __('Create Discussions on Project instead') }}" class="text-xs! font-semibold cursor-pointer" />
                     </div>
                     <livewire:create-discussions-object />
                     <x-input-error :messages="$errors->get('form.objectId')" />

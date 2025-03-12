@@ -1,7 +1,7 @@
 <x-slot name="title">{{ $user->full_name }}</x-slot>
 <x-slot name="heading">{{ $user->full_name }}</x-slot>
 <x-card @class([
-    'max-w-screen-md mx-auto',
+    'max-w-(--breakpoint-md) mx-auto',
     'grid gap-4 md:grid-cols-2' => !$user->is_admin,
     'space-y-4' => $user->is_admin,
 ])

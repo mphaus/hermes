@@ -1,6 +1,125 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@plugin '@tailwindcss/forms';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+
+@theme {
+  --font-sans:
+    Figtree, ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+  --color-primary-100: #f2d6dd;
+  --color-primary-200: #e5aebb;
+  --color-primary-300: #d88599;
+  --color-primary-400: #cb5d77;
+  --color-primary-500: #be3455;
+  --color-primary-600: #982a44;
+  --color-primary-700: #721f33;
+  --color-primary-800: #4c1522;
+  --color-primary-900: #260a11;
+}
+
+@utility container {
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+
+  dialog {
+    margin: auto;
+  }
+
+  button {
+    cursor: pointer;
+  }
+}
+
+@utility flow {
+  & > * + * {
+    margin-block-start: var(--flow-spacing, 1em);
+  }
+}
+
+@utility container {
+  @apply 2xl:max-w-(--breakpoint-xl);
+}
+
+@utility button {
+  @apply inline-flex items-center justify-center px-4 py-3 border border-transparent rounded-md font-semibold text-xs uppercase tracking-widest focus:outline-hidden focus:ring-2 focus:ring-offset-2 transition ease-in-out duration-150 active:shadow-inner disabled:pointer-events-none disabled:opacity-50 gap-2;
+
+  & a {
+    @apply inline-flex items-center justify-center px-4 py-3 border border-transparent rounded-md font-semibold text-xs uppercase tracking-widest focus:outline-hidden focus:ring-2 focus:ring-offset-2 transition ease-in-out duration-150 active:shadow-inner disabled:pointer-events-none disabled:opacity-50 gap-2;
+  }
+
+  &a.disabled {
+    @apply pointer-events-none opacity-50;
+  }
+}
+
+@utility disabled {
+  &a.button {
+    @apply pointer-events-none opacity-50;
+  }
+}
+
+@utility button-sm {
+  @apply px-2 py-1;
+
+  & a {
+    @apply px-2 py-1;
+  }
+}
+
+@utility button-primary {
+  @apply bg-primary-500 border-primary-500 text-white hover:bg-primary-600 focus:bg-primary-600 active:bg-primary-600 focus:ring-primary-600 hover:border-primary-600 focus:border-primary-600 active:border-primary-600;
+
+  & a {
+    @apply bg-primary-500 border-primary-500 text-white hover:bg-primary-600 focus:bg-primary-600 active:bg-primary-600 focus:ring-primary-600 hover:border-primary-600 focus:border-primary-600 active:border-primary-600;
+  }
+}
+
+@utility button-outline-primary {
+  @apply bg-transparent text-primary-500 border-primary-500 hover:text-white hover:bg-primary-600 hover:border-primary-600 active:bg-primary-600 active:border-primary-600 focus:border-primary-600 focus:ring-primary-600 active:text-white;
+
+  & a {
+    @apply bg-transparent text-primary-500 border-primary-500 hover:text-white hover:bg-primary-600 hover:border-primary-600 active:bg-primary-600 active:border-primary-600 focus:border-primary-600 focus:ring-primary-600 active:text-white;
+  }
+
+  &.pressed {
+    @apply bg-primary-600 border-primary-600 ring-primary-600 text-white ring-2 ring-offset-2;
+  }
+
+  & a.pressed {
+    @apply bg-primary-600 border-primary-600 ring-primary-600 text-white ring-2 ring-offset-2;
+  }
+}
+
+@utility pressed {
+  &.button-outline-primary {
+    @apply bg-primary-600 border-primary-600 ring-primary-600 text-white ring-2 ring-offset-2;
+  }
+
+  & a.button-outline-primary {
+    @apply bg-primary-600 border-primary-600 ring-primary-600 text-white ring-2 ring-offset-2;
+  }
+}
 
 @layer base {
     a {
@@ -16,47 +135,10 @@
     [x-cloak] {
         @apply hidden;
     }
-
-    .flow > * + * {
-        margin-block-start: var(--flow-spacing, 1em);
-    }
-
-    .container {
-        @apply 2xl:max-w-screen-xl;
-    }
-
-    .button,
-    a.button {
-        @apply inline-flex items-center justify-center px-4 py-3 border border-transparent rounded-md font-semibold text-xs uppercase tracking-widest focus:outline-none focus:ring-2 focus:ring-offset-2 transition ease-in-out duration-150 active:shadow-inner disabled:pointer-events-none disabled:opacity-50 gap-2;
-    }
-
-    a.button.disabled {
-        @apply pointer-events-none opacity-50;
-    }
-
-    .button-sm,
-    a.button-sm {
-        @apply px-2 py-1;
-    }
-
-    .button-primary,
-    a.button-primary {
-        @apply bg-primary-500 border-primary-500 text-white hover:bg-primary-600 focus:bg-primary-600 active:bg-primary-600 focus:ring-primary-600 hover:border-primary-600 focus:border-primary-600 active:border-primary-600;
-    }
-
-    .button-outline-primary,
-    a.button-outline-primary {
-        @apply bg-transparent text-primary-500 border-primary-500 hover:text-white hover:bg-primary-600 hover:border-primary-600 active:bg-primary-600 active:border-primary-600 focus:border-primary-600 focus:ring-primary-600 active:text-white;
-    }
-
-    .button-outline-primary.pressed,
-    a.button-outline-primary.pressed {
-        @apply bg-primary-600 border-primary-600 ring-primary-600 text-white ring-2 ring-offset-2;
-    }
 }
 
 .select2-container--default .select2-selection--multiple {
-    @apply border-gray-300 rounded-md shadow-sm px-3 py-2;
+    @apply border-gray-300 rounded-md shadow-xs px-3 py-2;
 }
 
 .select2-container--default.select2-container--focus .select2-selection--multiple,

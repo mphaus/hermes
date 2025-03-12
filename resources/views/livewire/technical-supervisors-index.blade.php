@@ -7,7 +7,7 @@
     @if ($this->technicalSupervisors['error'])
         <x-generic-error :message="$this->technicalSupervisors['error']" />
     @else
-        <header class="flex justify-end max-w-screen-xl mx-auto">
+        <header class="flex justify-end max-w-(--breakpoint-xl) mx-auto">
             <x-button
                 href="{{ route('technical-supervisors.create') }}"
                 variant="primary"
@@ -20,15 +20,15 @@
         </header>
         @if ($this->technicalSupervisors['people']->isNotEmpty())
             <section class="mt-8 flow">
-                <div class="grid max-w-screen-xl gap-4 mx-auto md:grid-cols-2 lg:grid-cols-3">
+                <div class="grid max-w-(--breakpoint-xl) gap-4 mx-auto md:grid-cols-2 lg:grid-cols-3">
                     @foreach ($this->technicalSupervisors['people'] as $person)
                         <x-technical-supervisors-item :technicalSupervisor="$person" wire:key="{{ $person['id'] }}" />
                     @endforeach
                 </div>
             </section>
         @else
-            <div class="max-w-screen-xl mx-auto">
-                <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
+            <div class="max-w-(--breakpoint-xl) mx-auto">
+                <div class="overflow-hidden bg-white shadow-xs sm:rounded-lg">
                     <div class="p-6 text-gray-900">
                         {{ __('There are no Technical Supervisors to display.') }}
                     </div>

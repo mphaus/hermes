@@ -11,7 +11,7 @@
             <p>{{ __('There\'s no Technical Supervisor to edit.') }}</p>
         </x-card>
     @else
-        <x-card class="max-w-screen-sm mx-auto flow">
+        <x-card class="max-w-(--breakpoint-sm) mx-auto flow">
             <p class="font-semibold">{{ __('Edit Techical Supervisor') }}</p>
             <x-technical-supervisor-form :message="$message" />
         </x-card>

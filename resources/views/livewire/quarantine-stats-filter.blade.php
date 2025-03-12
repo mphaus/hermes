@@ -38,19 +38,19 @@
     </div>
     <div class="grid gap-2 sm:grid-cols-2">
         <div class="space-y-1">
-            <x-input-label class="!text-xs">{{ __('Products') }}</x-input-label>
+            <x-input-label class="text-xs!">{{ __('Products') }}</x-input-label>
             <x-select-product :multiple="true" />
         </div>
         <div class="space-y-1">
-            <x-input-label class="!text-xs">{{ __('Technical Supervisors') }}</x-input-label>
+            <x-input-label class="text-xs!">{{ __('Technical Supervisors') }}</x-input-label>
             <livewire:select-technical-supervisor lazy :multiple="true" />
         </div>
         <div class="space-y-1">
-            <x-input-label class="!text-xs">{{ __('Opportunities or Projects') }}</x-input-label>
+            <x-input-label class="text-xs!">{{ __('Opportunities or Projects') }}</x-input-label>
             <x-select-object :multiple="true" />
         </div>
         <div class="space-y-1">
-            <x-input-label class="!text-xs">{{ __('Fault root cause') }}</x-input-label>
+            <x-input-label class="text-xs!">{{ __('Fault root cause') }}</x-input-label>
             <livewire:select-fault-root-cause lazy :multiple="true" />
         </div>
     </div>

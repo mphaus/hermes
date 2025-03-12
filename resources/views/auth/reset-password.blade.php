@@ -36,14 +36,14 @@
                 <x-icon-shushing-face class="w-5 h-5" />
             </div>
             <ul class="pl-5 space-y-1 list-disc">
-                <li class="text-red-500" x-bind:class="{ '!text-green-600' : hasCorrectLength }">{{ __('12 to 24 characters') }}</li>
+                <li class="text-red-500" x-bind:class="{ 'text-green-600!' : hasCorrectLength }">{{ __('12 to 24 characters') }}</li>
                 <li>
                     {{ __('At least') }}
                     <ul class="list-[circle] pl-7 space-y-1">
-                        <li class="text-red-500" x-bind:class="{ '!text-green-600' : hasTwoUppercaseLetters }">{{ __('2 uppercase letters') }}</li>
-                        <li class="text-red-500" x-bind:class="{ '!text-green-600' : hasTwoLowercaseLetters }">{{ __('2 lowercase letters') }}</li>
-                        <li class="text-red-500" x-bind:class="{ '!text-green-600' : hasTwoNumbers }">{{ __('2 numbers') }}</li>
-                        <li class="text-red-500" x-bind:class="{ '!text-green-600' : hasTwoSpecialCharacters }">{{ __('2 special characters (!@#$%^&*()\-_+=)') }}</li>
+                        <li class="text-red-500" x-bind:class="{ 'text-green-600!' : hasTwoUppercaseLetters }">{{ __('2 uppercase letters') }}</li>
+                        <li class="text-red-500" x-bind:class="{ 'text-green-600!' : hasTwoLowercaseLetters }">{{ __('2 lowercase letters') }}</li>
+                        <li class="text-red-500" x-bind:class="{ 'text-green-600!' : hasTwoNumbers }">{{ __('2 numbers') }}</li>
+                        <li class="text-red-500" x-bind:class="{ 'text-green-600!' : hasTwoSpecialCharacters }">{{ __('2 special characters (!@#$%^&*()\-_+=)') }}</li>
                     </ul>
                 </li>
             </ul>

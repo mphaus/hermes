@@ -10,7 +10,7 @@
         )" class="space-y-3">
         <div class="grid gap-2 lg:grid-cols-3 lg:items-end">
             <div class="space-y-1">
-                <x-input-label value="{{ __('Members') }}" class="!text-xs" />
+                <x-input-label value="{{ __('Members') }}" class="text-xs!" />
                 <select
                     class="block w-full"
                     multiple
@@ -22,7 +22,7 @@
                 </select>
             </div>
             <div class="space-y-1">
-                <x-input-label value="{{ __('Actions') }}" class="!text-xs" />
+                <x-input-label value="{{ __('Actions') }}" class="text-xs!" />
                 <select
                     class="block w-full"
                     multiple
@@ -34,7 +34,7 @@
                 </select>
             </div>
             <div class="space-y-1">
-                <x-input-label value="{{ __('Date range') }}" class="!text-xs" />
+                <x-input-label value="{{ __('Date range') }}" class="text-xs!" />
                 <x-input
                     type="text"
                     class="block w-full"

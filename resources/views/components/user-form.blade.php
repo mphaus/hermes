@@ -61,7 +61,7 @@
             <div class="flex items-start gap-2">
                 <x-input-checkbox id="is_admin" class="mt-0.5" wire:model="form.is_admin" />
                 <x-input-label for="is_admin" class="space-y-1 cursor-pointer">
-                    <p class="!font-semibold">{{ __('Is admin') }}</p>
+                    <p class="font-semibold!">{{ __('Is admin') }}</p>
                     <p class="text-xs leading-5">{{ __('Gives the user full access to all current and future functions of Hermes, including CRUD of users. Typically suitable for executive staff.') }}</p>
                 </x-input-label>
             </div>
@@ -70,7 +70,7 @@
             <div class="flex items-start gap-2">
                 <x-input-checkbox id="is_enabled" class="mt-0.5" wire:model="form.is_enabled" />
                 <x-input-label for="is_enabled" class="space-y-1 cursor-pointer">
-                    <p class="!font-semibold">{{ __('Is enabled') }}</p>
+                    <p class="font-semibold!">{{ __('Is enabled') }}</p>
                     <p class="text-xs leading-5">{{ __('Allows this user to log in when checked.') }}</p>
                 </x-input-label>
             </div>
@@ -84,7 +84,7 @@
                 <li class="flex items-start gap-2">
                     <x-input-checkbox id="{{ $permission['key'] }}" class="mt-0.5" value="{{ $permission['key'] }}" wire:model="form.permissions" x-bind:disabled="functionAccessDisabled" />
                     <x-input-label for="{{ $permission['key'] }}" class="space-y-1 cursor-pointer">
-                        <p class="!font-semibold">{{ $permission['value'] }}</span>
+                        <p class="font-semibold!">{{ $permission['value'] }}</span>
                         @if ($permission['description'])
                             <p class="text-xs leading-5">{{ $permission['description'] }}</p>
                         @endif

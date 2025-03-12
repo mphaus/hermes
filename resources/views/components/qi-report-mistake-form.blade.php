@@ -91,6 +91,6 @@
         </x-button>
     </div>
     <template hidden x-if="message">
-        <div class="p-4 !mt-4 text-white bg-green-500 rounded-md font-semibold" x-text="message"></div>
+        <div class="p-4 mt-4! text-white bg-green-500 rounded-md font-semibold" x-text="message"></div>
     </template>
 </x-form>

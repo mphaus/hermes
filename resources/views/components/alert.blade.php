@@ -7,7 +7,7 @@
         'p-4',
         'pr-9',
         'text-white',
-        'rounded',
+        'rounded-sm',
         'shadow-lg',
         'inset-x-4',
         'bottom-6',
