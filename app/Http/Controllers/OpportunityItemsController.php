@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\EquipmentImportRequest;
+use App\Models\UploadLog as ModelsUploadLog;
 use App\OpportunityItems;
 use App\UploadLog;
 use Illuminate\Support\Arr;
@@ -81,103 +82,107 @@ class OpportunityItemsController extends Controller
                  */
 
                 if ($discussions) {
-                    $remark = __(':username did a new Equipment Import for this Job. There changes were;', ['username' => Auth::user()->username]);
-                    $remark .= PHP_EOL . PHP_EOL;
-                    $remark .= '<ul>';
+                    if (ModelsUploadLog::where('job_id', $opportunity_id)->count() === 0) {
+                        $remark = __('Initial equipment list import completed');
+                    } else {
+                        $remark = __(':username did a new Equipment Import for this Job. There changes were;', ['username' => Auth::user()->username]);
+                        $remark .= PHP_EOL . PHP_EOL;
+                        $remark .= '<ul>';
 
-                    foreach ($diff as $action => $items) {
-                        if (empty($items)) {
-                            continue;
+                        foreach ($diff as $action => $items) {
+                            if (empty($items)) {
+                                continue;
+                            }
+
+                            $count = count($items);
+
+                            switch ($action) {
+                                case 'reduced':
+                                    $remark .= '<li>';
+                                    $remark .= __(':count :product with <strong>:action</strong> counts (:final_sentence)', [
+                                        'count' => $count,
+                                        'product' => $count === 1 ? __('Product') : __('Products'),
+                                        'action' => $action,
+                                        'final_sentence' => $count === 1 ? __('fewer of this are required') : __('fewer of these are required')
+                                    ]);
+                                    $remark .= '<ul>';
+
+                                    foreach ($items as $item) {
+                                        $remark .= __('<li>Now, only :quantity x :item_name :present_tense required</li>', [
+                                            'quantity' => $item['quantity'],
+                                            'item_name' => $item['item_name'],
+                                            'present_tense' => $count === 1 ? __('is') : __('are'),
+                                        ]);
+                                    }
+
+                                    $remark .= '</ul>';
+                                    $remark .= '</li>';
+                                    break;
+                                case 'increased':
+                                    $remark .= '<li>';
+                                    $remark .= __(':count :product with <strong>:action</strong> counts (:final_sentence)', [
+                                        'count' => $count,
+                                        'product' => $count === 1 ? __('Product') : __('Products'),
+                                        'action' => $action,
+                                        'final_sentence' => $count === 1 ? __('more of this are required') : __('more of these are required'),
+                                    ]);
+                                    $remark .= '<ul>';
+
+                                    foreach ($items as $item) {
+                                        $remark .= __('<li>:added_quantity x :item_name were added (now :quantity are required)</li>', [
+                                            'added_quantity' => $item['added_quantity'],
+                                            'item_name' => $item['item_name'],
+                                            'quantity' => $item['quantity'],
+                                        ]);
+                                    }
+
+                                    $remark .= '</ul>';
+                                    $remark .= '</li>';
+                                    break;
+                                case 'removed':
+                                    $remark .= '<li>';
+                                    $remark .= __(':count :product :past_tense <strong>:action</strong> (none of these are required now)', [
+                                        'count' => $count,
+                                        'product' => $count === 1 ? __('Product') : __('Products'),
+                                        'action' => $action,
+                                        'past_tense' => $count === 1 ? __('was') : __('were'),
+                                    ]);
+                                    $remark .= '<ul>';
+
+                                    foreach ($items as $item) {
+                                        $remark .= __('<li>No :item_name are required now</li>', ['item_name' => $item['item_name']]);
+                                    }
+
+                                    $remark .= '</ul>';
+                                    $remark .= '</li>';
+                                    break;
+                                case 'added':
+                                    $remark .= '<li>';
+                                    $remark .= __(':count :product :past_tense <strong>:action</strong> (:final_sentence)', [
+                                        'count' => $count,
+                                        'product' => $count === 1 ? __('Product') : __('Products'),
+                                        'past_tense' => $count === 1 ? __('was') : __('were'),
+                                        'action' => $action,
+                                        'final_sentence' => $count === 1 ? __('it was not present before') : __('they were not present before')
+                                    ]);
+                                    $remark .= '<ul>';
+
+                                    foreach ($items as $item) {
+                                        $remark .= __('<li>:quantity x :item_name :perfect_present been added</li>', [
+                                            'quantity' => $item['quantity'],
+                                            'item_name' => $item['item_name'],
+                                            'perfect_present' => $count === 1 ? __('has') : __('have')
+                                        ]);
+                                    }
+
+                                    $remark .= '</ul>';
+                                    $remark .= '</li>';
+                                    break;
+                            }
                         }
 
-                        $count = count($items);
-
-                        switch ($action) {
-                            case 'reduced':
-                                $remark .= '<li>';
-                                $remark .= __(':count :product with <strong>:action</strong> counts (:final_sentence)', [
-                                    'count' => $count,
-                                    'product' => $count === 1 ? __('Product') : __('Products'),
-                                    'action' => $action,
-                                    'final_sentence' => $count === 1 ? __('fewer of this are required') : __('fewer of these are required')
-                                ]);
-                                $remark .= '<ul>';
-
-                                foreach ($items as $item) {
-                                    $remark .= __('<li>Now, only :quantity x :item_name :present_tense required</li>', [
-                                        'quantity' => $item['quantity'],
-                                        'item_name' => $item['item_name'],
-                                        'present_tense' => $count === 1 ? __('is') : __('are'),
-                                    ]);
-                                }
-
-                                $remark .= '</ul>';
-                                $remark .= '</li>';
-                                break;
-                            case 'increased':
-                                $remark .= '<li>';
-                                $remark .= __(':count :product with <strong>:action</strong> counts (:final_sentence)', [
-                                    'count' => $count,
-                                    'product' => $count === 1 ? __('Product') : __('Products'),
-                                    'action' => $action,
-                                    'final_sentence' => $count === 1 ? __('more of this are required') : __('more of these are required'),
-                                ]);
-                                $remark .= '<ul>';
-
-                                foreach ($items as $item) {
-                                    $remark .= __('<li>:added_quantity x :item_name were added (now :quantity are required)</li>', [
-                                        'added_quantity' => $item['added_quantity'],
-                                        'item_name' => $item['item_name'],
-                                        'quantity' => $item['quantity'],
-                                    ]);
-                                }
-
-                                $remark .= '</ul>';
-                                $remark .= '</li>';
-                                break;
-                            case 'removed':
-                                $remark .= '<li>';
-                                $remark .= __(':count :product :past_tense <strong>:action</strong> (none of these are required now)', [
-                                    'count' => $count,
-                                    'product' => $count === 1 ? __('Product') : __('Products'),
-                                    'action' => $action,
-                                    'past_tense' => $count === 1 ? __('was') : __('were'),
-                                ]);
-                                $remark .= '<ul>';
-
-                                foreach ($items as $item) {
-                                    $remark .= __('<li>No :item_name are required now</li>', ['item_name' => $item['item_name']]);
-                                }
-
-                                $remark .= '</ul>';
-                                $remark .= '</li>';
-                                break;
-                            case 'added':
-                                $remark .= '<li>';
-                                $remark .= __(':count :product :past_tense <strong>:action</strong> (:final_sentence)', [
-                                    'count' => $count,
-                                    'product' => $count === 1 ? __('Product') : __('Products'),
-                                    'past_tense' => $count === 1 ? __('was') : __('were'),
-                                    'action' => $action,
-                                    'final_sentence' => $count === 1 ? __('it was not present before') : __('they were not present before')
-                                ]);
-                                $remark .= '<ul>';
-
-                                foreach ($items as $item) {
-                                    $remark .= __('<li>:quantity x :item_name :perfect_present been added</li>', [
-                                        'quantity' => $item['quantity'],
-                                        'item_name' => $item['item_name'],
-                                        'perfect_present' => $count === 1 ? __('has') : __('have')
-                                    ]);
-                                }
-
-                                $remark .= '</ul>';
-                                $remark .= '</li>';
-                                break;
-                        }
+                        $remark .= '</ul>';
                     }
-
-                    $remark .= '</ul>';
 
                     Http::current()->post("discussions/{$discussions[0]['id']}/comments", [
                         'discussion_id' => $discussions[0]['id'],

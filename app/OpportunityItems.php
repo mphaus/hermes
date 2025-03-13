@@ -15,8 +15,6 @@ class OpportunityItems
 
     protected array $opportunity;
 
-    protected array $job;
-
     protected string $filename;
 
     protected int $opportunity_id = 0;
