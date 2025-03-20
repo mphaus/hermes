@@ -11,14 +11,14 @@
                     <h2 class="text-3xl font-semibold 2xl:text-4xl">{{ __('Intake Location') }}</h2>
                     <p @class([
                         'font-bold',
-                        'text-7xl 2xl:text-9xl' => $quarantine['custom_fields']['intake_location'] !== 'Bulky items area',
-                        'text-3xl sm:text-4xl' => $quarantine['custom_fields']['intake_location'] === 'Bulky items area',
+                        'text-7xl 2xl:text-9xl' => $quarantine['custom_fields']['intake_location'] !== 'Bulky Products area',
+                        'text-3xl sm:text-4xl' => $quarantine['custom_fields']['intake_location'] === 'Bulky Products area',
                     ])>{{ $quarantine['custom_fields']['intake_location'] }}</p>
                     <p class="text-sm sm:text-lg">{{ __('Place the Product here right away!') }}</p>
                 </x-card>
             @endunless
             <x-card class="flow">
-                <p class="font-semibold">{{ __('Submitted Quarantine item details') }}</p>
+                <p class="font-semibold">{{ __('Submitted Quarantine Product details') }}</p>
                 <ul class="space-y-3 md:pl-4">
                     <li class="flex flex-col">
                         <span class="font-semibold">Submitter:</span>
@@ -86,8 +86,8 @@
                 <h2 class="text-3xl 2xl:text-4xl">{{ __('Intake Location') }}</h2>
                 <p @class([
                     'font-bold',
-                    'text-7xl 2xl:text-9xl' => $quarantine['custom_fields']['intake_location'] !== 'Bulky items area',
-                    'text-3xl 2xl:text-4xl' => $quarantine['custom_fields']['intake_location'] === 'Bulky items area',
+                    'text-7xl 2xl:text-9xl' => $quarantine['custom_fields']['intake_location'] !== 'Bulky Products area',
+                    'text-3xl 2xl:text-4xl' => $quarantine['custom_fields']['intake_location'] === 'Bulky Products area',
                 ])>{{ $quarantine['custom_fields']['intake_location'] }}</p>
                 <p class="2xl:text-lg">{{ __('Place the Product here right away!') }}</p>
             </x-card>
