@@ -163,7 +163,7 @@ class QuarantineIntakeForm extends Form
                         ? __('Bulky Products area')
                         : ($is_same_day
                             ? mb_strtoupper($validated['intake_location'])
-                            : __('TBC')),
+                            : __('NtYtAvail')),
                 ],
             ],
         ]);
