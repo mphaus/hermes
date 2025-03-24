@@ -217,7 +217,7 @@
             <label class="block font-semibold">{{ __('Intake location') }}</label>
             <div class="flex items-start gap-1 mt-2">
                 <x-icon-info class="shrink-0 w-4 h-4 text-blue-500" />
-                <p class="text-xs ">{{ __('Indicate where this item will be stored in the Quarantine Intake Area.') }}</p>
+                <p class="text-xs ">{{ __('Indicate where this Product will be stored in the Quarantine Intake Area.') }}</p>
             </div>
             <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
                 <div class="flex items-center gap-1">
