@@ -81,10 +81,24 @@ class SideMenu extends Component
                 ],
             ],
             [
-                'text' => __('Technical Supervisor CRUD'),
-                'route' => route('technical-supervisors.index'),
-                'active' => request()->routeIs('technical-supervisors.index'),
-                'permission' => ['crud-technical-supervisors'],
+                'text' => __('Role CRUD'),
+                'route' => null,
+                'active' => null,
+                'permission' => ['crud-production-administrators', 'crud-technical-supervisors'],
+                'subitems' => [
+                    [
+                        'text' => __('Production Administrators'),
+                        'route' => route('production-administrators.index'),
+                        'active' => request()->routeIs('production-administrators.index'),
+                        'permission' => 'crud-production-administrators',
+                    ],
+                    [
+                        'text' => __('Technical Supervisors'),
+                        'route' => route('technical-supervisors.index'),
+                        'active' => request()->routeIs('technical-supervisors.index'),
+                        'permission' => 'crud-technical-supervisors',
+                    ],
+                ],
             ],
             [
                 'text' => __('Users'),
