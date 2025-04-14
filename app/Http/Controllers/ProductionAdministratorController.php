@@ -8,6 +8,6 @@ class ProductionAdministratorController extends Controller
 {
     public function index()
     {
-        dd('Success');
+        return view('production-administrator.index');
     }
 }
