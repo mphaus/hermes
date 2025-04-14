@@ -5,6 +5,7 @@
 use App\Http\Controllers\OpportunityController;
 use App\Http\Controllers\OpportunityItemsController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductionAdministratorController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\QiOpportunityController;
 use App\Http\Controllers\QuarantineIntakeController;
@@ -58,6 +59,8 @@ Route::middleware(['auth', 'is_enabled'])->group(function () {
     Route::get('quarantine-intake-success', [QuarantineIntakeController::class, 'success'])->name('quarantine-intake-success.index')->middleware('permission:access-quarantine-intake');
     Route::post('quarantine-intake/report-mistake', [QuarantineIntakeController::class, 'reportMistake'])->name('quarantine-intake-report-mistake.store')->middleware('permission:access-quarantine-intake');
     // Route::get('quarantine-stats', QuarantineStatsIndex::class)->name('quarantine-stats.index')->middleware('permission:access-quarantine-stats');
+
+    Route::get('production-administrators', [ProductionAdministratorController::class, 'index'])->name('production-administrators.index');
 
     Route::get('technical-supervisors', TechnicalSupervisorsIndex::class)->name('technical-supervisors.index')->middleware('permission:crud-technical-supervisors');
     Route::get('technical-supervisors/create', TechnicalSupervisorsCreate::class)->name('technical-supervisors.create')->middleware('permission:crud-technical-supervisors');
