@@ -42,7 +42,7 @@ class ProductionAdministratorRequest extends FormRequest
             throw new HttpResponseException(
                 response()->json([
                     'message' => $this->errorMessage(
-                        __('An error occurred while attempting to fetch the Production Administrators list. Please refresh the page and try again.'),
+                        __('An error occurred while attempting to save the data. Please refresh the page and try again.'),
                         $response->json()
                     ),
                 ], 400)
@@ -77,7 +77,7 @@ class ProductionAdministratorRequest extends FormRequest
             throw new HttpResponseException(
                 response()->json([
                     'message' => $this->errorMessage(
-                        __('An error occurred while attempting to fetch the Production Administrators list. Please refresh the page and try again.'),
+                        __('An error occurred while attempting to save the data. Please refresh the page and try again.'),
                         $response->json()
                     ),
                 ], 400)

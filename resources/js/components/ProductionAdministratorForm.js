@@ -5,6 +5,7 @@ const initialForm = {
 
 export default function ProductionAdministratorForm () {
     return {
+        message: '',
         submitting: false,
         form: { ...initialForm },
         errors: { ...initialForm },
@@ -13,6 +14,7 @@ export default function ProductionAdministratorForm () {
                 return;
             }
 
+            this.message = '';
             this.errors = { ...initialForm };
             this.submitting = true;
 
@@ -33,6 +35,10 @@ export default function ProductionAdministratorForm () {
                     return;
                 }
 
+                /** @type {{ message: string }} */
+                const { message } = error.response.data;
+
+                this.message = message;
                 console.error( error );
             } finally {
                 this.submitting = false;

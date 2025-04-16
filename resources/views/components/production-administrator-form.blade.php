@@ -1,10 +1,9 @@
 <x-form 
     action="{{ route('production-administrators.store') }}"
     method="POST"
-    class="flow"
+    class="space-y-4"
     x-data="ProductionAdministratorForm"
     x-on:submit.prevent="send"
-    novalidate {{-- TODO: remove this attribute --}}
 >
     <div class="grid gap-4 md:grid-cols-2">
         <div class="space-y-1">
@@ -52,4 +51,8 @@
                 <span x-cloak x-show="submitting">{{ __('Adding...') }}</span>
             @endif
         </x-button>
+    </div>
+    <template x-if="message">
+        <div class="p-4 font-semibold text-white bg-red-600 rounded-md" x-text="message"></div>
+    </template>
 </x-form>
