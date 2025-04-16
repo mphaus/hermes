@@ -49,6 +49,10 @@
   button {
     cursor: pointer;
   }
+
+  a.disabled {
+    @apply pointer-events-none opacity-50;
+  }
 }
 
 @utility flow {
@@ -66,16 +70,6 @@
 
   & a {
     @apply inline-flex items-center justify-center px-4 py-3 border border-transparent rounded-md font-semibold text-xs uppercase tracking-widest focus:outline-hidden focus:ring-2 focus:ring-offset-2 transition ease-in-out duration-150 active:shadow-inner disabled:pointer-events-none disabled:opacity-50 gap-2;
-  }
-
-  &a.disabled {
-    @apply pointer-events-none opacity-50;
-  }
-}
-
-@utility disabled {
-  &a.button {
-    @apply pointer-events-none opacity-50;
   }
 }
 

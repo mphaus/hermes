@@ -19,15 +19,9 @@ export default function ProductionAdministratorForm () {
             try {
                 const response = await window.axios.post( this.$root.action, this.form );
 
-                console.log( response );
-
-
-                /** @type {{ message: string }} */
-                // const { message } = response.data;
-                // this.$root.message = message;
-
-                // this.form = { ...initialForm };
-                // this.$root.reset();
+                /** @type {{ redirect_to: string }} */
+                const { redirect_to } = response.data;
+                window.location = redirect_to;
             } catch ( error ) {
                 if ( error.status === 422 ) {
                     const { errors } = error.response.data;
