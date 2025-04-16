@@ -5,7 +5,7 @@
     </x-slot>
     <header class="flex justify-end max-w-(--breakpoint-xl) mx-auto">
         <x-button
-            href="#"
+            href="{{ route('production-administrators.create') }}"
             variant="primary"
         >
             <x-icon-plus class="w-4 fill-current" />

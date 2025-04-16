@@ -61,6 +61,7 @@ Route::middleware(['auth', 'is_enabled'])->group(function () {
     // Route::get('quarantine-stats', QuarantineStatsIndex::class)->name('quarantine-stats.index')->middleware('permission:access-quarantine-stats');
 
     Route::get('production-administrators', [ProductionAdministratorController::class, 'index'])->name('production-administrators.index')->middleware('permission:crud-production-administrators');
+    Route::get('production-administrators/create', [ProductionAdministratorController::class, 'create'])->name('production-administrators.create')->middleware('permission:crud-production-administrators');
 
     Route::get('technical-supervisors', TechnicalSupervisorsIndex::class)->name('technical-supervisors.index')->middleware('permission:crud-technical-supervisors');
     Route::get('technical-supervisors/create', TechnicalSupervisorsCreate::class)->name('technical-supervisors.create')->middleware('permission:crud-technical-supervisors');

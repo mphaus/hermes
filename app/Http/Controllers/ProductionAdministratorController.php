@@ -10,4 +10,9 @@ class ProductionAdministratorController extends Controller
     {
         return view('production-administrator.index');
     }
+
+    public function create()
+    {
+        return view('production-administrator.create');
+    }
 }
