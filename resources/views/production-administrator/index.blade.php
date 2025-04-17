@@ -11,7 +11,7 @@
             <div>
                 <header class="flex justify-end max-w-(--breakpoint-xl) mx-auto">
                     <x-button
-                        href="{{ route('production-administrators.create') }}"
+                        href="{{ route('production-administrators.create.view') }}"
                         variant="primary"
                     >
                         <x-icon-plus class="w-4 fill-current" />
@@ -23,8 +23,8 @@
                         <template x-for="productionAdministrator in productionAdministrators" x-bind:key="productionAdministrator.id">
                             <x-card class="relative">
                                 <a
-                                    href="#"
                                     class="after:absolute after:inset-0 after:z-1 after:content-['']"
+                                    x-bind:href="route('production-administrators.edit.view', productionAdministrator.id)"
                                     x-bind:title="productionAdministrator.name"
                                     x-text="productionAdministrator.name"
                                 ></a>

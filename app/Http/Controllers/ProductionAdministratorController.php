@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductionAdministratorRequest;
 use App\Traits\WithHttpCurrentError;
-use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -13,32 +12,23 @@ class ProductionAdministratorController extends Controller
 {
     use WithHttpCurrentError;
 
-    public function index(Request $request): JsonResponse|View
+    public function index(): JsonResponse
     {
-        if ($request->isXmlHttpRequest()) {
-            $production_administrators_list_id = config('app.mph.production_administrator_list_id');
+        $production_administrators_list_id = config('app.mph.production_administrator_list_id');
 
-            $response = Http::current()->get("list_names/{$production_administrators_list_id}");
+        $response = Http::current()->get("list_names/{$production_administrators_list_id}");
 
-            if ($response->failed()) {
-                return response()->json([
-                    'error_message' => $this->errorMessage(__('An unexpected error occurred while fetching the Production Administrators list. Please refresh the page and try again.'), $response->json()),
-                ], 400);
-            }
-
-            ['list_name' => ['list_values' => $list_values]] = $response->json();
-
+        if ($response->failed()) {
             return response()->json([
-                'production_administrators' => collect(array_values(array_filter($list_values, fn($value) => $value['name'] !== 'Not yet assigned'))),
-            ]);
+                'error_message' => $this->errorMessage(__('An unexpected error occurred while fetching the Production Administrators list. Please refresh the page and try again.'), $response->json()),
+            ], 400);
         }
 
-        return view('production-administrator.index');
-    }
+        ['list_name' => ['list_values' => $list_values]] = $response->json();
 
-    public function create(): View
-    {
-        return view('production-administrator.create');
+        return response()->json([
+            'production_administrators' => collect(array_values(array_filter($list_values, fn($value) => $value['name'] !== 'Not yet assigned'))),
+        ]);
     }
 
     public function store(ProductionAdministratorRequest $request): JsonResponse
@@ -52,7 +42,7 @@ class ProductionAdministratorController extends Controller
         ]);
 
         return response()->json([
-            'redirect_to' => route('production-administrators.index'),
+            'redirect_to' => route('production-administrators.index.view'),
         ]);
     }
 }

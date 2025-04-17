@@ -36,7 +36,7 @@
     </div>
     <div class="flex items-center justify-end gap-2">
         <x-button 
-            href="{{ route('production-administrators.index') }}" 
+            href="{{ route('production-administrators.index.view') }}" 
             variant="outline-primary"
             x-bind:class="{ 'disabled': submitting }"
         >
@@ -47,7 +47,7 @@
             variant="primary"
             x-bind:disabled="submitting"
         >
-            @if (request()->routeIs('production-administrators.create'))
+            @if (request()->routeIs('production-administrators.create.view'))
                 <span x-show="!submitting">{{ __('Add') }}</span>
                 <span x-cloak x-show="submitting">{{ __('Adding...') }}</span>
             @endif
