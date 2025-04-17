@@ -7,7 +7,7 @@
         <template hidden x-if="fetching">
             <x-production-administrators-skeleton />
         </template>
-        <template hidden x-if="productionAdministrators">
+        <template hidden x-if="!!productionAdministrators.length">
             <div>
                 <header class="flex justify-end max-w-(--breakpoint-xl) mx-auto">
                     <x-button
@@ -19,7 +19,18 @@
                     </x-button>
                 </header>
                 <section class="mt-8">
-            
+                    <div class="grid max-w-(--breakpoint-xl) gap-4 mx-auto md:grid-cols-2 lg:grid-cols-3">
+                        <template x-for="productionAdministrator in productionAdministrators" x-bind:key="productionAdministrator.id">
+                            <x-card class="relative">
+                                <a
+                                    href="#"
+                                    class="after:absolute after:inset-0 after:z-1 after:content-['']"
+                                    x-bind:title="productionAdministrator.name"
+                                    x-text="productionAdministrator.name"
+                                ></a>
+                            </x-card>
+                        </template>
+                    </div>
                 </section>
             </div>
         </template>

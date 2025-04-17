@@ -3,17 +3,34 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductionAdministratorRequest;
+use App\Traits\WithHttpCurrentError;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class ProductionAdministratorController extends Controller
 {
+    use WithHttpCurrentError;
+
     public function index(Request $request): JsonResponse|View
     {
         if ($request->isXmlHttpRequest()) {
-            sleep(5);
-            return response()->json([]);
+            $production_administrators_list_id = config('app.mph.production_administrator_list_id');
+
+            $response = Http::current()->get("list_names/{$production_administrators_list_id}");
+
+            if ($response->failed()) {
+                return response()->json([
+                    'error' => $this->errorMessage(__('An unexpected error occurred while fetching the Production Administrators list. Please refresh the page and try again.'), $response->json()),
+                ], 400);
+            }
+
+            ['list_name' => ['list_values' => $list_values]] = $response->json();
+
+            return response()->json([
+                'production_administrators' => collect(array_values(array_filter($list_values, fn($value) => $value['name'] !== 'Not yet assigned'))),
+            ]);
         }
 
         return view('production-administrator.index');
