@@ -13,6 +13,7 @@
                 name="first_name" 
                 id="first-name" 
                 required
+                autofocus
                 x-model="form.first_name"
             />
             <template hidden x-if="errors.first_name">

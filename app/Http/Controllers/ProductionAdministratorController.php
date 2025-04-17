@@ -22,7 +22,7 @@ class ProductionAdministratorController extends Controller
 
             if ($response->failed()) {
                 return response()->json([
-                    'error' => $this->errorMessage(__('An unexpected error occurred while fetching the Production Administrators list. Please refresh the page and try again.'), $response->json()),
+                    'error_message' => $this->errorMessage(__('An unexpected error occurred while fetching the Production Administrators list. Please refresh the page and try again.'), $response->json()),
                 ], 400);
             }
 

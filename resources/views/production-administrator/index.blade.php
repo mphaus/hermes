@@ -34,5 +34,8 @@
                 </section>
             </div>
         </template>
+        <template hidden x-if="errorMessage">
+            <div class="p-4 bg-red-600 text-white font-semibold rounded-lg" x-text="errorMessage"></div>
+        </template>
     </div>
 </x-layout-app>

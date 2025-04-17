@@ -13,13 +13,17 @@ export default function ProductionAdministratorsIndex () {
 
             try {
                 const response = await window.axios.get( route( 'production-administrators.index' ) );
-                console.log( response );
 
-
+                /**
+                 * @type {{production_administrators: array}}
+                 */
                 const { production_administrators } = response.data;
                 this.productionAdministrators = [ ...production_administrators ];
             } catch ( error ) {
-                console.error( error );
+                console.log( error );
+
+                const { error_message } = error.response.data;
+                this.errorMessage = error_message;
             } finally {
                 this.fetching = false;
             }
