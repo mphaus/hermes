@@ -5,11 +5,17 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProductionAdministratorRequest;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class ProductionAdministratorController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): JsonResponse|View
     {
+        if ($request->isXmlHttpRequest()) {
+            sleep(5);
+            return response()->json([]);
+        }
+
         return view('production-administrator.index');
     }
 

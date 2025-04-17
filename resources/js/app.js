@@ -29,6 +29,7 @@ import UploadLog from "./components/UploadLog";
 import UserDeleteButton from "./components/UserDeleteButton";
 import UserForm from "./components/UserForm";
 import ProductionAdministratorForm from "./components/ProductionAdministratorForm";
+import ProductionAdministratorsIndex from "./components/ProductionAdministratorsIndex";
 
 Alpine.data( 'ActionStreamFilters', ActionStreamFilters );
 Alpine.data( 'ActionStreamItem', ActionStreamItem );
@@ -55,5 +56,6 @@ Alpine.data( 'UserDeleteButton', UserDeleteButton );
 Alpine.data( 'UserForm', UserForm );
 Alpine.data( 'QiReportMistakeForm', QiReportMistakeForm );
 Alpine.data( 'ProductionAdministratorForm', ProductionAdministratorForm );
+Alpine.data( 'ProductionAdministratorsIndex', ProductionAdministratorsIndex );
 
 Livewire.start();
