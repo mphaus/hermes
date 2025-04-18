@@ -1,6 +1,7 @@
 export default function ProductionAdministratorsIndex () {
     return {
         fetching: false,
+        fetched: false,
         productionAdministrators: [],
         errorMessage: '',
         init () {
@@ -26,7 +27,11 @@ export default function ProductionAdministratorsIndex () {
                 this.errorMessage = error_message;
             } finally {
                 this.fetching = false;
+                this.fetched = true;
             }
-        }
+        },
+        get hasFetched () {
+            return this.fetched && !this.fetching && this.errorMessage === '';
+        },
     };
 }

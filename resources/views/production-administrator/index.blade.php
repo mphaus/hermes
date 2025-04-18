@@ -7,31 +7,36 @@
         <template hidden x-if="fetching">
             <x-production-administrators-skeleton />
         </template>
-        <template hidden x-if="!!productionAdministrators.length">
-            <div>
-                <header class="flex justify-end max-w-(--breakpoint-xl) mx-auto">
+        <template hidden x-if="hasFetched">
+            <div class="max-x-(--breakpoint-xl) mx-auto">
+                <header class="flex justify-end">
                     <x-button
                         href="{{ route('production-administrators.create.view') }}"
                         variant="primary"
                     >
                         <x-icon-plus class="w-4 fill-current" />
-                        <span>{{ __('Add Production Administrator') }}</span>
+                        <span>{{ __('Add New') }}</span>
                     </x-button>
                 </header>
-                <section class="mt-8">
-                    <div class="grid max-w-(--breakpoint-xl) gap-4 mx-auto md:grid-cols-2 lg:grid-cols-3">
-                        <template x-for="productionAdministrator in productionAdministrators" x-bind:key="productionAdministrator.id">
-                            <x-card class="relative">
-                                <a
-                                    class="after:absolute after:inset-0 after:z-1 after:content-['']"
-                                    x-bind:href="route('production-administrators.edit.view', productionAdministrator.id)"
-                                    x-bind:title="productionAdministrator.name"
-                                    x-text="productionAdministrator.name"
-                                ></a>
-                            </x-card>
-                        </template>
-                    </div>
-                </section>
+                <template hidden x-if="!!productionAdministrators.length">
+                    <section class="mt-8">
+                        <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                            <template x-for="productionAdministrator in productionAdministrators" x-bind:key="productionAdministrator.id">
+                                <x-card class="relative">
+                                    <a
+                                        class="after:absolute after:inset-0 after:z-1 after:content-['']"
+                                        x-bind:href="route('production-administrators.edit.view', productionAdministrator.id)"
+                                        x-bind:title="productionAdministrator.name"
+                                        x-text="productionAdministrator.name"
+                                    ></a>
+                                </x-card>
+                            </template>
+                        </div>
+                    </section>
+                </template>
+                <template hidden x-if="!productionAdministrators.length">
+                    <x-card class="mt-8">{{ __('You have not added any Production Administrators yet.') }}</x-card>
+                </template>
             </div>
         </template>
         <template hidden x-if="errorMessage">
