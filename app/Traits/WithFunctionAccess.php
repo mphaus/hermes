@@ -46,6 +46,11 @@ trait WithFunctionAccess
         //     'description' => 'Used by executives and managers to report on quarantine intake statistics.',
         // ],
         [
+            'key' => 'crud-production-administrators',
+            'value' => 'Production Administrator CRUD',
+            'description' => '',
+        ],
+        [
             'key' => 'crud-technical-supervisors',
             'value' => 'Technical Supervisor CRUD',
             'description' => 'Used by the Production Assistant to add MPH Technical Supervisors to the drop-down list on the Opportunity / Project edit page in CurrentRMS (this in turn is used to ensure Quarantine items assigned to Jobs are also assigned to Technical Supervisors, so accurate Quarantine reporting is possible).',
