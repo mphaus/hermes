@@ -5,6 +5,7 @@ const initialForm = {
 
 export default function ProductionAdministratorForm () {
     return {
+        productionAdministratorId: 0,
         message: '',
         submitting: false,
         form: { ...initialForm },

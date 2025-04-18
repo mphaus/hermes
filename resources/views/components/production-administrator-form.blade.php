@@ -4,6 +4,7 @@
     class="space-y-4"
     x-data="ProductionAdministratorForm"
     x-on:submit.prevent="send"
+    {{ $attributes }}
 >
     <div class="grid gap-4 md:grid-cols-2">
         <div class="space-y-1">
@@ -50,6 +51,11 @@
             @if (request()->routeIs('production-administrators.create.view'))
                 <span x-show="!submitting">{{ __('Add') }}</span>
                 <span x-cloak x-show="submitting">{{ __('Adding...') }}</span>
+            @endif
+
+            @if (request()->routeIs('production-administrators.edit.view'))
+                <span x-show="!submitting">{{ __('Update') }}</span>
+                <span x-cloak x-show="submitting">{{ __('Updating...') }}</span>  
             @endif
         </x-button>
     </div>
