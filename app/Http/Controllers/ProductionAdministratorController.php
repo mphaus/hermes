@@ -94,4 +94,19 @@ class ProductionAdministratorController extends Controller
             ],
         ]);
     }
+
+    public function update(ProductionAdministratorRequest $request, int $id): JsonResponse
+    {
+        $request->validated();
+        $request->store($id);
+
+        session()->flash('alert', [
+            'type' => 'success',
+            'message' => __('Production Administrator updated successfully.'),
+        ]);
+
+        return response()->json([
+            'redirect_to' => route('production-administrators.index.view'),
+        ]);
+    }
 }

@@ -20,7 +20,9 @@ export default function ProductionAdministratorForm () {
             this.submitting = true;
 
             try {
-                const response = await window.axios.post( this.$root.action, this.form );
+                const response = this.productionAdministratorId > 0
+                    ? await window.axios.put( route( 'production-administrators.update', this.productionAdministratorId ), this.form )
+                    : await window.axios.post( route( 'production-administrators.store' ), this.form );
 
                 /** @type {{ redirect_to: string }} */
                 const { redirect_to } = response.data;

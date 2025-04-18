@@ -1,6 +1,4 @@
 <x-form 
-    action="{{ route('production-administrators.store') }}"
-    method="POST"
     class="space-y-4"
     x-data="ProductionAdministratorForm"
     x-on:submit.prevent="send"

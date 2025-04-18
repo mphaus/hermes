@@ -32,7 +32,7 @@ class ProductionAdministratorRequest extends FormRequest
         ];
     }
 
-    public function store(): void
+    public function store(int $id = 0): void
     {
         $production_administrators_list_id = config('app.mph.production_administrator_list_id');
 
@@ -58,14 +58,20 @@ class ProductionAdministratorRequest extends FormRequest
          * @var string $last_name
          */
 
-        // TODO: handle update
-        $data = [
-            ...$list_values,
-            [
-                'list_name_id' => intval($production_administrators_list_id),
-                'name' => "{$first_name} {$last_name}",
-            ],
-        ];
+        if ($id > 0) {
+            $column = array_column($list_values, 'id');
+            $i = array_search($id, $column);
+            $list_values[$i]['name'] = "{$first_name} {$last_name}";
+            $data = [...$list_values];
+        } else {
+            $data = [
+                ...$list_values,
+                [
+                    'list_name_id' => intval($production_administrators_list_id),
+                    'name' => "{$first_name} {$last_name}",
+                ],
+            ];
+        }
 
         $response = Http::current()->put("list_names/{$production_administrators_list_id}", [
             'list_name' => [

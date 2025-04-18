@@ -67,6 +67,7 @@ Route::middleware(['auth', 'is_enabled'])->group(function () {
     Route::get('i/production-administrators', [ProductionAdministratorController::class, 'index'])->name('production-administrators.index')->middleware('permission:crud-production-administrators');
     Route::post('i/production-administrators', [ProductionAdministratorController::class, 'store'])->name('production-administrators.store')->middleware('permission:crud-production-administrators');
     Route::get('i/production-administrators/{id}', [ProductionAdministratorController::class, 'show'])->name('production-administrators.show')->middleware('permission:crud-production-administrators');
+    Route::put('i/production-administrators/{id}', [ProductionAdministratorController::class, 'update'])->name('production-administrators.update')->middleware('permission:crud-production-administrators');
 
     Route::get('technical-supervisors', TechnicalSupervisorsIndex::class)->name('technical-supervisors.index')->middleware('permission:crud-technical-supervisors');
     Route::get('technical-supervisors/create', TechnicalSupervisorsCreate::class)->name('technical-supervisors.create')->middleware('permission:crud-technical-supervisors');
