@@ -27,7 +27,7 @@ class ProductionAdministratorController extends Controller
         ['list_name' => ['list_values' => $list_values]] = $response->json();
 
         return response()->json([
-            'production_administrators' => collect(array_values(array_filter($list_values, fn($value) => $value['name'] !== 'Not yet assigned'))),
+            'production_administrators' => collect(array_values(array_filter($list_values, fn($value) => $value['id'] !== intval(config('app.mph.production_administrator_not_yet_assigned_id'))))),
         ]);
     }
 
