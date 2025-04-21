@@ -1,27 +1,27 @@
 /**
- * @param {number} id 
+ * @param {number} id
  */
-export default function ProductionAdministratorEdit ( id ) {
+export default function TechnicalSupervisorEdit ( id ) {
     return {
         fetching: false,
-        productionAdministrator: {},
+        technicalSupervisor: {},
         errorMessage: '',
         init () {
             this.fetchData();
         },
         async fetchData () {
             this.fetching = true;
-            this.productionAdministrator = {};
+            this.technicalSupervisor = {};
             this.errorMessage = '';
 
             try {
-                const response = await window.axios.get( route( 'production-administrators.show', id ) );
+                const response = await window.axios.get( route( 'technical-supervisors.show', id ) );
 
                 /**
-                 * @type {{production_administrator: object}}
+                 * @type {{technical_supervisor: object}}
                  */
-                const { production_administrator } = response.data;
-                this.productionAdministrator = { ...production_administrator };
+                const { technical_supervisor } = response.data;
+                this.technicalSupervisor = { ...technical_supervisor };
             } catch ( error ) {
                 console.log( error );
 
