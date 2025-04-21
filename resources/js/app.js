@@ -32,6 +32,7 @@ import ProductionAdministratorForm from "./components/ProductionAdministratorFor
 import ProductionAdministratorsIndex from "./components/ProductionAdministratorsIndex";
 import ProductionAdministratorEdit from "./components/ProductionAdministratorEdit";
 import TechnicalSupervisorsIndex from "./components/TechnicalSupervisorsIndex";
+import TechnicalSupervisorForm from "./components/TechnicalSupervisorForm";
 
 
 Alpine.data( 'ActionStreamFilters', ActionStreamFilters );
@@ -62,5 +63,6 @@ Alpine.data( 'ProductionAdministratorForm', ProductionAdministratorForm );
 Alpine.data( 'ProductionAdministratorsIndex', ProductionAdministratorsIndex );
 Alpine.data( 'ProductionAdministratorEdit', ProductionAdministratorEdit );
 Alpine.data( 'TechnicalSupervisorsIndex', TechnicalSupervisorsIndex );
+Alpine.data( 'TechnicalSupervisorForm', TechnicalSupervisorForm );
 
 Livewire.start();

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TechnicalSupervisorRequest;
 use App\Traits\WithHttpCurrentError;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Http;
@@ -29,5 +30,20 @@ class TechnicalSupervisorController extends Controller
         ]);
 
         return response()->json();
+    }
+
+    public function store(TechnicalSupervisorRequest $request): JsonResponse
+    {
+        $request->validated();
+        $request->store();
+
+        session()->flash('alert', [
+            'type' => 'success',
+            'message' => __('Technical Supervisor created successfully.'),
+        ]);
+
+        return response()->json([
+            'redirect_to' => route('technical-supervisors.index.view'),
+        ]);
     }
 }

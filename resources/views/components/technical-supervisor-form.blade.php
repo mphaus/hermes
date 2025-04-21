@@ -1,9 +1,8 @@
-@props(['message'])
-
 <x-form 
-    class="flow" 
-    wire:submit="save"
-    x-on:submit.prevent="$wire.message = ''"
+    class="space-y-4" 
+    x-data="TechnicalSupervisorForm"
+    x-on:submit.prevent="send"
+    {{ $attributes }}
 >
     <div class="grid gap-4 md:grid-cols-2">
         <div class="space-y-1">
@@ -11,10 +10,14 @@
             <x-input 
                 type="text" 
                 name="first_name" 
-                id="first-name" 
-                wire:model="form.first_name"
+                id="first-name"
+                required
+                autofocus
+                x-model="form.first_name"
             />
-            <x-input-error :messages="$errors->get('form.first_name')" />
+            <template hidden x-if="errors.first_name">
+                <p class="text-sm text-red-600" x-text="errors.first_name"></p>
+            </template>
         </div>
         <div class="space-y-1">
             <x-input-label for="last-name">{{ __('Last name') }}</x-input-label>
@@ -22,31 +25,39 @@
                 type="text" 
                 name="last_name" 
                 id="last-name" 
-                wire:model="form.last_name"
+                required
+                x-model="form.last_name"
             />
-            <x-input-error :messages="$errors->get('form.last_name')" />
+            <template hidden x-if="errors.last_name">
+                <p class="text-sm text-red-600" x-text="errors.last_name"></p>
+            </template> 
         </div>
     </div>
     <div class="flex items-center justify-end gap-2">
-        <x-button href="{{ route('technical-supervisors.index') }}" variant="outline-primary" wire:navigate wire:loading.class="disabled" wire:target="save">{{ __('Cancel') }}</x-button>
-        <x-button type="submit" variant="primary">
-            <span wire:loading.class="hidden" wire:target="save">
-                @if (request()->routeIs('technical-supervisors.create'))
-                    {{ __('Add') }}
-                @else
-                    {{ __('Update') }}
-                @endif
-            </span>
-            <span wire:loading wire:target="save">
-                @if (request()->routeIs('technical-supervisors.create'))
-                    {{ __('Adding...') }}
-                @else
-                    {{ __('Updating...') }}
-                @endif
-            </span>
+        <x-button 
+            href="{{ route('technical-supervisors.index.view') }}" 
+            variant="outline-primary" 
+            x-bind:class="{ 'disabled': submitting }"
+        >
+            {{ __('Cancel') }}
+        </x-button>
+        <x-button 
+            type="submit" 
+            variant="primary"
+            x-bind:disabled="submitting"
+        >
+            @if (request()->routeIs('technical-supervisors.create.view'))
+                <span x-show="!submitting">{{ __('Add') }}</span>
+                <span x-cloak x-show="submitting">{{ __('Adding...') }}</span>
+            @endif
+
+            @if (request()->routeIs('technical-supervisors.edit.view'))
+                <span x-show="!submitting">{{ __('Update') }}</span>
+                <span x-cloak x-show="submitting">{{ __('Updating...') }}</span>  
+            @endif
         </x-button>
     </div>
-    @if ($message)
-        <x-generic-error :message="$message" x-show="$wire.message" />    
-    @endif
+    <template x-if="message">
+        <div class="p-4 font-semibold text-white bg-red-600 rounded-md" x-text="message"></div>
+    </template>
 </x-form>

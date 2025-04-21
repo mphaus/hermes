@@ -70,8 +70,6 @@ Route::middleware(['auth', 'is_enabled'])->group(function () {
     Route::get('i/production-administrators/{id}', [ProductionAdministratorController::class, 'show'])->name('production-administrators.show')->middleware('permission:crud-production-administrators');
     Route::put('i/production-administrators/{id}', [ProductionAdministratorController::class, 'update'])->name('production-administrators.update')->middleware('permission:crud-production-administrators');
 
-    // Route::get('technical-supervisors', TechnicalSupervisorsIndex::class)->name('technical-supervisors.index')->middleware('permission:crud-technical-supervisors');
-    // Route::get('technical-supervisors/create', TechnicalSupervisorsCreate::class)->name('technical-supervisors.create')->middleware('permission:crud-technical-supervisors');
     // Route::get('technical-supervisors/{id}/edit', TechnicalSupervisorsEdit::class)->name('technical-supervisors.edit')->middleware('permission:crud-technical-supervisors');
 
     Route::view('technical-supervisors', 'technical-supervisor.index')->name('technical-supervisors.index.view')->middleware('permission:crud-technical-supervisors');
@@ -79,6 +77,7 @@ Route::middleware(['auth', 'is_enabled'])->group(function () {
     Route::view('technical-supervisors/{id}/edit', 'technical-supervisor.edit')->name('technical-supervisors.edit.view')->middleware('permission:crud-technical-supervisors');
 
     Route::get('i/technical-supervisors', [TechnicalSupervisorController::class, 'index'])->name('technical-supervisors.index')->middleware('permission:crud-technical-supervisors');
+    Route::post('i/technical-supervisors', [TechnicalSupervisorController::class, 'store'])->name('technical-supervisors.store')->middleware('permission:crud-technical-supervisors');
 
     Route::get('projects/search', [ProjectController::class, 'search'])->name('projects.search');
 
