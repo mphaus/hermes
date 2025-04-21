@@ -18,9 +18,6 @@ use App\Livewire\JobsShow;
 use App\Livewire\QetIndex;
 use App\Livewire\QuarantineIntakeCreate;
 use App\Livewire\QuarantineStatsIndex;
-use App\Livewire\TechnicalSupervisorsCreate;
-use App\Livewire\TechnicalSupervisorsEdit;
-use App\Livewire\TechnicalSupervisorsIndex;
 use App\Livewire\UploadLogsShow;
 use App\Livewire\UsersCreate;
 use App\Livewire\UsersEdit;
@@ -70,14 +67,14 @@ Route::middleware(['auth', 'is_enabled'])->group(function () {
     Route::get('i/production-administrators/{id}', [ProductionAdministratorController::class, 'show'])->name('production-administrators.show')->middleware('permission:crud-production-administrators');
     Route::put('i/production-administrators/{id}', [ProductionAdministratorController::class, 'update'])->name('production-administrators.update')->middleware('permission:crud-production-administrators');
 
-    // Route::get('technical-supervisors/{id}/edit', TechnicalSupervisorsEdit::class)->name('technical-supervisors.edit')->middleware('permission:crud-technical-supervisors');
-
     Route::view('technical-supervisors', 'technical-supervisor.index')->name('technical-supervisors.index.view')->middleware('permission:crud-technical-supervisors');
     Route::view('technical-supervisors/create', 'technical-supervisor.create')->name('technical-supervisors.create.view')->middleware('permission:crud-technical-supervisors');
     Route::view('technical-supervisors/{id}/edit', 'technical-supervisor.edit')->name('technical-supervisors.edit.view')->middleware('permission:crud-technical-supervisors');
 
     Route::get('i/technical-supervisors', [TechnicalSupervisorController::class, 'index'])->name('technical-supervisors.index')->middleware('permission:crud-technical-supervisors');
     Route::post('i/technical-supervisors', [TechnicalSupervisorController::class, 'store'])->name('technical-supervisors.store')->middleware('permission:crud-technical-supervisors');
+    Route::get('i/technical-supervisors/{id}', [TechnicalSupervisorController::class, 'show'])->name('technical-supervisors.show')->middleware('permission:crud-technical-supervisors');
+    Route::put('i/technical-supervisors/{id}', [TechnicalSupervisorController::class, 'update'])->name('technical-supervisors.update')->middleware('permission:crud-technical-supervisors');
 
     Route::get('projects/search', [ProjectController::class, 'search'])->name('projects.search');
 
