@@ -1,10 +1,14 @@
 <x-layout-guest>
-    <x-slot name="title">{{ __('Login') }}</x-slot>
+    <x-slot:title>{{ __('Login') }}</x-slot:title>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
-    <x-form method="POST" action="{{ route('login.authenticate') }}" data-element="login-form">
+    <x-form 
+        method="POST" 
+        action="{{ route('login.authenticate') }}" 
+        data-element="login-form"
+    >
         <div>
-            <x-input-label for="username" :value="__('Username')" />
+            <x-input-label for="username" :value="__('Hermes username or registered email address')" />
             <x-input 
                 id="username" 
                 class="mt-1" 
@@ -46,9 +50,8 @@
                 data-sitekey="{{ config('app.recaptcha_v3.site_key') }}"
                 data-callback="onSubmit"
                 data-action="login"
-            >
-                {{ __('Log in') }}
-            </x-button>
+                x-bind:disabled="submitting"
+            >{{ __('Log in') }}</x-button>
         </div>
         <x-input-error :messages="$errors->get('g-recaptcha-response')" class="mt-2" />
     </x-form>
