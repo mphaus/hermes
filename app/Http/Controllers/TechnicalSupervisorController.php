@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TechnicalSupervisorRequest;
 use App\Traits\WithHttpCurrentError;
-use Clockwork\Request\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
 class TechnicalSupervisorController extends Controller
