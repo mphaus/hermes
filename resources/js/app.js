@@ -31,6 +31,8 @@ import UserForm from "./components/UserForm";
 import ProductionAdministratorForm from "./components/ProductionAdministratorForm";
 import ProductionAdministratorsIndex from "./components/ProductionAdministratorsIndex";
 import ProductionAdministratorEdit from "./components/ProductionAdministratorEdit";
+import TechnicalSupervisorsIndex from "./components/TechnicalSupervisorsIndex";
+
 
 Alpine.data( 'ActionStreamFilters', ActionStreamFilters );
 Alpine.data( 'ActionStreamItem', ActionStreamItem );
@@ -59,5 +61,6 @@ Alpine.data( 'QiReportMistakeForm', QiReportMistakeForm );
 Alpine.data( 'ProductionAdministratorForm', ProductionAdministratorForm );
 Alpine.data( 'ProductionAdministratorsIndex', ProductionAdministratorsIndex );
 Alpine.data( 'ProductionAdministratorEdit', ProductionAdministratorEdit );
+Alpine.data( 'TechnicalSupervisorsIndex', TechnicalSupervisorsIndex );
 
 Livewire.start();

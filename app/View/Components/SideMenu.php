@@ -89,13 +89,13 @@ class SideMenu extends Component
                     [
                         'text' => __('Production Administrators'),
                         'route' => route('production-administrators.index.view'),
-                        'active' => request()->routeIs('production-administrators.index'),
+                        'active' => request()->routeIs('production-administrators.index.view'),
                         'permission' => 'crud-production-administrators',
                     ],
                     [
                         'text' => __('Technical Supervisors'),
-                        'route' => route('technical-supervisors.index'),
-                        'active' => request()->routeIs('technical-supervisors.index'),
+                        'route' => route('technical-supervisors.index.view'),
+                        'active' => request()->routeIs('technical-supervisors.index.view'),
                         'permission' => 'crud-technical-supervisors',
                     ],
                 ],
