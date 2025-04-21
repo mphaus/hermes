@@ -35,7 +35,6 @@ import TechnicalSupervisorsIndex from "./components/TechnicalSupervisorsIndex";
 import TechnicalSupervisorForm from "./components/TechnicalSupervisorForm";
 import TechnicalSupervisorEdit from "./components/TechnicalSupervisorEdit";
 
-
 Alpine.data( 'ActionStreamFilters', ActionStreamFilters );
 Alpine.data( 'ActionStreamItem', ActionStreamItem );
 Alpine.data( 'Alert', Alert );
