@@ -17,7 +17,6 @@ use App\Livewire\JobsIndex;
 use App\Livewire\JobsShow;
 use App\Livewire\QetIndex;
 use App\Livewire\QuarantineIntakeCreate;
-use App\Livewire\QuarantineStatsIndex;
 use App\Livewire\UploadLogsShow;
 use App\Livewire\UsersCreate;
 use App\Livewire\UsersEdit;
@@ -56,7 +55,6 @@ Route::middleware(['auth', 'is_enabled'])->group(function () {
     Route::get('quarantine-intake', QuarantineIntakeCreate::class)->name('quarantine-intake.create')->middleware('permission:access-quarantine-intake');
     Route::get('quarantine-intake-success', [QuarantineIntakeController::class, 'success'])->name('quarantine-intake-success.index')->middleware('permission:access-quarantine-intake');
     Route::post('quarantine-intake/report-mistake', [QuarantineIntakeController::class, 'reportMistake'])->name('quarantine-intake-report-mistake.store')->middleware('permission:access-quarantine-intake');
-    // Route::get('quarantine-stats', QuarantineStatsIndex::class)->name('quarantine-stats.index')->middleware('permission:access-quarantine-stats');
 
     Route::view('production-administrators', 'production-administrator.index')->name('production-administrators.index.view')->middleware('permission:crud-production-administrators');
     Route::view('production-administrators/create', 'production-administrator.create')->name('production-administrators.create.view')->middleware('permission:crud-production-administrators');
