@@ -13,8 +13,6 @@ import Qet from "./components/Qet";
 import QetItem from "./components/QetItem";
 import QiInputStartsAt from "./components/QiInputStartsAt";
 import QiSelectPrimaryFaultClassification from "./components/QiSelectPrimaryFaultClassification";
-import QuarantineIntakeForm from "./components/QuarantineIntakeForm";
-// import QuarantineStatsFilter from "./components/QuarantineStatsFilter";
 import EquipmentImportForm from "./components/EquipmentImportForm";
 import QiReportMistakeForm from "./components/QiReportMistakeForm";
 import QiSelectDryHireOpportunity from "./components/QiSelectDryHireOpportunity";
@@ -34,6 +32,7 @@ import ProductionAdministratorEdit from "./components/ProductionAdministratorEdi
 import TechnicalSupervisorsIndex from "./components/TechnicalSupervisorsIndex";
 import TechnicalSupervisorForm from "./components/TechnicalSupervisorForm";
 import TechnicalSupervisorEdit from "./components/TechnicalSupervisorEdit";
+import QuarantineForm from "./components/QuarantineForm";
 
 Alpine.data( 'ActionStreamFilters', ActionStreamFilters );
 Alpine.data( 'ActionStreamItem', ActionStreamItem );
@@ -44,8 +43,6 @@ Alpine.data( 'Qet', Qet );
 Alpine.data( 'QetItem', QetItem );
 Alpine.data( 'QiInputStartsAt', QiInputStartsAt );
 Alpine.data( 'QiSelectPrimaryFaultClassification', QiSelectPrimaryFaultClassification );
-Alpine.data( 'QuarantineIntakeForm', QuarantineIntakeForm );
-// Alpine.data( 'QuarantineStatsFilter', QuarantineStatsFilter );
 Alpine.data( 'EquipmentImportForm', EquipmentImportForm );
 Alpine.data( 'QiSelectDryHireOpportunity', QiSelectDryHireOpportunity );
 Alpine.data( 'ResetPasswordForm', ResetPasswordForm );
@@ -65,5 +62,6 @@ Alpine.data( 'ProductionAdministratorEdit', ProductionAdministratorEdit );
 Alpine.data( 'TechnicalSupervisorsIndex', TechnicalSupervisorsIndex );
 Alpine.data( 'TechnicalSupervisorForm', TechnicalSupervisorForm );
 Alpine.data( 'TechnicalSupervisorEdit', TechnicalSupervisorEdit );
+Alpine.data( 'QuarantineForm', QuarantineForm );
 
 Livewire.start();
