@@ -27,7 +27,32 @@ export default function QuarantineForm () {
             this._technicalSupervisorNotYetAssignedId = Number( this.$root.dataset.technicalSupervisorNotYetAssignedId );
         },
         async send () {
-            console.log( this.form );
+            if ( this.submitting ) {
+                return;
+            }
+
+            this.errors = { ...initialForm };
+            this.submitting = true;
+
+            try {
+                const response = await window.axios.post( route( 'quarantine.store' ), this.form );
+
+                console.log( response );
+            } catch ( error ) {
+                if ( error.status === 422 ) {
+                    const { errors } = error.response.data;
+
+                    for ( const key in errors ) {
+                        this.errors[ key ] = errors[ key ][ 0 ];
+                    }
+
+                    return;
+                }
+
+                console.error( error );
+            } finally {
+                this.submitting = false;
+            }
         },
         clear () {
             this.form = {

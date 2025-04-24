@@ -15,7 +15,7 @@ class QuarantineIntakeController extends Controller
         $quarantine = $request->session()->get('quarantine', []);
 
         if (empty($quarantine)) {
-            return redirect()->route('quarantine-intake.create');
+            return redirect()->route('quarantine.create.view');
         }
 
         return view('quarantine-intake-success', compact('quarantine'));
