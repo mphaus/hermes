@@ -1,5 +1,4 @@
 @use('App\Enums\JobStatus')
-@use('Illuminate\Support\Js')
 
 @php
     $opportunity_query_params = [
@@ -14,7 +13,9 @@
     <x-form
         class="space-y-7"
         data-current-date="{{ now()->format('Y-m-d') }}"
+        data-technical-supervisor-not-yet-assigned-id="{{ config('app.mph.technical_supervisor_not_yet_assigned_id') }}"
         x-data="QuarantineForm"
+        x-on:hermes:select-opportunity-change="handleSelectOpportunityChange"
         x-on:submit.prevent="send"
     >
         <x-card class="px-8 space-y-4">
@@ -201,59 +202,61 @@
                 <x-input-error :messages="$errors->first('form.starts_at')" />
             </div>
         </x-card>
-        <x-card class="px-8">
-            <div class="space-y-4">
-                <label class="block font-semibold">{{ __('Intake location') }}</label>
-                <div class="flex items-start gap-1 mt-2">
-                    <x-icon-info class="w-4 h-4 text-blue-500 shrink-0" />
-                    <p class="text-xs ">{{ __('Indicate where this Product will be stored in the Quarantine Intake Area.') }}</p>
-                </div>
-                <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
-                    <div class="flex items-center gap-1">
-                        <input type="radio" id="on-a-shelf" value="on-a-shelf" x-model="form.intake_location_type">
-                        <x-input-label class="cursor-pointer" for="on-a-shelf">{{ __('On a shelf') }}</x-input-label>
+        <template hidden x-if="form.starts_at === $root.dataset.currentDate">
+            <x-card class="px-8" x-show="form.starts_at === $root.dataset.currentDate">
+                <div class="space-y-4">
+                    <label class="block font-semibold">{{ __('Intake location') }}</label>
+                    <div class="flex items-start gap-1 mt-2">
+                        <x-icon-info class="w-4 h-4 text-blue-500 shrink-0" />
+                        <p class="text-xs ">{{ __('Indicate where this Product will be stored in the Quarantine Intake Area.') }}</p>
                     </div>
-                    <div class="flex items-center gap-1">
-                        <input type="radio" id="in-the-bulky-products-area" value="in-the-bulky-products-area" x-model="form.intake_location_type" x-on:change="form.intake_location = ''">
-                        <x-input-label class="cursor-pointer" for="in-the-bulky-products-area">{{ __('In the bulky Products area') }}</x-input-label>
+                    <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
+                        <div class="flex items-center gap-1">
+                            <input type="radio" id="on-a-shelf" value="on-a-shelf" x-model="form.intake_location_type">
+                            <x-input-label class="cursor-pointer" for="on-a-shelf">{{ __('On a shelf') }}</x-input-label>
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <input type="radio" id="in-the-bulky-products-area" value="in-the-bulky-products-area" x-model="form.intake_location_type" x-on:change="form.intake_location = ''">
+                            <x-input-label class="cursor-pointer" for="in-the-bulky-products-area">{{ __('In the bulky Products area') }}</x-input-label>
+                        </div>
                     </div>
-                </div>
-                <template hidden x-if="form.intake_location_type === 'on-a-shelf'">
-                    <div class="space-y-4">
-                        <div class="relative">
-                            {{-- <x-icon-square-check
-                                class="absolute w-5 h-5 -translate-x-full -translate-y-1/2 fill-green-500 top-1/2 -left-1"
-                                data-element="square-check-icon"
-                            /> --}}
-                            <div>
-                                <x-input
-                                    type="text"
-                                    placeholder="{{ __('Ex: A-26') }}"
-                                    x-mask="a-99"
-                                    x-on:input="$event.target.value = $event.target.value.toUpperCase()"
-                                    x-model="form.intake_location"
-                                />
+                    <template hidden x-if="form.intake_location_type === 'on-a-shelf'">
+                        <div class="space-y-4">
+                            <div class="relative">
+                                {{-- <x-icon-square-check
+                                    class="absolute w-5 h-5 -translate-x-full -translate-y-1/2 fill-green-500 top-1/2 -left-1"
+                                    data-element="square-check-icon"
+                                /> --}}
+                                <div>
+                                    <x-input
+                                        type="text"
+                                        placeholder="{{ __('Ex: A-26') }}"
+                                        x-mask="a-99"
+                                        x-on:input="$event.target.value = $event.target.value.toUpperCase()"
+                                        x-model="form.intake_location"
+                                    />
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-1">
+                                <x-icon-triangle-alert class="w-4 h-4 text-yellow-500 shrink-0" />
+                                <p class="text-xs">
+                                    {{ __('Specify the Quarantine Intake shelf ID of where this fixture will be placed. Look for a vacant shelf position before entering this information. Tend to use aisles A, B, C, D E and F (in that order) first. Enter one letter for the aisle, and a number for the position on that shelf. A hyphen is added added automatically.') }}
+                                </p>
                             </div>
                         </div>
+                    </template>
+                    <template hidden x-if="form.intake_location_type === 'in-the-bulky-products-area'">
                         <div class="flex items-start gap-1">
                             <x-icon-triangle-alert class="w-4 h-4 text-yellow-500 shrink-0" />
                             <p class="text-xs">
-                                {{ __('Specify the Quarantine Intake shelf ID of where this fixture will be placed. Look for a vacant shelf position before entering this information. Tend to use aisles A, B, C, D E and F (in that order) first. Enter one letter for the aisle, and a number for the position on that shelf. A hyphen is added added automatically.') }}
+                                {{ __('This Product is to be placed in the Quarantine Intake area for bulky Products. Ensure the OOS sticker is facing outwards, and the Product does not cover OOS stickers on other Products in the area, or prevent access to Repairs Nally bins.') }}
                             </p>
                         </div>
-                    </div>
-                </template>
-                <template hidden x-if="form.intake_location_type === 'in-the-bulky-products-area'">
-                    <div class="flex items-start gap-1">
-                        <x-icon-triangle-alert class="w-4 h-4 text-yellow-500 shrink-0" />
-                        <p class="text-xs">
-                            {{ __('This Product is to be placed in the Quarantine Intake area for bulky Products. Ensure the OOS sticker is facing outwards, and the Product does not cover OOS stickers on other Products in the area, or prevent access to Repairs Nally bins.') }}
-                        </p>
-                    </div>
-                </template>
-                <x-input-error :messages="$errors->first('form.intake_location')" />
-            </div>
-        </x-card>
+                    </template>
+                    <x-input-error :messages="$errors->first('form.intake_location')" />
+                </div>
+            </x-card>
+        </template>
         <x-card class="px-8">
             <div class="space-y-4">
                 <label class="block font-semibold">{{ __('Primary fault classification') }}</label>

@@ -10,14 +10,18 @@
                 <x-quarantine-form-skeleton />
             </div>
         </template>
-        <template hidden x-if="hasFetched">
-            {{-- CHECK FOR THE EMPTINESS OF THE TECHNICAL SUPERVISORS ARRAY --}}
-            <div class="max-w-(--breakpoint-md) mx-auto">
-                <x-quarantine-form />
+        <template hidden x-if="hasFetched && !technicalSupervisors.length">
+            <div class="p-4 font-semibold text-red-500 bg-red-100 rounded-lg">
+                {{ __('In order to create a Quarantine, one or more Technical Supervisors must have been previously created using the Technical Supervisor CRUD. It is also recommended that a Technical Supervisor has been assigned to Opportunities.') }}
             </div>
         </template>
+        <template hidden x-if="hasFetched && !!technicalSupervisors.length">
+                <div class="max-w-(--breakpoint-md) mx-auto">
+                    <x-quarantine-form />
+                </div>
+            </template>
         <template hidden x-if="errorMessage">
-            <div class="p-4 font-semibold text-white bg-red-600 rounded-lg" x-text="errorMessage"></div>
+            <div class="p-4 font-semibold text-red-500 bg-red-100 rounded-lg" x-text="errorMessage"></div>
         </template>
     </div>
 </x-layout-app>

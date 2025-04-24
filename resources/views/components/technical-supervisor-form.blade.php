@@ -58,6 +58,6 @@
         </x-button>
     </div>
     <template x-if="message">
-        <div class="p-4 font-semibold text-white bg-red-600 rounded-md" x-text="message"></div>
+        <div class="p-4 font-semibold text-red-500 bg-red-100 rounded-md" x-text="message"></div>
     </template>
 </x-form>
