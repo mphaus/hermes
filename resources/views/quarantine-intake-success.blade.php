@@ -67,7 +67,7 @@
                 </ul>
                 <x-button
                     variant="primary"
-                    href="{{ route('quarantine-intake.create') }}"
+                    href="{{ route('quarantine.create.view') }}"
                     title="{{ __('Create a new Quarantine submission') }}"
                     class="mt-8 text-center"
                 >

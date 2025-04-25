@@ -2,11 +2,17 @@
 
 namespace App\Http\Requests;
 
+use App\Mail\QuarantineCreated;
 use App\Rules\UniqueSerialNumber;
 use App\Traits\WithQuarantineIntakeClassification;
 use Closure;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 
 class StoreQuarantineRequest extends FormRequest
@@ -36,6 +42,7 @@ class StoreQuarantineRequest extends FormRequest
             'opportunity' => [Rule::requiredIf(fn() => request()->input('opportunity_type') !== 'not-associated')],
             'technical_supervisor_id' => [
                 Rule::requiredIf(fn() => request()->input('opportunity_type') === 'production-lighting-hire'),
+                'nullable',
                 function (string $attribute, mixed $value, Closure $fail) {
                     if (request()->input('opportunity_type') === 'production-lighting-hire' && !is_numeric($value)) {
                         $fail(__('The :attribute field must be a number.'));
@@ -48,6 +55,7 @@ class StoreQuarantineRequest extends FormRequest
             ],
             'serial_number' => [
                 Rule::requiredIf(fn() => request()->input('serial_number_status') === 'serial-number-exists'),
+                'nullable',
                 'max:256',
                 'regex:/^[a-zA-Z0-9\/.\-\s]+$/',
                 new UniqueSerialNumber(request()->input('serial_number_status')),
@@ -60,8 +68,13 @@ class StoreQuarantineRequest extends FormRequest
                     $fail(__('The :attribute field must not be a greater date than the last day of the next month.'));
                 }
             }],
+            'intake_location_type' => [
+                'required',
+                Rule::in(['on-a-shelf', 'in-the-bulky-products-area']),
+            ],
             'intake_location' => [
                 Rule::requiredIf(fn() => request()->input('starts_at') === now()->format('Y-m-d') && request()->input('intake_location_type') === 'on-a-shelf'),
+                'nullable',
                 function (string $attribute, mixed $value, Closure $fail) {
                     if (request()->input('starts_at') !== now()->format('Y-m-d')) {
                         return;
@@ -90,6 +103,94 @@ class StoreQuarantineRequest extends FormRequest
             'starts_at' => __('ready for repairs'),
             'classification' => __('primary fault classification'),
             'description' => __('fault description'),
+        ];
+    }
+
+    public function store(): array
+    {
+        [
+            'opportunity_type' => $opportunity_type,
+            'opportunity' => $opportunity,
+            'technical_supervisor_id' => $technical_supervisor_id,
+            'serial_number_status' => $serial_number_status,
+            'serial_number' => $serial_number,
+            'product_id' => $product_id,
+            'starts_at' => $starts_at,
+            'intake_location_type' => $intake_location_type,
+            'intake_location' => $intake_location,
+            'classification' => $classification,
+            'description' => $description,
+        ] = $this->validated();
+
+        $reference = match ($serial_number_status) {
+            'serial-number-exists' => $serial_number,
+            'missing-serial-number' => __('Missing serial number'),
+            'not-serialised' => __('Equipment needs to be serialised'),
+        };
+
+        $starts_at = now()->parse($starts_at);
+        $is_same_day = $starts_at->isSameDay(now());
+        $starts_at_text = $is_same_day
+            ? __('Item is in on Quarantine Intake shelving and is available for repairs work right now.')
+            : __('Item expected to be back in the warehouse and available for repairs work on :date.', ['date' => $starts_at->format('D d-M-Y')]);
+
+        $description = '"' .
+            $description .
+            '"' .
+            PHP_EOL .
+            PHP_EOL .
+            $starts_at_text .
+            PHP_EOL .
+            PHP_EOL .
+            'Primary fault classification type ' .
+            ':' .
+            $classification .
+            ':' .
+            PHP_EOL .
+            PHP_EOL .
+            __('Submitted by :first_name', ['first_name' => Auth::user()->first_name]);
+
+        $response = Http::current()->post('quarantines', [
+            'quarantine' => [
+                'item_id' => App::environment(['local', 'staging']) ? intval(config('app.mph.test_product_id')) : intval($product_id),
+                'store_id' => 1,
+                'reference' => $reference,
+                'description' => $description,
+                'starts_at' => $starts_at->setTime(12, 0, 0, 0)->setTimezone('UTC')->format('Y-m-d\TH:i:s'),
+                'quantity' => 1,
+                'quarantine_type' => 1, // Damaged
+                'open_ended' => true,
+                // 'stock_type' => 1, // Rental
+                'custom_fields' => [
+                    'opportunity' => $opportunity_type !== 'not-associated' ? $opportunity : __('Not associated with any Job'),
+                    'mph_technical_supervisor' => $technical_supervisor_id,
+                    'intake_location' => $intake_location_type === 'in-the-bulky-products-area'
+                        ? __('Bulky Products area')
+                        : ($is_same_day
+                            ? mb_strtoupper($intake_location)
+                            : __('NtYtAvail')),
+                ],
+            ],
+        ]);
+
+        if ($response->failed()) {
+            ['errors' => $errors] = $response->json();
+
+            throw new HttpResponseException(
+                response()->json([
+                    'message' => __('<p>Fail! ❌ The Quarantine Item was not added to CurrentRMS because <span class="font-semibold">:error</span>. This item still needs to be added. It\'s fine to try again, but the same error may return.</p><p>See <a href=":url" target="_blank" rel="nofollow" title="Dealing with errors when adding items to Quarantine via Hermes section" class="font-semibold">Dealing with errors when adding items to Quarantine via Hermes section</a> in the Quarantine Intake Process for instructions on what to do next.</p>', ['error' => $errors[0], 'url' => 'https://mphaustralia.sharepoint.com/:w:/r/teams/MPHAdministration/Shared%20Documents/Process/01%20In%20development/Process_%20Repairs%20Quarantine%20intake.docx?d=wc450b4cdc2e84c758363390091b56915&csf=1&web=1&e=sFkHAk&nav=eyJoIjoiMzg4NTM5MDQifQ']),
+                ], 400)
+            );
+        }
+
+        ['quarantine' => $quarantine] = $response->json();
+
+        Mail::to(['garion@mphaus.com', 'service.manager@mphaus.com'])->send(new QuarantineCreated($quarantine, $classification, $description, Auth::user()));
+
+        return [
+            ...$quarantine,
+            'primary_fault_classification' => $classification,
+            'ready_for_repairs' => $is_same_day ? __('Now') : $starts_at->setTime(12, 0, 0, 0)->setTimezone('UTC')->format('Y-m-d\TH:i:s'),
         ];
     }
 }

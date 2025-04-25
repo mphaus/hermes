@@ -25,15 +25,15 @@
                     <x-input-label>{{ __('Specify the Job this Product was identified as faulty on') }}</x-input-label>
                     <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
                         <div class="flex items-center gap-1">
-                            <input type="radio" id="production-lighting-hire" value="production-lighting-hire" x-model="form.opportunity_type" x-on:change="form.opportunity = ''">
+                            <input type="radio" id="production-lighting-hire" value="production-lighting-hire" x-model="form.opportunity_type" x-on:change="handleOpportunityTypeChange">
                             <x-input-label class="cursor-pointer" for="production-lighting-hire">{{ __('A Production Lighting Hire Job') }}</x-input-label>
                         </div>
                         <div class="flex items-center gap-1">
-                            <input type="radio" id="dry-hire" value="dry-hire" x-model="form.opportunity_type" x-on:change="form.opportunity = ''">
+                            <input type="radio" id="dry-hire" value="dry-hire" x-model="form.opportunity_type" x-on:change="handleOpportunityTypeChange">
                             <x-input-label class="cursor-pointer" for="dry-hire">{{ __('A Dry Hire Job') }}</x-input-label>
                         </div>
                         <div class="flex items-center gap-1">
-                            <input type="radio" id="not-associated" value="not-associated" x-model="form.opportunity_type" x-on:change="form.opportunity = ''">
+                            <input type="radio" id="not-associated" value="not-associated" x-model="form.opportunity_type" x-on:change="handleOpportunityTypeChange">
                             <x-input-label class="cursor-pointer" for="not-associated">{{ __('Not associated with a Job') }}</x-input-label>
                         </div>
                     </div>
@@ -89,7 +89,7 @@
                     <p class="text-sm text-red-600" x-text="errors.opportunity"></p>
                 </template>
             </div>
-            <template hidden x-if="form.technical_supervisor && form.opportunity_type === 'production-lighting-hire'">
+            <template hidden x-if="technicalSupervisorName">
                 <div class="space-y-4">
                     <label class="block font-semibold">{{ __('Technical Supervisor') }}</label>
                     <div class="flex items-start gap-1 mt-2">
@@ -146,31 +146,33 @@
                             <x-input-label class="cursor-pointer" for="not-serialised">{{ __('Equipment is not serialised') }}</x-input-label>
                         </div>
                     </div>
-                    <div class="space-y-2">
-                        <div class="relative">
-                            {{-- <x-icon-square-check
-                                class="absolute w-5 h-5 -translate-x-full -translate-y-1/2 fill-green-500 top-1/2 -left-1"
-                                id="serial-number-square-check-icon"
-                                data-element="square-check-icon"
-                            />   --}}
-                            <x-input
-                                type="text"
-                                placeholder="{{ __('Serial number') }}"
-                                x-on:input="serialNumberRemainingCharacters = 256 - $event.target.value.length"
-                                x-model="form.serial_number"
-                            />
+                    <template hidden x-if="form.serial_number_status === 'serial-number-exists'">
+                        <div class="space-y-2">
+                            <div class="relative">
+                                {{-- <x-icon-square-check
+                                    class="absolute w-5 h-5 -translate-x-full -translate-y-1/2 fill-green-500 top-1/2 -left-1"
+                                    id="serial-number-square-check-icon"
+                                    data-element="square-check-icon"
+                                />   --}}
+                                <x-input
+                                    type="text"
+                                    placeholder="{{ __('Serial number') }}"
+                                    x-on:input="serialNumberRemainingCharacters = 256 - $event.target.value.length"
+                                    x-model="form.serial_number"
+                                />
+                            </div>
+                            <p
+                                class="text-xs font-semibold"
+                                x-bind:class="{ 'text-red-500': serialNumberRemainingCharacters <= 0 }"
+                            >
+                                <span x-text="serialNumberRemainingCharacters"></span>
+                                {!!  __('character<span x-show="serialNumberRemainingCharacters !== 1">s</span> left') !!}
+                            </p>
+                            <template hidden x-if="errors.serial_number">
+                                <p class="text-sm text-red-600" x-text="errors.serial_number"></p>
+                            </template>
                         </div>
-                        <p
-                            class="text-xs font-semibold"
-                            x-bind:class="{ 'text-red-500': serialNumberRemainingCharacters <= 0 }"
-                        >
-                            <span x-text="serialNumberRemainingCharacters"></span>
-                            {!!  __('character<span x-show="serialNumberRemainingCharacters !== 1">s</span> left') !!}
-                        </p>
-                        <template hidden x-if="errors.serial_number">
-                            <p class="text-sm text-red-600" x-text="errors.serial_number"></p>
-                        </template>
-                    </div>
+                    </template>
                     <div
                         class="flex items-start gap-1"
                         x-cloak
@@ -345,7 +347,7 @@
                 x-bind:disabled="submitting"
             >
                 <span x-show="!submitting">{{ __('Submit') }}</span>
-                <span class="items-center gap-2" x-cloak x-show="submitting">
+                <span class="flex items-center gap-2" x-cloak x-show="submitting">
                     <x-icon-circle-notch class="w-4 h-4 fill-current animate-spin" />
                     <span>{{ __('Submitting...') }}</span>
                 </span>

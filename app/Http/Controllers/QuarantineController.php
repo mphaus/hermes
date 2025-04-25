@@ -11,7 +11,12 @@ class QuarantineController extends Controller
     public function store(StoreQuarantineRequest $request): JsonResponse
     {
         $request->validated();
+        $quarantine = $request->store();
 
-        return response()->json();
+        session()->flash('quarantine', $quarantine);
+
+        return response()->json([
+            'redirect_to' => route('quarantine-intake-success.index'),
+        ]);
     }
 }

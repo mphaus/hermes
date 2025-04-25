@@ -37,7 +37,8 @@ export default function QuarantineForm () {
             try {
                 const response = await window.axios.post( route( 'quarantine.store' ), this.form );
 
-                console.log( response );
+                const { redirect_to } = response.data;
+                window.location = redirect_to;
             } catch ( error ) {
                 if ( error.status === 422 ) {
                     const { errors } = error.response.data;
@@ -90,6 +91,11 @@ export default function QuarantineForm () {
 
             this.form.technical_supervisor_id = technicalSupervisor.id;
             this.technicalSupervisorName = technicalSupervisor.name;
+        },
+        handleOpportunityTypeChange () {
+            this.form.opportunity = '';
+            this.form.technical_supervisor_id = '';
+            this.technicalSupervisorName = '';
         }
     };
 }
