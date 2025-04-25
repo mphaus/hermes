@@ -85,7 +85,9 @@
                         </div>
                     </div>
                 </template>
-                <x-input-error :messages="$errors->first('form.opportunity')" />
+                <template hidden x-if="errors.opportunity">
+                    <p class="text-sm text-red-600" x-text="errors.opportunity"></p>
+                </template>
             </div>
             <template hidden x-if="form.technical_supervisor && form.opportunity_type === 'production-lighting-hire'">
                 <div class="space-y-4">
@@ -97,7 +99,9 @@
                     <p x-text="technicalSupervisorName"></p>
                 </div>
             </template>
-            <x-input-error :messages="$errors->first('form.technical_supervisor')" />
+            <template hidden x-if="errors.technical_supervisor_id">
+                <p class="text-sm text-red-600" x-text="errors.technical_supervisor_id"></p>
+            </template>
         </x-card>
         <x-card class="px-8">
             <div class="space-y-4">
@@ -115,7 +119,9 @@
                         <x-select-product x-model="form.product_id" />
                     </div>
                 </div>
-                <x-input-error :messages="$errors->first('form.product_id')" />
+                <template hidden x-if="errors.product_id">
+                    <p class="text-sm text-red-600" x-text="errors.product_id"></p>
+                </template>
             </div>
         </x-card>
         <x-card class="px-8">
@@ -161,7 +167,9 @@
                             <span x-text="serialNumberRemainingCharacters"></span>
                             {!!  __('character<span x-show="serialNumberRemainingCharacters !== 1">s</span> left') !!}
                         </p>
-                        <x-input-error :messages="$errors->first('form.serial_number')" />
+                        <template hidden x-if="errors.serial_number">
+                            <p class="text-sm text-red-600" x-text="errors.serial_number"></p>
+                        </template>
                     </div>
                     <div
                         class="flex items-start gap-1"
@@ -199,7 +207,9 @@
                         <x-qi-input-starts-at x-model="form.starts_at" />
                     </div>
                 </div>
-                <x-input-error :messages="$errors->first('form.starts_at')" />
+                <template hidden x-if="errors.starts_at">
+                    <p class="text-sm text-red-600" x-text="errors.starts_at"></p>
+                </template>
             </div>
         </x-card>
         <template hidden x-if="form.starts_at === $root.dataset.currentDate">
@@ -253,7 +263,9 @@
                             </p>
                         </div>
                     </template>
-                    <x-input-error :messages="$errors->first('form.intake_location')" />
+                    <template hidden x-if="errors.intake_location">
+                        <p class="text-sm text-red-600" x-text="errors.intake_location"></p>
+                    </template>
                 </div>
             </x-card>
         </template>
@@ -273,7 +285,9 @@
                         <x-qi-select-primary-fault-classification x-model="form.classification" />
                     </div>
                 </div>
-                <x-input-error :messages="$errors->first('form.classification')" />
+                <template hidden x-if="errors.classification">
+                    <p class="text-sm text-red-600" x-text="errors.classification"></p>
+                </template>
             </div>
         </x-card>
         <x-card class="px-8">
@@ -311,7 +325,9 @@
                         <li>{{ __('➡️ Mention if a serial number collision 💥 was reported, and what you did about it.') }}</li>
                     </ul>
                 </div>
-                <x-input-error :messages="$errors->first('form.description')" />
+                <template hidden x-if="errors.description">
+                    <p class="text-sm text-red-600" x-text="errors.description"></p>
+                </template>
             </div>
         </x-card>
         <div class="flex items-center justify-end gap-2">
