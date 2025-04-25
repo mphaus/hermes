@@ -3,7 +3,7 @@
 ])
 
 <x-form 
-    action="{{ route('quarantine-intake-report-mistake.store') }}"
+    action="{{ route('quarantine.report-mistake.store') }}"
     method="POST" 
     class="space-y-1"
     x-data="QiReportMistakeForm"

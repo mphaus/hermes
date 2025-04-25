@@ -55,9 +55,8 @@ Route::middleware(['auth', 'is_enabled'])->group(function () {
 
     Route::view('quarantine/create', 'quarantine.create')->name('quarantine.create.view')->middleware('permission:access-quarantine-intake');
     Route::permanentRedirect('/quarantine-intake', '/quarantine/create');
-
-    Route::get('quarantine-intake-success', [QuarantineIntakeController::class, 'success'])->name('quarantine-intake-success.index')->middleware('permission:access-quarantine-intake');
-    Route::post('quarantine-intake/report-mistake', [QuarantineIntakeController::class, 'reportMistake'])->name('quarantine-intake-report-mistake.store')->middleware('permission:access-quarantine-intake');
+    Route::get('quarantine/success', [QuarantineController::class, 'success'])->name('quarantine.success.index')->middleware('permission:access-quarantine-intake');
+    Route::post('quarantine/report-mistake', [QuarantineController::class, 'storeReport'])->name('quarantine.report-mistake.store')->middleware('permission:access-quarantine-intake');
 
     Route::post('i/quarantine', [QuarantineController::class, 'store'])->name('quarantine.store')->middleware('permission:access-quarantine-intake');
 
