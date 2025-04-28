@@ -15,6 +15,7 @@ const initialForm = {
 export default function QuarantineForm () {
     return {
         _technicalSupervisorNotYetAssignedId: 0,
+        errorMessage: '',
         submitting: false,
         form: { ...initialForm },
         errors: { ...initialForm },
@@ -31,6 +32,7 @@ export default function QuarantineForm () {
                 return;
             }
 
+            this.errorMessage = '';
             this.errors = { ...initialForm };
             this.submitting = true;
 
@@ -49,6 +51,9 @@ export default function QuarantineForm () {
 
                     return;
                 }
+
+                const { message } = error.response.data;
+                this.errorMessage = message;
 
                 console.error( error );
             } finally {

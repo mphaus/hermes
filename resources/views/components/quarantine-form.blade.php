@@ -353,14 +353,8 @@
                 </span>
             </x-button>
         </div>
-        {{-- @if ($alert)
-            <div @class([
-                'p-4 rounded-lg',
-                'bg-green-100 text-green-500' => $alert['type'] === 'success',
-                'bg-red-100 text-red-500' => $alert['type'] === 'error',
-            ]) x-ref="alert">
-                <div class="space-y-4">{!! $alert['message'] !!}</div>
-            </div>
-        @endif --}}
+        <template hidden x-if="errorMessage">
+            <div class="p-4 font-semibold text-red-500 bg-red-100 rounded-md" x-html="errorMessage"></div>
+        </template>
     </x-form>
 </div>
