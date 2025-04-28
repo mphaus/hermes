@@ -12,6 +12,12 @@ const initialForm = {
     description: '',
 };
 
+const initialSerialNumber = {
+    checking: false,
+    checked: false,
+    exists: false,
+};
+
 export default function QuarantineForm () {
     const currentDate = this.$root.dataset.currentDate;
     const technicalSupervisorNotYetAssignedId = Number( this.$root.dataset.technicalSupervisorNotYetAssignedId );
@@ -24,6 +30,7 @@ export default function QuarantineForm () {
         technicalSupervisorName: '',
         serialNumberRemainingCharacters: 256,
         descriptionRemainingCharacters: 512,
+        serialNumber: { ...initialSerialNumber },
         init () {
             this.form.starts_at = currentDate;
         },
@@ -32,6 +39,7 @@ export default function QuarantineForm () {
                 return;
             }
 
+            this.serialNumber.errorMessage = '';
             this.errorMessage = '';
             this.errors = { ...initialForm };
             this.submitting = true;
@@ -107,7 +115,11 @@ export default function QuarantineForm () {
                     this.form.opportunity_type !== 'not-associated'
                     && this.form.opportunity !== ''
                     && this.errors.opportunity === '',
-                // serial_number: this.form.serial_number,
+                serial_number:
+                    this.form.serial_number !== ''
+                    && this.serialNumber.checked
+                    && this.serialNumber.exists === false
+                    && this.errors.serial_number === '',
                 product_id:
                     this.form.product_id !== ''
                     && this.errors.product_id === '',
@@ -127,6 +139,40 @@ export default function QuarantineForm () {
                     && this.form.description.length <= 512
                     && this.errors.description === '',
             };
-        }
+        },
+        async checkSerialNumber () {
+            this.serialNumber.checking = true;
+            this.serialNumber.checked = false;
+            this.serialNumber.exists = false;
+            this.errors.serial_number = '';
+
+            try {
+                await window.axios.post( route( 'quarantine.check-serial-number' ), {
+                    serial_number: this.form.serial_number,
+                } );
+
+                this.serialNumber.checked = true;
+            }
+            catch ( error ) {
+                if ( error.status === 422 ) {
+                    this.serialNumber.exists = true;
+                }
+
+                this.serialNumber.checked = true;
+
+                const { message } = error.response.data;
+                this.errors.serial_number = message;
+
+                console.error( error );
+            } finally {
+                this.serialNumber.checking = false;
+            }
+        },
+        handleSerialNumberStatusChange () {
+            this.form.serial_number = '';
+            this.errors.serial_number = '';
+            this.serialNumber = { ...initialSerialNumber };
+            this.serialNumberRemainingCharacters = 256;
+        },
     };
 }

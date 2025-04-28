@@ -140,31 +140,34 @@
                 <div class="space-y-4">
                     <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
                         <div class="flex items-center gap-1">
-                            <input type="radio" id="serial-number-exists" value="serial-number-exists" x-model="form.serial_number_status">
+                            <input type="radio" id="serial-number-exists" value="serial-number-exists" x-model="form.serial_number_status" x-on:change="handleSerialNumberStatusChange">
                             <x-input-label class="cursor-pointer" for="serial-number-exists">{{ __('Serial number') }}</x-input-label>
                         </div>
                         <div class="flex items-center gap-1">
-                            <input type="radio" id="missing-serial-number" value="missing-serial-number" x-model="form.serial_number_status">
+                            <input type="radio" id="missing-serial-number" value="missing-serial-number" x-model="form.serial_number_status" x-on:change="handleSerialNumberStatusChange">
                             <x-input-label class="cursor-pointer" for="missing-serial-number">{{ __('Missing serial number') }}</x-input-label>
                         </div>
                         <div class="flex items-center gap-1">
-                            <input type="radio" id="not-serialised" value="not-serialised" x-model="form.serial_number_status">
+                            <input type="radio" id="not-serialised" value="not-serialised" x-model="form.serial_number_status" x-on:change="handleSerialNumberStatusChange">
                             <x-input-label class="cursor-pointer" for="not-serialised">{{ __('Equipment is not serialised') }}</x-input-label>
                         </div>
                     </div>
                     <template hidden x-if="form.serial_number_status === 'serial-number-exists'">
                         <div class="space-y-2">
                             <div class="relative">
-                                {{-- <x-icon-square-check
-                                    class="absolute w-5 h-5 -translate-x-full -translate-y-1/2 fill-green-500 top-1/2 -left-1"
-                                    id="serial-number-square-check-icon"
-                                    data-element="square-check-icon"
-                                />   --}}
+                                <template hidden x-if="validated.serial_number">
+                                    <x-icon-square-check
+                                        class="absolute w-5 h-5 -translate-x-full -translate-y-1/2 fill-green-500 top-1/2 -left-1"
+                                        id="serial-number-square-check-icon"
+                                        data-element="square-check-icon"
+                                    />
+                                </template> 
                                 <x-input
                                     type="text"
                                     placeholder="{{ __('Serial number') }}"
                                     x-on:input="serialNumberRemainingCharacters = 256 - $event.target.value.length"
                                     x-model="form.serial_number"
+                                    x-on:blur="checkSerialNumber"
                                 />
                             </div>
                             <p
@@ -175,7 +178,7 @@
                                 {!!  __('character<span x-show="serialNumberRemainingCharacters !== 1">s</span> left') !!}
                             </p>
                             <template hidden x-if="errors.serial_number">
-                                <p class="text-sm text-red-600" x-text="errors.serial_number"></p>
+                                <div class="text-sm text-red-600" x-html="errors.serial_number"></div>
                             </template>
                         </div>
                     </template>

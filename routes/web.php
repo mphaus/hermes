@@ -8,8 +8,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductionAdministratorController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\QiOpportunityController;
+use App\Http\Controllers\QuarantineCheckSerialNumberController;
 use App\Http\Controllers\QuarantineController;
-use App\Http\Controllers\QuarantineIntakeController;
 use App\Http\Controllers\TechnicalSupervisorController;
 use App\Livewire\ActionStreamIndex;
 use App\Livewire\DiscussionsCreate;
@@ -17,7 +17,6 @@ use App\Livewire\DiscussionsEdit;
 use App\Livewire\JobsIndex;
 use App\Livewire\JobsShow;
 use App\Livewire\QetIndex;
-use App\Livewire\QuarantineIntakeCreate;
 use App\Livewire\UploadLogsShow;
 use App\Livewire\UsersCreate;
 use App\Livewire\UsersEdit;
@@ -59,6 +58,7 @@ Route::middleware(['auth', 'is_enabled'])->group(function () {
     Route::post('quarantine/report-mistake', [QuarantineController::class, 'storeReport'])->name('quarantine.report-mistake.store')->middleware('permission:access-quarantine-intake');
 
     Route::post('i/quarantine', [QuarantineController::class, 'store'])->name('quarantine.store')->middleware('permission:access-quarantine-intake');
+    Route::post('i/quarantine/check-serial-number', QuarantineCheckSerialNumberController::class)->name('quarantine.check-serial-number')->middleware('permission:access-quarantine-intake');
 
     Route::view('production-administrators', 'production-administrator.index')->name('production-administrators.index.view')->middleware('permission:crud-production-administrators');
     Route::view('production-administrators/create', 'production-administrator.create')->name('production-administrators.create.view')->middleware('permission:crud-production-administrators');
