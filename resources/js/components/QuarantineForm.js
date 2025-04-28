@@ -13,19 +13,19 @@ const initialForm = {
 };
 
 export default function QuarantineForm () {
+    const currentDate = this.$root.dataset.currentDate;
+    const technicalSupervisorNotYetAssignedId = Number( this.$root.dataset.technicalSupervisorNotYetAssignedId );
+
     return {
-        _technicalSupervisorNotYetAssignedId: 0,
         errorMessage: '',
         submitting: false,
         form: { ...initialForm },
         errors: { ...initialForm },
-        validated: {},
         technicalSupervisorName: '',
         serialNumberRemainingCharacters: 256,
         descriptionRemainingCharacters: 512,
         init () {
-            this.form.starts_at = this.$root.dataset.currentDate;
-            this._technicalSupervisorNotYetAssignedId = Number( this.$root.dataset.technicalSupervisorNotYetAssignedId );
+            this.form.starts_at = currentDate;
         },
         async send () {
             if ( this.submitting ) {
@@ -66,7 +66,6 @@ export default function QuarantineForm () {
                 starts_at: this.$root.dataset.currentDate,
             };
             this.errors = { ...initialForm };
-            this.validated = {};
             this.$root.reset();
             this.technicalSupervisorName = '';
             this.serialNumberRemainingCharacters = 256;
@@ -82,7 +81,7 @@ export default function QuarantineForm () {
             /** @type {{ technical_supervisor_id: Number }} */
             const { technical_supervisor_id } = data;
 
-            if ( technical_supervisor_id === this._technicalSupervisorNotYetAssignedId ) {
+            if ( technical_supervisor_id === technicalSupervisorNotYetAssignedId ) {
                 this.form.technical_supervisor_id = technical_supervisor_id;
                 this.technicalSupervisorName = 'Not yet assigned';
                 return;
@@ -101,6 +100,33 @@ export default function QuarantineForm () {
             this.form.opportunity = '';
             this.form.technical_supervisor_id = '';
             this.technicalSupervisorName = '';
+        },
+        get validated () {
+            return {
+                opportunity:
+                    this.form.opportunity_type !== 'not-associated'
+                    && this.form.opportunity !== ''
+                    && this.errors.opportunity === '',
+                // serial_number: this.form.serial_number,
+                product_id:
+                    this.form.product_id !== ''
+                    && this.errors.product_id === '',
+                starts_at:
+                    this.form.starts_at !== ''
+                    && this.errors.starts_at === '',
+                intake_location:
+                    this.form.starts_at === currentDate
+                    && this.form.intake_location_type === 'on-a-shelf'
+                    && /^[A-Ia-i]-(?:[1-9]|[1-4][0-9]|5[0-5])$/.test( this.form.intake_location )
+                    && this.errors.intake_location === '',
+                classification:
+                    this.form.classification !== ''
+                    && this.errors.classification === '',
+                description:
+                    this.form.description !== ''
+                    && this.form.description.length <= 512
+                    && this.errors.description === '',
+            };
         }
     };
 }

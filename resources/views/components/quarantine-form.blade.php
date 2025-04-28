@@ -62,10 +62,12 @@
                 </div>
                 <template hidden x-if="form.opportunity_type === 'production-lighting-hire'">
                     <div class="relative">
-                        {{-- <x-icon-square-check
-                            class="absolute w-5 h-5 -translate-x-full -translate-y-1/2 fill-green-500 top-1/2 -left-1"
-                            data-element="square-check-icon"
-                        />   --}}
+                        <template hidden x-if="validated.opportunity">
+                            <x-icon-square-check
+                                class="absolute w-5 h-5 -translate-x-full -translate-y-1/2 fill-green-500 top-1/2 -left-1"
+                                data-element="square-check-icon"
+                            />
+                        </template>
                         <div>
                             <x-select-opportunity
                                 :params="$opportunity_query_params"
@@ -76,10 +78,12 @@
                 </template>
                 <template hidden x-if="form.opportunity_type === 'dry-hire'">
                     <div class="relative">
-                        {{-- <x-icon-square-check
-                            class="absolute w-5 h-5 -translate-x-full -translate-y-1/2 fill-green-500 top-1/2 -left-1"
-                            data-element="square-check-icon"
-                        />   --}}
+                        <template hidden x-if="validated.opportunity">
+                            <x-icon-square-check
+                                class="absolute w-5 h-5 -translate-x-full -translate-y-1/2 fill-green-500 top-1/2 -left-1"
+                                data-element="square-check-icon"
+                            />
+                        </template>
                         <div>
                             <x-qi-select-dry-hire-opportunity x-model="form.opportunity" />
                         </div>
@@ -111,10 +115,12 @@
                     <p class="text-xs">{{ __('Type the first few letters of the Product and pause to let the system get info from CurrentRMS. Select the exact-match Product. If the Product cannot be found in this listing, double-check the spelling of the Product name (per the info plate on the equipment), then ask the SRMM Manager for advice on how to proceed.') }}</p>
                 </div>
                 <div class="relative">
-                    {{-- <x-icon-square-check
-                        class="absolute w-5 h-5 -translate-x-full -translate-y-1/2 fill-green-500 top-1/2 -left-1"
-                        data-element="square-check-icon"
-                    /> --}}
+                    <template hidden x-if="validated.product_id">
+                        <x-icon-square-check
+                            class="absolute w-5 h-5 -translate-x-full -translate-y-1/2 fill-green-500 top-1/2 -left-1"
+                            data-element="square-check-icon"
+                        />
+                    </template>
                     <div>
                         <x-select-product x-model="form.product_id" />
                     </div>
@@ -204,7 +210,9 @@
                     <p class="text-xs">{{ __('Set the date this Product is expected to be in the warehouse, available for Repairs Technicians to work on. If the faulty Product is already in the Warehouse and is about to be placed on Quarantine Intake shelves, leave the date as today\'s.') }}</p>
                 </div>
                 <div class="relative">
-                    {{-- <x-icon-square-check class="absolute w-5 h-5 -translate-x-full -translate-y-1/2 fill-green-500 top-1/2 -left-1" />     --}}
+                    <template hidden x-if="validated.starts_at">
+                        <x-icon-square-check class="absolute w-5 h-5 -translate-x-full -translate-y-1/2 fill-green-500 top-1/2 -left-1" />
+                    </template>
                     <div>
                         <x-qi-input-starts-at x-model="form.starts_at" />
                     </div>
@@ -235,10 +243,12 @@
                     <template hidden x-if="form.intake_location_type === 'on-a-shelf'">
                         <div class="space-y-4">
                             <div class="relative">
-                                {{-- <x-icon-square-check
-                                    class="absolute w-5 h-5 -translate-x-full -translate-y-1/2 fill-green-500 top-1/2 -left-1"
-                                    data-element="square-check-icon"
-                                /> --}}
+                                <template hidden x-if="validated.intake_location">
+                                    <x-icon-square-check
+                                        class="absolute w-5 h-5 -translate-x-full -translate-y-1/2 fill-green-500 top-1/2 -left-1"
+                                        data-element="square-check-icon"
+                                    />
+                                </template>
                                 <div>
                                     <x-input
                                         type="text"
@@ -279,10 +289,12 @@
                     <p class="text-xs">{{ __('Classify the type of primary fault with this Product (that is, if a Product has multiple reasons for submission to Quarantine, which is the most prominent / serious?)') }}</p>
                 </div>
                 <div class="relative">
-                    {{-- <x-icon-square-check
-                        class="absolute w-5 h-5 -translate-x-full -translate-y-1/2 fill-green-500 top-1/2 -left-1"
-                        data-element="square-check-icon"
-                    /> --}}
+                    <template x-if="validated.classification">
+                        <x-icon-square-check
+                            class="absolute w-5 h-5 -translate-x-full -translate-y-1/2 fill-green-500 top-1/2 -left-1"
+                            data-element="square-check-icon"
+                        />
+                    </template>
                     <div>
                         <x-qi-select-primary-fault-classification x-model="form.classification" />
                     </div>
@@ -300,10 +312,12 @@
                     <p class="text-xs">{{ __('Enter a concise, meaningful and objective fault description.') }}</p>
                 </div>
                 <div class="relative">
-                    {{-- <x-icon-square-check
-                        class="absolute w-5 h-5 -translate-x-full fill-green-500 -left-1 top-1"
-                        data-element="square-check-icon"
-                    /> --}}
+                    <template hidden x-if="validated.description">
+                        <x-icon-square-check
+                            class="absolute w-5 h-5 -translate-x-full fill-green-500 -left-1 top-1"
+                            data-element="square-check-icon"
+                        />
+                    </template>
                     <div>
                         <x-textarea
                             rows="5"

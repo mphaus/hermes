@@ -49,6 +49,7 @@ class StoreQuarantineRequest extends FormRequest
                     }
                 },
             ],
+            'product_id' => ['required', 'numeric'],
             'serial_number_status' => [
                 'required',
                 Rule::in(['serial-number-exists', 'missing-serial-number', 'not-serialised']),
@@ -60,7 +61,6 @@ class StoreQuarantineRequest extends FormRequest
                 'regex:/^[a-zA-Z0-9\/.\-\s]+$/',
                 new UniqueSerialNumber(request()->input('serial_number_status')),
             ],
-            'product_id' => ['required', 'numeric'],
             'starts_at' => ['required', 'date', function (string $attribute, mixed $value, Closure $fail) {
                 $next_month_max_date = now('UTC')->addMonths(1)->endOfMonth()->format('Y-m-d');
 
