@@ -167,8 +167,12 @@
                                     placeholder="{{ __('Serial number') }}"
                                     x-on:input="serialNumberRemainingCharacters = 256 - $event.target.value.length"
                                     x-model="form.serial_number"
-                                    x-on:blur="checkSerialNumber"
+                                    x-on:input.debounce.300ms="checkSerialNumber"
+                                    x-bind:readonly="serialNumber.checking"
                                 />
+                                <template hidden x-if="serialNumber.checking">
+                                    <x-icon-circle-notch class="w-5 h-5 fill-gray-400 animate-spin absolute top-1/2 -translate-y-1/2 left-full translate-x-1" />
+                                </template>
                             </div>
                             <p
                                 class="text-xs font-semibold"
