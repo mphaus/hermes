@@ -71,10 +71,9 @@ export default function QuarantineForm () {
         clear () {
             this.form = {
                 ...initialForm,
-                starts_at: this.$root.dataset.currentDate,
+                starts_at: currentDate,
             };
             this.errors = { ...initialForm };
-            this.$root.reset();
             this.technicalSupervisorName = '';
             this.serialNumberRemainingCharacters = 256;
             this.descriptionRemainingCharacters = 512;
