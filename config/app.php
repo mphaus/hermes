@@ -136,6 +136,8 @@ return [
         'technical_supervisor_list_id' => env('MPH_TECHNICAL_SUPERVISOR_LIST_ID'),
         'technical_supervisor_not_yet_assigned_id' => env('MPH_TECHNICAL_SUPERVISOR_NOT_YET_ASSIGNED_ID'),
         'fault_root_cause_list_id' => env('MPH_FAULT_ROOT_CAUSE_LIST_ID'),
+        'notification_mail_address' => env('MPH_NOTIFICATION_MAIL_ADDRESS'),
+        'service_manager_mail_address' => env('MPH_SERVICE_MANAGER_MAIL_ADRESS'),
     ],
 
     'recaptcha_v3' => [

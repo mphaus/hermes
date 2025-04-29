@@ -80,7 +80,7 @@
             <ul class="pl-2 text-sm">
                 <li>
                     <a 
-                        href="mailto:garion@mphaus.com"
+                        href="mailto:{{ config('app.mph.notification_mail_address') }}"
                         target="_blank"
                         title="{{ __('Need help?') }}"
                         class="block p-2"
