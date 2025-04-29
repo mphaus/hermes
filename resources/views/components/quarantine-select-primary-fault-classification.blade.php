@@ -1,6 +1,6 @@
 <select
     class="w-full"
-    x-data="QiSelectPrimaryFaultClassification"
+    x-data="QuarantineSelectPrimaryFaultClassification"
     x-modelable="value"
     x-effect="checkValue(value)"
     {{ $attributes }}

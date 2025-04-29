@@ -10,7 +10,7 @@
  * @property {string} [_resultId]
  */
 
-export default function QiSelectPrimaryFaultClassification () {
+export default function QuarantineSelectPrimaryFaultClassification () {
     let isDirty = false;
 
     return {

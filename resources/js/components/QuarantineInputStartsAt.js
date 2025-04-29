@@ -1,4 +1,4 @@
-export default function QiInputStartsAt () {
+export default function QuarantineInputStartsAt () {
     const currentDate = this.$root.dataset.currentDate;
     const maxDate = this.$root.dataset.nextMonthMaxDate;
     let instance = null;

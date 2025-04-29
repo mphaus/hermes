@@ -11,7 +11,7 @@ const intialForm = {
     message: '',
 };
 
-export default function QiReportMistakeForm () {
+export default function QuarantineReportMistakeForm () {
     return {
         message: '',
         submitting: false,
@@ -28,7 +28,7 @@ export default function QiReportMistakeForm () {
             this.submitting = true;
 
             try {
-                const response = await window.axios.post( this.$root.action, this.form );
+                const response = await window.axios.post( route( 'quarantine.report-mistake.store' ), this.form );
 
                 /** @type {{ message: string }} */
                 const { message } = response.data;

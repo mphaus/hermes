@@ -85,7 +85,7 @@ class DiscussionsCreate extends Component
             ]);
         }
 
-        return $this->redirectRoute(name: 'discussions.create', navigate: true);
+        return $this->redirectRoute(name: 'discussions.create');
     }
 
     public function render(): View

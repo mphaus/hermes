@@ -85,7 +85,7 @@
                             />
                         </template>
                         <div>
-                            <x-qi-select-dry-hire-opportunity x-model="form.opportunity" />
+                            <x-quarantine-select-dry-hire-opportunity x-model="form.opportunity" />
                         </div>
                     </div>
                 </template>
@@ -221,7 +221,7 @@
                         <x-icon-square-check class="absolute w-5 h-5 -translate-x-full -translate-y-1/2 fill-green-500 top-1/2 -left-1" />
                     </template>
                     <div>
-                        <x-qi-input-starts-at x-model="form.starts_at" />
+                        <x-quarantine-input-starts-at x-model="form.starts_at" />
                     </div>
                 </div>
                 <template hidden x-if="errors.starts_at">
@@ -303,7 +303,7 @@
                         />
                     </template>
                     <div>
-                        <x-qi-select-primary-fault-classification x-model="form.classification" />
+                        <x-quarantine-select-primary-fault-classification x-model="form.classification" />
                     </div>
                 </div>
                 <template hidden x-if="errors.classification">

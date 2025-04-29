@@ -37,7 +37,7 @@ class UsersEdit extends Component
             'message' => __('User has been updated successfully.'),
         ]);
 
-        return $this->redirectRoute(name: 'users.index', navigate: true);
+        return $this->redirectRoute(name: 'users.index');
     }
 
     public function render(): View

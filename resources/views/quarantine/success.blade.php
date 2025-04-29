@@ -77,11 +77,11 @@
             <x-card class="flow">
                 <p class="font-semibold">{{ __('Made a mistake?') }}</p>
                 <p>{{ __('No worries. If there are errors in this data, don\'t submit it again! Let us know what needs to change...') }}</p>
-                <x-qi-report-mistake-form :quarantine="$quarantine" />
+                <x-quarantine-report-mistake-form :quarantine="$quarantine" />
                 <p>{{ __('A copy of the data and your message will be provided to the SRMM Manager, and they will take action. ') }}</p>
             </x-card>
         </div>
-        @unless ($quarantine['custom_fields']['intake_location'] === 'TBC')
+        @unless ($quarantine['custom_fields']['intake_location'] === 'NtYtAvail')
             <x-card class="space-y-4 bg-[#333333]! text-[#FFFF00]! hidden xl:block xl:col-span-2 xl:self-start text-center">
                 <h2 class="text-3xl 2xl:text-4xl">{{ __('Intake Location') }}</h2>
                 <p @class([

@@ -7,7 +7,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class QiSelectPrimaryFaultClassification extends Component
+class QuarantineSelectPrimaryFaultClassification extends Component
 {
     use WithQuarantineIntakeClassification;
 
@@ -24,6 +24,6 @@ class QiSelectPrimaryFaultClassification extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.qi-select-primary-fault-classification');
+        return view('components.quarantine-select-primary-fault-classification');
     }
 }

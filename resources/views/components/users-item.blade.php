@@ -8,7 +8,7 @@
     <div class="grid gap-4 lg:grid-cols-10 lg:items-center">
         <div class="grid gap-1 lg:block lg:col-span-2">
             <p class="text-sm font-semibold lg:hidden">{{ __('Name') }}</p>
-            <a href="{{ route('users.show', ['user' => $user['id']]) }}" wire:navigate title="{{ $user->full_name }}">{{ $user->full_name }}</a>
+            <a href="{{ route('users.show', ['user' => $user['id']]) }}" title="{{ $user->full_name }}">{{ $user->full_name }}</a>
         </div>
         <div class="grid gap-1 text-sm lg:block lg:col-span-2">
             <p class="font-semibold lg:hidden">{{ __('Username') }}</p>
@@ -38,7 +38,7 @@
         </div>
         @unless ($user->id === auth()->user()->id)
             <div class="flex items-center justify-end gap-4">
-                <a href="{{ route('users.edit', ['user' => $user['id']]) }}" title="{{ __('Edit') }}" wire:navigate>
+                <a href="{{ route('users.edit', ['user' => $user['id']]) }}" title="{{ __('Edit') }}">
                     <x-icon-pen-to-square class="w-5 h-5 fill-current" />
                 </a>
                 <livewire:user-delete-button :user="$user" />
