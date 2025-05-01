@@ -8,7 +8,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductionAdministratorController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\QiOpportunityController;
-use App\Http\Controllers\QuarantineIntakeController;
+use App\Http\Controllers\QuarantineCheckSerialNumberController;
+use App\Http\Controllers\QuarantineController;
 use App\Http\Controllers\TechnicalSupervisorController;
 use App\Livewire\ActionStreamIndex;
 use App\Livewire\DiscussionsCreate;
@@ -16,7 +17,6 @@ use App\Livewire\DiscussionsEdit;
 use App\Livewire\JobsIndex;
 use App\Livewire\JobsShow;
 use App\Livewire\QetIndex;
-use App\Livewire\QuarantineIntakeCreate;
 use App\Livewire\UploadLogsShow;
 use App\Livewire\UsersCreate;
 use App\Livewire\UsersEdit;
@@ -52,9 +52,13 @@ Route::middleware(['auth', 'is_enabled'])->group(function () {
     Route::get('users/{user}', UsersShow::class)->name('users.show')->middleware('permission:crud-users');
     Route::get('users/{user}/edit', UsersEdit::class)->name('users.edit')->middleware('permission:crud-users');
 
-    Route::get('quarantine-intake', QuarantineIntakeCreate::class)->name('quarantine-intake.create')->middleware('permission:access-quarantine-intake');
-    Route::get('quarantine-intake-success', [QuarantineIntakeController::class, 'success'])->name('quarantine-intake-success.index')->middleware('permission:access-quarantine-intake');
-    Route::post('quarantine-intake/report-mistake', [QuarantineIntakeController::class, 'reportMistake'])->name('quarantine-intake-report-mistake.store')->middleware('permission:access-quarantine-intake');
+    Route::view('quarantine/create', 'quarantine.create')->name('quarantine.create.view')->middleware('permission:access-quarantine-intake');
+    Route::permanentRedirect('/quarantine-intake', '/quarantine/create');
+    Route::get('quarantine/success', [QuarantineController::class, 'success'])->name('quarantine.success.index')->middleware('permission:access-quarantine-intake');
+    Route::post('quarantine/report-mistake', [QuarantineController::class, 'storeReport'])->name('quarantine.report-mistake.store')->middleware('permission:access-quarantine-intake');
+
+    Route::post('i/quarantine', [QuarantineController::class, 'store'])->name('quarantine.store')->middleware('permission:access-quarantine-intake');
+    Route::post('i/quarantine/check-serial-number', QuarantineCheckSerialNumberController::class)->name('quarantine.check-serial-number')->middleware('permission:access-quarantine-intake');
 
     Route::view('production-administrators', 'production-administrator.index')->name('production-administrators.index.view')->middleware('permission:crud-production-administrators');
     Route::view('production-administrators/create', 'production-administrator.create')->name('production-administrators.create.view')->middleware('permission:crud-production-administrators');

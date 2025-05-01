@@ -26,7 +26,7 @@ class UsersCreate extends Component
             'message' => __('User created successfully.'),
         ]);
 
-        $this->redirectRoute(name: 'users.index', navigate: true);
+        $this->redirectRoute(name: 'users.index');
     }
 
     public function render(): View

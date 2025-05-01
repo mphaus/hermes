@@ -24,7 +24,7 @@ class DiscussionsEdit extends Component
                 'message' => __('There is currently no default configuration for Discussions. Upload a JSON file to set a new one.'),
             ]);
 
-            return $this->redirectRoute(name: 'discussions.edit', navigate: true);
+            return $this->redirectRoute(name: 'discussions.edit');
         }
 
         $createdAt = now()->parse($config->created_at)->timezone(config('app.timezone'))->format('Y-m-d-H-i-s');

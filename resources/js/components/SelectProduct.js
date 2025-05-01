@@ -18,7 +18,7 @@ export default function SelectProduct ( props ) {
     const { multiple } = props;
 
     return {
-        value: null,
+        value: 0,
         init () {
             this.initSelect2();
         },
@@ -53,7 +53,7 @@ export default function SelectProduct ( props ) {
                 .on( 'change.select2', e => {
                     if ( $( this.$root ).val() ) {
                         window.sessionStorage.setItem( 'hermes-select-product-html', JSON.stringify( e.target.innerHTML ) );
-                        this.value = $( this.$root ).val();
+                        this.value = Number( $( this.$root ).val() );
 
                         return;
                     }
@@ -69,7 +69,7 @@ export default function SelectProduct ( props ) {
             this.clear();
         },
         clear () {
-            $( this.$root ).val( null ).trigger( 'change' );
+            $( this.$root ).val( 0 ).trigger( 'change' );
         },
     };
 }

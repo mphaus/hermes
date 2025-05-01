@@ -24,7 +24,7 @@ class UserDeleteButton extends Component
             'message' => __('User :full_name has been deleted.', ['full_name' => $this->user->full_name]),
         ]);
 
-        return $this->redirectRoute(name: 'users.index', navigate: true);
+        return $this->redirectRoute(name: 'users.index');
     }
 
     public function render(): View

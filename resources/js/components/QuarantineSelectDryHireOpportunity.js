@@ -26,7 +26,7 @@ function handleDryHireSearchInput ( e ) {
     element.value = 'Q';
 }
 
-export default function QiSelectDryHireOpportunity () {
+export default function QuarantineSelectDryHireOpportunity () {
     /** @type {Data[]} */
     let currentData = [];
 

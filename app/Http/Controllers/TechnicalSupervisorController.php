@@ -29,8 +29,6 @@ class TechnicalSupervisorController extends Controller
         return response()->json([
             'technical_supervisors' => collect(array_values(array_filter($list_values, fn($value) => $value['id'] !== intval(config('app.mph.technical_supervisor_not_yet_assigned_id'))))),
         ]);
-
-        return response()->json();
     }
 
     public function store(TechnicalSupervisorRequest $request): JsonResponse

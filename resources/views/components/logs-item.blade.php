@@ -6,7 +6,6 @@
             href="{{ route('logs.show', ['id' => $log->id]) }}" 
             title="{{ __('View log') }}" 
             class="absolute inset-0 z-1"
-            wire:navigate
         ></a>
         <div class="grid grid-cols-[6rem_1fr] gap-1 text-sm lg:block">
             <p class="font-semibold lg:hidden">{{ __('Uploaded by') }}</p>

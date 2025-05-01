@@ -56,7 +56,7 @@
             'flex items-center justify-end gap-4',
             'md:col-span-2' => !$user->is_admin
         ])>
-            <a href="{{ route('users.edit', ['user' => $user['id']]) }}" title="{{ __('Edit') }}" wire:navigate>
+            <a href="{{ route('users.edit', ['user' => $user['id']]) }}" title="{{ __('Edit') }}">
                 <x-icon-pen-to-square class="w-5 h-5 fill-current" />
             </a>
             <livewire:user-delete-button :user="$user" />

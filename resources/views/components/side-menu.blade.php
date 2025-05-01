@@ -8,7 +8,7 @@
     x-effect="sideMenuToggleEffect(open)"
 >
     <header class="px-3 py-6">
-        <a href="{{ route('login') }}" wire:navigate>
+        <a href="{{ route('login') }}">
             <x-hermes-logo class="w-24 mx-auto" />
         </a>
     </header>
@@ -36,7 +36,6 @@
                                                     <a
                                                         href="{{ $subitem['route'] }}"
                                                         title="{{ $subitem['text'] }}"
-                                                        wire:navigate
                                                         @class([
                                                             'block p-2 text-sm rounded-lg hover:bg-gray-100',
                                                             'bg-gray-100' => $subitem['active']
@@ -53,7 +52,6 @@
                                 <a
                                     href="{{ $menuitem['route'] }}"
                                     title="{{ $menuitem['text'] }}"
-                                    wire:navigate
                                     @class([
                                         'block p-2 font-semibold transition duration-150 ease-in-out rounded-lg hover:bg-gray-100',
                                         'bg-gray-100' => $menuitem['active']
@@ -82,7 +80,7 @@
             <ul class="pl-2 text-sm">
                 <li>
                     <a 
-                        href="mailto:garion@mphaus.com"
+                        href="mailto:{{ config('app.mph.notification_mail_address') }}"
                         target="_blank"
                         title="{{ __('Need help?') }}"
                         class="block p-2"

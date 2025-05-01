@@ -9,10 +9,9 @@
             href="{{ route('users.create') }}" 
             variant="primary" 
             wire:loading.class="disabled"
-            wire:navigate
         >
             <x-icon-plus class="w-4 h-4 fill-current" />
-            <span>{{ __('Create user') }}</span>
+            <span>{{ __('Add new') }}</span>
         </x-button>
     </header>
     <section class="mt-8 flow">

@@ -99,7 +99,7 @@ class UploadDiscussionMappings extends Component
                 'message' => __('The ingestion failed. Either the JSON is not valid, or the users do not match those listed in CurrentRMS.')
             ]);
 
-            return $this->redirectRoute(name: 'discussions.edit', navigate: true);
+            return $this->redirectRoute(name: 'discussions.edit');
         }
 
         $discussionMapping = new DiscussionMapping;
@@ -120,7 +120,7 @@ class UploadDiscussionMappings extends Component
             'message' => __('Discussions JSON template changes appear valid. Subsequent Discussions created will be based on this new JSON file. A test is recommended before assuming it\'s correct.')
         ]);
 
-        return $this->redirectRoute(name: 'discussions.edit', navigate: true);
+        return $this->redirectRoute(name: 'discussions.edit');
     }
 
     public function render(): View

@@ -6,7 +6,6 @@
             href="{{ route('jobs.show', ['id' => $job['id']]) }}" 
             class="after:absolute after:inset-0 after:z-1 after:content-['']" 
             title="{{ $job['subject'] }}" 
-            wire:navigate
         >
             {{ $job['subject'] }}
         </a>
