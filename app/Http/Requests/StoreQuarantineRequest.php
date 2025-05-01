@@ -185,10 +185,10 @@ class StoreQuarantineRequest extends FormRequest
 
         ['quarantine' => $quarantine] = $response->json();
 
-        Mail::to([
-            config('app.mph.notification_mail_address'),
-            config('app.mph.service_manager_mail_address'),
-        ])->send(new QuarantineCreated($quarantine, $classification, $description, Auth::user()));
+        // Mail::to([
+        //     config('app.mph.notification_mail_address'),
+        //     config('app.mph.service_manager_mail_address'),
+        // ])->send(new QuarantineCreated($quarantine, $classification, $description, Auth::user()));
 
         return [
             ...$quarantine,
