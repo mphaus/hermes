@@ -2,6 +2,7 @@ import { normalizeString } from "../utils";
 
 export default function UserForm () {
     let permissionItemsCount = 0;
+    let canNormalizeUsername = route().current( 'users.edit' ) ? false : true;
 
     return {
         functionAccessDisabled: false,
@@ -13,6 +14,11 @@ export default function UserForm () {
          * @param {string} lastName
          */
         normalizeUsername ( firstName, lastName ) {
+            if ( !canNormalizeUsername ) {
+                canNormalizeUsername = true;
+                return;
+            }
+
             this.$wire.form.username = normalizeString( firstName, lastName );
         },
         /**
