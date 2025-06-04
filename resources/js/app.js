@@ -33,6 +33,7 @@ import TechnicalSupervisorsIndex from "./components/TechnicalSupervisorsIndex";
 import TechnicalSupervisorForm from "./components/TechnicalSupervisorForm";
 import TechnicalSupervisorEdit from "./components/TechnicalSupervisorEdit";
 import QuarantineForm from "./components/QuarantineForm";
+import DiscussionForm from "./components/DiscussionForm";
 
 Alpine.data( 'ActionStreamFilters', ActionStreamFilters );
 Alpine.data( 'ActionStreamItem', ActionStreamItem );
@@ -63,5 +64,6 @@ Alpine.data( 'TechnicalSupervisorsIndex', TechnicalSupervisorsIndex );
 Alpine.data( 'TechnicalSupervisorForm', TechnicalSupervisorForm );
 Alpine.data( 'TechnicalSupervisorEdit', TechnicalSupervisorEdit );
 Alpine.data( 'QuarantineForm', QuarantineForm );
+Alpine.data( 'DiscussionForm', DiscussionForm );
 
 Livewire.start();

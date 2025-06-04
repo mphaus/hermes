@@ -1,0 +1,58 @@
+@use('App\Enums\JobStatus')
+@use('App\Enums\JobState')
+
+@php
+    $opportunity_query_params = [
+        'per_page' => 25,
+        'q[status_in]' => [JobStatus::Reserved->value, JobStatus::Open->value, JobStatus::Provisional->value],
+        'q[state_in]' => [JobState::Quotation->value, JobState::Order->value],
+        'q[subject_cont]' => '?',
+    ];
+@endphp
+
+<x-form 
+    class="space-y-8"
+    x-data="DiscussionForm"
+>
+    <div class="space-y-1">
+        <x-input-label>{{ __('Short Job or Project name') }}</x-input-label>
+        <x-input type="text" x-model="form.short_job_or_project_name" />
+        {{-- ERROR HERE --}}
+        <p class="text-xs font-semibold">{!! __('The Short Job or Project Name selected here will appear in email Subjects for Discussions about this Job or Project. It must match the requirements in the <a href=":url" target="_blank" rel="nofollow">Process_ MPH Production 01 Quoting phase.docx</a>, and be the same as is specified in the Short Job or Project Name Discussion.', ['url' => 'https://mphaustralia.sharepoint.com/:w:/r/teams/MPHAdministration/Shared%20Documents/Process/In%20development/Process_%20MPH%20Production%2001%20Quoting%20phase.docx?d=w96250bcb65df4ee397314e534ca7e7e1&csf=1&web=1&e=j2aXB9&nav=eyJoIjoiODU3ODg4NDUwIn0']) !!}</p>
+    </div>
+    <div class="space-y-3">
+        <x-input-label>{{ __('Specify the entity in which these discussions are being created') }}</x-input-label>
+        <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
+            <div class="flex items-center gap-1">
+                <input type="radio" id="opportunity" value="opportunity" x-model="form.entity_type" x-on:change="">
+                <x-input-label class="cursor-pointer" for="opportunity">{{ __('Opportunity') }}</x-input-label>
+            </div>
+            <div class="flex items-center gap-1">
+                <input type="radio" id="project" value="project" x-model="form.entity_type" x-on:change="">
+                <x-input-label class="cursor-pointer" for="project">{{ __('Project') }}</x-input-label>
+            </div>
+        </div>
+    </div>
+    <div class="space-y-1">
+        <template hidden x-if="form.entity_type === 'opportunity'">
+            <x-select-opportunity 
+                :params="$opportunity_query_params"
+            />
+        </template>
+        {{-- ERROR HERE --}}
+    </div>
+    <div class="space-y-1">
+        {{-- DISCUSSIONS OWNER INPUT HERE --}}
+        {{-- ERROR HERE --}}
+    </div>
+    <div class="flex justify-end">
+        <x-button type="submit" variant="primary">
+            <span>{{ __('Create Discussions') }}</span>
+            {{-- <span>{{ __('Creating...') }}</span> --}}
+        </x-button>
+    </div>
+    <div class="mt-6 text-sm">
+        <p class="font-semibold">{{ __('Processing...') }}</p>
+        <p class="mt-1">{{ __('This process typically takes less than 40 seconds. Do not navigate away from this page until a Success or Fail message is shown here.') }}</p>
+    </div>
+</x-form>

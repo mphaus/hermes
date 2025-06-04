@@ -16,7 +16,7 @@ class QiOpportunityController extends Controller
         $url = 'opportunities';
 
         if ($params->isNotEmpty()) {
-            $params = str_replace('?', $term, urldecode(http_build_query($params->toArray())));
+            $params = preg_replace('/\[\d+\]/', '[]', str_replace('?', $term, urldecode(http_build_query($params->toArray()))));
             $url = "{$url}?{$params}";
         }
 
