@@ -69,10 +69,7 @@
                             />
                         </template>
                         <div>
-                            <x-select-opportunity
-                                :params="$opportunity_query_params"
-                                x-model="form.opportunity"
-                            />
+                            <x-select-opportunity :params="$opportunity_query_params" />
                         </div>
                     </div>
                 </template>
@@ -85,7 +82,7 @@
                             />
                         </template>
                         <div>
-                            <x-quarantine-select-dry-hire-opportunity x-model="form.opportunity" />
+                            <x-quarantine-select-dry-hire-opportunity />
                         </div>
                     </div>
                 </template>

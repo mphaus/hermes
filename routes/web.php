@@ -8,7 +8,6 @@ use App\Http\Controllers\OpportunityItemsController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductionAdministratorController;
 use App\Http\Controllers\ProjectController;
-use App\Http\Controllers\QiOpportunityController;
 use App\Http\Controllers\QuarantineCheckSerialNumberController;
 use App\Http\Controllers\QuarantineController;
 use App\Http\Controllers\TechnicalSupervisorController;
@@ -79,9 +78,6 @@ Route::middleware(['auth', 'is_enabled'])->group(function () {
     Route::put('i/technical-supervisors/{id}', [TechnicalSupervisorController::class, 'update'])->name('technical-supervisors.update')->middleware('permission:crud-technical-supervisors');
 
     Route::get('projects/search', [ProjectController::class, 'search'])->name('projects.search');
-
-    Route::get('qi-opportunities/search', [QiOpportunityController::class, 'search'])->name('qi-opportunities.search');
-
     Route::get('products/search', [ProductController::class, 'search'])->name('products.search');
 });
 

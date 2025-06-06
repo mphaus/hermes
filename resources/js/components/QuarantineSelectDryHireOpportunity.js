@@ -45,7 +45,7 @@ export default function QuarantineSelectDryHireOpportunity () {
                     placeholder: 'Type the digits of the Opportunity\'s quote number',
                     width: '100%',
                     ajax: {
-                        url: route( 'qi-opportunities.search' ),
+                        url: route( 'opportunities.search' ),
                         dataType: 'json',
                         delay: 500,
                         /**
@@ -73,7 +73,7 @@ export default function QuarantineSelectDryHireOpportunity () {
                     minimumInputLength: 1,
                 } )
                 .on( 'change.select2', () => {
-                    const value = $( this.$root ).val();
+                    const value = Number( $( this.$root ).val() );
 
                     if ( !value ) {
                         return;
