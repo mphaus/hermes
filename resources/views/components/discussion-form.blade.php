@@ -8,6 +8,13 @@
         'q[state_in]' => [JobState::Quotation->value, JobState::Order->value],
         'q[subject_cont]' => '?',
     ];
+
+    $project_query_params = [
+        'per_page' => 20,
+        'filtermode' => 'active',
+        'q[s]' => ['starts_at+desc'],
+        'q[name_cont]' => '?',
+    ];
 @endphp
 
 <x-form 
@@ -24,22 +31,27 @@
         <x-input-label>{{ __('Specify the entity in which these discussions are being created') }}</x-input-label>
         <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
             <div class="flex items-center gap-1">
-                <input type="radio" id="opportunity" value="opportunity" x-model="form.entity_type" x-on:change="">
+                <input type="radio" id="opportunity" value="opportunity" x-model="form.object_type" x-on:change="form.object_id = 0">
                 <x-input-label class="cursor-pointer" for="opportunity">{{ __('Opportunity') }}</x-input-label>
             </div>
             <div class="flex items-center gap-1">
-                <input type="radio" id="project" value="project" x-model="form.entity_type" x-on:change="">
+                <input type="radio" id="project" value="project" x-model="form.object_type" x-on:change="form.object_id = 0">
                 <x-input-label class="cursor-pointer" for="project">{{ __('Project') }}</x-input-label>
             </div>
         </div>
-    </div>
-    <div class="space-y-1">
-        <template hidden x-if="form.entity_type === 'opportunity'">
+        <template hidden x-if="form.object_type === 'opportunity'">
             <x-select-opportunity 
                 :params="$opportunity_query_params"
+                x-model="form.object_id"
             />
         </template>
-        {{-- ERROR HERE --}}
+        <template hidden x-if="form.object_type === 'project'">
+            <x-select-project 
+                :params="$project_query_params"
+                x-model="form.object_id"
+            />
+        </template>
+         {{-- ERROR HERE --}}
     </div>
     <div class="space-y-1">
         {{-- DISCUSSIONS OWNER INPUT HERE --}}

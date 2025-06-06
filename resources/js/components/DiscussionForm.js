@@ -1,6 +1,7 @@
 const initialForm = {
     short_job_or_project_name: '',
-    entity_type: 'opportunity',
+    object_type: 'opportunity',
+    object_id: 0,
 };
 
 export default function DiscussionForm () {

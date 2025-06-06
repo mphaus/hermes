@@ -9,14 +9,18 @@ class ProjectController extends Controller
 {
     public function search(Request $request)
     {
-        $query_params = preg_replace('/\[\d+\]/', '[]',  urldecode(http_build_query([
-            'per_page' => 20,
-            'filtermode' => 'active',
-            'q[name_cont]' => $request->get('q'),
-            'q[s]' => ['starts_at+desc'],
-        ])));
+        $request_collection = $request->collect();
+        $term = $request_collection->get('term');
+        $params = $request_collection->forget('term');
 
-        $response = Http::current()->get("projects?{$query_params}");
+        $url = 'projects';
+
+        if ($params->isNotEmpty()) {
+            $params = preg_replace('/\[\d+\]/', '[]', str_replace('?', $term, urldecode(http_build_query($params->toArray()))));
+            $url = "{$url}?{$params}";
+        }
+
+        $response = Http::current()->get($url);
 
         ['projects' => $projects] = $response->json();
 
