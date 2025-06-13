@@ -54,7 +54,8 @@
          {{-- ERROR HERE --}}
     </div>
     <div class="space-y-1">
-        {{-- DISCUSSIONS OWNER INPUT HERE --}}
+        <x-input-label>{{ __('Account Manager (as listed as the Opportunity "Owner" in CurrentRMS)') }}</x-input-label>
+        <x-discussion-select-owner />
         {{-- ERROR HERE --}}
     </div>
     <div class="flex justify-end">

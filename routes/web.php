@@ -3,6 +3,7 @@
 // use App\Http\Controllers\ProfileController;
 
 use App\Http\Controllers\DiscussionController;
+use App\Http\Controllers\MemberController;
 use App\Http\Controllers\OpportunityController;
 use App\Http\Controllers\OpportunityItemsController;
 use App\Http\Controllers\ProductController;
@@ -77,8 +78,10 @@ Route::middleware(['auth', 'is_enabled'])->group(function () {
     Route::get('i/technical-supervisors/{id}', [TechnicalSupervisorController::class, 'show'])->name('technical-supervisors.show')->middleware('permission:crud-technical-supervisors');
     Route::put('i/technical-supervisors/{id}', [TechnicalSupervisorController::class, 'update'])->name('technical-supervisors.update')->middleware('permission:crud-technical-supervisors');
 
-    Route::get('projects/search', [ProjectController::class, 'search'])->name('projects.search');
-    Route::get('products/search', [ProductController::class, 'search'])->name('products.search');
+    Route::get('i/projects/search', [ProjectController::class, 'search'])->name('projects.search');
+    Route::get('i/products/search', [ProductController::class, 'search'])->name('products.search');
+
+    Route::get('i/members/search', [MemberController::class, 'search'])->name('members.search')->middleware('permission:create-default-discussions');
 });
 
 require __DIR__ . '/auth.php';
