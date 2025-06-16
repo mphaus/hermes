@@ -20,11 +20,14 @@
 <x-form 
     class="space-y-8"
     x-data="DiscussionForm"
+    x-on:submit.prevent="send"
 >
     <div class="space-y-1">
         <x-input-label>{{ __('Short Job or Project name') }}</x-input-label>
         <x-input type="text" x-model="form.short_job_or_project_name" />
-        {{-- ERROR HERE --}}
+        <template hidden x-if="errors.short_job_or_project_name">
+            <p class="text-sm text-red-600" x-text="errors.short_job_or_project_name"></p>
+        </template>
         <p class="text-xs font-semibold">{!! __('The Short Job or Project Name selected here will appear in email Subjects for Discussions about this Job or Project. It must match the requirements in the <a href=":url" target="_blank" rel="nofollow">Process_ MPH Production 01 Quoting phase.docx</a>, and be the same as is specified in the Short Job or Project Name Discussion.', ['url' => 'https://mphaustralia.sharepoint.com/:w:/r/teams/MPHAdministration/Shared%20Documents/Process/In%20development/Process_%20MPH%20Production%2001%20Quoting%20phase.docx?d=w96250bcb65df4ee397314e534ca7e7e1&csf=1&web=1&e=j2aXB9&nav=eyJoIjoiODU3ODg4NDUwIn0']) !!}</p>
     </div>
     <div class="space-y-3">
@@ -51,21 +54,25 @@
                 x-model="form.object_id"
             />
         </template>
-         {{-- ERROR HERE --}}
+        <template hidden x-if="errors.object_id">
+            <p class="text-sm text-red-600" x-text="errors.object_id"></p>
+        </template>
     </div>
     <div class="space-y-1">
         <x-input-label>{{ __('Account Manager (as listed as the Opportunity "Owner" in CurrentRMS)') }}</x-input-label>
         <x-discussion-select-owner x-model="form.user_id" />
-        {{-- ERROR HERE --}}
+        <template hidden x-if="errors.user_id">
+            <p class="text-sm text-red-600" x-text="errors.user_id"></p>
+        </template>
     </div>
     <div class="flex justify-end">
-        <x-button type="submit" variant="primary">
-            <span>{{ __('Create Discussions') }}</span>
-            {{-- <span>{{ __('Creating...') }}</span> --}}
+        <x-button type="submit" variant="primary" x-bind:disabled="submitting">
+            <span x-show="!submitting">{{ __('Create Discussions') }}</span>
+            <span x-show="submitting">{{ __('Creating...') }}</span>
         </x-button>
     </div>
-    {{-- <div class="mt-6 text-sm">
+    <div class="mt-6 text-sm" x-show="submitting">
         <p class="font-semibold">{{ __('Processing...') }}</p>
         <p class="mt-1">{{ __('This process typically takes less than 40 seconds. Do not navigate away from this page until a Success or Fail message is shown here.') }}</p>
-    </div> --}}
+    </div>
 </x-form>

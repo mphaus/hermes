@@ -44,6 +44,8 @@ Route::middleware(['auth', 'is_enabled'])->group(function () {
     Route::get('discussions/create', [DiscussionController::class, 'create'])->name('discussions.create')->middleware('permission:create-default-discussions');
     Route::get('discussions/edit', DiscussionsEdit::class)->name('discussions.edit')->middleware('permission:update-default-discussions');
 
+    Route::post('i/discussions', [DiscussionController::class, 'store'])->name('discussions.store')->middleware('permission:create-default-discussions');
+
     Route::get('opportunities/search', [OpportunityController::class, 'search'])->name('opportunities.search');
     Route::get('opportunities/{id}', [OpportunityController::class, 'show'])->name('opportunities.show');
 
