@@ -14,11 +14,11 @@
             <x-discussion-form />
         </x-card>
         <x-card 
-            class="flow"
-            x-data="{ owner: '' }"
+            class="space-y-4 mt-8"
+            x-data="{ owner: {} }"
             x-cloak
-            x-show="owner"
-            x-on:hermes:create-discussions-owner-change.window="owner = $event.detail.owner"
+            x-show="!!Object.keys(owner).length"
+            x-on:hermes:discussion-select-owner-change.window="owner = $event.detail.owner"
         >
             <p class="font-semibold">{{ __('Default user mapping') }}</p>
             <p class="text-sm">{{ __('Once the Opportunity Owner is selected above, this panel shows who will be assigned to each Discussion, based on the default assigned users. After the Discussion is created with default users, users can be added and removed from individual Discussions in this Opportunity in CurrentRMS as necessary.') }}</p>

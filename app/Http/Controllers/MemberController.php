@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use JsonException;
 
 class MemberController extends Controller
 {
-    public function search(Request $request)
+    public function search(Request $request): JsonResponse
     {
         $params = $request->collect();
         $url = 'members';
@@ -19,6 +20,15 @@ class MemberController extends Controller
         }
 
         $response = Http::current()->get($url);
+
+        if ($response->failed()) {
+            ['errors' => $errors] = $response->json();
+
+            throw new JsonException(
+                $errors[0],
+                $response->status(),
+            );
+        }
 
         ['members' => $members] = $response->json();
 

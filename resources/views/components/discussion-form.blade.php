@@ -55,7 +55,7 @@
     </div>
     <div class="space-y-1">
         <x-input-label>{{ __('Account Manager (as listed as the Opportunity "Owner" in CurrentRMS)') }}</x-input-label>
-        <x-discussion-select-owner />
+        <x-discussion-select-owner x-model="form.user_id" />
         {{-- ERROR HERE --}}
     </div>
     <div class="flex justify-end">
@@ -64,8 +64,8 @@
             {{-- <span>{{ __('Creating...') }}</span> --}}
         </x-button>
     </div>
-    <div class="mt-6 text-sm">
+    {{-- <div class="mt-6 text-sm">
         <p class="font-semibold">{{ __('Processing...') }}</p>
         <p class="mt-1">{{ __('This process typically takes less than 40 seconds. Do not navigate away from this page until a Success or Fail message is shown here.') }}</p>
-    </div>
+    </div> --}}
 </x-form>

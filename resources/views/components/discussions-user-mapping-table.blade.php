@@ -15,7 +15,7 @@
                     <td class="p-3 border border-slate-500">{{ $mapping['title'] }}</td>
                     <td class="p-3 space-y-1 border border-slate-500">
                         @if ($mapping['include_opportunity_owner_as_participant'])
-                            <p x-text="owner"></p>
+                            <p x-text="owner.name"></p>
                         @endif
                         @if (empty($mapping['participants']) === false)
                             @foreach ($mapping['participants'] as $participant)
