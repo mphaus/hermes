@@ -32,7 +32,6 @@ import TechnicalSupervisorsIndex from "./components/TechnicalSupervisorsIndex";
 import TechnicalSupervisorForm from "./components/TechnicalSupervisorForm";
 import TechnicalSupervisorEdit from "./components/TechnicalSupervisorEdit";
 import QuarantineForm from "./components/QuarantineForm";
-import DiscussionForm from "./components/DiscussionForm";
 import SelectProject from "./components/SelectProject";
 import DiscussionSelectOwner from "./components/DiscussionSelectOwner";
 
@@ -64,7 +63,6 @@ Alpine.data( 'TechnicalSupervisorsIndex', TechnicalSupervisorsIndex );
 Alpine.data( 'TechnicalSupervisorForm', TechnicalSupervisorForm );
 Alpine.data( 'TechnicalSupervisorEdit', TechnicalSupervisorEdit );
 Alpine.data( 'QuarantineForm', QuarantineForm );
-Alpine.data( 'DiscussionForm', DiscussionForm );
 Alpine.data( 'SelectProject', SelectProject );
 Alpine.data( 'DiscussionSelectOwner', DiscussionSelectOwner );
 

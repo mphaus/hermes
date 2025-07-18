@@ -2,7 +2,6 @@
 
 // use App\Http\Controllers\ProfileController;
 
-use App\Http\Controllers\DiscussionController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\OpportunityController;
 use App\Http\Controllers\OpportunityItemsController;
@@ -13,6 +12,7 @@ use App\Http\Controllers\QuarantineCheckSerialNumberController;
 use App\Http\Controllers\QuarantineController;
 use App\Http\Controllers\TechnicalSupervisorController;
 use App\Livewire\ActionStreamIndex;
+use App\Livewire\DiscussionsCreate;
 use App\Livewire\DiscussionsEdit;
 use App\Livewire\JobsIndex;
 use App\Livewire\JobsShow;
@@ -41,10 +41,8 @@ Route::middleware(['auth', 'is_enabled'])->group(function () {
     Route::get('action-stream', ActionStreamIndex::class)->name('action-stream.index')->middleware('permission:access-action-stream');
     Route::get('qet', QetIndex::class)->name('qet.index')->middleware('permission:access-qet');
 
-    Route::get('discussions/create', [DiscussionController::class, 'create'])->name('discussions.create')->middleware('permission:create-default-discussions');
+    Route::get('discussions/create', DiscussionsCreate::class)->name('discussions.create')->middleware('permission:create-default-discussions');
     Route::get('discussions/edit', DiscussionsEdit::class)->name('discussions.edit')->middleware('permission:update-default-discussions');
-
-    Route::post('i/discussions', [DiscussionController::class, 'store'])->name('discussions.store')->middleware('permission:create-default-discussions');
 
     Route::get('opportunities/search', [OpportunityController::class, 'search'])->name('opportunities.search');
     Route::get('opportunities/{id}', [OpportunityController::class, 'show'])->name('opportunities.show');

@@ -13,24 +13,24 @@ use Livewire\Form;
 class CreateDiscussionsForm extends Form
 {
     #[Validate('required', as: 'Short Job or Project Name')]
-    public string $shortJoborProjectName = '';
+    public string $short_job_or_project_name = '';
 
-    #[Validate('boolean', as: 'create on project')]
-    public bool $createOnProject = false;
+    #[Validate('required|in:opportunity,project', as: 'entity')]
+    public string $object_type = 'opportunity';
 
     #[Validate('required|numeric', as: 'Opportunity or Project')]
-    public int $objectId;
+    public int $object_id;
 
-    #[Validate('required|numeric', as: 'Owner')]
-    public int $userId;
+    #[Validate('required|numeric', as: 'owner')]
+    public int $user_id;
 
-    public function store(): string
+    public function store(): string|null
     {
         $this->validate();
 
         $config = DiscussionMapping::latest()->first();
         $mappings = $config->mappings->toArray();
-        $participantsIds = array_unique([
+        $participants_ids = array_unique([
             ...Arr::flatten(array_reduce($mappings, function ($carry, $mapping) {
                 if (empty($mapping['participants']) === false) {
                     $carry[] = array_map(fn($participant) => $participant['id'], $mapping['participants']);
@@ -38,45 +38,47 @@ class CreateDiscussionsForm extends Form
 
                 return $carry;
             }, [])),
-            $this->userId,
+            $this->user_id,
         ]);
 
-        $queryParams = preg_replace('/\[\d+\]/', '[]', urldecode(http_build_query([
+        $query_params = preg_replace('/\[\d+\]/', '[]', urldecode(http_build_query([
             'q[active_eq]' => true,
-            'q[id_in]' => $participantsIds,
+            'q[id_in]' => $participants_ids,
         ])));
 
-        $response = Http::current()->get("members?{$queryParams}");
+        $response = Http::current()->get("members?{$query_params}");
 
         if ($response->failed()) {
-            return 'participants-check-failed';
+            return 'PARTICIPANTS_CHECK_FAILED';
         }
 
         ['members' => $members] = $response->json();
 
-        $memberIds = array_map(fn($member) => $member['id'], $members);
-        $diffIds = array_diff($participantsIds, $memberIds);
+        $member_ids = array_map(fn($member) => $member['id'], $members);
+        $diff_ids = array_diff($participants_ids, $member_ids);
 
-        if (empty($diffIds) === false) {
-            return 'participants-validation-failed';
+        if (empty($diff_ids) === false) {
+            return 'PARTICIPANTS_VALIDATION_FAILED';
         }
 
+        $create_on_project = $this->object_type === 'project';
+
         // CHECK IF DISCUSSIONS EXIST ON THE DISCUSSABLE ID AND DELETE THEM IF NECESSARY
-        $queryParams = preg_replace('/\[\d+\]/', '[]', urldecode(http_build_query([
+        $query_params = preg_replace('/\[\d+\]/', '[]', urldecode(http_build_query([
             'q[discussable_id_eq]' => App::environment(['local', 'staging'])
                 ? (
-                    $this->createOnProject
+                    $create_on_project
                     ? intval(config('app.mph.test_project_id'))
                     : intval(config('app.mph.test_opportunity_id'))
                 )
-                : $this->objectId,
-            'q[discussable_type_eq]' => $this->createOnProject ? 'Project' : 'Opportunity',
+                : $this->object_id,
+            'q[discussable_type_eq]' => $create_on_project ? 'Project' : 'Opportunity',
         ])));
 
-        $response = Http::current()->get("discussions?{$queryParams}");
+        $response = Http::current()->get("discussions?{$query_params}");
 
         if ($response->failed()) {
-            return 'discussions-existance-check-failed';
+            return 'DISCUSSIONS_EXISTANCE_CHECK_FAILED';
         }
 
         ['discussions' => $discussions] = $response->json();
@@ -97,23 +99,23 @@ class CreateDiscussionsForm extends Form
                 'discussion' => [
                     'discussable_id' => App::environment(['local', 'staging'])
                         ? (
-                            $this->createOnProject
+                            $create_on_project
                             ? intval(config('app.mph.test_project_id'))
                             : intval(config('app.mph.test_opportunity_id'))
                         )
-                        : $this->objectId,
-                    'discussable_type' => $this->createOnProject ? 'Project' : 'Opportunity',
-                    'subject' => "{$mapping['title']} - {$this->shortJoborProjectName}",
-                    'created_by' => $this->userId,
+                        : $this->object_id,
+                    'discussable_type' => $create_on_project ? 'Project' : 'Opportunity',
+                    'subject' => "{$mapping['title']} - {$this->short_job_or_project_name}",
+                    'created_by' => $this->user_id,
                     'first_comment' => [
                         'remark' => $mapping['first_message'],
-                        'created_by' => $this->userId,
+                        'created_by' => $this->user_id,
                     ],
                     'participants' => empty($mapping['participants'])
-                        ? [['member_id' => $this->userId, 'mute' => true]]
+                        ? [['member_id' => $this->user_id, 'mute' => true]]
                         : ($mapping['include_opportunity_owner_as_participant']
                             ? [
-                                ['member_id' => $this->userId, 'mute' => true],
+                                ['member_id' => $this->user_id, 'mute' => true],
                                 ...array_map(fn($participant) => ['member_id' => $participant['id'], 'mute' => true], $mapping['participants']),
                             ]
                             : array_map(fn($participant) => ['member_id' => $participant['id'], 'mute' => true], $mapping['participants'])),
@@ -121,6 +123,6 @@ class CreateDiscussionsForm extends Form
             ]);
         }
 
-        return 'success';
+        return null;
     }
 }
