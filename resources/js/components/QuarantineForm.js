@@ -85,8 +85,10 @@ export default function QuarantineForm () {
                 return;
             }
 
-            /** @type {{ technical_supervisor_id: Number }} */
-            const { technical_supervisor_id } = data;
+            /** @type {{ technical_supervisor_id: Number, text: string }} */
+            const { technical_supervisor_id, text } = data;
+
+            this.form.opportunity = text;
 
             if ( technical_supervisor_id === technicalSupervisorNotYetAssignedId ) {
                 this.form.technical_supervisor_id = technical_supervisor_id;

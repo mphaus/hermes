@@ -18,7 +18,6 @@ import QuarantineReportMistakeForm from "./components/QuarantineReportMistakeFor
 import QuarantineSelectDryHireOpportunity from "./components/QuarantineSelectDryHireOpportunity";
 import ResetPasswordForm from "./components/ResetPasswordForm";
 import SelectFaultRootCause from "./components/SelectFaultRootCause";
-import SelectObject from "./components/SelectObject";
 import SelectOpportunity from "./components/SelectOpportunity";
 import SelectProduct from "./components/SelectProduct";
 import SelectTechnicalSupervisor from "./components/SelectTechnicalSupervisor";
@@ -33,6 +32,8 @@ import TechnicalSupervisorsIndex from "./components/TechnicalSupervisorsIndex";
 import TechnicalSupervisorForm from "./components/TechnicalSupervisorForm";
 import TechnicalSupervisorEdit from "./components/TechnicalSupervisorEdit";
 import QuarantineForm from "./components/QuarantineForm";
+import SelectProject from "./components/SelectProject";
+import DiscussionSelectOwner from "./components/DiscussionSelectOwner";
 
 Alpine.data( 'ActionStreamFilters', ActionStreamFilters );
 Alpine.data( 'ActionStreamItem', ActionStreamItem );
@@ -47,7 +48,6 @@ Alpine.data( 'EquipmentImportForm', EquipmentImportForm );
 Alpine.data( 'QuarantineSelectDryHireOpportunity', QuarantineSelectDryHireOpportunity );
 Alpine.data( 'ResetPasswordForm', ResetPasswordForm );
 Alpine.data( 'SelectFaultRootCause', SelectFaultRootCause );
-Alpine.data( 'SelectObject', SelectObject );
 Alpine.data( 'SelectOpportunity', SelectOpportunity );
 Alpine.data( 'SelectProduct', SelectProduct );
 Alpine.data( 'SelectTechnicalSupervisor', SelectTechnicalSupervisor );
@@ -63,5 +63,7 @@ Alpine.data( 'TechnicalSupervisorsIndex', TechnicalSupervisorsIndex );
 Alpine.data( 'TechnicalSupervisorForm', TechnicalSupervisorForm );
 Alpine.data( 'TechnicalSupervisorEdit', TechnicalSupervisorEdit );
 Alpine.data( 'QuarantineForm', QuarantineForm );
+Alpine.data( 'SelectProject', SelectProject );
+Alpine.data( 'DiscussionSelectOwner', DiscussionSelectOwner );
 
 Livewire.start();

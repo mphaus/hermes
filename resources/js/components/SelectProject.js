@@ -1,7 +1,6 @@
 /**
  * @typedef {Object} Data
  * @property {string} id
- * @property {number} technical_supervisor_id
  * @property {string} text
  */
 
@@ -11,7 +10,7 @@
  * @property {string} _type
  */
 
-export default function SelectOpportunity ( queryParams ) {
+export default function SelectProject ( queryParams ) {
     /** @type {Data[]} */
     let currentData = [];
 
@@ -26,10 +25,10 @@ export default function SelectOpportunity ( queryParams ) {
         initSelect2 () {
             $( this.$root )
                 .select2( {
-                    placeholder: 'Type the name of an Opportunity',
+                    placeholder: 'Type the name of a Project',
                     width: '100%',
                     ajax: {
-                        url: route( 'opportunities.search' ),
+                        url: route( 'projects.search' ),
                         dataType: 'json',
                         delay: 500,
                         /**
@@ -50,29 +49,26 @@ export default function SelectOpportunity ( queryParams ) {
 
                             return query;
                         },
-                        /**
-                         * @param {Data[]} data 
-                         */
                         processResults ( data ) {
                             currentData = data;
 
                             return {
                                 results: data,
                             };
-                        },
+                        }
                     },
                     minimumInputLength: 1,
                 } )
                 .on( 'change.select2', () => {
                     const value = Number( $( this.$root ).val() );
-
+                    console.log( value );
 
                     if ( !value ) {
                         return;
                     }
 
                     this.value = value;
-                    this.$dispatch( 'hermes:select-opportunity-change', { ...currentData.find( data => data.id === value ) } );
+                    this.$dispatch( 'hermes:select-project-change', { ...currentData.find( data => data.id === value ) } );
                 } );
         },
         destroySelect2 () {

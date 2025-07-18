@@ -1,32 +1,48 @@
 <?php
 
-namespace App\Livewire\Forms;
+namespace App\Http\Requests;
 
 use App\Models\DiscussionMapping;
-use Illuminate\Http\Client\Pool;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Http;
-use Livewire\Attributes\Validate;
-use Livewire\Form;
+use Illuminate\Foundation\Http\FormRequest;
 
-class CreateDiscussionsForm extends Form
+class StoreDiscussionRequest extends FormRequest
 {
-    #[Validate('required', as: 'Short Job or Project Name')]
-    public string $short_job_or_project_name = '';
-
-    #[Validate('required|in:opportunity,project', as: 'entity')]
-    public string $object_type = 'opportunity';
-
-    #[Validate('required|numeric', as: 'Opportunity or Project')]
-    public int $object_id;
-
-    #[Validate('required|numeric', as: 'owner')]
-    public int $user_id;
-
-    public function store(): string|null
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
     {
-        $this->validate();
+        return usercan('create-default-discussions');
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array
+    {
+        return [
+            'short_job_or_project_name' => ['required'],
+            'object_type' => ['required', 'in:opportunity,project'],
+            'object_id' => ['required', 'numeric'],
+            'user_id' => ['required', 'numeric'],
+        ];
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'short_job_or_project_name' => __('Short Job or Project Name'),
+            'object_type' => __('entity'),
+            'object_id' => __('Opportunity or Project'),
+            'user_id' => __('owner'),
+        ];
+    }
+
+    public function store()
+    {
+        $validated = $this->validated();
 
         $config = DiscussionMapping::latest()->first();
         $mappings = $config->mappings->toArray();
@@ -38,7 +54,7 @@ class CreateDiscussionsForm extends Form
 
                 return $carry;
             }, [])),
-            $this->user_id,
+            $validated['user_id'],
         ]);
 
         $query_params = preg_replace('/\[\d+\]/', '[]', urldecode(http_build_query([
@@ -49,7 +65,7 @@ class CreateDiscussionsForm extends Form
         $response = Http::current()->get("members?{$query_params}");
 
         if ($response->failed()) {
-            return 'PARTICIPANTS_CHECK_FAILED';
+            return 'participants-check-failed';
         }
 
         ['members' => $members] = $response->json();
@@ -58,10 +74,10 @@ class CreateDiscussionsForm extends Form
         $diff_ids = array_diff($participants_ids, $member_ids);
 
         if (empty($diff_ids) === false) {
-            return 'PARTICIPANTS_VALIDATION_FAILED';
+            return 'participants-validation-failed';
         }
 
-        $create_on_project = $this->object_type === 'project';
+        $create_on_project = $validated['object_type'] === 'project';
 
         // CHECK IF DISCUSSIONS EXIST ON THE DISCUSSABLE ID AND DELETE THEM IF NECESSARY
         $query_params = preg_replace('/\[\d+\]/', '[]', urldecode(http_build_query([
@@ -71,14 +87,14 @@ class CreateDiscussionsForm extends Form
                     ? intval(config('app.mph.test_project_id'))
                     : intval(config('app.mph.test_opportunity_id'))
                 )
-                : $this->object_id,
+                : $validated['object_id'],
             'q[discussable_type_eq]' => $create_on_project ? 'Project' : 'Opportunity',
         ])));
 
         $response = Http::current()->get("discussions?{$query_params}");
 
         if ($response->failed()) {
-            return 'DISCUSSIONS_EXISTANCE_CHECK_FAILED';
+            return 'discussions-existance-check-failed';
         }
 
         ['discussions' => $discussions] = $response->json();
@@ -103,19 +119,19 @@ class CreateDiscussionsForm extends Form
                             ? intval(config('app.mph.test_project_id'))
                             : intval(config('app.mph.test_opportunity_id'))
                         )
-                        : $this->object_id,
+                        : $validated['object_id'],
                     'discussable_type' => $create_on_project ? 'Project' : 'Opportunity',
-                    'subject' => "{$mapping['title']} - {$this->short_job_or_project_name}",
-                    'created_by' => $this->user_id,
+                    'subject' => "{$mapping['title']} - {$validated['short_job_or_project_name']}",
+                    'created_by' => $validated['user_id'],
                     'first_comment' => [
                         'remark' => $mapping['first_message'],
-                        'created_by' => $this->user_id,
+                        'created_by' => $validated['user_id'],
                     ],
                     'participants' => empty($mapping['participants'])
-                        ? [['member_id' => $this->user_id, 'mute' => true]]
+                        ? [['member_id' => $validated['user_id'], 'mute' => true]]
                         : ($mapping['include_opportunity_owner_as_participant']
                             ? [
-                                ['member_id' => $this->user_id, 'mute' => true],
+                                ['member_id' => $validated['user_id'], 'mute' => true],
                                 ...array_map(fn($participant) => ['member_id' => $participant['id'], 'mute' => true], $mapping['participants']),
                             ]
                             : array_map(fn($participant) => ['member_id' => $participant['id'], 'mute' => true], $mapping['participants'])),
@@ -123,6 +139,6 @@ class CreateDiscussionsForm extends Form
             ]);
         }
 
-        return null;
+        return 'success';
     }
 }
