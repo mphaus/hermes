@@ -1,5 +1,3 @@
-@use('App\Enums\JobStatus')
-
 @php
     $opportunity_query_params = [
         'per_page' => 25,

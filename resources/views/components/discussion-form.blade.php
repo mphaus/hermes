@@ -1,11 +1,6 @@
-@use('App\Enums\JobStatus')
-@use('App\Enums\JobState')
-
 @php
     $opportunity_query_params = [
         'per_page' => 25,
-        'q[status_in]' => [JobStatus::Reserved->value, JobStatus::Open->value, JobStatus::Provisional->value],
-        'q[state_in]' => [JobState::Quotation->value, JobState::Order->value],
         'q[subject_cont]' => '?',
     ];
 
