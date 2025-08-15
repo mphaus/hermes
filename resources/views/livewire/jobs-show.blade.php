@@ -48,7 +48,7 @@
                 </div>
             </x-card>
             <x-card>
-                <x-equipment-import-form :opportunity-id="$this->job['opportunity']['id']" />
+                <livewire:equipment-import :opportunityid="$this->job['opportunity']['id']" />
             </x-card>
             <div class="mt-8">
                 <livewire:upload-logs-index :job-id="$this->job['opportunity']['id']" />
