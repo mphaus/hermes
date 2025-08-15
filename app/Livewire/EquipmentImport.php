@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\OpportunityItems;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\ValidationException;
@@ -38,6 +39,20 @@ class EquipmentImport extends Component
         ], '-', '-') . 'csv';
 
         $this->csv->storeAs(path: 'csv_files', name: $filename);
+        [
+            'type' => $type,
+            'message' => $message,
+            'data' => $data,
+        ] = (new OpportunityItems($this->opportunityid, $filename))->process();
+
+        if ($type === 'error') {
+            session()->flash('alert', [
+                'type' => 'danger',
+                'message' => $message,
+            ]);
+
+            return $this->redirectRoute(name: 'jobs.show', parameters: ['id' => $this->opportunityid]);
+        }
     }
 
     public function render(): View

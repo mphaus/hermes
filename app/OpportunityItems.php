@@ -35,9 +35,9 @@ class OpportunityItems
 
     protected array $diff = [];
 
-    public function __construct(array $opportunity, string $filename)
+    public function __construct(int $opportunity_id, string $filename)
     {
-        $this->opportunity = $opportunity;
+        $this->opportunity_id = $opportunity_id;
         $this->filename = $filename;
         $this->diff = [
             'reduced' => [],
@@ -50,6 +50,19 @@ class OpportunityItems
     public function process()
     {
         $this->opportunity_id = App::environment(['local', 'staging']) ? config('app.mph.test_opportunity_id') : $this->opportunity['id'];
+
+        $response = Http::current()->get("opportunities/{$this->opportunity_id}/?include[]=opportunity_items");
+
+        if ($response->failed()) {
+            return [
+                'type' => 'error',
+                'message' => $this->errorMessage(__('An error occurred while attempting to process the data from the uploaded file. Please refresh the page, and try again.'), $response->json()),
+                'data' => [],
+            ];
+        }
+
+        $this->opportunity = $response->json()['opportunity'];
+        dd($this->opportunity);
         $this->full_path = base_path() . '/storage/app/' . $this->path . '/';
 
         $this->prepareItems();

@@ -5,7 +5,7 @@ export default function Alert () {
         init () {
             timeout = setTimeout( () => {
                 this.$root.remove();
-            }, 8000 );
+            }, 10000 );
         },
         close () {
             if ( timeout ) {
