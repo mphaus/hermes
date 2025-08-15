@@ -39,6 +39,7 @@ class EquipmentImport extends Component
         ], '-', '-') . 'csv';
 
         $this->csv->storeAs(path: 'csv_files', name: $filename);
+
         [
             'type' => $type,
             'message' => $message,
