@@ -190,67 +190,38 @@ class OpportunityItems
                 ->post("{$base_url}opportunities/{$opportunity_id}/opportunity_items?{$query}");
         }, $groups));
 
-        dd($responses);
+        $existing_groups = $this->existing_groups;
 
-        // $opportunity_id = $this->opportunity_id;
-        // $client = new Client(['base_uri' => config('app.current_rms.host')]);
-        // $promises = array_map(function ($group) use ($client, $opportunity_id) {
-        //     $headers = [
-        //         'X-AUTH-TOKEN' => config('app.current_rms.auth_token'),
-        //         'X-SUBDOMAIN' => config('app.current_rms.subdomain'),
-        //     ];
+        foreach ($responses as $key => $response) {
+            if ($response->failed()) {
+                $this->addToLog([
+                    'item_id' => null,
+                    'item_name' => $groups[$key],
+                    'action' => 'creation',
+                    'error' => [
+                        'code' => $response->getStatusCode(),
+                        'message' => $this->errorMessage($response->getReasonPhrase(), $response->json(), '. '),
+                    ],
+                ]);
 
-        //     $query = [
-        //         'opportunity_item' => [
-        //             'opportunity_id' => $opportunity_id,
-        //             'opportunity_item_type_name' => 'Group',
-        //             'name' => $group,
-        //             'opportunity_item_type' => 0,
-        //         ],
-        //     ];
+                continue;
+            }
 
-        //     return $client->postAsync("opportunities/{$opportunity_id}/opportunity_items", [
-        //         'headers' => $headers,
-        //         'query' => $query,
-        //     ]);
-        // }, $groups);
+            $new_group = $response->json();
+            $existing_groups[] = [
+                'id' => $new_group['opportunity_item']['id'],
+                'name' => $new_group['opportunity_item']['name'],
+            ];
 
-        // $responses = Promise\Utils::settle($promises)->wait();
-        // $existing_groups = $this->existing_groups;
+            $this->addToLog([
+                'item_id' => $new_group['opportunity_item']['id'],
+                'item_name' => $new_group['opportunity_item']['name'],
+                'action' => 'creation',
+                'error' => [],
+            ]);
+        }
 
-        // foreach ($responses as $key => $response) {
-        //     if ($response['state'] !== 'fulfilled') {
-        //         $res = $response['reason']->getResponse();
-        //         $errors = json_decode($res->getBody()->getContents(), true);
-
-        //         $this->addToLog([
-        //             'item_id' => null,
-        //             'item_name' => $groups[$key],
-        //             'action' => 'creation',
-        //             'error' => [
-        //                 'code' => $res->getStatusCode(),
-        //                 'message' => $this->errorMessage($res->getReasonPhrase(), $errors, '. '),
-        //             ],
-        //         ]);
-
-        //         continue;
-        //     }
-
-        //     $new_group = json_decode($response['value']->getBody()->getContents(), true);
-        //     $existing_groups[] = [
-        //         'id' => $new_group['opportunity_item']['id'],
-        //         'name' => $new_group['opportunity_item']['name'],
-        //     ];
-
-        //     $this->addToLog([
-        //         'item_id' => $new_group['opportunity_item']['id'],
-        //         'item_name' => $new_group['opportunity_item']['name'],
-        //         'action' => 'creation',
-        //         'error' => [],
-        //     ]);
-        // }
-
-        // $this->setExistingGroups($existing_groups);
+        $this->setExistingGroups($existing_groups);
     }
 
     private function storeItems(): array
