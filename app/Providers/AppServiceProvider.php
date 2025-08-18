@@ -17,12 +17,7 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Register any application services.
      */
-    public function register(): void
-    {
-        // App::bind('opportunityitems', fn() => new OpportunityItems);
-        // App::bind('uploadlog', fn() => new UploadLog);
-        // App::bind('qet', fn() => new QET);
-    }
+    public function register(): void {}
 
     /**
      * Bootstrap any application services.

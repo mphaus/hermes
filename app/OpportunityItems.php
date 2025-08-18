@@ -3,8 +3,6 @@
 namespace App;
 
 use App\Traits\WithHttpCurrentError;
-use GuzzleHttp\Client;
-use GuzzleHttp\Promise;
 use Illuminate\Http\Client\Pool;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\App;
@@ -286,8 +284,13 @@ class OpportunityItems
         }
 
         return [
-            'log' => $this->log,
-            'diff' => $this->diff,
+            'type' => 'success',
+            'message' => '',
+            'data' => [
+                'log' => $this->log,
+                'diff' => $this->diff,
+                'opportunity' => $this->opportunity,
+            ],
         ];
     }
 
