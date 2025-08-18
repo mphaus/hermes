@@ -1,75 +1,81 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Livewire;
 
-use App\Http\Requests\EquipmentImportRequest;
 use App\Models\UploadLog as ModelsUploadLog;
 use App\OpportunityItems;
 use App\UploadLog;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Validation\ValidationException;
+use Livewire\Attributes\Locked;
+use Livewire\Attributes\Validate;
+use Livewire\Component;
+use Livewire\WithFileUploads;
 
-class OpportunityItemsController extends Controller
+class EquipmentImport extends Component
 {
-    public function store(EquipmentImportRequest $request)
+    use WithFileUploads;
+
+    #[Validate('file', message: 'This field must be a file.')]
+    #[Validate('max:512', message: 'The :attribute field must not be greater than :max kilobytes.')]
+    #[Validate('mimes:csv', message: 'The file must be a file of type: :values.')]
+    public $csv;
+
+    #[Locked]
+    public int $opportunityid;
+
+    public function save()
     {
-        ['opportunity_id' => $opportunity_id, 'csv' => $csv] = $request->validated();
-
-        /**
-         * @var int $opportunity_id
-         */
-
-        $response = Http::current()->get("opportunities/{$opportunity_id}?include[]=opportunity_items");
-
-        if ($response->failed()) {
-            return response()->json([
-                'type' => 'error',
-                'message' => __('An error occurred while attempting to process the data from the uploaded file. Please refresh the page, and try again.'),
-            ], 400);
+        if (!usercan('access-equipment-import')) {
+            abort(403);
         }
 
-        ['opportunity' => $opportunity] = $response->json();
+        if (!$this->csv) {
+            throw ValidationException::withMessages(['csv' => __('Please, select a csv file to upload.')]);
+        }
 
-        /**
-         * @var string $filename
-         */
         $filename = Arr::join([
-            $opportunity['id'],
+            $this->opportunityid,
             now()->setTimezone(config('app.timezone'))->getTimestamp(),
-            str()->slug($opportunity['subject']),
-        ], '-', '-') . '.csv';
+        ], '-', '-') . 'csv';
 
-        /**
-         * @var \Illuminate\Http\UploadedFile $csv
-         */
+        $this->csv->storeAs(path: 'csv_files', name: $filename);
 
-        $csv->storeAs(path: 'csv_files', name: $filename);
+        [
+            'type' => $type,
+            'message' => $message,
+            'data' => $data,
+        ] = (new OpportunityItems($this->opportunityid, $filename))->process();
 
-        /**
-         * @var array $opportunity
-         */
+        if ($type === 'error') {
+            $this->dispatch('hermes:equipment-import-finish')->self();
 
-        ['log' => $log, 'diff' => $diff] = (new OpportunityItems($opportunity, $filename))->process();
+            session()->flash('alert', [
+                'type' => 'danger',
+                'message' => $message,
+            ]);
 
-        /**
-         * @var array $log
-         */
+            return $this->redirectRoute(name: 'jobs.show', parameters: ['id' => $this->opportunityid], navigate: true);
+        }
+
+        ['log' => $log, 'diff' => $diff, 'opportunity' => $opportunity] = $data;
 
         if (empty($log)) {
+            $this->dispatch('hermes:equipment-import-finish')->self();
+
             session()->flash('alert', [
                 'type' => 'warning',
-                'message' =>  __('The data was uploaded and processed. However no changes were made.'),
+                'message' => __('The data was uploaded and processed. However no changes were made.'),
             ]);
 
-            return response()->json([
-                'redirect_to' => route('jobs.show', ['id' => $opportunity['id']]),
-            ]);
+            return $this->redirectRoute(name: 'jobs.show', parameters: ['id' => $this->opportunityid], navigate: true);
         }
 
         if ($diff) {
             $response = Http::current()->withQueryParameters([
-                'q[discussable_id_eq]' => $opportunity_id,
+                'q[discussable_id_eq]' => $this->opportunityid,
                 'q[subject_cont]' => 'Job status',
                 'per_page' => 1,
             ])->get('discussions');
@@ -82,7 +88,7 @@ class OpportunityItemsController extends Controller
                  */
 
                 if ($discussions) {
-                    if (ModelsUploadLog::where('job_id', $opportunity_id)->count() === 0) {
+                    if (ModelsUploadLog::where('job_id', $this->opportunityid)->count() === 0) {
                         $remark = __('Initial equipment list import completed');
                     } else {
                         $remark = __(':username did a new Equipment Import for this Job. There changes were;', ['username' => Auth::user()->username]);
@@ -198,23 +204,28 @@ class OpportunityItemsController extends Controller
         $upload_log->save();
 
         if ($upload_log->getStatus() !== 'successful') {
+            $this->dispatch('hermes:equipment-import-finish')->self();
+
             session()->flash('alert', [
                 'type' => 'warning',
                 'message' => __('The data was uploaded and processed with warnings. Please check the most recent entry of the log.'),
             ]);
 
-            return response()->json([
-                'redirect_to' => route('jobs.show', ['id' => $opportunity['id']]),
-            ]);
+            return $this->redirectRoute(name: 'jobs.show', parameters: ['id' => $this->opportunityid], navigate: true);
         }
+
+        $this->dispatch('hermes:equipment-import-finish')->self();
 
         session()->flash('alert', [
             'type' => 'success',
             'message' => __('The data was uploaded and processed successfully.'),
         ]);
 
-        return response()->json([
-            'redirect_to' => route('jobs.show', ['id' => $opportunity['id']]),
-        ]);
+        return $this->redirectRoute(name: 'jobs.show', parameters: ['id' => $this->opportunityid], navigate: true);
+    }
+
+    public function render(): View
+    {
+        return view('livewire.equipment-import');
     }
 }

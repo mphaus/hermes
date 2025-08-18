@@ -3,11 +3,12 @@
 namespace App;
 
 use App\Traits\WithHttpCurrentError;
-use GuzzleHttp\Client;
-use GuzzleHttp\Promise;
+use Illuminate\Http\Client\Pool;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 
 class OpportunityItems
 {
@@ -35,9 +36,9 @@ class OpportunityItems
 
     protected array $diff = [];
 
-    public function __construct(array $opportunity, string $filename)
+    public function __construct(int $opportunity_id, string $filename)
     {
-        $this->opportunity = $opportunity;
+        $this->opportunity_id = App::environment(['local', 'staging']) ? config('app.mph.test_opportunity_id') : $opportunity_id;
         $this->filename = $filename;
         $this->diff = [
             'reduced' => [],
@@ -49,7 +50,17 @@ class OpportunityItems
 
     public function process()
     {
-        $this->opportunity_id = App::environment(['local', 'staging']) ? config('app.mph.test_opportunity_id') : $this->opportunity['id'];
+        $response = Http::current()->get("opportunities/{$this->opportunity_id}/?include[]=opportunity_items");
+
+        if ($response->failed()) {
+            return [
+                'type' => 'error',
+                'message' => $this->errorMessage(__('An error occurred while attempting to process the data from the uploaded file. Please refresh the page, and try again.'), $response->json()),
+                'data' => [],
+            ];
+        }
+
+        $this->opportunity = $response->json()['opportunity'];
         $this->full_path = base_path() . '/storage/app/' . $this->path . '/';
 
         $this->prepareItems();
@@ -77,7 +88,7 @@ class OpportunityItems
                         fclose($handle);
                         $this->deleteFile();
                         $missingHeadings = Arr::join($diff, ', ', ' and ');
-                        throw ValidationException::withMessages(['item_process' => __('The uploaded csv file does not contain the valid headings required to identify the items. Missing headings: :missing_headings.', ['missing_headings' => $missingHeadings])]);
+                        throw ValidationException::withMessages(['csv' => __('The uploaded csv file does not contain the valid headings required to identify the items. Missing headings: :missing_headings.', ['missing_headings' => $missingHeadings])]);
                     }
 
                     continue;
@@ -156,50 +167,45 @@ class OpportunityItems
     private function createGroups(array $groups): void
     {
         $opportunity_id = $this->opportunity_id;
-        $client = new Client(['base_uri' => config('app.current_rms.host')]);
-        $promises = array_map(function ($group) use ($client, $opportunity_id) {
-            $headers = [
-                'X-AUTH-TOKEN' => config('app.current_rms.auth_token'),
-                'X-SUBDOMAIN' => config('app.current_rms.subdomain'),
-            ];
-
-            $query = [
+        $base_url = config('app.current_rms.host');
+        $responses = Http::pool(fn(Pool $pool) => array_map(function ($group) use ($pool, $base_url, $opportunity_id) {
+            $query = urldecode(http_build_query([
                 'opportunity_item' => [
                     'opportunity_id' => $opportunity_id,
                     'opportunity_item_type_name' => 'Group',
                     'name' => $group,
                     'opportunity_item_type' => 0,
+                    'source_id' => $opportunity_id,
+                    'source_type' => 'Opportunity',
                 ],
-            ];
+            ]));
 
-            return $client->postAsync("opportunities/{$opportunity_id}/opportunity_items", [
-                'headers' => $headers,
-                'query' => $query,
-            ]);
-        }, $groups);
+            return $pool
+                ->withHeaders([
+                    'X-AUTH-TOKEN' => config('app.current_rms.auth_token'),
+                    'X-SUBDOMAIN' => config('app.current_rms.subdomain'),
+                ])
+                ->post("{$base_url}opportunities/{$opportunity_id}/opportunity_items?{$query}");
+        }, $groups));
 
-        $responses = Promise\Utils::settle($promises)->wait();
         $existing_groups = $this->existing_groups;
 
         foreach ($responses as $key => $response) {
-            if ($response['state'] !== 'fulfilled') {
-                $res = $response['reason']->getResponse();
-                $errors = json_decode($res->getBody()->getContents(), true);
-
+            if ($response->failed()) {
                 $this->addToLog([
                     'item_id' => null,
                     'item_name' => $groups[$key],
                     'action' => 'creation',
                     'error' => [
-                        'code' => $res->getStatusCode(),
-                        'message' => $this->errorMessage($res->getReasonPhrase(), $errors, '. '),
+                        'code' => $response->getStatusCode(),
+                        'message' => $this->errorMessage($response->getReasonPhrase(), $response->json(), '. '),
                     ],
                 ]);
 
                 continue;
             }
 
-            $new_group = json_decode($response['value']->getBody()->getContents(), true);
+            $new_group = $response->json();
             $existing_groups[] = [
                 'id' => $new_group['opportunity_item']['id'],
                 'name' => $new_group['opportunity_item']['name'],
@@ -278,8 +284,13 @@ class OpportunityItems
         }
 
         return [
-            'log' => $this->log,
-            'diff' => $this->diff,
+            'type' => 'success',
+            'message' => '',
+            'data' => [
+                'log' => $this->log,
+                'diff' => $this->diff,
+                'opportunity' => $this->opportunity,
+            ],
         ];
     }
 

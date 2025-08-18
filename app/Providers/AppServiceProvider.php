@@ -3,8 +3,6 @@
 namespace App\Providers;
 
 use App\Http\Middleware\EnsureUserIsEnabled;
-use App\Models\User;
-use App\OpportunityItems;
 use App\QET;
 use App\UploadLog;
 use Illuminate\Support\Facades\App;
@@ -19,8 +17,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        App::bind('opportunityitems', fn() => new OpportunityItems);
-        App::bind('uploadlog', fn() => new UploadLog);
         App::bind('qet', fn() => new QET);
     }
 
