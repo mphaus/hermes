@@ -50,23 +50,27 @@ class EquipmentImport extends Component
         ] = (new OpportunityItems($this->opportunityid, $filename))->process();
 
         if ($type === 'error') {
+            $this->dispatch('hermes:equipment-import-finish')->self();
+
             session()->flash('alert', [
                 'type' => 'danger',
                 'message' => $message,
             ]);
 
-            return $this->redirectRoute(name: 'jobs.show', parameters: ['id' => $this->opportunityid]);
+            return $this->redirectRoute(name: 'jobs.show', parameters: ['id' => $this->opportunityid], navigate: true);
         }
 
         ['log' => $log, 'diff' => $diff, 'opportunity' => $opportunity] = $data;
 
         if (empty($log)) {
+            $this->dispatch('hermes:equipment-import-finish')->self();
+
             session()->flash('alert', [
                 'type' => 'warning',
                 'message' => __('The data was uploaded and processed. However no changes were made.'),
             ]);
 
-            return $this->redirectRoute(name: 'jobs.show', parameters: ['id' => $this->opportunityid]);
+            return $this->redirectRoute(name: 'jobs.show', parameters: ['id' => $this->opportunityid], navigate: true);
         }
 
         if ($diff) {
@@ -200,20 +204,24 @@ class EquipmentImport extends Component
         $upload_log->save();
 
         if ($upload_log->getStatus() !== 'successful') {
+            $this->dispatch('hermes:equipment-import-finish')->self();
+
             session()->flash('alert', [
                 'type' => 'warning',
                 'message' => __('The data was uploaded and processed with warnings. Please check the most recent entry of the log.'),
             ]);
 
-            return $this->redirectRoute(name: 'jobs.show', parameters: ['id' => $this->opportunityid]);
+            return $this->redirectRoute(name: 'jobs.show', parameters: ['id' => $this->opportunityid], navigate: true);
         }
+
+        $this->dispatch('hermes:equipment-import-finish')->self();
 
         session()->flash('alert', [
             'type' => 'success',
             'message' => __('The data was uploaded and processed successfully.'),
         ]);
 
-        return $this->redirectRoute(name: 'jobs.show', parameters: ['id' => $this->opportunityid]);
+        return $this->redirectRoute(name: 'jobs.show', parameters: ['id' => $this->opportunityid], navigate: true);
     }
 
     public function render(): View

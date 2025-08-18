@@ -3,9 +3,7 @@
 namespace App\Providers;
 
 use App\Http\Middleware\EnsureUserIsEnabled;
-// use App\Models\User;
-// use App\OpportunityItems;
-// use App\QET;
+use App\QET;
 use App\UploadLog;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Http;
@@ -17,7 +15,10 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Register any application services.
      */
-    public function register(): void {}
+    public function register(): void
+    {
+        App::bind('qet', fn() => new QET);
+    }
 
     /**
      * Bootstrap any application services.

@@ -1,4 +1,9 @@
-<x-form wire:submit="save">
+<x-form 
+    wire:submit="save"
+    x-data="EquipmentImportForm"
+    x-on:submit.prevent="submitting = true"
+    x-on:hermes:equipment-import-finish="submitting = false"
+>
     <fieldset wire:loading.class="opacity-50 pointer-events-none" wire:target="save">
         <legend class="font-semibold">{{ __('Upload file') }}</legend>
         <div class="mt-2 space-y-2 text-sm">
@@ -37,11 +42,4 @@
         <p class="mt-2">{{ __('Once the import is complete, the log below will be updated and the equipment list should be added to the Opportunity. Visual confirmation is strongly recommended. ') }}</p>
         <p class="mt-2 font-semibold">{{ __('Leave this tab open until the import is completed.') }}</p>
     </div>
-    {{-- <template hidden x-if="alert.message">
-        <div 
-            class="p-4 mt-4 font-semibold text-white bg-red-500 rounded-md"
-            x-bind:class="{ 'bg-red-500': alert.type === 'error', 'bg-green-500': alert.type === 'success' }"
-            x-text="alert.message"
-        ></div>
-    </template> --}}
 </x-form>
