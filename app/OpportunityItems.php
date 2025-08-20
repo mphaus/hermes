@@ -257,6 +257,12 @@ class OpportunityItems
                         $deletion = $this->deleteItem($item_id, $item, true);
 
                         if ($deletion) {
+                            $item_description = $opportunity_items[$index]['description'];
+                            $item = [
+                                ...$item,
+                                'description' => $item_description,
+                            ];
+
                             $creation = $this->createItem($item, true);
 
                             if ($creation) {
@@ -310,6 +316,10 @@ class OpportunityItems
                 'price' => 0,
             ],
         ];
+
+        if (isset($item['description'])) {
+            $query['opportunity_item']['description'] = $item['description'];
+        }
 
         // GET GROUP ID TO BE ADDED TO
         $groupIds = array_values(array_map(function ($group) {
