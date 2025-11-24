@@ -158,4 +158,10 @@ return [
         'email' => env('SUPER_USER_EMAIL', ''),
         'password' => env('SUPER_USER_PASSWORD', ''),
     ],
+
+    'wordpress' => [
+        'rest_api_url' => env('WORDPRESS_REST_API_URL', ''),
+        'app_username' => env('WORDPRESS_APP_USERNAME', ''),
+        'app_password' => env('WORDPRESS_APP_PASSWORD', ''),
+    ],
 ];
