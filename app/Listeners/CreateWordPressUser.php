@@ -44,9 +44,9 @@ class CreateWordPressUser implements ShouldQueue
 
         if ($response->failed()) {
             // Handle failure (log error, retry, etc.)
-            // Log::error('Failed to create WordPress user for: ' . $user->email, [
-            //     'response' => $response->body(),
-            // ]);
+            Log::error('Failed to create WordPress user for: ' . $user->email, [
+                'response' => $response->body(),
+            ]);
         }
     }
 }
