@@ -28,16 +28,19 @@ class CreateWordPressUser implements ShouldQueue
         // Prepare the data for the WordPress user creation
         $data = [
             'username' => $user->username,
+            'name' => $user->full_name, // Nickname
+            'first_name' => $user->first_name,
+            'last_name' => $user->last_name,
             'email'    => $user->email,
-            'password' => $user->password, // Ensure this is hashed appropriately
-            'roles'    => ['employee'], // Assign default role
+            'password' => $user->username,
+            'roles'    => 'employee'
         ];
 
         // Make a POST request to the WordPress REST API to create the user
         $response = Http::withBasicAuth(
-            env('WORDPRESS_APP_USERNAME'),
-            env('WORDPRESS_APP_PASSWORD')
-        )->post(env('WORDPRESS_REST_API_URL') . 'users', $data);
+            config('app.wordpress.app_username'),
+            config('app.wordpress.app_password')
+        )->post(config('app.wordpress.rest_api_url') . 'users', $data);
 
         if ($response->failed()) {
             // Handle failure (log error, retry, etc.)
