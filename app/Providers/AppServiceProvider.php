@@ -3,11 +3,13 @@
 namespace App\Providers;
 
 use App\Events\UserCreated;
+use App\Events\UserDeleted;
 use App\Http\Middleware\EnsureUserIsEnabled;
 use App\Models\User;
 use App\QET;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 
@@ -38,5 +40,6 @@ class AppServiceProvider extends ServiceProvider
         });
 
         User::created(fn(User $user) => event(new UserCreated($user)));
+        User::deleted(fn(User $user) => event(new UserDeleted($user->email)));
     }
 }
