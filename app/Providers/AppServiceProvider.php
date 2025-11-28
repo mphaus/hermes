@@ -2,11 +2,15 @@
 
 namespace App\Providers;
 
+use App\Events\UserCreated;
+use App\Events\UserDeleted;
+use App\Events\UserUpdated;
 use App\Http\Middleware\EnsureUserIsEnabled;
+use App\Models\User;
 use App\QET;
-use App\UploadLog;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 
@@ -35,5 +39,9 @@ class AppServiceProvider extends ServiceProvider
                 'X-SUBDOMAIN' => config('app.current_rms.subdomain'),
             ])->baseUrl(config('app.current_rms.host'));
         });
+
+        User::created(fn(User $user) => event(new UserCreated($user)));
+        User::deleted(fn(User $user) => event(new UserDeleted($user->email)));
+        User::updated(fn(User $user) => event(new UserUpdated($user, $user->getChanges(), $user->getOriginal('email'))));
     }
 }
