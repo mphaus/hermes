@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Events\UserCreated;
 use App\Events\UserDeleted;
+use App\Events\UserUpdated;
 use App\Http\Middleware\EnsureUserIsEnabled;
 use App\Models\User;
 use App\QET;
@@ -41,5 +42,6 @@ class AppServiceProvider extends ServiceProvider
 
         User::created(fn(User $user) => event(new UserCreated($user)));
         User::deleted(fn(User $user) => event(new UserDeleted($user->email)));
+        User::updated(fn(User $user) => event(new UserUpdated($user, $user->getChanges(), $user->getOriginal('email'))));
     }
 }
