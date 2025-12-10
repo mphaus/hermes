@@ -99,7 +99,7 @@ class UserForm extends Form
         $user->permissions = $validated['permissions'];
         $user->save();
 
-        // Mail::to($user->email)->send(new NewAccount($user));
+        Mail::to($user->email)->send(new NewAccount($user));
     }
 
     public function update(): void
