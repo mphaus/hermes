@@ -41,7 +41,7 @@ class QuarantineController extends Controller
     {
         $validated = $request->validated();
 
-        Mail::to(config('app.mph.notification_mail_address'))->send(new QuarantineReportMistakeCreated($validated, Auth::user()));
+        // Mail::to(config('app.mph.notification_mail_address'))->send(new QuarantineReportMistakeCreated($validated, Auth::user()));
 
         return response()->json([
             'message' => __('Your message has been sent successfully.'),
