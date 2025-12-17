@@ -126,6 +126,23 @@
         </x-card>
         <x-card class="px-8">
             <div class="space-y-4">
+                <label class="block font-semibold">{{ __('Owned by') }}</label>
+                <div class="relative">
+                    <template hidden x-if="validated.owned_by">
+                        <x-icon-square-check
+                            class="absolute w-5 h-5 -translate-x-full -translate-y-1/2 fill-green-500 top-1/2 -left-1"
+                            data-element="square-check-icon"
+                        />
+                    </template>
+                    <x-select-owner placeholder="{{ __('Select an owner') }}" x-model="form.owned_by" />
+                </div>
+                <template hidden x-if="errors.owned_by">
+                    <p class="text-sm text-red-600" x-text="errors.product_id"></p>
+                </template>
+            </div>
+        </x-card>
+        <x-card class="px-8">
+            <div class="space-y-4">
                 <label class="block font-semibold">{{ __('Reference') }}</label>
                 <div class="flex items-start gap-1 mt-2">
                     <x-icon-info class="w-4 h-4 text-blue-500 shrink-0" />

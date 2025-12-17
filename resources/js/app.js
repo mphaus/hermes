@@ -1,7 +1,7 @@
 import "./bootstrap";
-import.meta.glob( [
+import.meta.glob([
     './../images/**',
-] );
+]);
 
 import { Alpine, Livewire } from "./../../vendor/livewire/livewire/dist/livewire.esm";
 import ActionStreamFilters from "./components/ActionStreamFilters";
@@ -34,36 +34,38 @@ import TechnicalSupervisorEdit from "./components/TechnicalSupervisorEdit";
 import QuarantineForm from "./components/QuarantineForm";
 import SelectProject from "./components/SelectProject";
 import DiscussionSelectOwner from "./components/DiscussionSelectOwner";
+import SelectOwner from "./components/SelectOwner";
 
-Alpine.data( 'ActionStreamFilters', ActionStreamFilters );
-Alpine.data( 'ActionStreamItem', ActionStreamItem );
-Alpine.data( 'Alert', Alert );
-Alpine.data( 'CreateDiscussionsObject', CreateDiscussionsObject );
-Alpine.data( 'CreateDiscussionsOwner', CreateDiscussionsOwner );
-Alpine.data( 'Qet', Qet );
-Alpine.data( 'QetItem', QetItem );
-Alpine.data( 'QuarantineInputStartsAt', QuarantineInputStartsAt );
-Alpine.data( 'QuarantineSelectPrimaryFaultClassification', QuarantineSelectPrimaryFaultClassification );
-Alpine.data( 'EquipmentImportForm', EquipmentImportForm );
-Alpine.data( 'QuarantineSelectDryHireOpportunity', QuarantineSelectDryHireOpportunity );
-Alpine.data( 'ResetPasswordForm', ResetPasswordForm );
-Alpine.data( 'SelectFaultRootCause', SelectFaultRootCause );
-Alpine.data( 'SelectOpportunity', SelectOpportunity );
-Alpine.data( 'SelectProduct', SelectProduct );
-Alpine.data( 'SelectTechnicalSupervisor', SelectTechnicalSupervisor );
-Alpine.data( 'SideMenu', SideMenu );
-Alpine.data( 'UploadLog', UploadLog );
-Alpine.data( 'UserDeleteButton', UserDeleteButton );
-Alpine.data( 'UserForm', UserForm );
-Alpine.data( 'QuarantineReportMistakeForm', QuarantineReportMistakeForm );
-Alpine.data( 'ProductionAdministratorForm', ProductionAdministratorForm );
-Alpine.data( 'ProductionAdministratorsIndex', ProductionAdministratorsIndex );
-Alpine.data( 'ProductionAdministratorEdit', ProductionAdministratorEdit );
-Alpine.data( 'TechnicalSupervisorsIndex', TechnicalSupervisorsIndex );
-Alpine.data( 'TechnicalSupervisorForm', TechnicalSupervisorForm );
-Alpine.data( 'TechnicalSupervisorEdit', TechnicalSupervisorEdit );
-Alpine.data( 'QuarantineForm', QuarantineForm );
-Alpine.data( 'SelectProject', SelectProject );
-Alpine.data( 'DiscussionSelectOwner', DiscussionSelectOwner );
+Alpine.data('ActionStreamFilters', ActionStreamFilters);
+Alpine.data('ActionStreamItem', ActionStreamItem);
+Alpine.data('Alert', Alert);
+Alpine.data('CreateDiscussionsObject', CreateDiscussionsObject);
+Alpine.data('CreateDiscussionsOwner', CreateDiscussionsOwner);
+Alpine.data('Qet', Qet);
+Alpine.data('QetItem', QetItem);
+Alpine.data('QuarantineInputStartsAt', QuarantineInputStartsAt);
+Alpine.data('QuarantineSelectPrimaryFaultClassification', QuarantineSelectPrimaryFaultClassification);
+Alpine.data('EquipmentImportForm', EquipmentImportForm);
+Alpine.data('QuarantineSelectDryHireOpportunity', QuarantineSelectDryHireOpportunity);
+Alpine.data('ResetPasswordForm', ResetPasswordForm);
+Alpine.data('SelectFaultRootCause', SelectFaultRootCause);
+Alpine.data('SelectOpportunity', SelectOpportunity);
+Alpine.data('SelectProduct', SelectProduct);
+Alpine.data('SelectTechnicalSupervisor', SelectTechnicalSupervisor);
+Alpine.data('SideMenu', SideMenu);
+Alpine.data('UploadLog', UploadLog);
+Alpine.data('UserDeleteButton', UserDeleteButton);
+Alpine.data('UserForm', UserForm);
+Alpine.data('QuarantineReportMistakeForm', QuarantineReportMistakeForm);
+Alpine.data('ProductionAdministratorForm', ProductionAdministratorForm);
+Alpine.data('ProductionAdministratorsIndex', ProductionAdministratorsIndex);
+Alpine.data('ProductionAdministratorEdit', ProductionAdministratorEdit);
+Alpine.data('TechnicalSupervisorsIndex', TechnicalSupervisorsIndex);
+Alpine.data('TechnicalSupervisorForm', TechnicalSupervisorForm);
+Alpine.data('TechnicalSupervisorEdit', TechnicalSupervisorEdit);
+Alpine.data('QuarantineForm', QuarantineForm);
+Alpine.data('SelectProject', SelectProject);
+Alpine.data('DiscussionSelectOwner', DiscussionSelectOwner);
+Alpine.data('SelectOwner', SelectOwner);
 
 Livewire.start();

@@ -50,6 +50,7 @@ class StoreQuarantineRequest extends FormRequest
                 },
             ],
             'product_id' => ['required', 'numeric'],
+            'owned_by' => ['required', 'numeric'],
             'serial_number_status' => [
                 'required',
                 Rule::in(['serial-number-exists', 'missing-serial-number', 'not-serialised']),
@@ -100,6 +101,7 @@ class StoreQuarantineRequest extends FormRequest
             'opportunity' => __('opportunity'),
             'technical_supervisor_id' => __('technical supervisor'),
             'product_id' => __('product'),
+            'owned_by' => __('owner'),
             'starts_at' => __('ready for repairs'),
             'classification' => __('primary fault classification'),
             'description' => __('fault description'),
@@ -115,6 +117,7 @@ class StoreQuarantineRequest extends FormRequest
             'serial_number_status' => $serial_number_status,
             'serial_number' => $serial_number,
             'product_id' => $product_id,
+            'owned_by' => $owned_by,
             'starts_at' => $starts_at,
             'intake_location_type' => $intake_location_type,
             'intake_location' => $intake_location,
@@ -154,6 +157,7 @@ class StoreQuarantineRequest extends FormRequest
             'quarantine' => [
                 'item_id' => App::environment(['local', 'staging']) ? intval(config('app.mph.test_product_id')) : intval($product_id),
                 'store_id' => 1,
+                'owned_by' => $owned_by,
                 'reference' => $reference,
                 'description' => $description,
                 'starts_at' => $starts_at->setTime(12, 0, 0, 0)->setTimezone('UTC')->format('Y-m-d\TH:i:s'),
