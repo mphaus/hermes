@@ -5,6 +5,7 @@ const initialForm = {
     serial_number_status: 'serial-number-exists',
     serial_number: '',
     product_id: '',
+    owned_by: '',
     starts_at: '',
     intake_location_type: 'on-a-shelf',
     intake_location: '',
@@ -18,9 +19,9 @@ const initialSerialNumber = {
     exists: false,
 };
 
-export default function QuarantineForm () {
+export default function QuarantineForm() {
     const currentDate = this.$root.dataset.currentDate;
-    const technicalSupervisorNotYetAssignedId = Number( this.$root.dataset.technicalSupervisorNotYetAssignedId );
+    const technicalSupervisorNotYetAssignedId = Number(this.$root.dataset.technicalSupervisorNotYetAssignedId);
 
     return {
         errorMessage: '',
@@ -31,11 +32,11 @@ export default function QuarantineForm () {
         serialNumberRemainingCharacters: 256,
         descriptionRemainingCharacters: 512,
         serialNumber: { ...initialSerialNumber },
-        init () {
+        init() {
             this.form.starts_at = currentDate;
         },
-        async send () {
-            if ( this.submitting ) {
+        async send() {
+            if (this.submitting) {
                 return;
             }
 
@@ -45,16 +46,16 @@ export default function QuarantineForm () {
             this.submitting = true;
 
             try {
-                const response = await window.axios.post( route( 'quarantine.store' ), this.form );
+                const response = await window.axios.post(route('quarantine.store'), this.form);
 
                 const { redirect_to } = response.data;
                 window.location = redirect_to;
-            } catch ( error ) {
-                if ( error.status === 422 ) {
+            } catch (error) {
+                if (error.status === 422) {
                     const { errors } = error.response.data;
 
-                    for ( const key in errors ) {
-                        this.errors[ key ] = errors[ key ][ 0 ];
+                    for (const key in errors) {
+                        this.errors[key] = errors[key][0];
                     }
 
                     return;
@@ -63,12 +64,12 @@ export default function QuarantineForm () {
                 const { message } = error.response.data;
                 this.errorMessage = message;
 
-                console.error( error );
+                console.error(error);
             } finally {
                 this.submitting = false;
             }
         },
-        clear () {
+        clear() {
             this.form = {
                 ...initialForm,
                 starts_at: currentDate,
@@ -78,39 +79,40 @@ export default function QuarantineForm () {
             this.serialNumberRemainingCharacters = 256;
             this.descriptionRemainingCharacters = 512;
         },
-        handleSelectOpportunityChange ( e ) {
+        handleSelectOpportunityChange(e) {
             const data = e.detail;
 
-            if ( data === undefined ) {
+            if (data === undefined) {
                 return;
             }
 
-            /** @type {{ technical_supervisor_id: Number, text: string }} */
+            /** @type {{ technical_supervisor_id: number, text: string }} */
             const { technical_supervisor_id, text } = data;
 
             this.form.opportunity = text;
 
-            if ( technical_supervisor_id === technicalSupervisorNotYetAssignedId ) {
+            if (technical_supervisor_id === technicalSupervisorNotYetAssignedId) {
                 this.form.technical_supervisor_id = technical_supervisor_id;
                 this.technicalSupervisorName = 'Not yet assigned';
                 return;
             }
 
-            const technicalSupervisor = this.technicalSupervisors.find( ts => ts.id === technical_supervisor_id );
+            const technicalSupervisor = this.technicalSupervisors.find(ts => ts.id === technical_supervisor_id);
 
-            if ( technicalSupervisor === undefined ) {
+            if (technicalSupervisor === undefined) {
                 return;
             }
 
             this.form.technical_supervisor_id = technicalSupervisor.id;
             this.technicalSupervisorName = technicalSupervisor.name;
         },
-        handleOpportunityTypeChange () {
+        handleOpportunityTypeChange() {
             this.form.opportunity = '';
             this.form.technical_supervisor_id = '';
+            this.form.owned_by = '';
             this.technicalSupervisorName = '';
         },
-        get validated () {
+        get validated() {
             return {
                 opportunity:
                     this.form.opportunity_type !== 'not-associated'
@@ -124,13 +126,16 @@ export default function QuarantineForm () {
                 product_id:
                     this.form.product_id !== ''
                     && this.errors.product_id === '',
+                owned_by:
+                    this.form.owned_by !== ''
+                    && this.errors.owned_by === '',
                 starts_at:
                     this.form.starts_at !== ''
                     && this.errors.starts_at === '',
                 intake_location:
                     this.form.starts_at === currentDate
                     && this.form.intake_location_type === 'on-a-shelf'
-                    && /^[A-Ia-i]-(?:[1-9]|[1-4][0-9]|5[0-5])$/.test( this.form.intake_location )
+                    && /^[A-Ia-i]-(?:[1-9]|[1-4][0-9]|5[0-5])$/.test(this.form.intake_location)
                     && this.errors.intake_location === '',
                 classification:
                     this.form.classification !== ''
@@ -141,21 +146,21 @@ export default function QuarantineForm () {
                     && this.errors.description === '',
             };
         },
-        async checkSerialNumber () {
+        async checkSerialNumber() {
             this.serialNumber.checking = true;
             this.serialNumber.checked = false;
             this.serialNumber.exists = false;
             this.errors.serial_number = '';
 
             try {
-                await window.axios.post( route( 'quarantine.check-serial-number' ), {
+                await window.axios.post(route('quarantine.check-serial-number'), {
                     serial_number: this.form.serial_number,
-                } );
+                });
 
                 this.serialNumber.checked = true;
             }
-            catch ( error ) {
-                if ( error.status === 422 ) {
+            catch (error) {
+                if (error.status === 422) {
                     this.serialNumber.exists = true;
                 }
 
@@ -164,12 +169,12 @@ export default function QuarantineForm () {
                 const { message } = error.response.data;
                 this.errors.serial_number = message;
 
-                console.error( error );
+                console.error(error);
             } finally {
                 this.serialNumber.checking = false;
             }
         },
-        handleSerialNumberStatusChange () {
+        handleSerialNumberStatusChange() {
             this.form.serial_number = '';
             this.errors.serial_number = '';
             this.serialNumber = { ...initialSerialNumber };
