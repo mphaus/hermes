@@ -82,3 +82,4 @@ Route::middleware(['auth', 'is_enabled'])->group(function () {
 });
 
 require __DIR__ . '/auth.php';
+require __DIR__ . '/inertia.php';
