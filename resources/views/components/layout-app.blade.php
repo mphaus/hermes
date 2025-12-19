@@ -24,7 +24,7 @@
         <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.js"></script>
         
         <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @vite(['resources/css/app.css', 'resources/js/old.js'])
         @livewireStyles
     </head>
     <body class="font-sans antialiased max-[1279px]:pb-[62px] bg-gray-100 ">
