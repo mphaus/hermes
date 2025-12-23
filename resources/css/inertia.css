@@ -76,8 +76,19 @@
     --noise: 1;
 }
 
+@theme {
+    --font-display: "Open Sans", sans-serif;
+}
+
 @layer base {
     a {
         @apply text-primary hover:text-primary/90 active:text-primary/90;
+    }
+}
+
+@layer utilities {
+    .input,
+    .select {
+        @apply flex w-full;
     }
 }
