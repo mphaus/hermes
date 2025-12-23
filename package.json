@@ -26,10 +26,10 @@
         "prettier": "^3.7.4",
         "prettier-plugin-organize-imports": "^4.3.0",
         "prettier-plugin-tailwindcss": "^0.7.2",
-        "typescript-eslint": "^8.50.0"
+        "typescript-eslint": "^8.50.1"
     },
     "dependencies": {
-        "@inertiajs/react": "^2.3.3",
+        "@inertiajs/react": "^2.3.4",
         "@types/react": "^19.2.7",
         "@types/react-dom": "^19.2.3",
         "@vitejs/plugin-react": "^5.1.2",
