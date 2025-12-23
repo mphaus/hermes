@@ -1,0 +1,83 @@
+@import "tailwindcss";
+
+@source "../views/**/*.blade.php";
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source "../js/**/*.tsx";
+
+@plugin "daisyui";
+
+@plugin "daisyui/theme" {
+    name: "light";
+    default: true;
+    prefersdark: false;
+    color-scheme: "light";
+    --color-base-100: oklch(100% 0 0);
+    --color-base-200: oklch(98% 0 0);
+    --color-base-300: oklch(95% 0 0);
+    --color-base-content: oklch(21% 0.006 285.885);
+    --color-primary: oklch(72.18% 0.161 37.73);
+    --color-primary-content: oklch(100% 0 0);
+    --color-secondary: oklch(70.42% 0.147 252.61);
+    --color-secondary-content: oklch(100% 0 0);
+    --color-accent: oklch(88.19% 0.148 94.18);
+    --color-accent-content: oklch(32.11% 0.000 0);
+    --color-neutral: oklch(96.72% 0.000 0);
+    --color-neutral-content: oklch(32.11% 0.000 0);
+    --color-info: oklch(78.42% 0.123 229.84);
+    --color-info-content: oklch(100% 0 0);
+    --color-success: oklch(86.77% 0.214 147.83);
+    --color-success-content: oklch(32.11% 0.000 0);
+    --color-warning: oklch(78.56% 0.137 60.77);
+    --color-warning-content: oklch(32.11% 0.000 0);
+    --color-error: oklch(67.24% 0.198 24.16);
+    --color-error-content: oklch(100% 0 0);
+    --radius-selector: 0.5rem;
+    --radius-field: 0.5rem;
+    --radius-box: 0.5rem;
+    --size-selector: 0.25rem;
+    --size-field: 0.25rem;
+    --border: 1px;
+    --depth: 0;
+    --noise: 1;
+}
+
+@plugin "daisyui/theme" {
+    name: "dark";
+    default: false;
+    prefersdark: true;
+    color-scheme: "dark";
+    --color-base-100: oklch(25.33% 0.016 252.42);
+    --color-base-200: oklch(23.26% 0.014 253.1);
+    --color-base-300: oklch(21.15% 0.012 254.09);
+    --color-base-content: oklch(97.807% 0.029 256.847);
+    --color-primary: oklch(72.18% 0.161 37.73);
+    --color-primary-content: oklch(21.78% 0.000 0);
+    --color-secondary: oklch(54.38% 0.179 264.07);
+    --color-secondary-content: oklch(100% 0 0);
+    --color-accent: oklch(69.16% 0.116 179.62);
+    --color-accent-content: oklch(100% 0 0);
+    --color-neutral: oklch(14% 0.005 285.823);
+    --color-neutral-content: oklch(94.61% 0.000 0);
+    --color-info: oklch(65.30% 0.131 238.09);
+    --color-info-content: oklch(100% 0 0);
+    --color-success: oklch(57.76% 0.122 159.34);
+    --color-success-content: oklch(100% 0 0);
+    --color-warning: oklch(68.03% 0.136 74.40);
+    --color-warning-content: oklch(16.84% 0.000 0);
+    --color-error: oklch(53.45% 0.164 24.56);
+    --color-error-content: oklch(100% 0 0);
+    --radius-selector: 0.5rem;
+    --radius-field: 0.5rem;
+    --radius-box: 0.5rem;
+    --size-selector: 0.25rem;
+    --size-field: 0.25rem;
+    --border: 1px;
+    --depth: 0;
+    --noise: 1;
+}
+
+@layer base {
+    a {
+        @apply text-primary hover:text-primary/90 active:text-primary/90;
+    }
+}

@@ -20,9 +20,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'permission' => EnsureUserHasPermission::class,
         ]);
 
-        $middleware->append([
-            HandleInertiaRequests::class,
+        $middleware->web(append: [
             CreateApplicationSuperUser::class,
+            HandleInertiaRequests::class,
         ]);
         $middleware->redirectGuestsTo(fn() => route('login'));
         $middleware->redirectUsersTo(fn() => get_redirect_route());

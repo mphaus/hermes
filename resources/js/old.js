@@ -3,7 +3,7 @@ import.meta.glob([
     './../images/**',
 ]);
 
-import { Alpine, Livewire } from "./../../vendor/livewire/livewire/dist/livewire.esm";
+import { Alpine, Livewire } from "../../vendor/livewire/livewire/dist/livewire.esm";
 import ActionStreamFilters from "./components/ActionStreamFilters";
 import ActionStreamItem from "./components/ActionStreamItem";
 import Alert from "./components/Alert";
