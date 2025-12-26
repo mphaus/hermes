@@ -6,7 +6,7 @@ export default function DrawerNavbar() {
     const { name, title } = usePage<SharedData>().props;
 
     return (
-        <div className="navbar bg-base-100 w-full sticky top-0 bg-base-100/80 backdrop-blur-sm">
+        <div className="navbar bg-base-100 w-full sticky top-0 bg-base-100/80 backdrop-blur-sm z-10">
             <div className="flex-none lg:hidden">
                 <label htmlFor="hermes-drawer" aria-label="open sidebar" className="btn btn-square btn-ghost">
                     <Menu />
