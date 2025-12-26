@@ -18,7 +18,7 @@ class QuarantineCreateController extends Controller
     public function __invoke(Request $request)
     {
         $technical_supervisors_list_id = config('app.mph.technical_supervisor_list_id');
-        $technical_supervisors = $this->currentrms->fetch("list_name/{$technical_supervisors_list_id}");
+        $technical_supervisors = $this->currentrms->fetch("list_names/{$technical_supervisors_list_id}");
 
         return Inertia::render('QuarantineCreate', [
             'title' => __('Quarantine Intake'),

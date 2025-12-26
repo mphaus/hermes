@@ -1,6 +1,11 @@
+import { CurrentRMSListValue } from "@/types";
 import { Info, TriangleAlert } from "lucide-react";
 
-export default function QuarantineForm() {
+export default function QuarantineForm({ technicalSupervisors }: {
+    technicalSupervisors: CurrentRMSListValue[];
+}) {
+    console.log(technicalSupervisors);
+
     return (
         <div className="card bg-base-100">
             <div className="card-body">
