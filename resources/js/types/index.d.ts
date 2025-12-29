@@ -58,3 +58,5 @@ export interface CurrentRMSListData {
     meta?: CurrentRMSMeta,
     errors?: CurrentRMSError;
 }
+
+export type QuarantineOpportunityType = 'production-lighting-hire' | 'dry-hire' | 'not-associated';

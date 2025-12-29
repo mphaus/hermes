@@ -1,57 +1,15 @@
 import { CurrentRMSListValue } from "@/types";
 import { Info, TriangleAlert } from "lucide-react";
+import QuarantineOpportunityField from "./QuarantineOpportunityField";
 
 export default function QuarantineForm({ technicalSupervisors }: {
     technicalSupervisors: CurrentRMSListValue[];
 }) {
-    console.log(technicalSupervisors);
-
     return (
         <div className="card bg-base-100">
             <div className="card-body">
                 <form action="" className="space-y-7">
-                    <div className="space-y-4">
-                        <div className="space-y-3">
-                            <p className="font-semibold">{ 'Specify the Job this Product was identified as faulty on' }</p>
-                            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
-                                <div className="flex items-center gap-1">
-                                    <input type="radio" name="opportunity_type" id="production-lighting-hire" />
-                                    <label htmlFor="production-lighting-hire" className="cursor-pointer">{ 'Production Lighting Hire Job' }</label>
-                                </div>
-                                <div className="flex items-center gap-1">
-                                    <input type="radio" name="opportunity_type" id="dry-hire" />
-                                    <label htmlFor="dry-hire" className="cursor-pointer">{ 'A Dry Hire Job' }</label>
-                                </div>
-                                <div className="flex items-center gap-1">
-                                    <input type="radio" name="opportunity_type" id="not-associated" />
-                                    <label htmlFor="not-associated" className="cursor-pointer">{ 'Not associated with a Job' }</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="flex items-center gap-1">
-                            <Info size={ 16 } className="text-secondary" />
-                            <p className="text-xs">{ 'Enter a few letters from the name of the Job and select from the shortlist.' }</p>
-                        </div>
-                        <div className="flex items-center gap-1">
-                            <Info size={ 16 } className="text-secondary" />
-                            <p className="text-xs">{ 'Enter the Quote number from the Picking List for this Job (shown at the top of the first page of the Picking List).' }</p>
-                        </div>
-                        <div className="flex items-start gap-1">
-                            <Info size={ 16 } className="text-secondary" />
-                            <div className="space-y-2">
-                                <p className="text-xs">{ 'Enter the Quote number from the Picking List for this Job (shown at the top of the first page of the Picking List).' }</p>
-                                <ul className="pl-5 space-y-1 text-xs list-disc">
-                                    <li>{ 'The correct Job name cannot be found and allocated' }</li>
-                                    <li>{ 'This fault was discovered after the Product had been de-prepped' }</li>
-                                    <li>{ 'This fault was discovered while being Picked for a Job' }</li>
-                                    <li>{ 'This fault was discovered during Prep (that is, before the equipment was loaded onto a truck)' }</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <select name="" id="" className="select appearance-none">
-                            <option value="">{ '-- Select --' }</option>
-                        </select>
-                    </div>
+                    <QuarantineOpportunityField />
                     <div className="space-y-4">
                         <label htmlFor="">{ 'Product' }</label>
                         <div className="flex items-start gap-1">
