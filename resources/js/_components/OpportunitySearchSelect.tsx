@@ -1,6 +1,7 @@
 import AsyncSelect from "react-select/async";
 import OpportunitySearchController from "@/actions/App/Http/Controllers/OpportunitySearchController";
 import { debounce } from "es-toolkit/function";
+import { useQuarantineForm } from "./QuarantineForm";
 
 async function loadOptions(inputValue: string, params?: Record<string, unknown>) {
     if (!inputValue) {
@@ -17,12 +18,11 @@ async function loadOptions(inputValue: string, params?: Record<string, unknown>)
             }
         }
 
-        console.log(`${OpportunitySearchController().url}?${searchParams}`);
-
         const response = await fetch(`${OpportunitySearchController().url}?${searchParams}`);
         const data = await response.json();
 
         return data.map((opportunity: any) => ({
+            technical_supervisor_id: opportunity.technical_supervisor_id,
             value: opportunity.id,
             label: opportunity.subject,
         }));
@@ -45,6 +45,20 @@ export default function OpportunitySearchSelect({ name, placeholder, params }: {
     placeholder: string;
     params?: Record<string, unknown>
 }) {
+    const { opportunityChange } = useQuarantineForm();
+    const opportunitySearchSelectChange = (data: {
+        technical_supervisor_id: number;
+        value: number;
+        label: string;
+    } | null) => {
+        if (!data) {
+            return;
+        }
+
+        const { technical_supervisor_id, label } = data;
+        opportunityChange({ technical_supervisor_id, label });
+    };
+
     return (
         <AsyncSelect
             loadOptions={ inputValue => new Promise((resolve: any) => debouncedLoadOptions({ inputValue, params, callback: resolve })) }
@@ -54,6 +68,7 @@ export default function OpportunitySearchSelect({ name, placeholder, params }: {
             noOptionsMessage={ ({ inputValue }) =>
                 inputValue ? `No Opportunities found for "${inputValue}"` : "Start typing to search..."
             }
+            onChange={ opportunitySearchSelectChange }
             name={ name }
         />
     );

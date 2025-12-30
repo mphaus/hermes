@@ -18,12 +18,13 @@ class OpportunitySearchController extends Controller
     {
         $request_collection = $request->collect();
         $term = $request_collection->get('term');
-        $params = preg_replace('/\[\d+\]/', '[]', urldecode(http_build_query([
-            'per_page' => 25,
-            'q[subject_cont]' => $term,
-        ])));
+        $params = $request_collection->forget('term');
+        $uri = 'opportunities';
 
-        $uri = "opportunities?{$params}";
+        if ($params->isNotEmpty()) {
+            $params = preg_replace('/\[\d+\]/', '[]', str_replace('?', $term, urldecode(http_build_query($params->toArray()))));
+            $uri = "{$uri}?{$params}";
+        }
 
         $opportunities_data = $this->currentrms->fetch($uri);
 

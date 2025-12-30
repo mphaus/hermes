@@ -2,9 +2,15 @@ import { QuarantineOpportunityType } from "@/types";
 import { Info } from "lucide-react";
 import { useState } from "react";
 import OpportunitySearchSelect from "./OpportunitySearchSelect";
+import { useQuarantineForm } from "./QuarantineForm";
 
 export default function QuarantineOpportunityField() {
     const [ opportunityType, setOpportunityType ] = useState<QuarantineOpportunityType>('production-lighting-hire');
+    const { opportunityChange } = useQuarantineForm();
+    const opportunityTypeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setOpportunityType(e.target.value as QuarantineOpportunityType);
+        opportunityChange({ technical_supervisor_id: 0, label: '' });
+    }
 
     return (
         <div className="space-y-4">
@@ -19,7 +25,7 @@ export default function QuarantineOpportunityField() {
                             id="production-lighting-hire"
                             value="production-lighting-hire"
                             defaultChecked
-                            onChange={ e => setOpportunityType(e.target.value as QuarantineOpportunityType) }
+                            onChange={ opportunityTypeChange }
                         />
                         <label htmlFor="production-lighting-hire" className="cursor-pointer">{ 'Production Lighting Hire Job' }</label>
                     </div>
@@ -29,7 +35,7 @@ export default function QuarantineOpportunityField() {
                             name="opportunity_type"
                             id="dry-hire"
                             value="dry-hire"
-                            onChange={ e => setOpportunityType(e.target.value as QuarantineOpportunityType) }
+                            onChange={ opportunityTypeChange }
                         />
                         <label htmlFor="dry-hire" className="cursor-pointer">{ 'A Dry Hire Job' }</label>
                     </div>
@@ -39,7 +45,7 @@ export default function QuarantineOpportunityField() {
                             name="opportunity_type"
                             id="not-associated"
                             value="not-associated"
-                            onChange={ e => setOpportunityType(e.target.value as QuarantineOpportunityType) }
+                            onChange={ opportunityTypeChange }
                         />
                         <label htmlFor="not-associated" className="cursor-pointer">{ 'Not associated with a Job' }</label>
                     </div>
@@ -59,9 +65,19 @@ export default function QuarantineOpportunityField() {
                     } }
                 />
             </div> }
-            { opportunityType === 'dry-hire' && <div className="flex items-center gap-1">
-                <Info size={ 16 } className="text-secondary" />
-                <p className="text-xs">{ 'Enter the Quote number from the Picking List for this Job (shown at the top of the first page of the Picking List).' }</p>
+            { opportunityType === 'dry-hire' && <div className="space-y-4">
+                <div className="flex items-center gap-1">
+                    <Info size={ 16 } className="text-secondary" />
+                    <p className="text-xs">{ 'Enter the Quote number from the Picking List for this Job (shown at the top of the first page of the Picking List).' }</p>
+                </div>
+                <OpportunitySearchSelect
+                    name="opportunity"
+                    placeholder={ 'Type the digits of the Opportunity\'s quote number' }
+                    params={ {
+                        'per_page': 25,
+                        'q[number_cont]': '?',
+                    } }
+                />
             </div> }
             { opportunityType === 'not-associated' && <div className="flex items-start gap-1">
                 <Info size={ 16 } className="text-secondary" />
