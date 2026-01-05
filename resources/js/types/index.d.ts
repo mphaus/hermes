@@ -39,24 +39,38 @@ export type CurrentRMSListValue = {
     updated_at: string;
 };
 
-export type CurrentRMSListName = {
-    id: number;
-    name: string;
-    system: boolean;
-    has_colour: boolean;
-    created_at: string;
-    updated_at: string;
-    list_values: CurrentRMSListValue[];
-};
-
-export type CurrentRMSMeta = {
-    'can_edit?': boolean;
-    'can_destroy?': boolean;
-};
-export interface CurrentRMSListData {
-    list_name?: CurrentRMSListName;
-    meta?: CurrentRMSMeta,
+export type CurrentRMSListData = {
+    list_name?: {
+        id: number;
+        name: string;
+        system: boolean;
+        has_colour: boolean;
+        created_at: string;
+        updated_at: string;
+        list_values: CurrentRMSListValue[];
+    };
+    meta?: {
+        'can_edit?': boolean;
+        'can_destroy?': boolean;
+    },
     errors?: CurrentRMSError;
 }
 
 export type QuarantineOpportunityType = 'production-lighting-hire' | 'dry-hire' | 'not-associated';
+
+export type CurrentRMSMember = {
+    id: number;
+    name: string;
+    [ key: string ]: unknown;
+};
+
+export type CurrentRMSMemberData = {
+    members?: CurrentRMSMember[];
+    meta?: {
+        page: number;
+        per_page: number;
+        row_count: number;
+        total_row_count: number;
+    };
+    errors?: CurrentRMSError;
+};

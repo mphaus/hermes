@@ -28,8 +28,13 @@ class CurrentRMSApiService
         ])->baseUrl($this->host);
     }
 
-    public function fetch(string $uri)
+    public function fetch(string $uri, array $params = [])
     {
+        if (!empty($params)) {
+            $query_string = preg_replace('/\[\d+\]/', '[]', urldecode(http_build_query($params)));
+            $uri = "{$uri}?{$query_string}";
+        }
+
         /**
          * @var \Illuminate\Http\Client\Response $response
          */

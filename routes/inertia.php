@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\InertiaAuthenticatedSessionController;
+use App\Http\Controllers\MemberSearchController;
 use App\Http\Controllers\OpportunitySearchController;
 use App\Http\Controllers\ProductSearchController;
 use App\Http\Controllers\QuarantineCreateController;

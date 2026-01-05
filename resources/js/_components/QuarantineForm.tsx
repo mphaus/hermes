@@ -1,10 +1,11 @@
 import { createContext, useContext, useReducer } from "react";
-import { CurrentRMSListValue } from "@/types";
+import { CurrentRMSListValue, CurrentRMSMember } from "@/types";
 import { Info, TriangleAlert } from "lucide-react";
 import QuarantineOpportunityField from "./QuarantineOpportunityField";
 import { quarantineFormInitialState, quarantineFormReducer, QuarantineFormState } from "@/context/QuarantineFormContext";
 import QuarantineTechnicalSupervisor from "./QuarantineTechnicalSupervisor";
 import QuarantineProductField from "./QuarantineProductField";
+import QuarantineOwnerField from "./QuarantineOwnerField";
 
 type QuarantineFormContextValue = {
     form: QuarantineFormState;
@@ -26,8 +27,9 @@ export function useQuarantineForm() {
     return context;
 }
 
-export default function QuarantineForm({ technicalSupervisors }: {
+export default function QuarantineForm({ technicalSupervisors, members }: {
     technicalSupervisors: CurrentRMSListValue[];
+    members: CurrentRMSMember[]
 }) {
     const [ state, dispatch ] = useReducer(quarantineFormReducer, quarantineFormInitialState);
 
@@ -56,12 +58,7 @@ export default function QuarantineForm({ technicalSupervisors }: {
                             currentTechnicalSupervisor={ state.technical_supervisor_id }
                         />
                         <QuarantineProductField />
-                        <div className="space-y-4">
-                            <label htmlFor="">{ 'Owned by' }</label>
-                            <select name="" id="" className="select appearance-none">
-                                <option value="">{ '-- Select --' }</option>
-                            </select>
-                        </div>
+                        <QuarantineOwnerField members={ members } />
                         <div className="space-y-4">
                             <label htmlFor="">{ 'Reference' }</label>
                             <div className="flex items-start gap-1">
