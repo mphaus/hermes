@@ -3,14 +3,13 @@ export type QuarantineFormState = {
     opportunity: string;
 };
 
-export type QuarantineFormAction =
-    {
-        type: string;
-        payload: {
-            technical_supervisor_id: number;
-            label: string;
-        };
-    }
+export type QuarantineFormAction = {
+    type: string;
+    payload: {
+        technical_supervisor_id: number;
+        label: string;
+    };
+}
 
 export const quarantineFormInitialState: QuarantineFormState = {
     technical_supervisor_id: 0,
@@ -25,7 +24,6 @@ export function quarantineFormReducer(state: QuarantineFormState, action: Quaran
                 technical_supervisor_id: action.payload.technical_supervisor_id,
                 opportunity: action.payload.label,
             };
-            break;
         default:
             return state;
     }

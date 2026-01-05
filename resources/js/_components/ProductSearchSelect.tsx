@@ -1,7 +1,7 @@
 import AsyncSelect from "react-select/async";
-import OpportunitySearchController from "@/actions/App/Http/Controllers/OpportunitySearchController";
+import { components, OptionProps } from "react-select";
+import ProductSearchController from "@/actions/App/Http/Controllers/ProductSearchController";
 import { debounce } from "es-toolkit/function";
-import { useQuarantineForm } from "./QuarantineForm";
 
 async function loadOptions(inputValue: string, params?: Record<string, unknown>) {
     if (!inputValue) {
@@ -18,13 +18,13 @@ async function loadOptions(inputValue: string, params?: Record<string, unknown>)
             }
         }
 
-        const response = await fetch(`${OpportunitySearchController().url}?${searchParams}`);
+        const response = await fetch(`${ProductSearchController().url}?${searchParams}`);
         const data = await response.json();
 
-        return data.map((opportunity: any) => ({
-            technical_supervisor_id: opportunity.technical_supervisor_id,
-            value: opportunity.id,
-            label: opportunity.subject,
+        return data.map((product: any) => ({
+            thumb_url: product.thumb_url,
+            value: product.id,
+            label: product.text,
         }));
     } catch (error) {
         console.error(error);
@@ -40,25 +40,22 @@ const debouncedLoadOptions = debounce(({ inputValue, params, callback }: {
     loadOptions(inputValue, params).then(callback);
 }, 500);
 
-export default function OpportunitySearchSelect({ name, placeholder, params }: {
+const Option = (props: OptionProps<any>) => {
+    const thumburl = props.data.thumb_url = props.data.thumb_url || 'https://placehold.co/40x40?text=No+image';
+
+    return (
+        <components.Option { ...props } className="flex! items-center gap-2">
+            <img src={ thumburl } width={ 40 } height={ 40 } />
+            <span>{ props.data.label }</span>
+        </components.Option>
+    );
+};
+
+export default function ProductSearchSelect({ name, placeholder, params }: {
     name: string;
     placeholder: string;
     params?: Record<string, unknown>
 }) {
-    const { opportunityChange } = useQuarantineForm();
-    const opportunitySearchSelectChange = (data: {
-        technical_supervisor_id: number;
-        value: number;
-        label: string;
-    } | null) => {
-        if (!data) {
-            return;
-        }
-
-        const { technical_supervisor_id, label } = data;
-        opportunityChange({ technical_supervisor_id, label });
-    };
-
     return (
         <AsyncSelect
             loadOptions={ inputValue => new Promise((resolve: any) => debouncedLoadOptions({ inputValue, params, callback: resolve })) }
@@ -66,10 +63,10 @@ export default function OpportunitySearchSelect({ name, placeholder, params }: {
             placeholder={ placeholder }
             loadingMessage={ () => "Searching..." }
             noOptionsMessage={ ({ inputValue }) =>
-                inputValue ? `No Opportunities found for "${inputValue}"` : "Start typing to search..."
+                inputValue ? `No Products found for "${inputValue}"` : "Start typing to search..."
             }
-            onChange={ opportunitySearchSelectChange }
             name={ name }
+            components={ { Option } }
         />
     );
 }

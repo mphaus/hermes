@@ -4,6 +4,7 @@ import { Info, TriangleAlert } from "lucide-react";
 import QuarantineOpportunityField from "./QuarantineOpportunityField";
 import { quarantineFormInitialState, quarantineFormReducer, QuarantineFormState } from "@/context/QuarantineFormContext";
 import QuarantineTechnicalSupervisor from "./QuarantineTechnicalSupervisor";
+import QuarantineProductField from "./QuarantineProductField";
 
 type QuarantineFormContextValue = {
     form: QuarantineFormState;
@@ -54,16 +55,7 @@ export default function QuarantineForm({ technicalSupervisors }: {
                             technicalSupervisors={ technicalSupervisors }
                             currentTechnicalSupervisor={ state.technical_supervisor_id }
                         />
-                        <div className="space-y-4">
-                            <label htmlFor="">{ 'Product' }</label>
-                            <div className="flex items-start gap-1">
-                                <Info size={ 16 } className="text-secondary shrink-0" />
-                                <p className="text-xs">{ 'Type the first few letters of the Product and pause to let the system get info from CurrentRMS. Select the exact-match Product. If the Product cannot be found in this listing, double-check the spelling of the Product name (per the info plate on the equipment), then ask the SRMM Manager for advice on how to proceed.' }</p>
-                            </div>
-                            <select name="" id="" className="select appearance-none">
-                                <option value="">{ '-- Select --' }</option>
-                            </select>
-                        </div>
+                        <QuarantineProductField />
                         <div className="space-y-4">
                             <label htmlFor="">{ 'Owned by' }</label>
                             <select name="" id="" className="select appearance-none">
