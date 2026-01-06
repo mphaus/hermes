@@ -7,6 +7,7 @@ import QuarantineTechnicalSupervisor from "./QuarantineTechnicalSupervisor";
 import QuarantineProductField from "./QuarantineProductField";
 import QuarantineOwnerField from "./QuarantineOwnerField";
 import QuarantineReferenceField from "./QuarantineReferenceField";
+import QuarantineReadyForRepairsField from "./QuarantineReadyForRepairsField";
 
 type QuarantineFormContextValue = {
     form: QuarantineFormState;
@@ -61,14 +62,7 @@ export default function QuarantineForm({ technicalSupervisors, members }: {
                         <QuarantineProductField />
                         <QuarantineOwnerField members={ members } />
                         <QuarantineReferenceField />
-                        <div className="space-y-4">
-                            <label className="block font-semibold">{ 'Ready for repairs' }</label>
-                            <div className="flex items-start gap-1 mt-2">
-                                <Info size={ 16 } className="text-secondary shrink-0" />
-                                <p className="text-xs">{ 'Set the date this Product is expected to be in the warehouse, available for Repairs Technicians to work on. If the faulty Product is already in the Warehouse and is about to be placed on Quarantine Intake shelves, leave the date as today\'s.' }</p>
-                            </div>
-                            <input type="date" name="" id="" className="input" />
-                        </div>
+                        <QuarantineReadyForRepairsField />
                         <div className="space-y-4">
                             <label className="block font-semibold">{ 'Intake location' }</label>
                             <div className="flex items-start gap-1 mt-2">
