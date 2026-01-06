@@ -6,6 +6,7 @@ import { quarantineFormInitialState, quarantineFormReducer, QuarantineFormState 
 import QuarantineTechnicalSupervisor from "./QuarantineTechnicalSupervisor";
 import QuarantineProductField from "./QuarantineProductField";
 import QuarantineOwnerField from "./QuarantineOwnerField";
+import QuarantineReferenceField from "./QuarantineReferenceField";
 
 type QuarantineFormContextValue = {
     form: QuarantineFormState;
@@ -59,52 +60,7 @@ export default function QuarantineForm({ technicalSupervisors, members }: {
                         />
                         <QuarantineProductField />
                         <QuarantineOwnerField members={ members } />
-                        <div className="space-y-4">
-                            <label htmlFor="">{ 'Reference' }</label>
-                            <div className="flex items-start gap-1">
-                                <Info size={ 16 } className="text-secondary shrink-0" />
-                                <p className="text-xs">{ 'The Product\'s serial number is used to uniquely identify the faulty Product. Do not confuse this with the Product\'s model number. If the serial number has hyphens (-) or slashes (/), enter them as shown on the serial number label.' }</p>
-                            </div>
-                            <div className="space-y-4">
-                                <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
-                                    <div className="flex items-center gap-1">
-                                        <input type="radio" id="serial-number-exists" value="serial-number-exists" />
-                                        <label className="cursor-pointer" htmlFor="serial-number-exists">{ 'Serial number' }</label>
-                                    </div>
-                                    <div className="flex items-center gap-1">
-                                        <input type="radio" id="missing-serial-number" value="missing-serial-number" />
-                                        <label className="cursor-pointer" htmlFor="missing-serial-number">{ 'Missing serial number' }</label>
-                                    </div>
-                                    <div className="flex items-center gap-1">
-                                        <input type="radio" id="not-serialised" value="not-serialised" />
-                                        <label className="cursor-pointer" htmlFor="not-serialised">{ 'Equipment is not serialised' }</label>
-                                    </div>
-                                </div>
-                                <div className="space-y-2">
-                                    <input
-                                        type="text"
-                                        className="input"
-                                        placeholder={ 'Serial number' }
-                                    />
-                                    <p className="text-xs font-semibold">
-                                        <span></span>
-                                    </p>
-                                    { 'character<span >s</span> left' }
-                                </div>
-                                <div className="flex items-start gap-1">
-                                    <TriangleAlert size={ 16 } className="text-warning shrink-0" />
-                                    <p className="text-xs">
-                                        { 'This option is selected if this equipment normally has a serial number assigned, but it\'s unreadable or has fallen off. Add \'Assign manual serial number\' to the Fault description field (in addition to other faults this equipment has).' }
-                                    </p>
-                                </div>
-                                <div className="flex items-start gap-1">
-                                    <TriangleAlert size={ 16 } className="text-warning shrink-0" />
-                                    <p className="text-xs">
-                                        { 'This option is selected if this type of equipment is never serialised at all. Notify the Warehouse and SRMM Managers by email about this (as well as registering it here in Quarantine) - they will plan to serialise this type of equipment.' }
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
+                        <QuarantineReferenceField />
                         <div className="space-y-4">
                             <label className="block font-semibold">{ 'Ready for repairs' }</label>
                             <div className="flex items-start gap-1 mt-2">

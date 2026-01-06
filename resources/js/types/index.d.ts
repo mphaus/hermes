@@ -58,6 +58,8 @@ export type CurrentRMSListData = {
 
 export type QuarantineOpportunityType = 'production-lighting-hire' | 'dry-hire' | 'not-associated';
 
+export type QuarantineSerialNumberStatus = 'serial-number-exists' | 'missing-serial-number' | 'not-serialised';
+
 export type CurrentRMSMember = {
     id: number;
     name: string;
