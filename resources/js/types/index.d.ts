@@ -60,6 +60,8 @@ export type QuarantineOpportunityType = 'production-lighting-hire' | 'dry-hire' 
 
 export type QuarantineSerialNumberStatus = 'serial-number-exists' | 'missing-serial-number' | 'not-serialised';
 
+export type QuarantineIntakeLocation = 'on-a-shelf' | 'in-the-bulky-products-area';
+
 export type CurrentRMSMember = {
     id: number;
     name: string;

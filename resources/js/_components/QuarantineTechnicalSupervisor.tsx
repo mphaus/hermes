@@ -23,13 +23,17 @@ export default function QuarantineTechnicalSupervisor({ technicalSupervisors, cu
     }
 
     return (
-        <div className="space-y-4">
-            <p className="block font-semibold">{ 'Technical Supervisor' }</p>
-            <div className="flex items-start gap-1 mt-2">
-                <Info size={ 16 } className="text-secondary" />
-                <p className="text-xs">{ 'The Technical Supervisor is specified in Opportunity in CurrentRMS and cannot be edited here.' }</p>
+        <div className="shadow-sm card bg-base-100">
+            <div className="card-body">
+                <div className="space-y-4">
+                    <p className="block font-semibold">{ 'Technical Supervisor' }</p>
+                    <div className="flex items-start gap-1 mt-2">
+                        <Info size={ 16 } className="text-secondary" />
+                        <p className="text-xs">{ 'The Technical Supervisor is specified in Opportunity in CurrentRMS and cannot be edited here.' }</p>
+                    </div>
+                    <p>{ technicalSupevisorName }</p>
+                </div>
             </div>
-            <p>{ technicalSupevisorName }</p>
         </div>
     );
 }
