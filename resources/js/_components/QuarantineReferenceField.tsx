@@ -3,8 +3,11 @@ import { Info, TriangleAlert } from "lucide-react";
 import { useState, useRef } from "react";
 import { useCharacterLimit } from "@/hooks";
 import clsx from "clsx";
+import FormError from "./FormError";
 
-export default function QuarantineReferenceField() {
+export default function QuarantineReferenceField({ error }: {
+    error?: string;
+}) {
     const MAX = 256;
     const inputRef = useRef<HTMLInputElement>(null);
     const { remaining, isOverLimit, handleLimitChange } = useCharacterLimit(MAX);
@@ -89,6 +92,7 @@ export default function QuarantineReferenceField() {
                         </div> }
                     </div>
                 </div>
+                { error && <FormError message={ error } /> }
             </div>
         </div>
     );

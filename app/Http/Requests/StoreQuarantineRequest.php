@@ -4,7 +4,8 @@ namespace App\Http\Requests;
 
 use App\Mail\QuarantineCreated;
 use App\Rules\UniqueSerialNumber;
-use App\Traits\WithQuarantineIntakeClassification;
+use App\Traits\WithQuarantineFaultClassification;
+// use App\Traits\WithQuarantineIntakeClassification;
 use Closure;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -17,7 +18,8 @@ use Illuminate\Validation\Rule;
 
 class StoreQuarantineRequest extends FormRequest
 {
-    use WithQuarantineIntakeClassification;
+    // use WithQuarantineIntakeClassification;
+    use WithQuarantineFaultClassification;
 
     /**
      * Determine if the user is authorized to make this request.
@@ -50,7 +52,8 @@ class StoreQuarantineRequest extends FormRequest
                 },
             ],
             'product_id' => ['required', 'numeric'],
-            'owned_by' => ['required', 'numeric'],
+            // 'owned_by' => ['required', 'numeric'],
+            'owner_id' => ['required', 'numeric'],
             'serial_number_status' => [
                 'required',
                 Rule::in(['serial-number-exists', 'missing-serial-number', 'not-serialised']),
@@ -88,7 +91,8 @@ class StoreQuarantineRequest extends FormRequest
             ],
             'classification' => [
                 'required',
-                Rule::in($this->getClassificationTexts()),
+                // Rule::in($this->getClassificationTexts()),
+                Rule::in($this->getFaultClassificationValues()),
             ],
             'description' => ['required', 'max:512'],
         ];
@@ -101,7 +105,8 @@ class StoreQuarantineRequest extends FormRequest
             'opportunity' => __('opportunity'),
             'technical_supervisor_id' => __('technical supervisor'),
             'product_id' => __('product'),
-            'owned_by' => __('owner'),
+            // 'owned_by' => __('owner'),
+            'owner_id' => __('owner'),
             'starts_at' => __('ready for repairs'),
             'classification' => __('primary fault classification'),
             'description' => __('fault description'),
@@ -117,13 +122,16 @@ class StoreQuarantineRequest extends FormRequest
             'serial_number_status' => $serial_number_status,
             'serial_number' => $serial_number,
             'product_id' => $product_id,
-            'owned_by' => $owned_by,
+            // 'owned_by' => $owned_by,
+            'owner_id' => $owner_id,
             'starts_at' => $starts_at,
             'intake_location_type' => $intake_location_type,
             'intake_location' => $intake_location,
             'classification' => $classification,
             'description' => $description,
         ] = $this->validated();
+
+        dd('Success');
 
         $reference = match ($serial_number_status) {
             'serial-number-exists' => $serial_number,
@@ -157,7 +165,8 @@ class StoreQuarantineRequest extends FormRequest
             'quarantine' => [
                 'item_id' => App::environment(['local', 'staging']) ? intval(config('app.mph.test_product_id')) : intval($product_id),
                 'store_id' => 1,
-                'owned_by' => $owned_by,
+                // 'owned_by' => $owned_by,
+                'owner_id' => $owner_id,
                 'reference' => $reference,
                 'description' => $description,
                 'starts_at' => $starts_at->setTime(12, 0, 0, 0)->setTimezone('UTC')->format('Y-m-d\TH:i:s'),

@@ -1,28 +1,8 @@
+import { SharedData } from "@/types";
+import { usePage } from "@inertiajs/react";
 import { Info } from "lucide-react";
 import Select, { components, OptionProps } from "react-select";
-
-const classifications = [
-    {
-        value: 'Dangerous for people to handle or be around',
-        label: 'Dangerous for people to handle or be around',
-        example: 'For example, risk of electric shock, or being cut by glass.',
-    },
-    {
-        value: 'Cannot deliver results expected by Client',
-        label: 'Cannot deliver results expected by Client',
-        example: 'For example, flickering LEDs, or does not zoom or no tilt.',
-    },
-    {
-        value: 'Incorrectly commissioned',
-        label: 'Incorrectly commissioned',
-        example: 'For example, needs re-painting or re-branding or new Test & Tag.',
-    },
-    {
-        value: 'Does not meet MPH quality standard',
-        label: 'Does not meet MPH quality standard',
-        example: 'For example, cracked or missing panels, bent metal, water ingress.',
-    }
-];
+import FormError from "./FormError";
 
 const Option = (props: OptionProps<any>) => {
     return (
@@ -34,7 +14,15 @@ const Option = (props: OptionProps<any>) => {
     );
 };
 
-export default function QuarantinePrimaryFaultClassificationField() {
+export default function QuarantinePrimaryFaultClassificationField({ error }: {
+    error?: string;
+}) {
+    const classifications = usePage<SharedData>().props.fault_classifications as {
+        value: string;
+        label: string;
+        example: string;
+    }[];
+
     return (
         <div className="card bg-base-100 shadow-sm">
             <div className="card-body">
@@ -52,6 +40,7 @@ export default function QuarantinePrimaryFaultClassificationField() {
                         components={ { Option } }
                     />
                 </div>
+                { error && <FormError message={ error } /> }
             </div>
         </div>
     );

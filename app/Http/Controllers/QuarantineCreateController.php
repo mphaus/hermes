@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Services\CurrentRMSApiService;
+use App\Traits\WithQuarantineFaultClassification;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class QuarantineCreateController extends Controller
 {
+    use WithQuarantineFaultClassification;
+
     public function __construct(
         protected CurrentRMSApiService $currentrms
     ) {}
@@ -34,6 +37,7 @@ class QuarantineCreateController extends Controller
             'members_data' => Inertia::defer(fn() => $members_data)->once(),
             'min_date' => now()->format('Y-m-d'),
             'max_date' => now()->addMonths(1)->endOfMonth()->format('Y-m-d'),
+            'fault_classifications' => $this->getFaultClassifications(),
         ]);
     }
 }

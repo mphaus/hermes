@@ -1,9 +1,11 @@
 import { CurrentRMSMember } from "@/types";
 import { Info } from "lucide-react";
 import Select from "react-select";
+import FormError from "./FormError";
 
-export default function QuarantineOwnerField({ members }: {
+export default function QuarantineOwnerField({ members, error }: {
     members: CurrentRMSMember[];
+    error?: string;
 }) {
     const formattedMembers = members.map(member => ({
         value: member.id,
@@ -26,6 +28,7 @@ export default function QuarantineOwnerField({ members }: {
                         placeholder={ 'Search Owners' }
                     />
                 </div>
+                { error && <FormError message={ error } /> }
             </div>
         </div>
     );

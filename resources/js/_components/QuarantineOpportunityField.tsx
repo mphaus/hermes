@@ -3,8 +3,11 @@ import { Info } from "lucide-react";
 import { useState } from "react";
 import OpportunitySearchSelect from "./OpportunitySearchSelect";
 import { useQuarantineForm } from "./QuarantineForm";
+import FormError from "./FormError";
 
-export default function QuarantineOpportunityField() {
+export default function QuarantineOpportunityField({ error }: {
+    error?: string;
+}) {
     const [ opportunityType, setOpportunityType ] = useState<QuarantineOpportunityType>('production-lighting-hire');
     const { opportunityChange } = useQuarantineForm();
     const opportunityTypeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -94,6 +97,7 @@ export default function QuarantineOpportunityField() {
                         </div>
                     </div> }
                 </div>
+                { error && <FormError message={ error } /> }
             </div>
         </div>
     );

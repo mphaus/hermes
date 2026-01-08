@@ -2,8 +2,11 @@ import { Info } from "lucide-react";
 import { useCharacterLimit } from "@/hooks";
 import { useRef } from "react";
 import clsx from "clsx";
+import FormError from "./FormError";
 
-export default function QuarantineFaultDescriptionField() {
+export default function QuarantineFaultDescriptionField({ error }: {
+    error?: string;
+}) {
     const MAX = 512;
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const { remaining, isOverLimit, handleLimitChange } = useCharacterLimit(MAX);
@@ -40,6 +43,7 @@ export default function QuarantineFaultDescriptionField() {
                         </ul>
                     </div>
                 </div>
+                { error && <FormError message={ error } /> }
             </div>
         </div>
     );

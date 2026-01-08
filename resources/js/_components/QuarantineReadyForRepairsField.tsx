@@ -2,8 +2,11 @@ import { SharedData } from "@/types";
 import { usePage } from "@inertiajs/react";
 import { Info } from "lucide-react";
 import { useQuarantineForm } from "./QuarantineForm";
+import FormError from "./FormError";
 
-export default function QuarantineReadyForRepairsField() {
+export default function QuarantineReadyForRepairsField({ error }: {
+    error?: string;
+}) {
     const { min_date, max_date } = usePage<SharedData>().props;
     const { readyForRepairsChange } = useQuarantineForm();
 
@@ -28,6 +31,7 @@ export default function QuarantineReadyForRepairsField() {
                         onChange={ (e: React.ChangeEvent<HTMLInputElement>) => readyForRepairsChange(e.target.value) }
                     />
                 </div>
+                { error && <FormError message={ error } /> }
             </div>
         </div>
     );

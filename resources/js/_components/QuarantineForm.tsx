@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useReducer } from "react";
 import { CurrentRMSListValue, CurrentRMSMember, SharedData } from "@/types";
 import { quarantineFormInitialState, quarantineFormReducer, QuarantineFormState } from "@/context/QuarantineFormContext";
-import { usePage } from "@inertiajs/react";
+import { Form, usePage } from "@inertiajs/react";
 import QuarantineOpportunityField from "./QuarantineOpportunityField";
 import QuarantineTechnicalSupervisor from "./QuarantineTechnicalSupervisor";
 import QuarantineProductField from "./QuarantineProductField";
@@ -11,6 +11,7 @@ import QuarantineReadyForRepairsField from "./QuarantineReadyForRepairsField";
 import QuarantineIntakeLocationField from "./QuarantineIntakeLocationField";
 import QuarantinePrimaryFaultClassificationField from "./QuarantinePrimaryFaultClassificationField";
 import QuarantineFaultDescriptionField from "./QuarantineFaultDescriptionField";
+import StoreQuarantineController from "@/actions/App/Http/Controllers/StoreQuarantineController";
 
 type QuarantineFormContextValue = {
     form: QuarantineFormState;
@@ -37,7 +38,7 @@ export default function QuarantineForm({ technicalSupervisors, members }: {
     technicalSupervisors: CurrentRMSListValue[];
     members: CurrentRMSMember[]
 }) {
-    const { min_date } = usePage<SharedData>().props
+    const { min_date } = usePage<SharedData>().props;
     const [ state, dispatch ] = useReducer(quarantineFormReducer, quarantineFormInitialState);
 
     const opportunityChange = (data: {
@@ -61,26 +62,46 @@ export default function QuarantineForm({ technicalSupervisors, members }: {
 
     return (
         <QuarantineFormContext.Provider value={ value }>
-            <form action="" className="space-y-7">
-                <input type="hidden" name="opportunity" value={ state.opportunity } />
-                <input type="hidden" name="technical_supervisor_id" value={ state.technical_supervisor_id } />
-                <QuarantineOpportunityField />
-                <QuarantineTechnicalSupervisor
-                    technicalSupervisors={ technicalSupervisors }
-                    currentTechnicalSupervisor={ state.technical_supervisor_id }
-                />
-                <QuarantineProductField />
-                <QuarantineOwnerField members={ members } />
-                <QuarantineReferenceField />
-                <QuarantineReadyForRepairsField />
-                { min_date === state.starts_at && <QuarantineIntakeLocationField /> }
-                <QuarantinePrimaryFaultClassificationField />
-                <QuarantineFaultDescriptionField />
-                <div className="flex items-center justify-end gap-2">
-                    <button type="button" className="btn btn-primary btn-outline">{ 'Clear form' }</button>
-                    <button type="submit" className="btn btn-primary">{ 'Submit' }</button>
-                </div>
-            </form>
+            <Form action={ StoreQuarantineController() } method="post" className="space-y-7">
+                { ({
+                    errors,
+                    processing
+                }) => (
+                    <>
+                        <input type="hidden" name="opportunity" value={ state.opportunity } />
+                        <input type="hidden" name="technical_supervisor_id" value={ state.technical_supervisor_id } />
+                        <QuarantineOpportunityField error={ errors.opportunity } />
+                        <QuarantineTechnicalSupervisor
+                            technicalSupervisors={ technicalSupervisors }
+                            currentTechnicalSupervisor={ state.technical_supervisor_id }
+                        />
+                        <QuarantineProductField error={ errors.product_id } />
+                        <QuarantineOwnerField
+                            members={ members }
+                            error={ errors.owner_id }
+                        />
+                        <QuarantineReferenceField error={ errors.serial_number } />
+                        <QuarantineReadyForRepairsField error={ errors.starts_at } />
+                        { min_date === state.starts_at && <QuarantineIntakeLocationField error={ errors.intake_location } /> }
+                        <QuarantinePrimaryFaultClassificationField error={ errors.classification } />
+                        <QuarantineFaultDescriptionField error={ errors.description } />
+                        <div className="flex items-center justify-end gap-2">
+                            <button
+                                type="button"
+                                className="btn btn-primary btn-outline"
+                                disabled={ processing }
+                            >{ 'Clear form' }</button>
+                            <button
+                                type="submit"
+                                className="btn btn-primary"
+                                disabled={ processing }
+                            >
+                                { processing ? 'Submitting...' : 'Submit' }
+                            </button>
+                        </div>
+                    </>
+                ) }
+            </Form>
         </QuarantineFormContext.Provider>
     );
 }

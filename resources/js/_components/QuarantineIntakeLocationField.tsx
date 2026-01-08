@@ -2,8 +2,11 @@ import { QuarantineIntakeLocation } from "@/types";
 import { Info, TriangleAlert } from "lucide-react";
 import { useState } from "react";
 import { IMaskInput } from "react-imask";
+import FormError from "./FormError";
 
-export default function QuarantineIntakeLocationField() {
+export default function QuarantineIntakeLocationField({ error }: {
+    error?: string;
+}) {
     const [ intakeLocation, setintakeLocation ] = useState<QuarantineIntakeLocation>('on-a-shelf');
 
     return (
@@ -61,6 +64,7 @@ export default function QuarantineIntakeLocationField() {
                         </p>
                     </div> }
                 </div>
+                { error && <FormError message={ error } /> }
             </div>
         </div>
     );

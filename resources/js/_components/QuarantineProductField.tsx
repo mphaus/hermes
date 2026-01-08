@@ -1,7 +1,10 @@
 import { Info } from "lucide-react";
 import ProductSearchSelect from "./ProductSearchSelect";
+import FormError from "./FormError";
 
-export default function QuarantineProductField() {
+export default function QuarantineProductField({ error }: {
+    error?: string;
+}) {
     return (
         <div className="shadow-sm card bg-base-100">
             <div className="card-body">
@@ -20,6 +23,7 @@ export default function QuarantineProductField() {
                         } }
                     />
                 </div>
+                { error && <FormError message={ error } /> }
             </div>
         </div>
     );
