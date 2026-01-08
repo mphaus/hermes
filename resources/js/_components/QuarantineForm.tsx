@@ -1,16 +1,16 @@
 import { createContext, useContext, useEffect, useReducer } from "react";
 import { CurrentRMSListValue, CurrentRMSMember, SharedData } from "@/types";
-import { Info } from "lucide-react";
-import QuarantineOpportunityField from "./QuarantineOpportunityField";
 import { quarantineFormInitialState, quarantineFormReducer, QuarantineFormState } from "@/context/QuarantineFormContext";
+import { usePage } from "@inertiajs/react";
+import QuarantineOpportunityField from "./QuarantineOpportunityField";
 import QuarantineTechnicalSupervisor from "./QuarantineTechnicalSupervisor";
 import QuarantineProductField from "./QuarantineProductField";
 import QuarantineOwnerField from "./QuarantineOwnerField";
 import QuarantineReferenceField from "./QuarantineReferenceField";
 import QuarantineReadyForRepairsField from "./QuarantineReadyForRepairsField";
 import QuarantineIntakeLocationField from "./QuarantineIntakeLocationField";
-import { usePage } from "@inertiajs/react";
 import QuarantinePrimaryFaultClassificationField from "./QuarantinePrimaryFaultClassificationField";
+import QuarantineFaultDescriptionField from "./QuarantineFaultDescriptionField";
 
 type QuarantineFormContextValue = {
     form: QuarantineFormState;
@@ -75,26 +75,7 @@ export default function QuarantineForm({ technicalSupervisors, members }: {
                 <QuarantineReadyForRepairsField />
                 { min_date === state.starts_at && <QuarantineIntakeLocationField /> }
                 <QuarantinePrimaryFaultClassificationField />
-                <div className="space-y-4">
-                    <label className="block font-semibold">{ 'Fault description' }</label>
-                    <div className="flex items-start gap-1 mt-2">
-                        <Info size={ 16 } className="text-secondary shrink-0" />
-                        <p className="text-xs">{ 'Enter a concise, meaningful and objective fault description.' }</p>
-                    </div>
-                    <textarea name="" id="" className="textarea"></textarea>
-                    <p className="text-xs font-semibold">
-                        <span></span>
-                        { 'character<span>s</span> left' }
-                    </p>
-                    <div className="space-y-2 text-xs">
-                        <p>{ 'Other considerations' }</p>
-                        <ul>
-                            <li>{ '➡️ Your name will be added to this report automatically, so there\'s no need to add it here.' }</li>
-                            <li>{ '➡️ Mention if the correct Job name could not be assigned, and why' }</li>
-                            <li>{ '➡️ Mention if a serial number collision 💥 was reported, and what you did about it.' }</li>
-                        </ul>
-                    </div>
-                </div>
+                <QuarantineFaultDescriptionField />
                 <div className="flex items-center justify-end gap-2">
                     <button type="button" className="btn btn-primary btn-outline">{ 'Clear form' }</button>
                     <button type="submit" className="btn btn-primary">{ 'Submit' }</button>
