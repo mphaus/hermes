@@ -131,8 +131,6 @@ class StoreQuarantineRequest extends FormRequest
             'description' => $description,
         ] = $this->validated();
 
-        dd('Success');
-
         $reference = match ($serial_number_status) {
             'serial-number-exists' => $serial_number,
             'missing-serial-number' => __('Missing serial number'),

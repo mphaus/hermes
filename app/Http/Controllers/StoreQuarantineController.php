@@ -12,6 +12,7 @@ class StoreQuarantineController extends Controller
      */
     public function __invoke(StoreQuarantineRequest $request)
     {
-        $request->store();
+        dd($request);
+        // $request->store();
     }
 }

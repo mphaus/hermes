@@ -67,6 +67,11 @@ export default function QuarantineForm({ technicalSupervisors, members }: {
                 method="post"
                 className="space-y-7"
                 validationTimeout={ 1000 }
+                transform={ data => ({
+                    ...data,
+                    serial_number: data.serial_number ?? "",
+                    intake_location: data.intake_location ?? "",
+                }) }
             >
                 { ({
                     errors,
