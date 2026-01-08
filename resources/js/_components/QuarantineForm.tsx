@@ -10,6 +10,7 @@ import QuarantineReferenceField from "./QuarantineReferenceField";
 import QuarantineReadyForRepairsField from "./QuarantineReadyForRepairsField";
 import QuarantineIntakeLocationField from "./QuarantineIntakeLocationField";
 import { usePage } from "@inertiajs/react";
+import QuarantinePrimaryFaultClassificationField from "./QuarantinePrimaryFaultClassificationField";
 
 type QuarantineFormContextValue = {
     form: QuarantineFormState;
@@ -73,14 +74,7 @@ export default function QuarantineForm({ technicalSupervisors, members }: {
                 <QuarantineReferenceField />
                 <QuarantineReadyForRepairsField />
                 { min_date === state.starts_at && <QuarantineIntakeLocationField /> }
-                <div className="space-y-4">
-                    <label className="block font-semibold">{ 'Primary fault classification' }</label>
-                    <div className="flex items-start gap-1 mt-2">
-                        <Info size={ 16 } className="text-secondary shrink-0" />
-                        <p className="text-xs">{ 'Classify the type of primary fault with this Product (that is, if a Product has multiple reasons for submission to Quarantine, which is the most prominent / serious?)' }</p>
-                    </div>
-                    <select name="" id="" className="select"></select>
-                </div>
+                <QuarantinePrimaryFaultClassificationField />
                 <div className="space-y-4">
                     <label className="block font-semibold">{ 'Fault description' }</label>
                     <div className="flex items-start gap-1 mt-2">
