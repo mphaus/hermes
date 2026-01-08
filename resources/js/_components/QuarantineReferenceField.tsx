@@ -1,11 +1,13 @@
 import { QuarantineSerialNumberStatus } from "@/types";
 import { Info, TriangleAlert } from "lucide-react";
 import { useState, useRef } from "react";
+import { NamedInputEvent, ValidationConfig } from 'laravel-precognition';
 import { useCharacterLimit } from "@/hooks";
 import clsx from "clsx";
 import FormError from "./FormError";
 
-export default function QuarantineReferenceField({ error }: {
+export default function QuarantineReferenceField({ validate, error }: {
+    validate: (field?: string | NamedInputEvent | ValidationConfig | undefined, config?: ValidationConfig) => void;
     error?: string;
 }) {
     const MAX = 256;
@@ -15,6 +17,11 @@ export default function QuarantineReferenceField({ error }: {
     const serialNumberStatusChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSerialNumberStatus(e.target.value as QuarantineSerialNumberStatus);
         handleLimitChange("");
+    };
+
+    const serialNumberChange = () => {
+        handleLimitChange(inputRef.current?.value ?? "");
+        validate('serial_number')
     };
 
     return (
@@ -68,7 +75,7 @@ export default function QuarantineReferenceField({ error }: {
                                     placeholder={ 'Serial number' }
                                     name="serial_number"
                                     ref={ inputRef }
-                                    onChange={ () => handleLimitChange(inputRef.current?.value ?? "") }
+                                    onChange={ serialNumberChange }
                                 />
                                 <p className={ clsx({
                                     'text-xs font-semibold': true,

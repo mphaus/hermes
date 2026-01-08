@@ -62,10 +62,16 @@ export default function QuarantineForm({ technicalSupervisors, members }: {
 
     return (
         <QuarantineFormContext.Provider value={ value }>
-            <Form action={ StoreQuarantineController() } method="post" className="space-y-7">
+            <Form
+                action={ StoreQuarantineController() }
+                method="post"
+                className="space-y-7"
+                validationTimeout={ 1000 }
+            >
                 { ({
                     errors,
-                    processing
+                    processing,
+                    validate,
                 }) => (
                     <>
                         <input type="hidden" name="opportunity" value={ state.opportunity } />
@@ -80,7 +86,10 @@ export default function QuarantineForm({ technicalSupervisors, members }: {
                             members={ members }
                             error={ errors.owner_id }
                         />
-                        <QuarantineReferenceField error={ errors.serial_number } />
+                        <QuarantineReferenceField
+                            validate={ validate }
+                            error={ errors.serial_number }
+                        />
                         <QuarantineReadyForRepairsField error={ errors.starts_at } />
                         { min_date === state.starts_at && <QuarantineIntakeLocationField error={ errors.intake_location } /> }
                         <QuarantinePrimaryFaultClassificationField error={ errors.classification } />
