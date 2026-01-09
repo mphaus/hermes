@@ -1,7 +1,7 @@
 import { QuarantineOpportunityType } from "@/types";
 import { Info } from "lucide-react";
 import { useState } from "react";
-import OpportunitySearchSelect from "./OpportunitySearchSelect";
+import OpportunitySearchSelect, { OpportunityData } from "./OpportunitySearchSelect";
 import { useQuarantineForm } from "./QuarantineForm";
 import FormError from "./FormError";
 
@@ -13,6 +13,11 @@ export default function QuarantineOpportunityField({ error }: {
     const opportunityTypeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setOpportunityType(e.target.value as QuarantineOpportunityType);
         opportunityChange({ technical_supervisor_id: 0, label: '' });
+    }
+
+    const opportunitySearchSelectChange = (data: OpportunityData) => {
+        const { technical_supervisor_id, label } = data;
+        opportunityChange({ technical_supervisor_id, label });
     }
 
     return (
@@ -62,12 +67,13 @@ export default function QuarantineOpportunityField({ error }: {
                             <p className="text-xs">{ 'Enter a few letters from the name of the Job and select from the shortlist.' }</p>
                         </div>
                         <OpportunitySearchSelect
-                            name="opportunity"
+                            name="opportunity_id"
                             placeholder={ 'Search Opportunities' }
                             params={ {
                                 'per_page': 25,
                                 'q[subject_cont]': '?',
                             } }
+                            onChange={ opportunitySearchSelectChange }
                         />
                     </div> }
                     { opportunityType === 'dry-hire' && <div className="space-y-4">
@@ -76,12 +82,13 @@ export default function QuarantineOpportunityField({ error }: {
                             <p className="text-xs">{ 'Enter the Quote number from the Picking List for this Job (shown at the top of the first page of the Picking List).' }</p>
                         </div>
                         <OpportunitySearchSelect
-                            name="opportunity"
+                            name="opportunity_id"
                             placeholder={ 'Type the digits of the Opportunity\'s quote number' }
                             params={ {
                                 'per_page': 25,
                                 'q[number_cont]': '?',
                             } }
+                            onChange={ opportunitySearchSelectChange }
                         />
                     </div> }
                     { opportunityType === 'not-associated' && <div className="flex items-start gap-1">

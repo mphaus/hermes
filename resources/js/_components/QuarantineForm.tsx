@@ -64,12 +64,12 @@ export default function QuarantineForm({ technicalSupervisors, members }: {
         <QuarantineFormContext.Provider value={ value }>
             <Form
                 action={ StoreQuarantineController() }
-                method="post"
                 className="space-y-7"
                 validationTimeout={ 1000 }
                 transform={ data => ({
                     ...data,
                     serial_number: data.serial_number ?? "",
+                    intake_location_type: data.intake_location_type ?? "",
                     intake_location: data.intake_location ?? "",
                 }) }
             >

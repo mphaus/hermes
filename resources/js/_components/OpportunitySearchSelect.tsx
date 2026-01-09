@@ -1,7 +1,12 @@
 import AsyncSelect from "react-select/async";
 import OpportunitySearchController from "@/actions/App/Http/Controllers/OpportunitySearchController";
 import { debounce } from "es-toolkit/function";
-import { useQuarantineForm } from "./QuarantineForm";
+
+export interface OpportunityData {
+    technical_supervisor_id: number;
+    value: number;
+    label: string;
+};
 
 async function loadOptions(inputValue: string, params?: Record<string, unknown>) {
     if (!inputValue) {
@@ -40,23 +45,18 @@ const debouncedLoadOptions = debounce(({ inputValue, params, callback }: {
     loadOptions(inputValue, params).then(callback);
 }, 500);
 
-export default function OpportunitySearchSelect({ name, placeholder, params }: {
+export default function OpportunitySearchSelect({ name, placeholder, onChange, params }: {
     name: string;
     placeholder: string;
+    onChange?: (data: OpportunityData) => void;
     params?: Record<string, unknown>
 }) {
-    const { opportunityChange } = useQuarantineForm();
-    const opportunitySearchSelectChange = (data: {
-        technical_supervisor_id: number;
-        value: number;
-        label: string;
-    } | null) => {
+    const opportunitySearchSelectChange = (data: OpportunityData | null) => {
         if (!data) {
             return;
         }
 
-        const { technical_supervisor_id, label } = data;
-        opportunityChange({ technical_supervisor_id, label });
+        onChange?.({ ...data });
     };
 
     return (
