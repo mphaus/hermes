@@ -75,10 +75,14 @@ export default function QuarantineForm({ technicalSupervisors, members }: {
             >
                 { ({
                     errors,
+                    hasErrors,
                     processing,
                     validate,
                 }) => (
                     <>
+                        { hasErrors && <div role="alert" className="alert alert-error">
+                            <span>{ 'Some fields need your attention. Please review the form and correct the highlighted errors.' }</span>
+                        </div> }
                         <input type="hidden" name="opportunity" value={ state.opportunity } />
                         <input type="hidden" name="technical_supervisor_id" value={ state.technical_supervisor_id } />
                         <QuarantineOpportunityField error={ errors.opportunity } />
