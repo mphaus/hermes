@@ -26,9 +26,7 @@ export interface User {
     [ key: string ]: unknown; // This allows for additional properties...
 }
 
-export type CurrentRMSError = string[];
-
-export type CurrentRMSListValue = {
+export interface CurrentRMSListValue {
     id: number;
     list_name_id: number;
     name: string;
@@ -39,22 +37,11 @@ export type CurrentRMSListValue = {
     updated_at: string;
 };
 
-export type CurrentRMSListData = {
-    list_name?: {
-        id: number;
-        name: string;
-        system: boolean;
-        has_colour: boolean;
-        created_at: string;
-        updated_at: string;
-        list_values: CurrentRMSListValue[];
-    };
-    meta?: {
-        'can_edit?': boolean;
-        'can_destroy?': boolean;
-    },
-    errors?: CurrentRMSError;
-}
+export interface CurrentRMSMember {
+    id: number;
+    name: string;
+    [ key: string ]: unknown;
+};
 
 export type QuarantineOpportunityType = 'production-lighting-hire' | 'dry-hire' | 'not-associated';
 
@@ -62,19 +49,4 @@ export type QuarantineSerialNumberStatus = 'serial-number-exists' | 'missing-ser
 
 export type QuarantineIntakeLocation = 'on-a-shelf' | 'in-the-bulky-products-area';
 
-export type CurrentRMSMember = {
-    id: number;
-    name: string;
-    [ key: string ]: unknown;
-};
 
-export type CurrentRMSMemberData = {
-    members?: CurrentRMSMember[];
-    meta?: {
-        page: number;
-        per_page: number;
-        row_count: number;
-        total_row_count: number;
-    };
-    errors?: CurrentRMSError;
-};

@@ -26,13 +26,13 @@ class OpportunitySearchController extends Controller
             $uri = "{$uri}?{$params}";
         }
 
-        $opportunities_data = $this->currentrms->fetch($uri);
+        $result = $this->currentrms->fetch($uri);
 
-        if (isset($opportunities_data['errors'])) {
+        if ($result['fail']) {
             return response()->json([]);
         }
 
-        ['opportunities' => $opportunities] = $opportunities_data;
+        ['opportunities' => $opportunities] = $result['data'];
 
         if (empty($opportunities)) {
             return response()->json([]);

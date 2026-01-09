@@ -13,6 +13,11 @@ class CurrentRMSApiService
 
     protected string $host;
 
+    private const RESULT = [
+        'fail' => [],
+        'data' => null,
+    ];
+
     public function __construct()
     {
         $this->auth_token = config('app.current_rms.auth_token');
@@ -40,6 +45,19 @@ class CurrentRMSApiService
          */
         $response = $this->client()->get($uri);
 
-        return $response->json();
+        if ($response->failed()) {
+            return [
+                ...self::RESULT,
+                'fail' => [
+                    'status' => $response->status(),
+                    'data' => $response->json(),
+                ],
+            ];
+        }
+
+        return [
+            ...self::RESULT,
+            'data' => $response->json(),
+        ];
     }
 }

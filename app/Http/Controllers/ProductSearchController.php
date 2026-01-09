@@ -26,13 +26,13 @@ class ProductSearchController extends Controller
             $uri = "{$uri}?{$params}";
         }
 
-        $products_data = $this->currentrms->fetch($uri);
+        $result = $this->currentrms->fetch($uri);
 
-        if (isset($products_data['errors'])) {
+        if ($result['fail']) {
             return response()->json([]);
         }
 
-        ['products' => $products] = $products_data;
+        ['products' => $products] = $result['data'];
 
         if (empty($products)) {
             return response()->json([]);

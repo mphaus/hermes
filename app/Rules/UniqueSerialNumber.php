@@ -22,15 +22,15 @@ class UniqueSerialNumber implements ValidationRule
     {
         if ($this->serial_number_status === 'serial-number-exists') {
             $currentrms = new CurrentRMSApiService();
-            $quarantine_data = $currentrms->fetch('quarantines', ['q' => [
+            $result = $currentrms->fetch('quarantines', ['q' => [
                 'reference_eq' => $value,
             ]]);
 
-            if (isset($quarantine_data['errors'])) {
+            if ($result['fail']) {
                 $fail(__('An error occurred while checking if an active Quarantine already exists with this serial number, please refresh the page and try again.'), null);
             }
 
-            ['meta' => $meta] = $quarantine_data;
+            ['meta' => $meta] = $result['data'];
 
             if ($meta['total_row_count'] > 0) {
                 $fail(__('💥Ooops! There\'s been a "serial number collision" - an item with this serial number is already registered in Quarantine. That\'s not... great 🫣. To move forward, add "-B" to the end of the serial number you entered above, and mention the problem in the Fault Description below. The SRMM team will sort it out.'), null);
