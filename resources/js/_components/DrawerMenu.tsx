@@ -12,7 +12,7 @@ export default function DrawerMenu() {
             </li>
             <li>
                 <details className="collapse">
-                    <summary className="flex items-center justify-between p-3 font-semibold collapse-title text-primary hover:text-base-content">{ 'Discussions' }</summary>
+                    <summary className="flex items-center justify-between p-3 font-semibold collapse-title">{ 'Discussions' }</summary>
                     <div className="collapse-content">
                         <ul>
                             <li>
@@ -30,7 +30,7 @@ export default function DrawerMenu() {
             </li>
             <li>
                 <details className="collapse">
-                    <summary className="flex items-center justify-between p-3 font-semibold collapse-title text-primary hover:text-base-content">{ 'Role CRUD' }</summary>
+                    <summary className="flex items-center justify-between p-3 font-semibold collapse-title">{ 'Role CRUD' }</summary>
                     <div className="collapse-content">
                         <ul>
                             <li>

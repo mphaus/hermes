@@ -2,23 +2,20 @@
 
 namespace App\Http\Requests;
 
+use App\Facades\CurrentRMS;
 use App\Mail\QuarantineCreated;
 use App\Rules\UniqueSerialNumber;
 use App\Traits\WithQuarantineFaultClassification;
-// use App\Traits\WithQuarantineIntakeClassification;
 use Closure;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 
 class StoreQuarantineRequest extends FormRequest
 {
-    // use WithQuarantineIntakeClassification;
     use WithQuarantineFaultClassification;
 
     /**
@@ -105,7 +102,6 @@ class StoreQuarantineRequest extends FormRequest
             'opportunity' => __('opportunity'),
             'technical_supervisor_id' => __('technical supervisor'),
             'product_id' => __('product'),
-            // 'owned_by' => __('owner'),
             'owner_id' => __('owner'),
             'starts_at' => __('ready for repairs'),
             'classification' => __('primary fault classification'),
@@ -124,7 +120,6 @@ class StoreQuarantineRequest extends FormRequest
             'serial_number_status' => $serial_number_status,
             'serial_number' => $serial_number,
             'product_id' => $product_id,
-            // 'owned_by' => $owned_by,
             'owner_id' => $owner_id,
             'starts_at' => $starts_at,
             'intake_location_type' => $intake_location_type,
@@ -161,11 +156,10 @@ class StoreQuarantineRequest extends FormRequest
             PHP_EOL .
             __('Submitted by :first_name', ['first_name' => Auth::user()->first_name]);
 
-        $response = Http::current()->post('quarantines', [
+        $result = CurrentRMS::store(uri: 'quarantines', data: [
             'quarantine' => [
                 'item_id' => App::environment(['local', 'staging']) ? intval(config('app.mph.test_product_id')) : intval($product_id),
                 'store_id' => 1,
-                // 'owned_by' => $owned_by,
                 'owned_by' => $owner_id,
                 'reference' => $reference,
                 'description' => $description,
@@ -186,20 +180,16 @@ class StoreQuarantineRequest extends FormRequest
             ],
         ]);
 
-        if ($response->failed()) {
-            dd($response->json());
+        if ($result['fail']) {
+            ['fail' => ['data' => $errorData]] = $result;
 
-
-            ['errors' => $errors] = $response->json();
-
-            throw new HttpResponseException(
-                response()->json([
-                    'message' => __('<p>Fail! ❌ The Quarantine Item was not added to CurrentRMS because <span class="font-semibold">:error</span>. This item still needs to be added. It\'s fine to try again, but the same error may return.</p><p>See <a href=":url" target="_blank" rel="nofollow" title="Dealing with errors when adding items to Quarantine via Hermes section" class="font-semibold">Dealing with errors when adding items to Quarantine via Hermes section</a> in the Quarantine Intake Process for instructions on what to do next.</p>', ['error' => $errors, 'url' => 'https://mphaustralia.sharepoint.com/:w:/r/teams/MPHAdministration/Shared%20Documents/Process/01%20In%20development/Process_%20Repairs%20Quarantine%20intake.docx?d=wc450b4cdc2e84c758363390091b56915&csf=1&web=1&e=sFkHAk&nav=eyJoIjoiMzg4NTM5MDQifQ']),
-                ], 400)
-            );
+            return [
+                'error' => $errorData,
+                'data' => [],
+            ];
         }
 
-        ['quarantine' => $quarantine] = $response->json();
+        ['quarantine' => $quarantine] = $result['data'];
 
         // Mail::to([
         //     config('app.mph.notification_mail_address'),
@@ -207,9 +197,12 @@ class StoreQuarantineRequest extends FormRequest
         // ])->send(new QuarantineCreated($quarantine, $classification, $description, Auth::user()));
 
         return [
-            ...$quarantine,
-            'primary_fault_classification' => $classification,
-            'ready_for_repairs' => $is_same_day ? __('Now') : $starts_at->setTime(12, 0, 0, 0)->setTimezone('UTC')->format('Y-m-d\TH:i:s'),
+            'error' => '',
+            'data' => [
+                ...$quarantine,
+                'primary_fault_classification' => $classification,
+                'ready_for_repairs' => $is_same_day ? __('Now') : $starts_at->setTime(12, 0, 0, 0)->setTimezone('UTC')->format('Y-m-d\TH:i:s'),
+            ],
         ];
     }
 }

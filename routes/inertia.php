@@ -9,7 +9,7 @@ use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'is_enabled'])->group(function () {
-    Route::get('inertia/quarantine/create', QuarantineCreateController::class)->middleware('permission:access-quarantine-intake');
+    Route::get('inertia/quarantine/create', QuarantineCreateController::class)->middleware('permission:access-quarantine-intake')->name('quarantine.create');
     Route::post('inertia/quarantine', StoreQuarantineController::class)->middleware([
         'permission:access-quarantine-intake',
         HandlePrecognitiveRequests::class,

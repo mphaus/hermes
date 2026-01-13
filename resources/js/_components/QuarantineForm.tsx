@@ -81,7 +81,11 @@ export default function QuarantineForm({ technicalSupervisors, members }: {
                 }) => (
                     <>
                         { hasErrors && <div role="alert" className="alert alert-error">
-                            <span>{ 'Some fields need your attention. Please review the form and correct the highlighted errors.' }</span>
+                            { errors.quarantine_create_error_message ? (
+                                <div dangerouslySetInnerHTML={ { __html: errors.quarantine_create_error_message } }></div>
+                            ) : (
+                                <span>{ 'Some fields need your attention. Please review the form and correct the highlighted errors.' }</span>
+                            ) }
                         </div> }
                         <input type="hidden" name="opportunity" value={ state.opportunity } />
                         <input type="hidden" name="technical_supervisor_id" value={ state.technical_supervisor_id } />

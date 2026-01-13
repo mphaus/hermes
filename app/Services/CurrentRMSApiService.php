@@ -35,22 +35,37 @@ class CurrentRMSApiService
 
     public function fetch(string $uri, array $params = [])
     {
-        if (!empty($params)) {
-            $query_string = preg_replace('/\[\d+\]/', '[]', urldecode(http_build_query($params)));
-            $uri = "{$uri}?{$query_string}";
-        }
+        $uri = $this->buildUri($uri, $params);
 
-        /**
-         * @var \Illuminate\Http\Client\Response $response
-         */
+        /** @var \Illuminate\Http\Client\Response $response */
         $response = $this->client()->get($uri);
 
+        return $this->handleResponse($response);
+    }
+
+    public function store(string $uri, array $params = [], array $data = [])
+    {
+        $uri = $this->buildUri($uri, $params);
+
+        /** @var \Illuminate\Http\Client\Response $response */
+        $response = $this->client()->post($uri, $data);
+
+        return $this->handleResponse($response);
+    }
+
+    /**
+     * @param \Illuminate\Http\Client\Response $response
+     */
+    private function handleResponse($response): array
+    {
         if ($response->failed()) {
+            $errors = isset($response->json()['errors']) ? $response->json()['errors'] : $response->json();
+
             return [
                 ...self::RESULT,
                 'fail' => [
                     'status' => $response->status(),
-                    'data' => $response->json(),
+                    'data' => json_encode($errors),
                 ],
             ];
         }
@@ -59,5 +74,15 @@ class CurrentRMSApiService
             ...self::RESULT,
             'data' => $response->json(),
         ];
+    }
+
+    private function buildUri(string $uri, array $params = []): string
+    {
+        if (!empty($params)) {
+            $query_string = preg_replace('/\[\d+\]/', '[]', urldecode(http_build_query($params)));
+            $uri = "{$uri}?{$query_string}";
+        }
+
+        return $uri;
     }
 }

@@ -8,6 +8,7 @@ use App\Events\UserUpdated;
 use App\Http\Middleware\EnsureUserIsEnabled;
 use App\Models\User;
 use App\QET;
+use App\Services\CurrentRMSApiService;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -22,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         App::bind('qet', fn() => new QET);
+        App::singleton('current-rms', fn() => new CurrentRMSApiService);
     }
 
     /**
