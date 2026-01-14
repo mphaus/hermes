@@ -9,6 +9,7 @@ export interface SharedData {
     auth: Auth;
     title?: string;
     description?: string;
+    flash?: Record<string, unknown>;
     [ key: string ]: unknown;
 }
 

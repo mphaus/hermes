@@ -80,6 +80,12 @@
     --font-display: "Open Sans", sans-serif;
 }
 
+@layer base {
+    a {
+        @apply font-semibold;
+    }
+}
+
 @layer utilities {
     .input,
     .select,

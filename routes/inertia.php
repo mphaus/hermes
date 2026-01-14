@@ -4,16 +4,18 @@ use App\Http\Controllers\InertiaAuthenticatedSessionController;
 use App\Http\Controllers\OpportunitySearchController;
 use App\Http\Controllers\ProductSearchController;
 use App\Http\Controllers\QuarantineCreateController;
-use App\Http\Controllers\StoreQuarantineController;
+use App\Http\Controllers\QuarantineStoreController;
+use App\Http\Controllers\QuarantineSuccessController;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'is_enabled'])->group(function () {
     Route::get('inertia/quarantine/create', QuarantineCreateController::class)->middleware('permission:access-quarantine-intake')->name('quarantine.create');
-    Route::post('inertia/quarantine', StoreQuarantineController::class)->middleware([
+    Route::post('inertia/quarantine', QuarantineStoreController::class)->middleware([
         'permission:access-quarantine-intake',
         HandlePrecognitiveRequests::class,
     ]);
+    Route::get('inertia/quarantine/success', QuarantineSuccessController::class)->name('quarantine.success');
 
     Route::post('inertia/logout', [InertiaAuthenticatedSessionController::class, 'destroy'])->name('inertia.logout');
 

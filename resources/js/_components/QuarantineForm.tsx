@@ -11,7 +11,7 @@ import QuarantineReadyForRepairsField from "./QuarantineReadyForRepairsField";
 import QuarantineIntakeLocationField from "./QuarantineIntakeLocationField";
 import QuarantinePrimaryFaultClassificationField from "./QuarantinePrimaryFaultClassificationField";
 import QuarantineFaultDescriptionField from "./QuarantineFaultDescriptionField";
-import StoreQuarantineController from "@/actions/App/Http/Controllers/StoreQuarantineController";
+import QuarantineStoreController from "@/actions/App/Http/Controllers/QuarantineStoreController";
 
 type QuarantineFormContextValue = {
     form: QuarantineFormState;
@@ -63,7 +63,7 @@ export default function QuarantineForm({ technicalSupervisors, members }: {
     return (
         <QuarantineFormContext.Provider value={ value }>
             <Form
-                action={ StoreQuarantineController() }
+                action={ QuarantineStoreController() }
                 className="space-y-7"
                 validationTimeout={ 1000 }
                 transform={ data => ({
