@@ -4,7 +4,11 @@
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source "../js/**/*.tsx";
 
-@plugin "daisyui";
+/* @plugin "daisyui"; */
+
+@plugin "daisyui" {
+  exclude: properties;
+}
 
 @plugin "daisyui/theme" {
     name: "light";
@@ -76,8 +80,23 @@
     --noise: 1;
 }
 
+@theme {
+    --font-display: "Open Sans", sans-serif;
+}
+
 @layer base {
     a {
-        @apply text-primary hover:text-primary/90 active:text-primary/90;
+        @apply font-semibold text-primary;
+    }
+    .alert a {
+        @apply text-inherit;
+    }
+}
+
+@layer utilities {
+    .input,
+    .select,
+    .textarea {
+        @apply flex w-full focus:outline-0 focus-within:outline-0 focus:border-2 focus-within:border-2;
     }
 }
