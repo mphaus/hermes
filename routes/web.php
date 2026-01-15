@@ -58,7 +58,7 @@ Route::middleware(['auth', 'is_enabled'])->group(function () {
         'permission:access-quarantine-intake',
         HandlePrecognitiveRequests::class,
     ]);
-    Route::get('inertia/quarantine/success', QuarantineSuccessController::class)->name('quarantine.success');
+    Route::get('quarantine/success', QuarantineSuccessController::class)->name('quarantine.success');
 
     // Route::view('quarantine/create', 'quarantine.create')->name('quarantine.create.view')->middleware('permission:access-quarantine-intake');
     // Route::permanentRedirect('/quarantine-intake', '/quarantine/create');
