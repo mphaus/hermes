@@ -4,7 +4,11 @@
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source "../js/**/*.tsx";
 
-@plugin "daisyui";
+/* @plugin "daisyui"; */
+
+@plugin "daisyui" {
+  exclude: properties;
+}
 
 @plugin "daisyui/theme" {
     name: "light";
