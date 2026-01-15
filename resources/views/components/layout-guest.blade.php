@@ -24,7 +24,7 @@
         @endif
 
         <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @vite(['resources/css/app.css', 'resources/js/old.js'])
         @livewireStyles
     </head>
     <body class="font-sans antialiased text-gray-900">
