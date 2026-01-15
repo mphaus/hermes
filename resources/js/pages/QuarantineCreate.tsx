@@ -18,30 +18,30 @@ export default function QuarantineCreate() {
 
     return (
         <>
-            <Head title={ 'Quarantine Intake' } />
+            <Head title={'Quarantine Intake'} />
             <div className="mx-auto max-w-3xl space-y-4">
-                <Deferred data={ [ 'technical_supervisors_data', 'members_data' ] } fallback={ <QuarantineFormSkeleton /> }>
-                    { tsError && (
+                <Deferred data={['technical_supervisors_data', 'members_data']} fallback={<QuarantineFormSkeleton />}>
+                    {tsError && (
                         <div role="alert" className="alert alert-error">
-                            { tsError }
+                            {tsError}
                         </div>
-                    ) }
-                    { mError && (
+                    )}
+                    {mError && (
                         <div role="alert" className="alert alert-error">
-                            { mError }
+                            {mError}
                         </div>
-                    ) }
-                    { !tsError && !technicalSupervisors?.length && (
+                    )}
+                    {!tsError && !technicalSupervisors?.length && (
                         <div role="alert" className="alert alert-warning">
-                            { 'In order to create a Quarantine, one or more Technical Supervisors must have been previously created using the Technical Supervisor CRUD. It is also recommended that a Technical Supervisor has been assigned to Opportunities.' }
+                            {'In order to create a Quarantine, one or more Technical Supervisors must have been previously created using the Technical Supervisor CRUD. It is also recommended that a Technical Supervisor has been assigned to Opportunities.'}
                         </div>
-                    ) }
-                    { !!technicalSupervisors?.length && !!members?.length && (
+                    )}
+                    {!!technicalSupervisors?.length && !!members?.length && (
                         <QuarantineForm
-                            technicalSupervisors={ technicalSupervisors }
-                            members={ members }
+                            technicalSupervisors={technicalSupervisors}
+                            members={members}
                         />
-                    ) }
+                    )}
                 </Deferred>
             </div>
         </>

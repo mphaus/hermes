@@ -10,7 +10,7 @@ export interface SharedData {
     title?: string;
     description?: string;
     flash?: Record<string, unknown>;
-    [ key: string ]: unknown;
+    [key: string]: unknown;
 }
 
 export interface User {
@@ -22,9 +22,10 @@ export interface User {
     email_verified_at: string | null;
     is_admin: boolean,
     is_enabled: boolean,
+    permissions: string[];
     created_at: string;
     updated_at: string;
-    [ key: string ]: unknown; // This allows for additional properties...
+    [key: string]: unknown; // This allows for additional properties...
 }
 
 export interface CurrentRMSListValue {
@@ -41,7 +42,7 @@ export interface CurrentRMSListValue {
 export interface CurrentRMSMember {
     id: number;
     name: string;
-    [ key: string ]: unknown;
+    [key: string]: unknown;
 };
 
 export type QuarantineOpportunityType = 'production-lighting-hire' | 'dry-hire' | 'not-associated';

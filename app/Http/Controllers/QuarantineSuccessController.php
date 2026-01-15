@@ -14,7 +14,13 @@ class QuarantineSuccessController extends Controller
     {
         $quarantine = $request->session()->get('quarantine', []);
 
+        if (empty($quarantine)) {
+            return to_route('quarantine.create');
+        }
+
         return Inertia::render(component: 'QuarantineSuccess', props: [
+            'title' => 'Quarantine Intake Success',
+            'description' => 'Success!',
             'quarantine' => $quarantine,
         ]);
     }
