@@ -1,6 +1,7 @@
 import AsyncSelect from "react-select/async";
 import OpportunitySearchController from "@/actions/App/Http/Controllers/OpportunitySearchController";
 import { debounce } from "es-toolkit/function";
+import { daisyUISelectStyles } from "./reactSelectStyles";
 
 export interface OpportunityData {
     technical_supervisor_id: number;
@@ -19,7 +20,7 @@ async function loadOptions(inputValue: string, params?: Record<string, unknown>)
 
         if (params && Object.keys(params).length > 0) {
             for (const key in params) {
-                searchParams.append(key, params[ key ] as string);
+                searchParams.append(key, params[key] as string);
             }
         }
 
@@ -61,15 +62,16 @@ export default function OpportunitySearchSelect({ name, placeholder, onChange, p
 
     return (
         <AsyncSelect
-            loadOptions={ inputValue => new Promise((resolve: any) => debouncedLoadOptions({ inputValue, params, callback: resolve })) }
+            loadOptions={inputValue => new Promise((resolve: any) => debouncedLoadOptions({ inputValue, params, callback: resolve }))}
             isSearchable
-            placeholder={ placeholder }
-            loadingMessage={ () => "Searching..." }
-            noOptionsMessage={ ({ inputValue }) =>
+            placeholder={placeholder}
+            loadingMessage={() => "Searching..."}
+            noOptionsMessage={({ inputValue }) =>
                 inputValue ? `No Opportunities found for "${inputValue}"` : "Start typing to search..."
             }
-            onChange={ opportunitySearchSelectChange }
-            name={ name }
+            onChange={opportunitySearchSelectChange}
+            name={name}
+            styles={daisyUISelectStyles}
         />
     );
 }

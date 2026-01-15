@@ -39,7 +39,7 @@ export default function QuarantineForm({ technicalSupervisors, members }: {
     members: CurrentRMSMember[]
 }) {
     const { min_date } = usePage<SharedData>().props;
-    const [ state, dispatch ] = useReducer(quarantineFormReducer, quarantineFormInitialState);
+    const [state, dispatch] = useReducer(quarantineFormReducer, quarantineFormInitialState);
 
     const opportunityChange = (data: {
         technical_supervisor_id: number;
@@ -61,68 +61,68 @@ export default function QuarantineForm({ technicalSupervisors, members }: {
     useEffect(() => readyForRepairsChange(min_date as string), []);
 
     return (
-        <QuarantineFormContext.Provider value={ value }>
+        <QuarantineFormContext.Provider value={value}>
             <Form
-                action={ QuarantineStoreController() }
+                action={QuarantineStoreController()}
                 className="space-y-7"
-                validationTimeout={ 1000 }
-                transform={ data => ({
+                validationTimeout={1000}
+                transform={data => ({
                     ...data,
                     serial_number: data.serial_number ?? "",
                     intake_location_type: data.intake_location_type ?? "",
                     intake_location: data.intake_location ?? "",
-                }) }
+                })}
             >
-                { ({
+                {({
                     errors,
                     hasErrors,
                     processing,
                     validate,
                 }) => (
                     <>
-                        { hasErrors && <div role="alert" className="alert alert-error">
-                            { errors.quarantine_create_error_message ? (
-                                <div dangerouslySetInnerHTML={ { __html: errors.quarantine_create_error_message } }></div>
+                        {hasErrors && <div role="alert" className="alert alert-error">
+                            {errors.quarantine_create_error_message ? (
+                                <div dangerouslySetInnerHTML={{ __html: errors.quarantine_create_error_message }}></div>
                             ) : (
-                                <span>{ 'Some fields need your attention. Please review the form and correct the highlighted errors.' }</span>
-                            ) }
-                        </div> }
-                        <input type="hidden" name="opportunity" value={ state.opportunity } />
-                        <input type="hidden" name="technical_supervisor_id" value={ state.technical_supervisor_id } />
-                        <QuarantineOpportunityField error={ errors.opportunity } />
+                                <span>{'Some fields need your attention. Please review the form and correct the highlighted errors.'}</span>
+                            )}
+                        </div>}
+                        <input type="hidden" name="opportunity" value={state.opportunity} />
+                        <input type="hidden" name="technical_supervisor_id" value={state.technical_supervisor_id} />
+                        <QuarantineOpportunityField error={errors.opportunity} />
                         <QuarantineTechnicalSupervisor
-                            technicalSupervisors={ technicalSupervisors }
-                            currentTechnicalSupervisor={ state.technical_supervisor_id }
+                            technicalSupervisors={technicalSupervisors}
+                            currentTechnicalSupervisor={state.technical_supervisor_id}
                         />
-                        <QuarantineProductField error={ errors.product_id } />
+                        <QuarantineProductField error={errors.product_id} />
                         <QuarantineOwnerField
-                            members={ members }
-                            error={ errors.owner_id }
+                            members={members}
+                            error={errors.owner_id}
                         />
                         <QuarantineReferenceField
-                            validate={ validate }
-                            error={ errors.serial_number }
+                            validate={validate}
+                            error={errors.serial_number}
                         />
-                        <QuarantineReadyForRepairsField error={ errors.starts_at } />
-                        { min_date === state.starts_at && <QuarantineIntakeLocationField error={ errors.intake_location } /> }
-                        <QuarantinePrimaryFaultClassificationField error={ errors.classification } />
-                        <QuarantineFaultDescriptionField error={ errors.description } />
+                        <QuarantineReadyForRepairsField error={errors.starts_at} />
+                        {min_date === state.starts_at && <QuarantineIntakeLocationField error={errors.intake_location} />}
+                        <QuarantinePrimaryFaultClassificationField error={errors.classification} />
+                        <QuarantineFaultDescriptionField error={errors.description} />
                         <div className="flex items-center justify-end gap-2">
-                            <button
+                            {/* <button
                                 type="button"
                                 className="btn btn-primary btn-outline"
-                                disabled={ processing }
-                            >{ 'Clear form' }</button>
+                                disabled={processing}
+                            >{'Clear form'}</button> */}
                             <button
                                 type="submit"
                                 className="btn btn-primary"
-                                disabled={ processing }
+                                disabled={processing}
                             >
-                                { processing ? 'Submitting...' : 'Submit' }
+                                {processing ? 'Submitting...' : 'Submit'}
                             </button>
                         </div>
                     </>
-                ) }
+                )}
             </Form>
         </QuarantineFormContext.Provider>
     );

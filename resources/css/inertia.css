@@ -82,7 +82,10 @@
 
 @layer base {
     a {
-        @apply font-semibold;
+        @apply font-semibold text-primary;
+    }
+    .alert a {
+        @apply text-inherit;
     }
 }
 
@@ -90,6 +93,6 @@
     .input,
     .select,
     .textarea {
-        @apply flex w-full;
+        @apply flex w-full focus:outline-0 focus-within:outline-0 focus:border-2 focus-within:border-2;
     }
 }
