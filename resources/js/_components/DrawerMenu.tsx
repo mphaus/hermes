@@ -70,7 +70,7 @@ const menuItems: MenuItem[] = [
     {
         id: 5,
         text: 'Quarantine Intake',
-        href: '/inertia/quarantine/create',
+        href: '/quarantine/create',
         inertia_ready: true,
         permissions: ['access-quarantine-intake'],
         subitems: [],
