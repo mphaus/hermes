@@ -36,7 +36,7 @@ if (!function_exists('get_redirect_route')) {
             'access-qet' => route('qet.index'),
             'create-default-discussions' => route('discussions.create'),
             'update-default-discussions' => route('discussions.edit'),
-            'access-quarantine-intake' => route('quarantine.create.view'),
+            'access-quarantine-intake' => route('quarantine.create'),
             'crud-production-administrators' => route('production-administrators.index.view'),
             'crud-technical-supervisors' => route('technical-supervisors.index.view'),
             'crud-users' => route('users.index'),
