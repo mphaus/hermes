@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreQuarantineRequest;
-use Inertia\Inertia;
 
 class QuarantineStoreController extends Controller
 {
