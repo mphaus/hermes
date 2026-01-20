@@ -44,12 +44,11 @@ class StoreQuarantineRequest extends FormRequest
                 'nullable',
                 function (string $attribute, mixed $value, Closure $fail) {
                     if (request()->input('opportunity_type') === 'production-lighting-hire' && !is_numeric($value)) {
-                        $fail(__('The :attribute field must be a number.'));
+                        $fail('The :attribute field must be a number.');
                     }
                 },
             ],
             'product_id' => ['required', 'numeric'],
-            // 'owned_by' => ['required', 'numeric'],
             'owner_id' => ['required', 'numeric'],
             'serial_number_status' => [
                 'required',
@@ -66,7 +65,7 @@ class StoreQuarantineRequest extends FormRequest
                 $next_month_max_date = now('UTC')->addMonths(1)->endOfMonth()->format('Y-m-d');
 
                 if (Carbon::parse($value)->greaterThan($next_month_max_date)) {
-                    $fail(__('The :attribute field must not be a greater date than the last day of the next month.'));
+                    $fail('The :attribute field must not be a greater date than the last day of the next month.');
                 }
             }],
             'intake_location_type' => [
@@ -82,13 +81,12 @@ class StoreQuarantineRequest extends FormRequest
                     }
 
                     if (!preg_match('/^[A-Ia-i]-(?:[1-9]|[1-4][0-9]|5[0-5])$/', $value)) {
-                        $fail(__('The :attribute field format is invalid. Accepted letters from A to I. Accepted numbers from 1 to 55.'));
+                        $fail('The :attribute field format is invalid. Accepted letters from A to I. Accepted numbers from 1 to 55.');
                     }
                 }
             ],
             'classification' => [
                 'required',
-                // Rule::in($this->getClassificationTexts()),
                 Rule::in($this->getFaultClassificationValues()),
             ],
             'description' => ['required', 'max:512'],
@@ -98,14 +96,14 @@ class StoreQuarantineRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'opportunity_type' => __('opportunity type'),
-            'opportunity' => __('opportunity'),
-            'technical_supervisor_id' => __('technical supervisor'),
-            'product_id' => __('product'),
-            'owner_id' => __('owner'),
-            'starts_at' => __('ready for repairs'),
-            'classification' => __('primary fault classification'),
-            'description' => __('fault description'),
+            'opportunity_type' => 'opportunity type',
+            'opportunity' => 'opportunity',
+            'technical_supervisor_id' => 'technical supervisor',
+            'product_id' => 'product',
+            'owner_id' => 'owner',
+            'starts_at' => 'ready for repairs',
+            'classification' => 'primary fault classification',
+            'description' => 'fault description',
         ];
     }
 
@@ -130,16 +128,17 @@ class StoreQuarantineRequest extends FormRequest
 
         $reference = match ($serial_number_status) {
             'serial-number-exists' => $serial_number,
-            'missing-serial-number' => __('Missing serial number'),
-            'not-serialised' => __('Equipment needs to be serialised'),
+            'missing-serial-number' => 'Missing serial number',
+            'not-serialised' => 'Equipment needs to be serialised',
         };
 
         $starts_at = now()->parse($starts_at);
         $is_same_day = $starts_at->isSameDay(now());
         $starts_at_text = $is_same_day
-            ? __('Item is in on Quarantine Intake shelving and is available for repairs work right now.')
-            : __('Item expected to be back in the warehouse and available for repairs work on :date.', ['date' => $starts_at->format('D d-M-Y')]);
+            ? 'Item is in on Quarantine Intake shelving and is available for repairs work right now.'
+            : "Item expected to be back in the warehouse and available for repairs work on {$starts_at->format('D d-M-Y')}.";
 
+        $first_name = Auth::user()->first_name;
         $description = '"' .
             $description .
             '"' .
@@ -154,7 +153,7 @@ class StoreQuarantineRequest extends FormRequest
             ':' .
             PHP_EOL .
             PHP_EOL .
-            __('Submitted by :first_name', ['first_name' => Auth::user()->first_name]);
+            "Submitted by {$first_name}";
 
         $result = CurrentRMS::store(uri: 'quarantines', data: [
             'quarantine' => [
@@ -169,13 +168,13 @@ class StoreQuarantineRequest extends FormRequest
                 'open_ended' => true,
                 // 'stock_type' => 1, // Rental
                 'custom_fields' => [
-                    'opportunity' => $opportunity_type !== 'not-associated' ? $opportunity : __('Not associated with any Job'),
+                    'opportunity' => $opportunity_type !== 'not-associated' ? $opportunity : 'Not associated with any Job',
                     'mph_technical_supervisor' => $technical_supervisor_id,
                     'intake_location' => $intake_location_type === 'in-the-bulky-products-area'
-                        ? __('Bulky Products area')
+                        ? 'Bulky Products area'
                         : ($is_same_day
                             ? mb_strtoupper($intake_location)
-                            : __('NtYtAvail')),
+                            : 'NtYtAvail'),
                 ],
             ],
         ]);
@@ -201,7 +200,7 @@ class StoreQuarantineRequest extends FormRequest
             'data' => [
                 ...$quarantine,
                 'primary_fault_classification' => $classification,
-                'ready_for_repairs' => $is_same_day ? __('Now') : $starts_at->setTime(12, 0, 0, 0)->setTimezone('UTC')->format('Y-m-d\TH:i:s'),
+                'ready_for_repairs' => $is_same_day ? 'Now' : $starts_at->setTime(12, 0, 0, 0)->setTimezone('UTC')->format('Y-m-d\TH:i:s'),
             ],
         ];
     }

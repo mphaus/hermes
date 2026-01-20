@@ -24,7 +24,6 @@ use App\Livewire\UsersIndex;
 use App\Livewire\UsersShow;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Hash;
 
 Route::middleware(['auth', 'is_enabled'])->group(function () {
     // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
