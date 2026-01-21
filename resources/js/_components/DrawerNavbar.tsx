@@ -12,8 +12,8 @@ export default function DrawerNavbar() {
                     <Menu />
                 </label>
             </div>
-            <div className="mx-2 flex-1 px-2">
-                { title ?? name }
+            <div className="mx-2 flex-1 px-2 font-semibold">
+                {title ?? name}
             </div>
         </div>
     );
