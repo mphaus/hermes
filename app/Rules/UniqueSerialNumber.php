@@ -27,13 +27,15 @@ class UniqueSerialNumber implements ValidationRule
             ]]);
 
             if ($result['fail']) {
-                $fail(__('An error occurred while checking if an active Quarantine already exists with this serial number, please refresh the page and try again.'), null);
+                $fail(__('An error occurred while checking if an active Quarantine already exists with this serial number, please refresh the page and try again.'));
+
+                return;
             }
 
             ['meta' => $meta] = $result['data'];
 
             if ($meta['total_row_count'] > 0) {
-                $fail(__('💥Ooops! There\'s been a "serial number collision" - an item with this serial number is already registered in Quarantine. That\'s not... great 🫣. To move forward, add "-B" to the end of the serial number you entered above, and mention the problem in the Fault Description below. The SRMM team will sort it out.'), null);
+                $fail(__('💥Ooops! There\'s been a "serial number collision" - an item with this serial number is already registered in Quarantine. That\'s not... great 🫣. To move forward, add "-B" to the end of the serial number you entered above, and mention the problem in the Fault Description below. The SRMM team will sort it out.'));
             }
         }
     }

@@ -1,21 +1,43 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
 
 beforeEach(function () {
-    // Prevent all stray HTTP requests and fake all external API calls
+    // Prevent all stray HTTP requests
     Http::preventStrayRequests();
 
-    // Default fake that handles all requests
-    Http::fake([
+    // Default HTTP fake responses for common test scenarios.
+    // Tests that need different responses should call Http::fake() again
+    // with a callback to REPLACE this default (callbacks are merged, so the
+    // test's callback will be checked AFTER this one - return null to skip).
+    //
+    // IMPORTANT: When a test needs to override these defaults, it must use
+    // Http::fake() with a callback that handles ALL its needed cases, because
+    // Laravel merges callbacks and the first non-null response wins.
+    Http::fake(function (Request $request) {
         // WordPress API calls (from user creation event listener)
-        '*wp-json*' => Http::response(['id' => 1], 200),
-        // CurrentRMS API calls - default success responses
-        '*' => Http::sequence()
-            ->push(['meta' => ['total_row_count' => 0]], 200) // GET for uniqueness check
-            ->push(['quarantine' => ['id' => 999, 'reference' => 'SN123456', 'description' => 'Test description', 'item_id' => 12345]], 200), // POST for store
-    ]);
+        if (str_contains($request->url(), 'wp-json')) {
+            return Http::response(['id' => 1], 200);
+        }
+
+        // CurrentRMS API calls - differentiate by HTTP method
+        if ($request->method() === 'GET') {
+            // GET request for uniqueness check
+            return Http::response(['meta' => ['total_row_count' => 0]], 200);
+        }
+
+        // POST request for store
+        return Http::response([
+            'quarantine' => [
+                'id' => 999,
+                'reference' => 'SN123456',
+                'description' => 'Test description',
+                'item_id' => 12345,
+            ],
+        ], 200);
+    });
 
     $this->user = User::factory()->create([
         'first_name' => 'John',
@@ -90,14 +112,21 @@ describe('QuarantineStoreController', function () {
     });
 
     it('redirects back with error when CurrentRMS API store fails', function () {
+        // Create a completely fresh Http client factory to override the beforeEach fake
+        $freshFactory = new \Illuminate\Http\Client\Factory();
+        Http::swap($freshFactory);
+
+        Http::preventStrayRequests();
+        Http::fake(function (Request $request) {
+            if (str_contains($request->url(), 'wp-json')) {
+                return Http::response(['id' => 1], 200);
+            }
+            // ALL CurrentRMS requests return 500
+            return Http::response(['errors' => ['Internal Server Error']], 500);
+        });
+
         // Use serial_number_status that doesn't trigger the GET uniqueness check
         // so we only have the POST call that fails
-        Http::fake([
-            '*' => Http::response([
-                'errors' => ['Internal Server Error'],
-            ], 500),
-        ]);
-
         $data = validQuarantineData([
             'serial_number_status' => 'missing-serial-number',
             'serial_number' => null,
@@ -458,12 +487,21 @@ describe('QuarantineStoreController', function () {
 
     describe('serial number uniqueness validation', function () {
         it('fails validation when serial number already exists in quarantine', function () {
-            Http::fake([
-                '*' => Http::response([
+            // Create a completely fresh Http client factory
+            $freshFactory = new \Illuminate\Http\Client\Factory();
+            Http::swap($freshFactory);
+
+            Http::preventStrayRequests();
+            Http::fake(function (Request $request) {
+                if (str_contains($request->url(), 'wp-json')) {
+                    return Http::response(['id' => 1], 200);
+                }
+                // Return response indicating the serial number already exists
+                return Http::response([
                     'meta' => ['total_row_count' => 1],
                     'quarantines' => [['id' => 1]],
-                ], 200),
-            ]);
+                ], 200);
+            });
 
             $data = validQuarantineData([
                 'serial_number_status' => 'serial-number-exists',
@@ -476,11 +514,20 @@ describe('QuarantineStoreController', function () {
         });
 
         it('fails validation when serial number check API call fails', function () {
-            Http::fake([
-                '*' => Http::response([
-                    'errors' => ['Server Error'],
-                ], 500),
-            ]);
+            // Create a completely fresh Http client factory
+            $freshFactory = new \Illuminate\Http\Client\Factory();
+
+            // Swap the facade root to use our fresh factory
+            Http::swap($freshFactory);
+
+            Http::preventStrayRequests();
+            Http::fake(function (Request $request) {
+                if (str_contains($request->url(), 'wp-json')) {
+                    return Http::response(['id' => 1], 200);
+                }
+                // ALL CurrentRMS requests should return 500
+                return Http::response(['errors' => ['Server Error']], 500);
+            });
 
             $data = validQuarantineData([
                 'serial_number_status' => 'serial-number-exists',
