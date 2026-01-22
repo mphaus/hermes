@@ -1,50 +1,49 @@
 import { User } from "@/types";
+import { Link } from "@inertiajs/react";
+import { PenLine, Trash2 } from "lucide-react";
 
 export default function UserListItem({ user }: {
     user: User;
 }) {
     return (
-        <div className="card card-sm shadow-sm">
+        <div className="card card-sm bg-base-100 shadow-sm">
             <div className="card-body">
-                <div className="grid grid-cols-1 lg:grid-cols-10 gap-2 items-center">
-                    {/* Name */}
-                    <div className="col-span-2 flex flex-col lg:flex-row lg:items-center">
-                        <span className="font-medium">{user.first_name} {user.last_name}</span>
+                <div className="grid gap-4 md:grid-cols-6 sm:items-center sm:text-center">
+                    <div className="space-y-1">
+                        <p className="font-semibold sm:hidden">{'Name'}</p>
+                        <Link href={'#'} className="font-semibold">{user.first_name} {user.last_name}</Link>
                     </div>
-                    {/* Username */}
-                    <div className="col-span-2">
-                        <span className="text-gray-600">{user.username}</span>
+                    <div className="space-y-1">
+                        <p className="font-semibold sm:hidden">{'Username'}</p>
+                        <p>{user.username}</p>
                     </div>
-                    {/* Email */}
-                    <div className="col-span-3 wrap-break-word">
-                        <span className="text-blue-600">{user.email}</span>
+                    <div className="space-y-1">
+                        <p className="font-semibold sm:hidden">{'Email'}</p>
+                        <p className="wrap-break-word">{user.email}</p>
                     </div>
-                    {/* Is admin */}
-                    <div className="flex items-center justify-start lg:justify-center">
+                    <div className="space-y-1">
+                        <p className="font-semibold sm:hidden">{'Is admin'}</p>
                         {user.is_admin ? (
-                            <span className="inline-block rounded bg-success text-success-content text-xs px-2 py-0.5 font-semibold">Yes</span>
+                            <span className="badge badge-success badge-sm font-semibold">Yes</span>
                         ) : (
-                            <span className="inline-block rounded bg-base-300 text-base-content text-xs px-2 py-0.5 font-semibold">No</span>
+                            <span className="badge badge-error badge-sm font-semibold">No</span>
                         )}
                     </div>
-                    {/* Is enabled */}
-                    <div className="flex items-center justify-start lg:justify-center">
+                    <div className="space-y-1">
+                        <p className="font-semibold sm:hidden">{'Is enabled'}</p>
                         {user.is_enabled ? (
-                            <span className="inline-block rounded bg-success text-success-content text-xs px-2 py-0.5 font-semibold">Yes</span>
+                            <span className="badge badge-success badge-sm font-semibold">Yes</span>
                         ) : (
-                            <span className="inline-block rounded bg-error text-error-content text-xs px-2 py-0.5 font-semibold">No</span>
+                            <span className="badge badge-error badge-sm font-semibold">No</span>
                         )}
                     </div>
-                    {/* Actions */}
-                    <div className="flex justify-end space-x-2">
-                        <a
-                            href={`/users/${user.id}/edit`}
-                            className="btn btn-xs btn-outline"
-                            title="Edit"
-                        >
-                            Edit
+                    <div className="flex items-center justify-end gap-1 sm:justify-center">
+                        <a href="#" title={'Edit'} className="btn btn-ghost btn-primary btn-sm">
+                            <PenLine size={16} />
                         </a>
-                        {/* Additional actions can go here */}
+                        <button type="button" title={'Delete'} className="btn btn-ghost btn-error btn-sm">
+                            <Trash2 size={16} />
+                        </button>
                     </div>
                 </div>
             </div>
