@@ -19,7 +19,7 @@ export default function UserListItem({ user }: {
                     </div>
                     <div className="space-y-1">
                         <p className="font-semibold sm:hidden">{'Email'}</p>
-                        <p className="wrap-break-word">{user.email}</p>
+                        <p>{user.email}</p>
                     </div>
                     <div className="space-y-1">
                         <p className="font-semibold sm:hidden">{'Is admin'}</p>

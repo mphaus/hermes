@@ -6,7 +6,7 @@ export default function UsersList({ users }: {
 }) {
     return (
         <div className="space-y-4">
-            <div className="card bg-base-100 card-xs">
+            <div className="hidden md:flex card bg-base-100 card-xs">
                 <div className="card-body">
                     <div className="grid grid-cols-6 items-center text-center font-semibold">
                         <p>Name</p>
