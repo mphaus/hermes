@@ -5,6 +5,7 @@ use App\Http\Controllers\OpportunitySearchController;
 use App\Http\Controllers\ProductSearchController;
 use App\Http\Controllers\UserIndexController;
 use App\Http\Controllers\UsersCreateController;
+use App\Http\Controllers\UserStoreController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'is_enabled'])->group(function () {
@@ -15,4 +16,5 @@ Route::middleware(['auth', 'is_enabled'])->group(function () {
 
     Route::get('inertia/users', UserIndexController::class)->name('inertia.users.index')->middleware('permission:crud-users');
     Route::get('inertia/users/create', UsersCreateController::class)->name('inertia.users.create')->middleware('permission:crud-users');
+    Route::post('inertia/users', UserStoreController::class)->name('inertia.users.store')->middleware('permission:crud-users');
 });

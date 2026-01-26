@@ -5,11 +5,25 @@ import { UserPermission } from "@/types";
 import { usePage } from "@inertiajs/react";
 import UserPasswordField from "./UserPasswordField";
 import { useRef } from "react";
+import UserStoreController from "@/actions/App/Http/Controllers/UserStoreController";
+import { normalizeString } from "@/utils";
 
 export default function UserForm() {
     const permissions = usePage<SharedData>().props.permissions as UserPermission[];
     const isAdminRef = useRef<HTMLInputElement>(null);
     const permissionRefs = useRef<Map<string, HTMLInputElement>>(new Map());
+    const firstNameRef = useRef<HTMLInputElement>(null);
+    const lastNameRef = useRef<HTMLInputElement>(null);
+    const usernameRef = useRef<HTMLInputElement>(null);
+
+    const syncUsername = () => {
+        const first = firstNameRef.current?.value ?? "";
+        const last = lastNameRef.current?.value ?? "";
+        const username = normalizeString(first, last);
+        if (usernameRef.current) {
+            usernameRef.current.value = username;
+        }
+    };
 
     const handleIsAdminChange = () => {
         const isAdminChecked = isAdminRef.current?.checked ?? false;
@@ -40,19 +54,45 @@ export default function UserForm() {
     return (
         <div className="card bg-base-100 shadow-sm mx-auto max-w-3xl">
             <div className="card-body">
-                <Form action="#" className="space-y-4">
+                <Form
+                    action={UserStoreController()}
+                    className="space-y-4"
+                >
                     <div className="grid gap-4 md:grid-cols-2">
                         <FormGroup>
                             <label htmlFor="first_name">{'First name'}</label>
-                            <input type="text" id="first_name" name="first_name" className="input" autoComplete="given-name" />
+                            <input
+                                type="text"
+                                id="first_name"
+                                name="first_name"
+                                ref={firstNameRef}
+                                onInput={syncUsername}
+                                className="input"
+                                autoComplete="given-name"
+                            />
                         </FormGroup>
                         <FormGroup>
                             <label htmlFor="last_name">{'Last name'}</label>
-                            <input type="text" id="last_name" name="last_name" className="input" autoComplete="family-name" />
+                            <input
+                                type="text"
+                                id="last_name"
+                                name="last_name"
+                                ref={lastNameRef}
+                                onInput={syncUsername}
+                                className="input"
+                                autoComplete="family-name"
+                            />
                         </FormGroup>
                         <FormGroup>
                             <label htmlFor="username">{'Username'}</label>
-                            <input type="text" id="username" name="username" className="input" autoComplete="username" />
+                            <input
+                                type="text"
+                                id="username"
+                                name="username"
+                                ref={usernameRef}
+                                className="input"
+                                autoComplete="username"
+                            />
                         </FormGroup>
                         <FormGroup>
                             <label htmlFor="email">{'Email'}</label>
@@ -62,13 +102,13 @@ export default function UserForm() {
                     <UserPasswordField />
                     <div className="space-y-2">
                         <label htmlFor="is_admin" className="label flex">
-                            <input 
-                                type="checkbox" 
-                                name="is_admin" 
-                                id="is_admin" 
+                            <input
+                                type="checkbox"
+                                name="is_admin"
+                                id="is_admin"
                                 ref={isAdminRef}
                                 onChange={handleIsAdminChange}
-                                className="checkbox checkbox-sm checkbox-primary" 
+                                className="checkbox checkbox-sm checkbox-primary"
                             />
                             <span className="font-semibold">{'Is admin'}</span>
                         </label>
@@ -92,14 +132,14 @@ export default function UserForm() {
                             {permissions.map((permission) => (
                                 <li key={permission.value} className="space-y-2">
                                     <label htmlFor={permission.value} className="label flex">
-                                        <input 
-                                            type="checkbox" 
-                                            name="permissions[]" 
-                                            id={permission.value} 
-                                            value={permission.value} 
+                                        <input
+                                            type="checkbox"
+                                            name="permissions[]"
+                                            id={permission.value}
+                                            value={permission.value}
                                             ref={setPermissionRef(permission.value)}
                                             onChange={handlePermissionChange}
-                                            className="checkbox checkbox-sm checkbox-primary" 
+                                            className="checkbox checkbox-sm checkbox-primary"
                                         />
                                         <span className="font-semibold!">{permission.label}</span>
                                     </label>
