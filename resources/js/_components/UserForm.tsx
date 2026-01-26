@@ -1,13 +1,41 @@
 import { Form } from "@inertiajs/react";
 import FormGroup from "./FormGroup";
-import { Eye } from "lucide-react";
 import { SharedData } from "@/types";
 import { UserPermission } from "@/types";
 import { usePage } from "@inertiajs/react";
 import UserPasswordField from "./UserPasswordField";
+import { useRef } from "react";
 
 export default function UserForm() {
     const permissions = usePage<SharedData>().props.permissions as UserPermission[];
+    const isAdminRef = useRef<HTMLInputElement>(null);
+    const permissionRefs = useRef<Map<string, HTMLInputElement>>(new Map());
+
+    const handleIsAdminChange = () => {
+        const isAdminChecked = isAdminRef.current?.checked ?? false;
+        permissionRefs.current.forEach((ref) => {
+            if (ref) {
+                ref.checked = isAdminChecked;
+            }
+        });
+    };
+
+    const handlePermissionChange = () => {
+        const allChecked = Array.from(permissionRefs.current.values()).every(
+            (ref) => ref?.checked ?? false
+        );
+        if (isAdminRef.current) {
+            isAdminRef.current.checked = allChecked;
+        }
+    };
+
+    const setPermissionRef = (permissionValue: string) => (ref: HTMLInputElement | null) => {
+        if (ref) {
+            permissionRefs.current.set(permissionValue, ref);
+        } else {
+            permissionRefs.current.delete(permissionValue);
+        }
+    };
 
     return (
         <div className="card bg-base-100 shadow-sm mx-auto max-w-3xl">
@@ -34,7 +62,14 @@ export default function UserForm() {
                     <UserPasswordField />
                     <div className="space-y-2">
                         <label htmlFor="is_admin" className="label flex">
-                            <input type="checkbox" name="is_admin" id="is_admin" className="checkbox checkbox-sm checkbox-primary" />
+                            <input 
+                                type="checkbox" 
+                                name="is_admin" 
+                                id="is_admin" 
+                                ref={isAdminRef}
+                                onChange={handleIsAdminChange}
+                                className="checkbox checkbox-sm checkbox-primary" 
+                            />
                             <span className="font-semibold">{'Is admin'}</span>
                         </label>
                         <p className="text-xs">{'Gives the user full access to all current and future functions of Hermes, including CRUD of users. Typically suitable for executive staff.'}</p>
@@ -57,7 +92,15 @@ export default function UserForm() {
                             {permissions.map((permission) => (
                                 <li key={permission.value} className="space-y-2">
                                     <label htmlFor={permission.value} className="label flex">
-                                        <input type="checkbox" name="permissions[]" id={permission.value} value={permission.value} className="checkbox checkbox-sm checkbox-primary" />
+                                        <input 
+                                            type="checkbox" 
+                                            name="permissions[]" 
+                                            id={permission.value} 
+                                            value={permission.value} 
+                                            ref={setPermissionRef(permission.value)}
+                                            onChange={handlePermissionChange}
+                                            className="checkbox checkbox-sm checkbox-primary" 
+                                        />
                                         <span className="font-semibold!">{permission.label}</span>
                                     </label>
                                     <p className="text-xs">{permission.description}</p>
