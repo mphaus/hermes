@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Traits\WithUserPermissions;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class UsersCreateController extends Controller
 {
+    use WithUserPermissions;
+
     /**
      * Handle the incoming request.
      */
@@ -15,6 +18,7 @@ class UsersCreateController extends Controller
         return Inertia::render('UsersCreate', [
             'title' => 'Add new user',
             'description' => 'Create a new user for the Hermes system.',
+            'permissions' => $this->getPermissions(),
         ]);
     }
 }

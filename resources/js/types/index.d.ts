@@ -76,3 +76,9 @@ interface PaginationData {
 export interface UsersData extends PaginationData {
     data: User[];
 }
+
+export type UserPermission = {
+    value: string;
+    label: string;
+    description: string;
+};

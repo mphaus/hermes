@@ -1,8 +1,13 @@
 import { Form } from "@inertiajs/react";
 import FormGroup from "./FormGroup";
 import { Eye } from "lucide-react";
+import { SharedData } from "@/types";
+import { UserPermission } from "@/types";
+import { usePage } from "@inertiajs/react";
 
 export default function UserForm() {
+    const permissions = usePage<SharedData>().props.permissions as UserPermission[];
+
     return (
         <div className="card bg-base-100 shadow-sm mx-auto max-w-3xl">
             <div className="card-body">
@@ -51,6 +56,30 @@ export default function UserForm() {
                             <span className="font-semibold">{'Is enabled'}</span>
                         </label>
                         <p className="text-xs">{'Allows this user to log in when checked.'}</p>
+                    </div>
+                    <div className="mt-8">
+                        <p className="font-semibold">{'User permissions'}</p>
+                        <p className="mt-2 text-xs">
+                            <span>{'See the '}</span>
+                            <a href="https://mphaustralia.sharepoint.com/:w:/r/teams/MPHAdministration/_layouts/15/Doc.aspx?sourcedoc=%7B9d7fb799-bfce-4bd7-964a-9dbceff1b470%7D&action=editnew" target="_blank" rel="nofollow">{'Hermes Guide'}</a>
+                            <span>{' for more info on Hermes permissions.'}</span>
+                        </p>
+                        <ul className="space-y-8 mt-4">
+                            {permissions.map((permission) => (
+                                <li key={permission.value} className="space-y-2">
+                                    <label htmlFor={permission.value} className="label flex">
+                                        <input type="checkbox" name="permissions[]" id={permission.value} value={permission.value} className="checkbox checkbox-sm checkbox-primary" />
+                                        <span className="font-semibold!">{permission.label}</span>
+                                    </label>
+                                    <p className="text-xs">{permission.description}</p>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                    <div className="sm:flex sm:items-center sm:justify-end">
+                        <button type="submit" className="btn btn-primary btn-block sm:w-auto">
+                            {'Save user'}
+                        </button>
                     </div>
                 </Form>
             </div >
