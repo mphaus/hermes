@@ -4,6 +4,7 @@ import { Eye } from "lucide-react";
 import { SharedData } from "@/types";
 import { UserPermission } from "@/types";
 import { usePage } from "@inertiajs/react";
+import UserPasswordField from "./UserPasswordField";
 
 export default function UserForm() {
     const permissions = usePage<SharedData>().props.permissions as UserPermission[];
@@ -30,19 +31,7 @@ export default function UserForm() {
                             <input type="email" id="email" name="email" className="input" autoComplete="email" />
                         </FormGroup>
                     </div>
-                    <FormGroup>
-                        <label htmlFor="password">{'Password'}</label>
-                        <button type="button" className="btn btn-primary btn-sm btn-soft">{'Generate Password'}</button>
-                        <div className="join flex mt-4">
-                            <div className="input join-item">
-                                <input type="password" id="password" name="password" autoComplete="off" />
-                            </div>
-                            <button type="button" className="join-item btn btn-info btn-soft">
-                                <Eye size={16} />
-                                <span>{'Show'}</span>
-                            </button>
-                        </div>
-                    </FormGroup>
+                    <UserPasswordField />
                     <div className="space-y-2">
                         <label htmlFor="is_admin" className="label flex">
                             <input type="checkbox" name="is_admin" id="is_admin" className="checkbox checkbox-sm checkbox-primary" />
