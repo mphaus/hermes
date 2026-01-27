@@ -12,7 +12,6 @@ class UserStoreController extends Controller
      */
     public function __invoke(UserStoreRequest $request)
     {
-        dd(request()->all());
         $request->store();
         return to_route('inertia.users.index');
     }

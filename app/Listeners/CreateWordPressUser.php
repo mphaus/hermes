@@ -23,6 +23,10 @@ class CreateWordPressUser implements ShouldQueue
      */
     public function handle(UserCreated $event): void
     {
+        if (!app()->isProduction()) {
+            return;
+        }
+
         $user = $event->user;
 
         // Prepare the data for the WordPress user creation

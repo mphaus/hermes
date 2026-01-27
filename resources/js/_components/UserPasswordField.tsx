@@ -2,8 +2,11 @@ import { Eye, EyeOff } from "lucide-react";
 import { useRef, useState } from "react";
 import { usePasswordGenerator } from "@/hooks";
 import FormGroup from "@/_components/FormGroup";
+import FormError from "./FormError";
 
-export default function UserPasswordField() {
+export default function UserPasswordField({ error }: {
+    error?: string;
+}) {
     const passwordInputRef = useRef<HTMLInputElement>(null);
     const generatePassword = usePasswordGenerator();
     const [showPassword, setShowPassword] = useState(false);
@@ -50,6 +53,7 @@ export default function UserPasswordField() {
                     </span>
                 </button>
             </div>
+            {error && <FormError message={error} />}
         </FormGroup>
     );
 }
