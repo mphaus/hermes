@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Traits\WithUserPermissions;
 use Closure;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
 class UserStoreRequest extends FormRequest
@@ -37,20 +38,22 @@ class UserStoreRequest extends FormRequest
             ],
             'email' => [
                 'required',
-                'email:rfc,dns',
+                'email',
                 Rule::unique('users', 'email'),
             ],
             'password' => 'required|min:16',
             'is_admin' => 'nullable',
             'is_enabled' => 'nullable',
             'permissions' => [
-                'array',
                 Rule::requiredIf(fn() => request()->get('is_admin') !== '1'),
+                'array',
+            ],
+            'permissions.*' => [
                 function (string $attribute, mixed $value, Closure $fail) {
                     $permissions = array_column($this->getPermissions(), 'value');
 
-                    if (!in_array($value, $permissions)) {
-                        $fail('One or more selected :attribute are invalid.');
+                    if (request()->get('is_admin') !== '1' && !in_array($value, $permissions)) {
+                        $fail('The value provided for this permission is invalid.');
                     }
                 }
             ],
@@ -66,9 +69,7 @@ class UserStoreRequest extends FormRequest
 
     public function store()
     {
-        $validated = $this->validate();
-
-        return $validated;
+        $validated = $this->validated();
 
         [
             'first_name' => $first_name,
@@ -76,20 +77,18 @@ class UserStoreRequest extends FormRequest
             'username' => $username,
             'email' => $email,
             'password' => $password,
-            'is_admin' => $is_admin,
-            'is_enabled' => $is_enabled,
             'permissions' => $permissions,
         ] = $validated;
 
-        // $user = new User;
-        // $user->first_name = $first_name;
-        // $user->last_name = $last_name;
-        // $user->username = $username;
-        // $user->email = $email;
-        // $user->password = Hash::make($password);
-        // $user->is_admin = $is_admin;
-        // $user->is_enabled = $is_enabled;
-        // $user->permissions = $permissions;
-        // $user->save();
+        $user = new User;
+        $user->first_name = $first_name;
+        $user->last_name = $last_name;
+        $user->username = $username;
+        $user->email = $email;
+        $user->password = Hash::make($password);
+        $user->is_admin = $validated['is_admin'] ?? '0';
+        $user->is_enabled = $validated['is_enabled'] ?? '0';
+        $user->permissions = $permissions;
+        $user->save();
     }
 }

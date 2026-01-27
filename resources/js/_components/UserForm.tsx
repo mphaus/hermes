@@ -156,7 +156,7 @@ export default function UserForm() {
                                             <label htmlFor={permission.value} className="label flex">
                                                 <input
                                                     type="checkbox"
-                                                    name="permissions[]"
+                                                    name={`permissions[${permission.value}]`}
                                                     id={permission.value}
                                                     value={permission.value}
                                                     ref={setPermissionRef(permission.value)}
@@ -166,6 +166,7 @@ export default function UserForm() {
                                                 <span className="font-semibold!">{permission.label}</span>
                                             </label>
                                             <p className="text-xs">{permission.description}</p>
+                                            {errors[`permissions.${permission.value}`] && <FormError message={errors[`permissions.${permission.value}`]} />}
                                         </li>
                                     ))}
                                 </ul>
