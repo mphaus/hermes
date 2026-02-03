@@ -1,18 +1,21 @@
 import UsersShowController from "@/actions/App/Http/Controllers/UsersShowController";
-import { User } from "@/types";
-import { Link } from "@inertiajs/react";
+import { SharedData, User } from "@/types";
+import { Link, usePage } from "@inertiajs/react";
 import { PenLine, Trash2 } from "lucide-react";
 
 export default function UserListItem({ user }: {
     user: User;
 }) {
+    const { auth } = usePage<SharedData>().props;
+    const isCurrentUser = auth.user?.id === user.id;
+
     return (
         <div className="card card-sm bg-base-100 shadow-sm">
             <div className="card-body">
                 <div className="grid gap-4 md:grid-cols-6 sm:items-center sm:text-center">
                     <div className="space-y-1">
                         <p className="font-semibold sm:hidden">{'Name'}</p>
-                        <Link href={UsersShowController(user.id)} className="font-semibold">{user.first_name} {user.last_name}</Link>
+                        <Link href={UsersShowController(user.id)} className="font-semibold text-primary">{user.first_name} {user.last_name}</Link>
                     </div>
                     <div className="space-y-1">
                         <p className="font-semibold sm:hidden">{'Username'}</p>
@@ -38,14 +41,16 @@ export default function UserListItem({ user }: {
                             <span className="badge badge-error badge-sm font-semibold">No</span>
                         )}
                     </div>
-                    <div className="flex items-center justify-end gap-1 sm:justify-center">
-                        <a href="#" title={'Edit'} className="btn btn-ghost btn-primary btn-sm">
-                            <PenLine size={16} />
-                        </a>
-                        <button type="button" title={'Delete'} className="btn btn-ghost btn-error btn-sm">
-                            <Trash2 size={16} />
-                        </button>
-                    </div>
+                    {!isCurrentUser && (
+                        <div className="flex items-center justify-end gap-1 sm:justify-center">
+                            <a href="#" title={'Edit'} className="btn btn-ghost btn-primary btn-sm">
+                                <PenLine size={16} />
+                            </a>
+                            <button type="button" title={'Delete'} className="btn btn-ghost btn-error btn-sm">
+                                <Trash2 size={16} />
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
