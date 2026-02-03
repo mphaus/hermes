@@ -1,3 +1,4 @@
+import UsersShowController from "@/actions/App/Http/Controllers/UsersShowController";
 import { User } from "@/types";
 import { Link } from "@inertiajs/react";
 import { PenLine, Trash2 } from "lucide-react";
@@ -11,7 +12,7 @@ export default function UserListItem({ user }: {
                 <div className="grid gap-4 md:grid-cols-6 sm:items-center sm:text-center">
                     <div className="space-y-1">
                         <p className="font-semibold sm:hidden">{'Name'}</p>
-                        <Link href={'#'} className="font-semibold">{user.first_name} {user.last_name}</Link>
+                        <Link href={UsersShowController(user.id)} className="font-semibold">{user.first_name} {user.last_name}</Link>
                     </div>
                     <div className="space-y-1">
                         <p className="font-semibold sm:hidden">{'Username'}</p>

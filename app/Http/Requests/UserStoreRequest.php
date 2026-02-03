@@ -88,7 +88,7 @@ class UserStoreRequest extends FormRequest
         $user->password = Hash::make($password);
         $user->is_admin = $validated['is_admin'] ?? '0';
         $user->is_enabled = $validated['is_enabled'] ?? '0';
-        $user->permissions = $permissions;
+        $user->permissions = isset($validated['is_admin']) && $validated['is_admin'] === '1' ? [] : array_values($permissions);
         $user->save();
     }
 }
