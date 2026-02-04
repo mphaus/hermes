@@ -1,6 +1,6 @@
 import { Form } from "@inertiajs/react";
 import FormGroup from "./FormGroup";
-import { SharedData } from "@/types";
+import { SharedData, User } from "@/types";
 import { UserPermission } from "@/types";
 import { usePage } from "@inertiajs/react";
 import UserPasswordField from "./UserPasswordField";
@@ -9,7 +9,9 @@ import UserStoreController from "@/actions/App/Http/Controllers/UserStoreControl
 import { normalizeString } from "@/utils";
 import FormError from "./FormError";
 
-export default function UserForm() {
+export default function UserForm({ user }: {
+    user?: User;
+}) {
     const permissions = usePage<SharedData>().props.permissions as UserPermission[];
     const isAdminRef = useRef<HTMLInputElement>(null);
     const permissionRefs = useRef<Map<string, HTMLInputElement>>(new Map());
@@ -79,6 +81,7 @@ export default function UserForm() {
                                         onInput={syncUsername}
                                         className="input"
                                         autoComplete="given-name"
+                                        defaultValue={user?.first_name ?? ""}
                                     />
                                     {errors.first_name && <FormError message={errors.first_name} />}
                                 </FormGroup>
@@ -92,6 +95,7 @@ export default function UserForm() {
                                         onInput={syncUsername}
                                         className="input"
                                         autoComplete="family-name"
+                                        defaultValue={user?.last_name ?? ""}
                                     />
                                     {errors.last_name && <FormError message={errors.last_name} />}
                                 </FormGroup>
@@ -104,16 +108,17 @@ export default function UserForm() {
                                         ref={usernameRef}
                                         className="input"
                                         autoComplete="username"
+                                        defaultValue={user?.username ?? ""}
                                     />
                                     {errors.username && <FormError message={errors.username} />}
                                 </FormGroup>
                                 <FormGroup>
                                     <label htmlFor="email">{'Email'}</label>
-                                    <input type="email" id="email" name="email" className="input" autoComplete="email" />
+                                    <input type="email" id="email" name="email" className="input" autoComplete="email" defaultValue={user?.email ?? ""} />
                                     {errors.email && <FormError message={errors.email} />}
                                 </FormGroup>
                             </div>
-                            <UserPasswordField error={errors.password} />
+                            {!user && <UserPasswordField error={errors.password} />}
                             <div className="space-y-2">
                                 <label htmlFor="is_admin" className="label flex">
                                     <input
@@ -124,6 +129,7 @@ export default function UserForm() {
                                         ref={isAdminRef}
                                         onChange={handleIsAdminChange}
                                         className="checkbox checkbox-sm checkbox-primary"
+                                        defaultChecked={user?.is_admin ?? false}
                                     />
                                     <span className="font-semibold">{'Is admin'}</span>
                                 </label>
@@ -137,7 +143,7 @@ export default function UserForm() {
                                         id="is_enabled"
                                         value={'1'}
                                         className="checkbox checkbox-sm checkbox-primary"
-                                        defaultChecked
+                                        defaultChecked={user?.is_enabled ?? true}
                                     />
                                     <span className="font-semibold">{'Is enabled'}</span>
                                 </label>
@@ -162,6 +168,7 @@ export default function UserForm() {
                                                     ref={setPermissionRef(permission.value)}
                                                     onChange={handlePermissionChange}
                                                     className="checkbox checkbox-sm checkbox-primary"
+                                                    defaultChecked={(user?.is_admin ?? false) || (user?.permissions?.includes(permission.value) ?? false)}
                                                 />
                                                 <span className="font-semibold!">{permission.label}</span>
                                             </label>

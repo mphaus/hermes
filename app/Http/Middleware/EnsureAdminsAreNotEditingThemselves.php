@@ -4,7 +4,6 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class EnsureAdminsAreNotEditingThemselves
@@ -16,7 +15,7 @@ class EnsureAdminsAreNotEditingThemselves
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if ($request->user()->id === intval($request->route('user'))) {
+        if ($request->user()->id === $request->route('user')->id) {
             abort(404);
         }
 

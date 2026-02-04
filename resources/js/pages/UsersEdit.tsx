@@ -1,7 +1,15 @@
+import UserForm from "@/_components/UserForm";
+import { SharedData, User } from "@/types";
+import { Head, usePage } from "@inertiajs/react";
+
 export default function UsersEdit() {
+    const { title } = usePage<SharedData>().props;
+    const user = usePage<SharedData>().props.user as User;
+
     return (
-        <div>
-            <h1>Users Edit</h1>
-        </div>
+        <>
+            <Head title={title} />
+            <UserForm user={user} />
+        </>
     );
 }
