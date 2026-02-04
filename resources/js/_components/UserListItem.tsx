@@ -1,4 +1,5 @@
 import UsersShowController from "@/actions/App/Http/Controllers/UsersShowController";
+import UsersEditController from "@/actions/App/Http/Controllers/UsersEditController";
 import { SharedData, User } from "@/types";
 import { Link, usePage } from "@inertiajs/react";
 import { PenLine, Trash2 } from "lucide-react";
@@ -43,9 +44,9 @@ export default function UserListItem({ user }: {
                     </div>
                     {!isCurrentUser && (
                         <div className="flex items-center justify-end gap-1 sm:justify-center">
-                            <a href="#" title={'Edit'} className="btn btn-ghost btn-primary btn-sm">
+                            <Link href={UsersEditController(user.id)} title={'Edit'} className="btn btn-ghost btn-primary btn-sm">
                                 <PenLine size={16} />
-                            </a>
+                            </Link>
                             <button type="button" title={'Delete'} className="btn btn-ghost btn-error btn-sm">
                                 <Trash2 size={16} />
                             </button>

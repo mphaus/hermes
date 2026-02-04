@@ -1,3 +1,4 @@
+import UsersEditController from "@/actions/App/Http/Controllers/UsersEditController";
 import { SharedData, User } from "@/types";
 import { Head, Link, usePage } from "@inertiajs/react";
 
@@ -69,7 +70,7 @@ export default function UsersShow() {
                             <h2 className="card-title">{'Actions'}</h2>
                             <ul className="space-y-2">
                                 <li><Link href={'#'} className="font-semibold">{'Change user password'}</Link></li>
-                                <li><Link href={'#'} className="font-semibold">{'Edit this user'}</Link></li>
+                                <li><Link href={UsersEditController(user.id)} className="font-semibold">{'Edit this user'}</Link></li>
                                 <li><Link href={'#'} className="font-semibold">{'Delete this user'}</Link></li>
                             </ul>
                         </div>
