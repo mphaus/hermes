@@ -1,5 +1,5 @@
-import UsersShowController from "@/actions/App/Http/Controllers/UsersShowController";
-import UsersEditController from "@/actions/App/Http/Controllers/UsersEditController";
+import UserShowController from "@/actions/App/Http/Controllers/UserShowController";
+import UserEditController from "@/actions/App/Http/Controllers/UserEditController";
 import { SharedData, User } from "@/types";
 import { Link, usePage } from "@inertiajs/react";
 import { PenLine, Trash2 } from "lucide-react";
@@ -16,7 +16,7 @@ export default function UserListItem({ user }: {
                 <div className="grid gap-4 md:grid-cols-6 sm:items-center sm:text-center">
                     <div className="space-y-1">
                         <p className="font-semibold sm:hidden">{'Name'}</p>
-                        <Link href={UsersShowController(user.id)} className="font-semibold text-primary">{user.first_name} {user.last_name}</Link>
+                        <Link href={UserShowController(user.id)} className="font-semibold text-primary">{user.first_name} {user.last_name}</Link>
                     </div>
                     <div className="space-y-1">
                         <p className="font-semibold sm:hidden">{'Username'}</p>
@@ -44,7 +44,7 @@ export default function UserListItem({ user }: {
                     </div>
                     {!isCurrentUser && (
                         <div className="flex items-center justify-end gap-1 sm:justify-center">
-                            <Link href={UsersEditController(user.id)} title={'Edit'} className="btn btn-ghost btn-primary btn-sm">
+                            <Link href={UserEditController(user.id)} title={'Edit'} className="btn btn-ghost btn-primary btn-sm">
                                 <PenLine size={16} />
                             </Link>
                             <button type="button" title={'Delete'} className="btn btn-ghost btn-error btn-sm">

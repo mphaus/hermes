@@ -15,7 +15,7 @@ class UserEditController extends Controller
      */
     public function __invoke(User $user)
     {
-        return Inertia::render('UsersEdit', [
+        return Inertia::render('UserEdit', [
             'user' => $user,
             'title' => 'Edit user',
             'description' => 'Edit the user details.',

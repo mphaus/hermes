@@ -15,7 +15,7 @@ class UserCreateController extends Controller
      */
     public function __invoke(Request $request)
     {
-        return Inertia::render('UsersCreate', [
+        return Inertia::render('UserCreate', [
             'title' => 'Add new user',
             'description' => 'Create a new user for the Hermes system.',
             'permissions' => $this->getPermissions(),
