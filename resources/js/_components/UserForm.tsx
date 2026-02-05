@@ -6,6 +6,7 @@ import { usePage } from "@inertiajs/react";
 import UserPasswordField from "./UserPasswordField";
 import { useRef } from "react";
 import UserStoreController from "@/actions/App/Http/Controllers/UserStoreController";
+import UserUpdateController from "@/actions/App/Http/Controllers/UserUpdateController";
 import { normalizeString } from "@/utils";
 import FormError from "./FormError";
 
@@ -58,7 +59,7 @@ export default function UserForm({ user }: {
         <div className="card bg-base-100 shadow-sm mx-auto max-w-3xl">
             <div className="card-body">
                 <Form
-                    action={UserStoreController()}
+                    action={user ? UserUpdateController(user.id) : UserStoreController()}
                     className="space-y-4"
                 >
                     {({
