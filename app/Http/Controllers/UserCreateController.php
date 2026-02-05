@@ -6,7 +6,7 @@ use App\Traits\WithUserPermissions;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class UsersCreateController extends Controller
+class UserCreateController extends Controller
 {
     use WithUserPermissions;
 

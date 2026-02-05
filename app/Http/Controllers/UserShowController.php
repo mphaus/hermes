@@ -6,7 +6,7 @@ use App\Models\User;
 use App\Traits\WithUserPermissions;
 use Inertia\Inertia;
 
-class UsersShowController extends Controller
+class UserShowController extends Controller
 {
     use WithUserPermissions;
 
