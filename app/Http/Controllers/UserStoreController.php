@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Requests\UserStoreRequest;
+use Inertia\Inertia;
 
 class UserStoreController extends Controller
 {
@@ -13,6 +13,12 @@ class UserStoreController extends Controller
     public function __invoke(UserStoreRequest $request)
     {
         $request->store();
+
+        Inertia::flash('toast', [
+            'type' => 'success',
+            'message' => 'User created successfully.',
+        ]);
+
         return to_route('inertia.users.index');
     }
 }

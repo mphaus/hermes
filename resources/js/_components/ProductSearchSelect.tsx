@@ -2,7 +2,7 @@ import AsyncSelect from "react-select/async";
 import { components, OptionProps } from "react-select";
 import ProductSearchController from "@/actions/App/Http/Controllers/ProductSearchController";
 import { debounce } from "es-toolkit/function";
-import { daisyUISelectStyles } from "./reactSelectStyles";
+import { daisyUISelectStyles } from "../reactSelectStyles";
 
 async function loadOptions(inputValue: string, params?: Record<string, unknown>) {
     if (!inputValue) {

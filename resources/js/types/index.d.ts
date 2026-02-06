@@ -82,3 +82,10 @@ export type UserPermission = {
     label: string;
     description: string;
 };
+
+export type FlashData = {
+    toast?: {
+        type: 'success' | 'error' | 'warning' | 'info';
+        message: string;
+    };
+};
