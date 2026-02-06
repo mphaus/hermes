@@ -4,8 +4,9 @@ import { SharedData, User } from "@/types";
 import { Link, usePage } from "@inertiajs/react";
 import { PenLine, Trash2 } from "lucide-react";
 
-export default function UserListItem({ user }: {
+export default function UserListItem({ user, onDelete }: {
     user: User;
+    onDelete: (user: User) => void;
 }) {
     const { auth } = usePage<SharedData>().props;
     const isCurrentUser = auth.user?.id === user.id;
@@ -47,7 +48,12 @@ export default function UserListItem({ user }: {
                             <Link href={UserEditController(user.id)} title={'Edit'} className="btn btn-ghost btn-primary btn-sm">
                                 <PenLine size={16} />
                             </Link>
-                            <button type="button" title={'Delete'} className="btn btn-ghost btn-error btn-sm">
+                            <button
+                                type="button"
+                                title={'Delete'}
+                                className="btn btn-ghost btn-error btn-sm"
+                                onClick={() => onDelete(user)}
+                            >
                                 <Trash2 size={16} />
                             </button>
                         </div>

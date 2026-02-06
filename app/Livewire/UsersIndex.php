@@ -17,7 +17,6 @@ class UsersIndex extends Component
     public function users(): LengthAwarePaginator
     {
         return User::query()
-            ->exceptSuperAdmin()
             ->orderBy('first_name', 'asc')
             ->orderBy('last_name', 'asc')
             ->paginate(25);
