@@ -1,3 +1,4 @@
+import Pagination from "@/_components/Pagination";
 import UsersFab from "@/_components/UsersFab";
 import UsersList from "@/_components/UsersList";
 import UserCreateController from "@/actions/App/Http/Controllers/UserCreateController";
@@ -8,7 +9,7 @@ import { Plus } from "lucide-react";
 export default function UserIndex() {
     const { title } = usePage<SharedData>().props;
     const usersData = usePage<SharedData>().props.users_data as UsersData;
-    const { data: users } = usersData;
+    const { data: users, per_page, total, links } = usersData;
 
 
     return (
@@ -21,6 +22,11 @@ export default function UserIndex() {
                 </Link>
             </div>
             <UsersList users={users} />
+            {per_page < total && (
+                <div className="mt-4">
+                    <Pagination links={links} />
+                </div>
+            )}
             <UsersFab />
         </>
     );
