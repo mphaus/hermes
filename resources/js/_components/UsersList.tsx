@@ -22,9 +22,7 @@ export default function UsersList({ users, onUserIsBeingDeleted }: {
         if (!user) return;
 
         onUserIsBeingDeleted?.();
-        router.delete(UserDestroyController(user.id), {
-            preserveState: false,
-        });
+        router.delete(UserDestroyController(user.id), { preserveState: false });
     }
 
     return (

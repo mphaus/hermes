@@ -9,13 +9,16 @@ export default function Toast({ type, message }: {
     const [isRemoved, setIsRemoved] = useState(false);
 
     useEffect(() => {
+        setIsExiting(false);
+        setIsRemoved(false);
+
         const fadeOutTimer = setTimeout(() => setIsExiting(true), 2500);
         const removeTimer = setTimeout(() => setIsRemoved(true), 3000);
         return () => {
             clearTimeout(fadeOutTimer);
             clearTimeout(removeTimer);
         };
-    }, []);
+    }, [message]);
 
     if (isRemoved) return null;
 

@@ -9,7 +9,7 @@ export default function UserPasswordField({ error }: {
 }) {
     const passwordInputRef = useRef<HTMLInputElement>(null);
     const generatePassword = usePasswordGenerator();
-    const [showPassword, setShowPassword] = useState(false);
+    const [hidePassword, setHidePassword] = useState(false);
 
     const handleGeneratePassword = () => {
         const password = generatePassword();
@@ -19,7 +19,7 @@ export default function UserPasswordField({ error }: {
     };
 
     const handleTogglePassword = () => {
-        setShowPassword(!showPassword);
+        setHidePassword(!hidePassword);
     };
 
     return (
@@ -36,7 +36,7 @@ export default function UserPasswordField({ error }: {
                 <div className="input join-item">
                     <input
                         ref={passwordInputRef}
-                        type={showPassword ? "text" : "password"}
+                        type={hidePassword ? "password" : "text"}
                         id="password"
                         name="password"
                         autoComplete="off"
@@ -47,9 +47,9 @@ export default function UserPasswordField({ error }: {
                     className="join-item btn btn-info btn-soft"
                     onClick={handleTogglePassword}
                 >
-                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                    {hidePassword ? <EyeOff size={16} /> : <Eye size={16} />}
                     <span>
-                        {showPassword ? 'Hide' : 'Show'}
+                        {hidePassword ? 'Show' : 'Hide'}
                     </span>
                 </button>
             </div>

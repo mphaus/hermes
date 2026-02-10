@@ -15,11 +15,9 @@ class UserDestroyController extends Controller
         $full_name = $user->full_name;
         $user->delete();
 
-        Inertia::flash('toast', [
+        return Inertia::flash('toast', [
             'type' => 'success',
             'message' => "User {$full_name} has been deleted.",
-        ]);
-
-        return to_route('inertia.users.index');
+        ])->back();
     }
 }
