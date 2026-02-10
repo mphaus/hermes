@@ -1,17 +1,36 @@
+import UserDeleteConfirmDialog from "@/_components/UserDeleteConfirmDialog";
 import UserEditController from "@/actions/App/Http/Controllers/UserEditController";
+import UserDestroyController from "@/actions/App/Http/Controllers/UserDestroyController";
 import { SharedData, User } from "@/types";
-import { Head, Link, usePage } from "@inertiajs/react";
+import { Head, Link, router, usePage } from "@inertiajs/react";
+import { useState } from "react";
+import clsx from "clsx";
 
 export default function UserShow() {
     const user = usePage<SharedData>().props.user as User;
     const permissions = usePage<SharedData>().props.permissions as { value: string, label: string }[];
     const { auth } = usePage<SharedData>().props;
     const isCurrentUser = auth.user?.id === user.id;
+    const [open, setOpen] = useState(false);
+    const [userIsBeingDeleted, setUserIsBeingDeleted] = useState(false);
+
+    const handleDeleteCancel = () => {
+        setOpen(false);
+    }
+
+    const handleDeleteOk = () => {
+        setOpen(false);
+        setUserIsBeingDeleted(true);
+        router.delete(UserDestroyController(user.id));
+    }
 
     return (
         <>
             <Head title={`${user.first_name} ${user.last_name}`} />
-            <div className="grid gap-4 lg:grid-cols-3 lg:items-start">
+            <div className={clsx({
+                'grid gap-4 lg:grid-cols-3 lg:items-start': true,
+                'pointer-events-none opacity-50': userIsBeingDeleted,
+            })}>
                 <div className="card bg-base-100 shadow-sm lg:col-span-2">
                     <div className="card-body">
                         <div className="grid gap-4 sm:grid-cols-2">
@@ -69,14 +88,26 @@ export default function UserShow() {
                         <div className="card-body">
                             <h2 className="card-title">{'Actions'}</h2>
                             <ul className="space-y-2">
-                                <li><Link href={'#'} className="font-semibold">{'Change user password'}</Link></li>
-                                <li><Link href={UserEditController(user.id)} className="font-semibold">{'Edit this user'}</Link></li>
-                                <li><Link href={'#'} className="font-semibold">{'Delete this user'}</Link></li>
+                                <li>
+                                    <Link href={'#'} className="font-semibold">{'Change user password'}</Link>
+                                </li>
+                                <li>
+                                    <Link href={UserEditController(user.id)} className="font-semibold">{'Edit this user'}</Link>
+                                </li>
+                                <li>
+                                    <button type="button" className="font-semibold cursor-pointer" onClick={() => setOpen(true)}>{'Delete this user'}</button>
+                                </li>
                             </ul>
                         </div>
                     </div>
                 )}
             </div>
+            <UserDeleteConfirmDialog
+                open={open}
+                user={user}
+                onCancel={handleDeleteCancel}
+                onOk={handleDeleteOk}
+            />
         </>
     );
 }

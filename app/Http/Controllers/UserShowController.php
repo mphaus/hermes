@@ -23,6 +23,7 @@ class UserShowController extends Controller
         }, $this->getPermissions());
 
         return Inertia::render('UserShow', [
+            'name' => $user->full_name,
             'user' => $user,
             'permissions' => $permissions,
         ]);
