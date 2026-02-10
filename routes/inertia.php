@@ -9,6 +9,7 @@ use App\Http\Controllers\UserStoreController;
 use App\Http\Controllers\UserShowController;
 use App\Http\Controllers\UserEditController;
 use App\Http\Controllers\UserUpdateController;
+use App\Http\Controllers\UserDestroyController;
 use App\Http\Middleware\EnsureAdminsAreNotEditingThemselves;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +28,10 @@ Route::middleware(['auth', 'is_enabled'])->group(function () {
         EnsureAdminsAreNotEditingThemselves::class,
     ]);
     Route::put('inertia/users/{user}', UserUpdateController::class)->name('inertia.users.update')->middleware([
+        'permission:crud-users',
+        EnsureAdminsAreNotEditingThemselves::class,
+    ]);
+    Route::delete('inertia/users/{user}', UserDestroyController::class)->name('inertia.users.destroy')->middleware([
         'permission:crud-users',
         EnsureAdminsAreNotEditingThemselves::class,
     ]);

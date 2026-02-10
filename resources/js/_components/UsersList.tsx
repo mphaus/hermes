@@ -2,9 +2,12 @@ import { User } from "@/types";
 import UserListItem from "./UserListItem";
 import UserDeleteConfirmDialog from "./UserDeleteConfirmDialog";
 import { useState } from "react";
+import { router } from "@inertiajs/react";
+import UserDestroyController from "@/actions/App/Http/Controllers/UserDestroyController";
 
-export default function UsersList({ users }: {
+export default function UsersList({ users, onUserIsBeingDeleted }: {
     users: User[];
+    onUserIsBeingDeleted?: () => void;
 }) {
     const [deleteConfirmDialogOpen, setDeleteConfirmDialogOpen] = useState(false);
     const [userToDelete, setUserToDelete] = useState<User | undefined>(undefined);
@@ -18,7 +21,10 @@ export default function UsersList({ users }: {
 
         if (!user) return;
 
-        // IMPLEMENT DELETE USER LOGIC HERE
+        onUserIsBeingDeleted?.();
+        router.delete(UserDestroyController(user.id), {
+            preserveState: false,
+        });
     }
 
     return (
