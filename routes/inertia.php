@@ -3,6 +3,7 @@
 use App\Http\Controllers\ChangePasswordController;
 use App\Http\Controllers\InertiaAuthenticatedSessionController;
 use App\Http\Controllers\OpportunitySearchController;
+use App\Http\Controllers\PasswordStoreController;
 use App\Http\Controllers\ProductSearchController;
 use App\Http\Controllers\UserChangePasswordController;
 use App\Http\Controllers\UserIndexController;
@@ -52,4 +53,5 @@ Route::middleware(['auth', 'is_enabled'])->group(function () {
     ]);
 
     Route::get('change-password', ChangePasswordController::class)->name('change-password');
+    Route::post('change-password', PasswordStoreController::class)->name('change-password.store');
 });

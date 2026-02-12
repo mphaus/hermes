@@ -26,7 +26,13 @@ export default function ChangePasswordForm() {
                                 <input type="password" name="password_confirmation" id="password_confirmation" className="input" />
                             </FormGroup>
                             <div className="sm:flex sm:items-center sm:justify-end">
-                                <button type="submit" className="btn btn-primary btn-block sm:w-auto" disabled={processing}>{'Change password'}</button>
+                                <button
+                                    type="submit"
+                                    className="btn btn-primary btn-block sm:w-auto"
+                                    disabled={processing}
+                                >
+                                    {processing ? 'Changing password...' : 'Change password'}
+                                </button>
                             </div>
                         </>
                     )}
