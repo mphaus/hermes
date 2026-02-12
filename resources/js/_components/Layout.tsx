@@ -5,18 +5,28 @@ import DrawerUser from "./DrawerUser";
 import DrawerNavbar from "./DrawerNavbar";
 import DrawerDescription from "./DrawerDescription";
 import Toast from "./Toast";
-import { usePage } from "@inertiajs/react";
+import { router, usePage } from "@inertiajs/react";
 import { FlashData, SharedData } from "@/types";
+import { useEffect, useRef } from "react";
 
 export default function Layout({ children }: {
     children: React.ReactNode;
 }) {
+    const drawerToggleRef = useRef<HTMLInputElement | null>(null);
     const toast = usePage<SharedData>().flash?.toast as FlashData['toast'];
+
+    useEffect(() => {
+        return router.on('navigate', () => {
+            if (drawerToggleRef.current) {
+                drawerToggleRef.current.checked = false;
+            }
+        });
+    });
 
     return (
         <>
             <div className="drawer xl:drawer-open">
-                <input id="hermes-drawer" type="checkbox" className="drawer-toggle" />
+                <input id="hermes-drawer" ref={drawerToggleRef} type="checkbox" className="drawer-toggle" />
                 <div className="flex flex-col drawer-content">
                     <DrawerNavbar />
                     <DrawerDescription />
