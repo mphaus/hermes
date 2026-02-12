@@ -5,6 +5,7 @@ import { SharedData, User } from "@/types";
 import { Head, Link, router, usePage } from "@inertiajs/react";
 import { useState } from "react";
 import clsx from "clsx";
+import UserChangePasswordController from "@/actions/App/Http/Controllers/UserChangePasswordController";
 
 export default function UserShow() {
     const user = usePage<SharedData>().props.user as User;
@@ -89,7 +90,7 @@ export default function UserShow() {
                             <h2 className="card-title">{'Actions'}</h2>
                             <ul className="space-y-2">
                                 <li>
-                                    <Link href={'#'} className="font-semibold">{'Change user password'}</Link>
+                                    <Link href={UserChangePasswordController(user.id)} className="font-semibold">{'Change user password'}</Link>
                                 </li>
                                 <li>
                                     <Link href={UserEditController(user.id)} className="font-semibold">{'Edit this user'}</Link>

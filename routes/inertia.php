@@ -3,6 +3,7 @@
 use App\Http\Controllers\InertiaAuthenticatedSessionController;
 use App\Http\Controllers\OpportunitySearchController;
 use App\Http\Controllers\ProductSearchController;
+use App\Http\Controllers\UserChangePasswordController;
 use App\Http\Controllers\UserIndexController;
 use App\Http\Controllers\UserCreateController;
 use App\Http\Controllers\UserStoreController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\UserShowController;
 use App\Http\Controllers\UserEditController;
 use App\Http\Controllers\UserUpdateController;
 use App\Http\Controllers\UserDestroyController;
+use App\Http\Controllers\UserUpdatePasswordController;
 use App\Http\Middleware\EnsureAdminsAreNotEditingThemselves;
 use Illuminate\Support\Facades\Route;
 
@@ -27,11 +29,23 @@ Route::middleware(['auth', 'is_enabled'])->group(function () {
         'permission:crud-users',
         EnsureAdminsAreNotEditingThemselves::class,
     ]);
+
     Route::put('inertia/users/{user}', UserUpdateController::class)->name('inertia.users.update')->middleware([
         'permission:crud-users',
         EnsureAdminsAreNotEditingThemselves::class,
     ]);
+
     Route::delete('inertia/users/{user}', UserDestroyController::class)->name('inertia.users.destroy')->middleware([
+        'permission:crud-users',
+        EnsureAdminsAreNotEditingThemselves::class,
+    ]);
+
+    Route::get('inertia/users/{user}/change-password', UserChangePasswordController::class)->name('inertia.users.change-password')->middleware([
+        'permission:crud-users',
+        EnsureAdminsAreNotEditingThemselves::class,
+    ]);
+
+    Route::put('inertia/users/{user}/change-password', UserUpdatePasswordController::class)->name('inertia.users.change-password.update')->middleware([
         'permission:crud-users',
         EnsureAdminsAreNotEditingThemselves::class,
     ]);

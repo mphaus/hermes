@@ -22,6 +22,15 @@ export default function UserPasswordField({ error }: {
         setHidePassword(!hidePassword);
     };
 
+    const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+        if (!e.currentTarget.value) {
+            return;
+        }
+
+        const length = e.currentTarget.value.length;
+        e.currentTarget.setSelectionRange(0, length);
+    }
+
     return (
         <FormGroup>
             <label htmlFor="password">{'Password'}</label>
@@ -40,6 +49,7 @@ export default function UserPasswordField({ error }: {
                         id="password"
                         name="password"
                         autoComplete="off"
+                        onFocus={handleFocus}
                     />
                 </div>
                 <button
