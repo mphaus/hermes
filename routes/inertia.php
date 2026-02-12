@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChangePasswordController;
 use App\Http\Controllers\InertiaAuthenticatedSessionController;
 use App\Http\Controllers\OpportunitySearchController;
 use App\Http\Controllers\ProductSearchController;
@@ -49,4 +50,6 @@ Route::middleware(['auth', 'is_enabled'])->group(function () {
         'permission:crud-users',
         EnsureAdminsAreNotEditingThemselves::class,
     ]);
+
+    Route::get('change-password', ChangePasswordController::class)->name('change-password');
 });

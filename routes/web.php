@@ -1,7 +1,5 @@
 <?php
 
-// use App\Http\Controllers\ProfileController;
-
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\OpportunityController;
 use App\Http\Controllers\ProductController;
@@ -26,10 +24,6 @@ use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'is_enabled'])->group(function () {
-    // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
     Route::get('equipment-import', JobsIndex::class)->name('jobs.index')->middleware('permission:access-equipment-import');
     Route::permanentRedirect('/jobs', '/equipment-import');
 

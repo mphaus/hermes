@@ -57,7 +57,7 @@ export default function UserPasswordField({ error }: {
                     className="join-item btn btn-info btn-soft"
                     onClick={handleTogglePassword}
                 >
-                    {hidePassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                    {hidePassword ? <Eye size={16} /> : <EyeOff size={16} />}
                     <span>
                         {hidePassword ? 'Show' : 'Hide'}
                     </span>

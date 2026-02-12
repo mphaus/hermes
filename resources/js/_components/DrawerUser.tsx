@@ -1,3 +1,4 @@
+import ChangePasswordController from "@/actions/App/Http/Controllers/ChangePasswordController";
 import { destroy } from "@/actions/App/Http/Controllers/InertiaAuthenticatedSessionController";
 import { SharedData } from "@/types";
 import { Form, Link, usePage } from "@inertiajs/react";
@@ -10,7 +11,10 @@ export default function DrawerUser() {
             <div tabIndex={0} role="button" className="cursor-pointer px-7 py-4 text-primary hover:text-base-content font-semibold">{`${auth.user?.first_name} ${auth.user?.last_name}`}</div>
             <ul tabIndex={-1} className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
                 <li>
-                    <Link href={destroy()} method="post">{'Logout'}</Link>
+                    <Link href={ChangePasswordController()} title={'Change Password'}>{'Change Password'}</Link>
+                </li>
+                <li>
+                    <Link href={destroy()} title={'Logout'} method="post">{'Logout'}</Link>
                 </li>
             </ul>
         </div>
