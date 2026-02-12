@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Hash;
 
 class PasswordStoreRequest extends FormRequest
 {
@@ -22,7 +23,18 @@ class PasswordStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'current_password' => ['required', 'current_password'],
+            'password' => ['required', 'confirmed', 'min:16'],
         ];
+    }
+
+    public function store()
+    {
+        $validated = $this->validated();
+        ['password' => $password] = $validated;
+
+        $this->user()->update([
+            'password' => Hash::make($password),
+        ]);
     }
 }

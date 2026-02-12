@@ -41,6 +41,11 @@
                 </a>
             </div>
         </div>
+        @if (session('alert'))
+            <x-alert :type="session('alert')['type']">
+                {!! session('alert')['message'] !!}
+            </x-alert>
+        @endif
         @livewireScriptConfig
     </body>
 </html>
