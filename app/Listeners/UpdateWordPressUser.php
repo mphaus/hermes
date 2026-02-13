@@ -24,6 +24,10 @@ class UpdateWordPressUser implements ShouldQueue
      */
     public function handle(UserUpdated $event): void
     {
+        if (!app()->isProduction()) {
+            return;
+        }
+
         $updated_user = $event->updated_user;
         $changes = $event->changes;
         $original_email = $event->original_email;

@@ -7,13 +7,13 @@ export default function DrawerNavbar() {
 
     return (
         <div className="navbar bg-base-100 w-full sticky top-0 bg-base-100/80 backdrop-blur-sm z-10">
-            <div className="flex-none lg:hidden">
+            <div className="flex-none xl:hidden">
                 <label htmlFor="hermes-drawer" aria-label="open sidebar" className="btn btn-square btn-ghost">
                     <Menu />
                 </label>
             </div>
-            <div className="mx-2 flex-1 px-2">
-                { title ?? name }
+            <div className="mx-2 flex-1 px-2 font-semibold">
+                {title ?? name}
             </div>
         </div>
     );

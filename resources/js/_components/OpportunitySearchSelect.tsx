@@ -1,7 +1,7 @@
 import AsyncSelect from "react-select/async";
 import OpportunitySearchController from "@/actions/App/Http/Controllers/OpportunitySearchController";
 import { debounce } from "es-toolkit/function";
-import { daisyUISelectStyles } from "./reactSelectStyles";
+import { daisyUISelectStyles } from "../reactSelectStyles";
 
 export interface OpportunityData {
     technical_supervisor_id: number;

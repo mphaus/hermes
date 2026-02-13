@@ -108,11 +108,6 @@ export default function QuarantineForm({ technicalSupervisors, members }: {
                         <QuarantinePrimaryFaultClassificationField error={errors.classification} />
                         <QuarantineFaultDescriptionField error={errors.description} />
                         <div className="flex items-center justify-end gap-2">
-                            {/* <button
-                                type="button"
-                                className="btn btn-primary btn-outline"
-                                disabled={processing}
-                            >{'Clear form'}</button> */}
                             <button
                                 type="submit"
                                 className="btn btn-primary"

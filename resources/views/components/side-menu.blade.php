@@ -80,12 +80,11 @@
             <ul class="pl-2 text-sm">
                 <li>
                     <a 
-                        href="mailto:{{ config('app.mph.notification_mail_address') }}"
-                        target="_blank"
-                        title="{{ __('Need help?') }}"
+                        href="{{ route('change-password') }}"
+                        title="{{ __('Change password') }}"
                         class="block p-2"
                     >
-                        {{ __('Need help?') }}
+                        {{ __('Change password') }}
                     </a>
                 </li>
                 <li>

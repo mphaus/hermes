@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Middleware\CreateApplicationSuperUser;
 use App\Http\Middleware\EnsureUserHasPermission;
 use App\Http\Middleware\EnsureUserIsEnabled;
 use App\Http\Middleware\HandleInertiaRequests;
@@ -21,7 +20,6 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->web(append: [
-            CreateApplicationSuperUser::class,
             HandleInertiaRequests::class,
         ]);
         $middleware->redirectGuestsTo(fn() => route('login'));

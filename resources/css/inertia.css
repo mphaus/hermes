@@ -4,10 +4,8 @@
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source "../js/**/*.tsx";
 
-/* @plugin "daisyui"; */
-
 @plugin "daisyui" {
-  exclude: properties;
+    themes: false;
 }
 
 @plugin "daisyui/theme" {
@@ -88,7 +86,8 @@
     a {
         @apply font-semibold text-primary;
     }
-    .alert a {
+    .alert a,
+    .card a {
         @apply text-inherit;
     }
 }
