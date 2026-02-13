@@ -33,7 +33,7 @@ describe('UserUpdateController', function () {
     it('requires authentication', function () {
         $user = User::factory()->create(['permissions' => []]);
 
-        $response = $this->put(route('inertia.users.update', $user), validUserUpdateData($user));
+        $response = $this->put(route('users.update', $user), validUserUpdateData($user));
 
         $response->assertRedirect();
         expect($response->isRedirect())->toBeTrue();
@@ -48,7 +48,7 @@ describe('UserUpdateController', function () {
         $user = User::factory()->create(['permissions' => []]);
 
         $response = $this->actingAs($userWithoutPermission)
-            ->put(route('inertia.users.update', $user), validUserUpdateData($user));
+            ->put(route('users.update', $user), validUserUpdateData($user));
 
         $response->assertNotFound();
     });
@@ -64,9 +64,9 @@ describe('UserUpdateController', function () {
         $data = validUserUpdateData($user);
 
         $response = $this->actingAs($this->admin)
-            ->put(route('inertia.users.update', $user), $data);
+            ->put(route('users.update', $user), $data);
 
-        $response->assertRedirect(route('inertia.users.index'));
+        $response->assertRedirect(route('users.index'));
 
         $user->refresh();
         expect($user->first_name)->toBe($data['first_name']);
@@ -81,7 +81,7 @@ describe('UserUpdateController', function () {
         $data = validUserUpdateData($user);
 
         $response = $this->actingAs($this->admin)
-            ->put(route('inertia.users.update', $user), $data);
+            ->put(route('users.update', $user), $data);
 
         $response->assertSessionHas('inertia.flash_data', function ($flash) {
             return isset($flash['toast'])
@@ -101,9 +101,9 @@ describe('UserUpdateController', function () {
         ]);
 
         $response = $this->actingAs($this->admin)
-            ->put(route('inertia.users.update', $user), $data);
+            ->put(route('users.update', $user), $data);
 
-        $response->assertRedirect(route('inertia.users.index'));
+        $response->assertRedirect(route('users.index'));
 
         $user->refresh();
         expect($user->is_admin)->toBeTrue();
@@ -116,7 +116,7 @@ describe('UserUpdateController', function () {
             $data = validUserUpdateData($user, ['first_name' => null]);
 
             $response = $this->actingAs($this->admin)
-                ->put(route('inertia.users.update', $user), $data);
+                ->put(route('users.update', $user), $data);
 
             $response->assertSessionHasErrors('first_name');
         });
@@ -126,7 +126,7 @@ describe('UserUpdateController', function () {
             $data = validUserUpdateData($user, ['first_name' => 'A']);
 
             $response = $this->actingAs($this->admin)
-                ->put(route('inertia.users.update', $user), $data);
+                ->put(route('users.update', $user), $data);
 
             $response->assertSessionHasErrors('first_name');
         });
@@ -136,7 +136,7 @@ describe('UserUpdateController', function () {
             $data = validUserUpdateData($user, ['last_name' => null]);
 
             $response = $this->actingAs($this->admin)
-                ->put(route('inertia.users.update', $user), $data);
+                ->put(route('users.update', $user), $data);
 
             $response->assertSessionHasErrors('last_name');
         });
@@ -146,7 +146,7 @@ describe('UserUpdateController', function () {
             $data = validUserUpdateData($user, ['last_name' => 'B']);
 
             $response = $this->actingAs($this->admin)
-                ->put(route('inertia.users.update', $user), $data);
+                ->put(route('users.update', $user), $data);
 
             $response->assertSessionHasErrors('last_name');
         });
@@ -156,7 +156,7 @@ describe('UserUpdateController', function () {
             $data = validUserUpdateData($user, ['username' => null]);
 
             $response = $this->actingAs($this->admin)
-                ->put(route('inertia.users.update', $user), $data);
+                ->put(route('users.update', $user), $data);
 
             $response->assertSessionHasErrors('username');
         });
@@ -166,7 +166,7 @@ describe('UserUpdateController', function () {
             $data = validUserUpdateData($user, ['username' => 'abcd']);
 
             $response = $this->actingAs($this->admin)
-                ->put(route('inertia.users.update', $user), $data);
+                ->put(route('users.update', $user), $data);
 
             $response->assertSessionHasErrors('username');
         });
@@ -179,9 +179,9 @@ describe('UserUpdateController', function () {
             $data = validUserUpdateData($user, ['username' => $user->username]);
 
             $response = $this->actingAs($this->admin)
-                ->put(route('inertia.users.update', $user), $data);
+                ->put(route('users.update', $user), $data);
 
-            $response->assertRedirect(route('inertia.users.index'));
+            $response->assertRedirect(route('users.index'));
             $response->assertSessionHasNoErrors();
         });
 
@@ -191,7 +191,7 @@ describe('UserUpdateController', function () {
             $data = validUserUpdateData($user, ['username' => $other->username]);
 
             $response = $this->actingAs($this->admin)
-                ->put(route('inertia.users.update', $user), $data);
+                ->put(route('users.update', $user), $data);
 
             $response->assertSessionHasErrors('username');
         });
@@ -201,7 +201,7 @@ describe('UserUpdateController', function () {
             $data = validUserUpdateData($user, ['email' => null]);
 
             $response = $this->actingAs($this->admin)
-                ->put(route('inertia.users.update', $user), $data);
+                ->put(route('users.update', $user), $data);
 
             $response->assertSessionHasErrors('email');
         });
@@ -211,7 +211,7 @@ describe('UserUpdateController', function () {
             $data = validUserUpdateData($user, ['email' => 'not-an-email']);
 
             $response = $this->actingAs($this->admin)
-                ->put(route('inertia.users.update', $user), $data);
+                ->put(route('users.update', $user), $data);
 
             $response->assertSessionHasErrors('email');
         });
@@ -224,9 +224,9 @@ describe('UserUpdateController', function () {
             $data = validUserUpdateData($user, ['email' => $user->email]);
 
             $response = $this->actingAs($this->admin)
-                ->put(route('inertia.users.update', $user), $data);
+                ->put(route('users.update', $user), $data);
 
-            $response->assertRedirect(route('inertia.users.index'));
+            $response->assertRedirect(route('users.index'));
             $response->assertSessionHasNoErrors();
         });
 
@@ -236,7 +236,7 @@ describe('UserUpdateController', function () {
             $data = validUserUpdateData($user, ['email' => $other->email]);
 
             $response = $this->actingAs($this->admin)
-                ->put(route('inertia.users.update', $user), $data);
+                ->put(route('users.update', $user), $data);
 
             $response->assertSessionHasErrors('email');
         });
@@ -246,7 +246,7 @@ describe('UserUpdateController', function () {
             $data = validUserUpdateData($user, ['permissions' => null]);
 
             $response = $this->actingAs($this->admin)
-                ->put(route('inertia.users.update', $user), $data);
+                ->put(route('users.update', $user), $data);
 
             $response->assertSessionHasErrors('permissions');
         });
@@ -259,9 +259,9 @@ describe('UserUpdateController', function () {
             ]);
 
             $response = $this->actingAs($this->admin)
-                ->put(route('inertia.users.update', $user), $data);
+                ->put(route('users.update', $user), $data);
 
-            $response->assertRedirect(route('inertia.users.index'));
+            $response->assertRedirect(route('users.index'));
             $response->assertSessionHasNoErrors();
         });
 
@@ -270,7 +270,7 @@ describe('UserUpdateController', function () {
             $data = validUserUpdateData($user, ['permissions' => ['invalid-permission']]);
 
             $response = $this->actingAs($this->admin)
-                ->put(route('inertia.users.update', $user), $data);
+                ->put(route('users.update', $user), $data);
 
             $response->assertSessionHasErrors('permissions.0');
         });

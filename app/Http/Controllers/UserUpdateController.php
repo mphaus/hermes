@@ -20,6 +20,6 @@ class UserUpdateController extends Controller
             'message' => 'User updated successfully.',
         ]);
 
-        return to_route('inertia.users.index');
+        return to_route('users.index');
     }
 }

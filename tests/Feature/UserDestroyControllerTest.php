@@ -16,7 +16,7 @@ describe('UserDestroyController', function () {
     it('requires authentication', function () {
         $user = User::factory()->create(['permissions' => []]);
 
-        $response = $this->delete(route('inertia.users.destroy', $user));
+        $response = $this->delete(route('users.destroy', $user));
 
         $response->assertRedirect();
         expect($response->isRedirect())->toBeTrue();
@@ -31,14 +31,14 @@ describe('UserDestroyController', function () {
         $user = User::factory()->create(['permissions' => []]);
 
         $response = $this->actingAs($userWithoutPermission)
-            ->delete(route('inertia.users.destroy', $user));
+            ->delete(route('users.destroy', $user));
 
         $response->assertNotFound();
     });
 
     it('prevents an admin from deleting themselves', function () {
         $response = $this->actingAs($this->admin)
-            ->delete(route('inertia.users.destroy', $this->admin));
+            ->delete(route('users.destroy', $this->admin));
 
         $response->assertNotFound();
         $this->assertDatabaseHas('users', ['id' => $this->admin->id]);
@@ -52,9 +52,9 @@ describe('UserDestroyController', function () {
         ]);
 
         $response = $this->actingAs($this->admin)
-            ->delete(route('inertia.users.destroy', $user));
+            ->delete(route('users.destroy', $user));
 
-        $response->assertRedirect(route('inertia.users.index'));
+        $response->assertRedirect(route('users.index'));
         $this->assertDatabaseMissing('users', ['id' => $user->id]);
     });
 
@@ -66,7 +66,7 @@ describe('UserDestroyController', function () {
         ]);
 
         $response = $this->actingAs($this->admin)
-            ->delete(route('inertia.users.destroy', $user));
+            ->delete(route('users.destroy', $user));
 
         $response->assertSessionHas('inertia.flash_data', function ($flash) {
             return isset($flash['toast'])

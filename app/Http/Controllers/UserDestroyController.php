@@ -20,6 +20,6 @@ class UserDestroyController extends Controller
             'message' => "User {$full_name} has been deleted.",
         ]);
 
-        return to_route('inertia.users.index');
+        return to_route('users.index');
     }
 }

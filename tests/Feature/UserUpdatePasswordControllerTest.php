@@ -24,7 +24,7 @@ describe('UserUpdatePasswordController', function () {
     it('requires authentication', function () {
         $user = User::factory()->create(['permissions' => []]);
 
-        $response = $this->put(route('inertia.users.change-password.update', $user), validPasswordData());
+        $response = $this->put(route('users.change-password.update', $user), validPasswordData());
 
         $response->assertRedirect();
         expect($response->isRedirect())->toBeTrue();
@@ -39,7 +39,7 @@ describe('UserUpdatePasswordController', function () {
         $user = User::factory()->create(['permissions' => []]);
 
         $response = $this->actingAs($userWithoutPermission)
-            ->put(route('inertia.users.change-password.update', $user), validPasswordData());
+            ->put(route('users.change-password.update', $user), validPasswordData());
 
         $response->assertNotFound();
     });
@@ -52,9 +52,9 @@ describe('UserUpdatePasswordController', function () {
         $newPassword = 'newverylongpassword!';
 
         $response = $this->actingAs($this->admin)
-            ->put(route('inertia.users.change-password.update', $user), ['password' => $newPassword]);
+            ->put(route('users.change-password.update', $user), ['password' => $newPassword]);
 
-        $response->assertRedirect(route('inertia.users.show', $user));
+        $response->assertRedirect(route('users.show', $user));
 
         $user->refresh();
         expect(Hash::check($newPassword, $user->password))->toBeTrue();
@@ -65,7 +65,7 @@ describe('UserUpdatePasswordController', function () {
         $newPassword = 'anotherverylongpass';
 
         $response = $this->actingAs($this->admin)
-            ->put(route('inertia.users.change-password.update', $user), ['password' => $newPassword]);
+            ->put(route('users.change-password.update', $user), ['password' => $newPassword]);
 
         $response->assertSessionHas('inertia.flash_data', function ($flash) {
             return isset($flash['toast'])

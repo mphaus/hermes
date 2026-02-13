@@ -32,7 +32,7 @@ function validUserData(array $overrides = []): array
 
 describe('UserStoreController', function () {
     it('requires authentication', function () {
-        $response = $this->post(route('inertia.users.store'), validUserData());
+        $response = $this->post(route('users.store'), validUserData());
 
         $response->assertRedirect();
         expect($response->isRedirect())->toBeTrue();
@@ -46,7 +46,7 @@ describe('UserStoreController', function () {
         ]);
 
         $response = $this->actingAs($userWithoutPermission)
-            ->post(route('inertia.users.store'), validUserData());
+            ->post(route('users.store'), validUserData());
 
         $response->assertNotFound();
     });
@@ -55,9 +55,9 @@ describe('UserStoreController', function () {
         $data = validUserData();
 
         $response = $this->actingAs($this->user)
-            ->post(route('inertia.users.store'), $data);
+            ->post(route('users.store'), $data);
 
-        $response->assertRedirect(route('inertia.users.index'));
+        $response->assertRedirect(route('users.index'));
 
         $this->assertDatabaseHas('users', [
             'first_name' => $data['first_name'],
@@ -74,9 +74,9 @@ describe('UserStoreController', function () {
         ]);
 
         $response = $this->actingAs($this->user)
-            ->post(route('inertia.users.store'), $data);
+            ->post(route('users.store'), $data);
 
-        $response->assertRedirect(route('inertia.users.index'));
+        $response->assertRedirect(route('users.index'));
 
         $user = User::where('username', $data['username'])->first();
         expect($user->is_admin)->toBeTrue();
@@ -88,7 +88,7 @@ describe('UserStoreController', function () {
             $data = validUserData(['first_name' => null]);
 
             $response = $this->actingAs($this->user)
-                ->post(route('inertia.users.store'), $data);
+                ->post(route('users.store'), $data);
 
             $response->assertSessionHasErrors('first_name');
         });
@@ -97,7 +97,7 @@ describe('UserStoreController', function () {
             $data = validUserData(['first_name' => 'A']);
 
             $response = $this->actingAs($this->user)
-                ->post(route('inertia.users.store'), $data);
+                ->post(route('users.store'), $data);
 
             $response->assertSessionHasErrors('first_name');
         });
@@ -106,7 +106,7 @@ describe('UserStoreController', function () {
             $data = validUserData(['last_name' => null]);
 
             $response = $this->actingAs($this->user)
-                ->post(route('inertia.users.store'), $data);
+                ->post(route('users.store'), $data);
 
             $response->assertSessionHasErrors('last_name');
         });
@@ -115,7 +115,7 @@ describe('UserStoreController', function () {
             $data = validUserData(['last_name' => 'B']);
 
             $response = $this->actingAs($this->user)
-                ->post(route('inertia.users.store'), $data);
+                ->post(route('users.store'), $data);
 
             $response->assertSessionHasErrors('last_name');
         });
@@ -124,7 +124,7 @@ describe('UserStoreController', function () {
             $data = validUserData(['username' => null]);
 
             $response = $this->actingAs($this->user)
-                ->post(route('inertia.users.store'), $data);
+                ->post(route('users.store'), $data);
 
             $response->assertSessionHasErrors('username');
         });
@@ -133,7 +133,7 @@ describe('UserStoreController', function () {
             $data = validUserData(['username' => 'abcd']);
 
             $response = $this->actingAs($this->user)
-                ->post(route('inertia.users.store'), $data);
+                ->post(route('users.store'), $data);
 
             $response->assertSessionHasErrors('username');
         });
@@ -143,7 +143,7 @@ describe('UserStoreController', function () {
             $data = validUserData(['username' => $existing->username]);
 
             $response = $this->actingAs($this->user)
-                ->post(route('inertia.users.store'), $data);
+                ->post(route('users.store'), $data);
 
             $response->assertSessionHasErrors('username');
         });
@@ -152,7 +152,7 @@ describe('UserStoreController', function () {
             $data = validUserData(['email' => null]);
 
             $response = $this->actingAs($this->user)
-                ->post(route('inertia.users.store'), $data);
+                ->post(route('users.store'), $data);
 
             $response->assertSessionHasErrors('email');
         });
@@ -161,7 +161,7 @@ describe('UserStoreController', function () {
             $data = validUserData(['email' => 'not-an-email']);
 
             $response = $this->actingAs($this->user)
-                ->post(route('inertia.users.store'), $data);
+                ->post(route('users.store'), $data);
 
             $response->assertSessionHasErrors('email');
         });
@@ -171,7 +171,7 @@ describe('UserStoreController', function () {
             $data = validUserData(['email' => $existing->email]);
 
             $response = $this->actingAs($this->user)
-                ->post(route('inertia.users.store'), $data);
+                ->post(route('users.store'), $data);
 
             $response->assertSessionHasErrors('email');
         });
@@ -180,7 +180,7 @@ describe('UserStoreController', function () {
             $data = validUserData(['password' => null]);
 
             $response = $this->actingAs($this->user)
-                ->post(route('inertia.users.store'), $data);
+                ->post(route('users.store'), $data);
 
             $response->assertSessionHasErrors('password');
         });
@@ -189,7 +189,7 @@ describe('UserStoreController', function () {
             $data = validUserData(['password' => 'short']);
 
             $response = $this->actingAs($this->user)
-                ->post(route('inertia.users.store'), $data);
+                ->post(route('users.store'), $data);
 
             $response->assertSessionHasErrors('password');
         });
@@ -198,7 +198,7 @@ describe('UserStoreController', function () {
             $data = validUserData(['permissions' => null]);
 
             $response = $this->actingAs($this->user)
-                ->post(route('inertia.users.store'), $data);
+                ->post(route('users.store'), $data);
 
             $response->assertSessionHasErrors('permissions');
         });
@@ -210,9 +210,9 @@ describe('UserStoreController', function () {
             ]);
 
             $response = $this->actingAs($this->user)
-                ->post(route('inertia.users.store'), $data);
+                ->post(route('users.store'), $data);
 
-            $response->assertRedirect(route('inertia.users.index'));
+            $response->assertRedirect(route('users.index'));
             $response->assertSessionHasNoErrors();
         });
 
@@ -220,7 +220,7 @@ describe('UserStoreController', function () {
             $data = validUserData(['permissions' => ['invalid-permission']]);
 
             $response = $this->actingAs($this->user)
-                ->post(route('inertia.users.store'), $data);
+                ->post(route('users.store'), $data);
 
             $response->assertSessionHasErrors('permissions.0');
         });

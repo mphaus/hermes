@@ -20,6 +20,6 @@ class UserUpdatePasswordController extends Controller
             'message' => 'User password updated successfully.',
         ]);
 
-        return to_route('inertia.users.show', ['user' => $user]);
+        return to_route('users.show', ['user' => $user]);
     }
 }

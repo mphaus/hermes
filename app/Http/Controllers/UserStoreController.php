@@ -19,6 +19,6 @@ class UserStoreController extends Controller
             'message' => 'User created successfully.',
         ]);
 
-        return to_route('inertia.users.index');
+        return to_route('users.index');
     }
 }
