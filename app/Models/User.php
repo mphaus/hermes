@@ -76,11 +76,6 @@ class User extends Authenticatable
         return $this->hasMany(UploadLog::class);
     }
 
-    public function scopeExceptSuperAdmin(Builder $query): void
-    {
-        $query->where('username', '!=', config('app.super_user.username'));
-    }
-
     public function sendPasswordResetNotification($token): void
     {
         $this->notify(new ResetPasswordNotification($token));

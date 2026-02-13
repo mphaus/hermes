@@ -2,7 +2,7 @@ import { CurrentRMSMember } from "@/types";
 import { Info } from "lucide-react";
 import Select from "react-select";
 import FormError from "./FormError";
-import { daisyUISelectStyles } from "./reactSelectStyles";
+import { daisyUISelectStyles } from "../reactSelectStyles";
 
 export default function QuarantineOwnerField({ members, error }: {
     members: CurrentRMSMember[];

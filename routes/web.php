@@ -1,9 +1,9 @@
 <?php
 
-// use App\Http\Controllers\ProfileController;
-
+use App\Http\Controllers\ChangePasswordController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\OpportunityController;
+use App\Http\Controllers\PasswordStoreController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductionAdministratorController;
 use App\Http\Controllers\ProjectController;
@@ -11,6 +11,16 @@ use App\Http\Controllers\QuarantineCreateController;
 use App\Http\Controllers\QuarantineStoreController;
 use App\Http\Controllers\QuarantineSuccessController;
 use App\Http\Controllers\TechnicalSupervisorController;
+use App\Http\Controllers\UserChangePasswordController;
+use App\Http\Controllers\UserCreateController;
+use App\Http\Controllers\UserDestroyController;
+use App\Http\Controllers\UserEditController;
+use App\Http\Controllers\UserIndexController;
+use App\Http\Controllers\UserShowController;
+use App\Http\Controllers\UserStoreController;
+use App\Http\Controllers\UserUpdateController;
+use App\Http\Controllers\UserUpdatePasswordController;
+use App\Http\Middleware\EnsureAdminsAreNotEditingThemselves;
 use App\Livewire\ActionStreamIndex;
 use App\Livewire\DiscussionsCreate;
 use App\Livewire\DiscussionsEdit;
@@ -18,17 +28,12 @@ use App\Livewire\JobsIndex;
 use App\Livewire\JobsShow;
 use App\Livewire\QetIndex;
 use App\Livewire\UploadLogsShow;
-use App\Livewire\UsersCreate;
-use App\Livewire\UsersEdit;
-use App\Livewire\UsersIndex;
-use App\Livewire\UsersShow;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'is_enabled'])->group(function () {
-    // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('change-password', ChangePasswordController::class)->name('change-password');
+    Route::post('change-password', PasswordStoreController::class)->name('change-password.store');
 
     Route::get('equipment-import', JobsIndex::class)->name('jobs.index')->middleware('permission:access-equipment-import');
     Route::permanentRedirect('/jobs', '/equipment-import');
@@ -45,11 +50,6 @@ Route::middleware(['auth', 'is_enabled'])->group(function () {
 
     Route::get('opportunities/search', [OpportunityController::class, 'search'])->name('opportunities.search');
     Route::get('opportunities/{id}', [OpportunityController::class, 'show'])->name('opportunities.show');
-
-    Route::get('users', UsersIndex::class)->name('users.index')->middleware('permission:crud-users');
-    Route::get('users/create', UsersCreate::class)->name('users.create')->middleware('permission:crud-users');
-    Route::get('users/{user}', UsersShow::class)->name('users.show')->middleware('permission:crud-users');
-    Route::get('users/{user}/edit', UsersEdit::class)->name('users.edit')->middleware('permission:crud-users');
 
     Route::get('quarantine/create', QuarantineCreateController::class)->middleware('permission:access-quarantine-intake')->name('quarantine.create');
     Route::post('quarantine', QuarantineStoreController::class)->middleware([
@@ -70,6 +70,35 @@ Route::middleware(['auth', 'is_enabled'])->group(function () {
     Route::view('technical-supervisors', 'technical-supervisor.index')->name('technical-supervisors.index.view')->middleware('permission:crud-technical-supervisors');
     Route::view('technical-supervisors/create', 'technical-supervisor.create')->name('technical-supervisors.create.view')->middleware('permission:crud-technical-supervisors');
     Route::view('technical-supervisors/{id}/edit', 'technical-supervisor.edit')->name('technical-supervisors.edit.view')->middleware('permission:crud-technical-supervisors');
+
+    Route::get('users', UserIndexController::class)->name('users.index')->middleware('permission:crud-users');
+    Route::get('users/create', UserCreateController::class)->name('users.create')->middleware('permission:crud-users');
+    Route::post('users', UserStoreController::class)->name('users.store')->middleware('permission:crud-users');
+    Route::get('users/{user}', UserShowController::class)->name('users.show')->middleware('permission:crud-users');
+    Route::get('users/{user}/edit', UserEditController::class)->name('users.edit')->middleware([
+        'permission:crud-users',
+        EnsureAdminsAreNotEditingThemselves::class,
+    ]);
+
+    Route::put('users/{user}', UserUpdateController::class)->name('users.update')->middleware([
+        'permission:crud-users',
+        EnsureAdminsAreNotEditingThemselves::class,
+    ]);
+
+    Route::delete('users/{user}', UserDestroyController::class)->name('users.destroy')->middleware([
+        'permission:crud-users',
+        EnsureAdminsAreNotEditingThemselves::class,
+    ]);
+
+    Route::get('users/{user}/change-password', UserChangePasswordController::class)->name('users.change-password')->middleware([
+        'permission:crud-users',
+        EnsureAdminsAreNotEditingThemselves::class,
+    ]);
+
+    Route::put('users/{user}/change-password', UserUpdatePasswordController::class)->name('users.change-password.update')->middleware([
+        'permission:crud-users',
+        EnsureAdminsAreNotEditingThemselves::class,
+    ]);
 
     Route::get('i/technical-supervisors', [TechnicalSupervisorController::class, 'index'])->name('technical-supervisors.index')->middleware('permission:crud-technical-supervisors');
     Route::post('i/technical-supervisors', [TechnicalSupervisorController::class, 'store'])->name('technical-supervisors.store')->middleware('permission:crud-technical-supervisors');

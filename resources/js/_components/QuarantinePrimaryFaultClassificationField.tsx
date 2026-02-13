@@ -3,7 +3,7 @@ import { usePage } from "@inertiajs/react";
 import { Info } from "lucide-react";
 import Select, { components, OptionProps } from "react-select";
 import FormError from "./FormError";
-import { daisyUISelectStyles } from "./reactSelectStyles";
+import { daisyUISelectStyles } from "../reactSelectStyles";
 
 const Option = (props: OptionProps<any>) => {
     return (

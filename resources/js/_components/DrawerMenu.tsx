@@ -102,7 +102,7 @@ const menuItems: MenuItem[] = [
         id: 7,
         text: 'Users',
         href: '/users',
-        inertia_ready: false,
+        inertia_ready: true,
         permissions: ['crud-users'],
         subitems: [],
     },
