@@ -71,8 +71,9 @@ export default function ResetPasswordForm({ token }: {
                                 <button
                                     type="submit"
                                     className="btn btn-primary btn-block sm:w-auto"
+                                    disabled={processing}
                                 >
-                                    {'Reset Password'}
+                                    {processing ? 'Resetting...' : 'Reset Password'}
                                 </button>
                             </div>
                         </>
