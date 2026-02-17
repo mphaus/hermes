@@ -9,16 +9,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
-use Illuminate\View\View;
+use Inertia\Inertia;
 
 class NewPasswordController extends Controller
 {
-    /**
-     * Display the password reset view.
-     */
-    public function create(Request $request): View
+    public function create(Request $request)
     {
-        return view('auth.reset-password', ['request' => $request]);
+        // return view('auth.reset-password', ['request' => $request]);
+        return Inertia::render('ResetPassword', [
+            'name' => 'Reset Password',
+            'token' => $request->route('token'),
+        ]);
     }
 
     /**

@@ -1,10 +1,10 @@
-import HermesLogo from "./../../images/hermes-logo.png";
+import hermesLogo from "./../../images/hermes-logo.png";
 import { create } from "@/actions/App/Http/Controllers/Auth/AuthenticatedSessionController";
-import DrawerMenu from "./DrawerMenu";
-import DrawerUser from "./DrawerUser";
-import DrawerNavbar from "./DrawerNavbar";
-import DrawerDescription from "./DrawerDescription";
-import Toast from "./Toast";
+import DrawerMenu from "../_components/DrawerMenu";
+import DrawerUser from "../_components/DrawerUser";
+import DrawerNavbar from "../_components/DrawerNavbar";
+import DrawerDescription from "../_components/DrawerDescription";
+import Toast from "../_components/Toast";
 import { router, usePage } from "@inertiajs/react";
 import { FlashData, SharedData } from "@/types";
 import { useEffect, useRef } from "react";
@@ -40,7 +40,7 @@ export default function Layout({ children }: {
                         <div className="w-full p-4">
                             <a href={create().url} title={'Hermes'}>
                                 <img
-                                    src={HermesLogo}
+                                    src={hermesLogo}
                                     alt={'Hermes logo'}
                                     className="w-24 mx-auto"
                                 />
