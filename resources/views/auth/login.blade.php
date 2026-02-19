@@ -41,7 +41,7 @@
         </div>
         <x-input-error :messages="$errors->get('username')" class="mt-2" />
         <div class="mt-4">
-            <a href="{{ route('password.request') }}" class="text-sm">{{ __('Forgot password?') }}</a>
+            <a href="{{ route('password.request') }}" class="text-sm">{{ __('Forgot your password?') }}</a>
         </div>
         <div class="flex justify-end mt-4">
             <x-button

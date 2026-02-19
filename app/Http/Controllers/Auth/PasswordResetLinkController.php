@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Inertia\Inertia;
@@ -12,7 +11,10 @@ class PasswordResetLinkController extends Controller
 {
     public function create()
     {
-        return Inertia::render('ForgotPassword');
+        return Inertia::render('ForgotPassword', [
+            'title' => 'Forgot your password?',
+            'status' => session('status'),
+        ]);
     }
 
     /**
@@ -20,7 +22,7 @@ class PasswordResetLinkController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request)
     {
         $request->validate([
             'email' => ['required', 'email'],
@@ -28,9 +30,10 @@ class PasswordResetLinkController extends Controller
 
         $user = Password::getUser(['email' => $request->email]);
 
-        if ($user && (!$user->is_enabled || $user->username === config('app.super_user.username'))) {
-            return back()->withInput($request->only('email'))
-                ->withErrors(['email' => __('We were unable to send you a link to reset your password, your account is not enabled or available to use the password recovery feature.')]);
+        if ($user && !$user->is_enabled) {
+            return to_route('password.request')->withErrors([
+                'email' => 'We were unable to send you a link to reset your password, your account is not enabled or available to use the password recovery feature.'
+            ]);
         }
 
         // We will send the password reset link to this user. Once we have attempted
@@ -40,9 +43,8 @@ class PasswordResetLinkController extends Controller
             $request->only('email')
         );
 
-        return $status == Password::RESET_LINK_SENT
-            ? back()->with('status', __($status))
-            : back()->withInput($request->only('email'))
-            ->withErrors(['email' => __($status)]);
+        return $status == Password::ResetLinkSent
+            ? to_route('password.request')->with('status', __($status))
+            : to_route('password.request')->withErrors(['email' => __($status)]);
     }
 }
