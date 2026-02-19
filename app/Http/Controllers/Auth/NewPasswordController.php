@@ -15,10 +15,10 @@ class NewPasswordController extends Controller
 {
     public function create(Request $request)
     {
-        // return view('auth.reset-password', ['request' => $request]);
         return Inertia::render('ResetPassword', [
             'name' => 'Reset Password',
             'token' => $request->route('token'),
+            'email' => $request->input('email'),
         ]);
     }
 
@@ -27,7 +27,7 @@ class NewPasswordController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request)
     {
         $request->validate([
             'token' => ['required'],
@@ -35,14 +35,14 @@ class NewPasswordController extends Controller
             'password' => [
                 'required',
                 'confirmed',
-                'regex:/^(?=.*[A-Z].*[A-Z])(?=.*[a-z].*[a-z])(?=.*\d.*\d)(?=.*[!@#$%^&*()\-_+=].*[!@#$%^&*()\-_+=]).{12,24}$/',
+                'regex:/^(?=.*[A-Z].*[A-Z])(?=.*[a-z].*[a-z])(?=.*\d.*\d)(?=.*[!@#$%^&*].*[!@#$%^&*]).{16,24}$/',
             ],
         ]);
 
         $user = Password::getUser(['email' => $request->email]);
 
-        if ($user && (!$user->is_enabled || $user->username === config('app.super_user.username'))) {
-            return back()->withInput($request->only('email'))
+        if ($user && !$user->is_enabled) {
+            return to_route('password.reset')
                 ->withErrors(['email' => __('We were unable to set a new password for you, your account is not enabled or available to set a password.')]);
         }
 
@@ -61,12 +61,18 @@ class NewPasswordController extends Controller
             }
         );
 
-        // If the password was successfully reset, we will redirect the user back to
-        // the application's home authenticated view. If there is an error we can
-        // redirect them back to where they came from with their error message.
-        return $status == Password::PASSWORD_RESET
-            ? redirect()->route('login')->with('status', __($status))
-            : back()->withInput($request->only('email'))
-            ->withErrors(['email' => __($status)]);
+        if ($status != Password::PasswordReset) {
+            return to_route('password.reset', [
+                'token' => $request->input('token'),
+                'email' => $request->input('email'),
+            ])->withErrors(['email' => __($status)]);
+        }
+
+        session()->flash('alert', [
+            'type' => 'success',
+            'message' => __($status),
+        ]);
+
+        return Inertia::location(route('login'));
     }
 }

@@ -6,11 +6,12 @@ import { Head, usePage } from "@inertiajs/react";
 const ResetPassword = () => {
     const { name } = usePage<SharedData>().props;
     const token = usePage<SharedData>().props.token as string;
+    const email = usePage<SharedData>().props.email as string;
 
     return (
         <>
             <Head title={name} />
-            <ResetPasswordForm token={token} />
+            <ResetPasswordForm token={token} email={email} />
         </>
     );
 }

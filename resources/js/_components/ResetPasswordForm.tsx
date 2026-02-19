@@ -2,6 +2,8 @@ import { Form } from "@inertiajs/react";
 import FormGroup from "./FormGroup";
 import clsx from "clsx";
 import { useMemo, useReducer, useRef } from "react";
+import { store } from "@/actions/App/Http/Controllers/Auth/NewPasswordController";
+import FormError from "./FormError";
 
 const lengthPattern = /.{16,24}/;
 const twoUppercaseLettersPattern = /(?=.*[A-Z].*[A-Z])/;
@@ -9,8 +11,9 @@ const twoLowercaseLettersPattern = /(?=.*[a-z].*[a-z])/;
 const twoNumbersPattern = /(?=.*\d.*\d)/;
 const twoSpecialCharactersPattern = /(?=.*[!@#$%^&*].*[!@#$%^&*])/;
 
-export default function ResetPasswordForm({ token }: {
+export default function ResetPasswordForm({ token, email }: {
     token: string;
+    email: string;
 }) {
     const passwordRef = useRef<HTMLInputElement | null>(null);
     const passwordConfirmationRef = useRef<HTMLInputElement | null>(null);
@@ -60,13 +63,12 @@ export default function ResetPasswordForm({ token }: {
         <div className="bg-base-100 card shadow-sm">
             <div className="card-body">
                 <Form
-                    action={'#'}
+                    action={store()}
                     className="space-y-4"
                 >
                     {({
                         processing,
-                        errors,
-                        hasErrors,
+                        errors
                     }) => (
                         <>
                             <input type="hidden" name="token" value={token} />
@@ -79,7 +81,9 @@ export default function ResetPasswordForm({ token }: {
                                     className="input input-bordered w-full"
                                     required
                                     autoComplete="off"
+                                    defaultValue={email}
                                 />
+                                <FormError message={errors.email} />
                             </FormGroup>
                             <FormGroup>
                                 <label htmlFor="password">{'Password'}</label>
