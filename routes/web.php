@@ -29,6 +29,8 @@ use App\Livewire\JobsShow;
 use App\Livewire\QetIndex;
 use App\Livewire\UploadLogsShow;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'is_enabled'])->group(function () {
