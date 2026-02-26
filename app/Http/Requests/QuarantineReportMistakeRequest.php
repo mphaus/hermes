@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class QuarantineReportMistakeFormRequest extends FormRequest
+class QuarantineReportMistakeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -31,7 +31,7 @@ class QuarantineReportMistakeFormRequest extends FormRequest
             'primary_fault_classification' => 'required',
             'fault_description' => 'required',
             'intake_location' => 'required',
-            'message' => 'required',
+            'message' => 'required|max:512',
         ];
     }
 }

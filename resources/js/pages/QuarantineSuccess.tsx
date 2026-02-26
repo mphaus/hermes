@@ -1,12 +1,15 @@
 import { SharedData } from "@/types";
 import { Head, Link, usePage } from "@inertiajs/react";
 import QuarantineCreateController from "@/actions/App/Http/Controllers/QuarantineCreateController";
+import QuarantineReportMistakeForm from "@/_components/QuarantineReportMistakeForm";
 
-interface Quarantine {
+export interface Quarantine {
     id: number;
     name: string;
     reference: string;
     description: string;
+    formatted_created_at: string;
+    formatted_starts_at: string;
     created_at: string;
     ready_for_repairs: string;
     primary_fault_classification: string;
@@ -124,6 +127,14 @@ export default function QuarantineSuccess() {
                             >
                                 {'Create a new Quarantine'}
                             </Link>
+                        </div>
+                    </div>
+                    <div className="card bg-base-100 shadow-sm">
+                        <div className="card-body">
+                            <p className="font-semibold">{'Made a mistake?'}</p>
+                            <p>{'No worries. If there are errors in this data, don\'t submit it again! Let us know what needs to change...'}</p>
+                            <QuarantineReportMistakeForm quarantine={quarantine} />
+                            <p>{'A copy of the data and your message will be provided to the SRMM Manager, and they will take action. '}</p>
                         </div>
                     </div>
                 </div>

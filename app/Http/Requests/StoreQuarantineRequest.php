@@ -157,7 +157,7 @@ class StoreQuarantineRequest extends FormRequest
 
         $result = CurrentRMS::store(uri: 'quarantines', data: [
             'quarantine' => [
-                'item_id' => App::environment(['local', 'staging']) ? intval(config('app.mph.test_product_id')) : intval($product_id),
+                'item_id' => intval($product_id),
                 'store_id' => 1,
                 'owned_by' => $owner_id,
                 'reference' => $reference,
@@ -189,11 +189,6 @@ class StoreQuarantineRequest extends FormRequest
         }
 
         ['quarantine' => $quarantine] = $result['data'];
-
-        // Mail::to([
-        //     config('app.mph.notification_mail_address'),
-        //     config('app.mph.service_manager_mail_address'),
-        // ])->send(new QuarantineCreated($quarantine, $classification, $description, Auth::user()));
 
         return [
             'error' => '',

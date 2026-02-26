@@ -23,7 +23,7 @@ class QuarantineStoreController extends Controller
             ]);
         }
 
-        session()->flash('quarantine', $data);
+        $request->session()->put('quarantine', $data);
 
         return to_route('quarantine.success');
     }
