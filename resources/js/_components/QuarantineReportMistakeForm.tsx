@@ -4,6 +4,8 @@ import { useCharacterLimit } from "@/hooks";
 import { useRef } from "react";
 import clsx from "clsx";
 import { Quarantine } from "@/pages/QuarantineSuccess";
+import FormError from "./FormError";
+import QuarantineReportMistakeController from "@/actions/App/Http/Controllers/QuarantineReportMistakeController";
 
 export default function QuarantineReportMistakeForm({ quarantine }: {
     quarantine: Quarantine;
@@ -15,7 +17,11 @@ export default function QuarantineReportMistakeForm({ quarantine }: {
 
     return (
         <Form
-            action={'#'}
+            action={QuarantineReportMistakeController()}
+            className="space-y-4"
+            options={{
+                preserveScroll: true,
+            }}
         >
             {({
                 errors,
@@ -23,6 +29,11 @@ export default function QuarantineReportMistakeForm({ quarantine }: {
                 processing,
             }) => (
                 <>
+                    {hasErrors && (
+                        <div role="alert" className="alert alert-error">
+                            <span>{'Some fields need your attention. Please review the form and correct the highlighted errors.'}</span>
+                        </div>
+                    )}
                     <input type="hidden" name="submitted" value={quarantine.formatted_created_at} />
                     <input type="hidden" name="quarantine_id" value={quarantine.id} />
                     <input type="hidden" name="job" value={quarantine.custom_fields.opportunity} />
@@ -42,6 +53,7 @@ export default function QuarantineReportMistakeForm({ quarantine }: {
                             ref={textareaRef}
                             onChange={() => handleLimitChange(textareaRef?.current?.value ?? "")}
                         />
+                        {errors.message && <FormError message={errors.message} />}
                         <p className={clsx({
                             'text-xs font-semibold mt-1': true,
                             'text-error': isOverLimit,
