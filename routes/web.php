@@ -8,6 +8,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductionAdministratorController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\QuarantineCreateController;
+use App\Http\Controllers\QuarantineReportMistakeController;
 use App\Http\Controllers\QuarantineStoreController;
 use App\Http\Controllers\QuarantineSuccessController;
 use App\Http\Controllers\TechnicalSupervisorController;
@@ -58,7 +59,8 @@ Route::middleware(['auth', 'is_enabled'])->group(function () {
         'permission:access-quarantine-intake',
         HandlePrecognitiveRequests::class,
     ]);
-    Route::get('quarantine/success', QuarantineSuccessController::class)->name('quarantine.success');
+    Route::get('quarantine/success', QuarantineSuccessController::class)->name('quarantine.success')->middleware('permission:access-quarantine-intake');
+    Route::post('quarantine/report-mistake', QuarantineReportMistakeController::class)->name('quarantine.report-mistake')->middleware('permission:access-quarantine-intake');
 
     Route::view('production-administrators', 'production-administrator.index')->name('production-administrators.index.view')->middleware('permission:crud-production-administrators');
     Route::view('production-administrators/create', 'production-administrator.create')->name('production-administrators.create.view')->middleware('permission:crud-production-administrators');

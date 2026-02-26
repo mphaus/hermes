@@ -21,7 +21,11 @@ class QuarantineSuccessController extends Controller
         return Inertia::render(component: 'QuarantineSuccess', props: [
             'title' => 'Quarantine Intake Success',
             'description' => 'Success!',
-            'quarantine' => $quarantine,
+            'quarantine' => [
+                ...$quarantine,
+                'formatted_created_at' => now()->parse($quarantine['created_at'])->setTimezone(config('app.timezone'))->format('d-M-Y \a\t Hi'),
+                'formatted_starts_at' => now()->parse($quarantine['starts_at'])->setTimezone(config('app.timezone'))->format('d-M-Y \a\t Hi'),
+            ],
         ]);
     }
 }
