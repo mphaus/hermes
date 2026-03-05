@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Facades\CurrentRMS;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class TechnicalSupervisorIndexController extends Controller
@@ -11,9 +10,11 @@ class TechnicalSupervisorIndexController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request)
+    public function __invoke()
     {
         return Inertia::render('TechnicalSupervisorIndex', [
+            'title' => 'Technical Supervisors',
+            'description' => 'This lists MPH Technical Supervisors that can be associated with Opportunities in CurrentRMS (this is done during Pre-Production by the Crew and Logistics Assistant). In turn, this is used to assign Technical Supervisors to Quarantined items. Names can be edited later if necessary.',
             'technical_supervisors_data' => Inertia::defer(fn() => $this->fetchTechnicalSupervisors())->once(),
         ]);
     }
@@ -34,9 +35,11 @@ class TechnicalSupervisorIndexController extends Controller
             ];
         }
 
+        $not_yet_assigned_id = config('app.mph.technical_supervisor_not_yet_assigned_id');
+
         return [
             ...$technical_supervisors,
-            'data' => $response->getData()['list_name']['list_values'] ?? [],
+            'data' => collect(array_values(array_filter($response->getData()['list_name']['list_values'], fn($value) => $value['id'] !== intval($not_yet_assigned_id)))) ?? collect([]),
         ];
     }
 }
