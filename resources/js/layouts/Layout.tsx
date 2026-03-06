@@ -30,7 +30,7 @@ export default function Layout({ children }: {
                 <div className="flex flex-col drawer-content">
                     <DrawerNavbar />
                     <DrawerDescription />
-                    <main className="px-4 mx-auto w-full max-w-7xl py-6">
+                    <main className="px-4 mx-auto w-full max-w-7xl pt-6 pb-20 xl:pb-6">
                         {children}
                     </main>
                 </div>
