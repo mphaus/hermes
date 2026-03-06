@@ -1,5 +1,6 @@
 import { SharedData } from "@/types";
 import { Head, usePage } from "@inertiajs/react";
+import TechnicalSupervisorForm from "@/_components/TechnicalSupervisorForm";
 
 export default function TechnicalSupervisorCreate() {
     const { title } = usePage<SharedData>().props;
@@ -7,7 +8,7 @@ export default function TechnicalSupervisorCreate() {
     return (
         <>
             <Head title={title} />
-            <div>{'TODO: Technical Supervisor Create page'}</div>
+            <TechnicalSupervisorForm />
         </>
     );
 }

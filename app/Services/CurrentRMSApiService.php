@@ -68,6 +68,18 @@ class CurrentRMSApiService
         return $this->handleResponse($response);
     }
 
+    public function update(string $uri, array $params = [], array $data = []): self
+    {
+        $uri = $this->buildUri($uri, $params);
+
+        /** @var \Illuminate\Http\Client\Response $response */
+        $response = $this->client()->put($uri, $data);
+
+        $this->newHandleResponse($response);
+
+        return $this;
+    }
+
     /**
      * @param \Illuminate\Http\Client\Response $response
      */
@@ -94,7 +106,7 @@ class CurrentRMSApiService
     /**
      * @param \Illuminate\Http\Client\Response $response
      */
-    private function newHandleResponse($response): self
+    private function newHandleResponse($response): void
     {
         if ($response->failed()) {
             $errors = isset($response->json()['errors']) ? $response->json()['errors'] : $response->json();
@@ -111,8 +123,6 @@ class CurrentRMSApiService
                 'data' => $response->json(),
             ];
         }
-
-        return $this;
     }
 
     private function buildUri(string $uri, array $params = []): string
