@@ -31,7 +31,7 @@ class TechnicalSupervisorIndexController extends Controller
         if ($response->hasErrors()) {
             return [
                 ...$technical_supervisors,
-                'error' => 'An unexpected error occurred while fetching the Technical Supervisors list. Please refresh the page and try again. ' . $response->getErrorString(),
+                'error' => "An unexpected error occurred while fetching the Technical Supervisors list. Please refresh the page and try again: {$response->getErrorString()}",
             ];
         }
 
