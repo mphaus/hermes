@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\CurrentRMSApiService;
+use App\Facades\CurrentRMS;
 use App\Traits\WithQuarantineFaultClassification;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -15,10 +15,6 @@ class QuarantineCreateController extends Controller
         'error' => '',
         'data' => [],
     ];
-
-    public function __construct(
-        protected CurrentRMSApiService $currentrms
-    ) {}
 
     /**
      * Handle the incoming request.
@@ -39,24 +35,25 @@ class QuarantineCreateController extends Controller
     private function technicalSupervisorsData()
     {
         $list_id = config('app.mph.technical_supervisor_list_id');
-        $result = $this->currentrms->fetch("list_names/{$list_id}");
+        // $result = $this->currentrms->fetch("list_names/{$list_id}");
+        $response = CurrentRMS::fetch("list_names/{$list_id}");
 
-        if ($result['fail']) {
+        if ($response->hasErrors()) {
             return [
                 ...self::DATA,
-                'error' => 'An unexpected error occurred while fetching the Technical Supervisors list. Please refresh the page and try again. ' . json_encode($result['fail']['data']),
+                'error' => "An unexpected error occurred while fetching the Technical Supervisors list. Please refresh the page and try again. {$response->getErrorString()}",
             ];
         }
 
         return [
             ...self::DATA,
-            'data' => $result['data']['list_name']['list_values'] ?? [],
+            'data' => $response->getData()['list_name']['list_values'] ?? [],
         ];
     }
 
     private function membersData()
     {
-        $result = $this->currentrms->fetch('members', [
+        $response = CurrentRMS::fetch('members', [
             'per_page' => 100,
             'filtermode' => 'user',
             'q' => [
@@ -64,16 +61,16 @@ class QuarantineCreateController extends Controller
             ],
         ]);
 
-        if ($result['fail']) {
+        if ($response->hasErrors()) {
             return [
                 ...self::DATA,
-                'error' => 'An unexpected error occurred while fetching the Members list. Please refresh the page and try again. ' . json_encode($result['fail']['data']),
+                'error' => "An unexpected error occurred while fetching the Members list. Please refresh the page and try again. {$response->getErrorString()}",
             ];
         }
 
         return [
             ...self::DATA,
-            'data' => $result['data']['members'] ?? [],
+            'data' => $response->getData()['members'] ?? [],
         ];
     }
 }
