@@ -40,7 +40,7 @@ beforeEach(function () {
     $this->technicalSupervisorId = 1;
 });
 
-function validTechnicalSupervisorData(array $overrides = []): array
+function validTechnicalSupervisorDataForUpdate(array $overrides = []): array
 {
     return [
         'first_name' => 'Jane',
@@ -53,7 +53,7 @@ describe('TechnicalSupervisorUpdateController', function () {
     it('requires authentication', function () {
         $response = $this->put(
             route('technical-supervisors.update', $this->technicalSupervisorId),
-            validTechnicalSupervisorData()
+            validTechnicalSupervisorDataForUpdate()
         );
 
         $response->assertRedirect();
@@ -70,14 +70,14 @@ describe('TechnicalSupervisorUpdateController', function () {
         $response = $this->actingAs($userWithoutPermission)
             ->put(
                 route('technical-supervisors.update', $this->technicalSupervisorId),
-                validTechnicalSupervisorData()
+                validTechnicalSupervisorDataForUpdate()
             );
 
         $response->assertForbidden();
     });
 
     it('successfully updates a technical supervisor and redirects to index', function () {
-        $data = validTechnicalSupervisorData();
+        $data = validTechnicalSupervisorDataForUpdate();
 
         $response = $this->actingAs($this->user)
             ->put(
@@ -102,7 +102,7 @@ describe('TechnicalSupervisorUpdateController', function () {
         $response = $this->actingAs($this->user)
             ->put(
                 route('technical-supervisors.update', $this->technicalSupervisorId),
-                validTechnicalSupervisorData()
+                validTechnicalSupervisorDataForUpdate()
             );
 
         $response->assertRedirect(route('technical-supervisors.index'));
@@ -130,7 +130,7 @@ describe('TechnicalSupervisorUpdateController', function () {
         $response = $this->actingAs($this->user)
             ->put(
                 route('technical-supervisors.update', $this->technicalSupervisorId),
-                validTechnicalSupervisorData()
+                validTechnicalSupervisorDataForUpdate()
             );
 
         $response->assertRedirect(route('technical-supervisors.edit', $this->technicalSupervisorId));
@@ -163,7 +163,7 @@ describe('TechnicalSupervisorUpdateController', function () {
         $response = $this->actingAs($this->user)
             ->put(
                 route('technical-supervisors.update', $this->technicalSupervisorId),
-                validTechnicalSupervisorData()
+                validTechnicalSupervisorDataForUpdate()
             );
 
         $response->assertRedirect(route('technical-supervisors.edit', $this->technicalSupervisorId));
@@ -172,7 +172,7 @@ describe('TechnicalSupervisorUpdateController', function () {
 
     describe('validation', function () {
         it('requires first_name', function () {
-            $data = validTechnicalSupervisorData(['first_name' => null]);
+            $data = validTechnicalSupervisorDataForUpdate(['first_name' => null]);
 
             $response = $this->actingAs($this->user)
                 ->put(
@@ -184,7 +184,7 @@ describe('TechnicalSupervisorUpdateController', function () {
         });
 
         it('validates first_name must be alpha_dash', function () {
-            $data = validTechnicalSupervisorData(['first_name' => 'Jane Doe!']);
+            $data = validTechnicalSupervisorDataForUpdate(['first_name' => 'Jane Doe!']);
 
             $response = $this->actingAs($this->user)
                 ->put(
@@ -196,7 +196,7 @@ describe('TechnicalSupervisorUpdateController', function () {
         });
 
         it('requires last_name', function () {
-            $data = validTechnicalSupervisorData(['last_name' => null]);
+            $data = validTechnicalSupervisorDataForUpdate(['last_name' => null]);
 
             $response = $this->actingAs($this->user)
                 ->put(
@@ -208,7 +208,7 @@ describe('TechnicalSupervisorUpdateController', function () {
         });
 
         it('validates last_name must be alpha_dash', function () {
-            $data = validTechnicalSupervisorData(['last_name' => 'Smith Jr.']);
+            $data = validTechnicalSupervisorDataForUpdate(['last_name' => 'Smith Jr.']);
 
             $response = $this->actingAs($this->user)
                 ->put(
