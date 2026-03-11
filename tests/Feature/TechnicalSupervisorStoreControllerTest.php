@@ -49,7 +49,7 @@ function validTechnicalSupervisorData(array $overrides = []): array
 
 describe('TechnicalSupervisorStoreController', function () {
     it('requires authentication', function () {
-        $response = $this->post(route('inertia.technical-supervisors.store'), validTechnicalSupervisorData());
+        $response = $this->post(route('technical-supervisors.store'), validTechnicalSupervisorData());
 
         $response->assertRedirect();
         expect($response->isRedirect())->toBeTrue();
@@ -63,7 +63,7 @@ describe('TechnicalSupervisorStoreController', function () {
         ]);
 
         $response = $this->actingAs($userWithoutPermission)
-            ->post(route('inertia.technical-supervisors.store'), validTechnicalSupervisorData());
+            ->post(route('technical-supervisors.store'), validTechnicalSupervisorData());
 
         $response->assertForbidden();
     });
@@ -72,9 +72,9 @@ describe('TechnicalSupervisorStoreController', function () {
         $data = validTechnicalSupervisorData();
 
         $response = $this->actingAs($this->user)
-            ->post(route('inertia.technical-supervisors.store'), $data);
+            ->post(route('technical-supervisors.store'), $data);
 
-        $response->assertRedirect(route('inertia.technical-supervisors.index'));
+        $response->assertRedirect(route('technical-supervisors.index'));
 
         Http::assertSent(function (Request $request) {
             if ($request->method() === 'PUT') {
@@ -89,9 +89,9 @@ describe('TechnicalSupervisorStoreController', function () {
 
     it('flashes success toast on successful create', function () {
         $response = $this->actingAs($this->user)
-            ->post(route('inertia.technical-supervisors.store'), validTechnicalSupervisorData());
+            ->post(route('technical-supervisors.store'), validTechnicalSupervisorData());
 
-        $response->assertRedirect(route('inertia.technical-supervisors.index'));
+        $response->assertRedirect(route('technical-supervisors.index'));
         $response->assertSessionHas('inertia.flash_data', function ($flash) {
             return isset($flash['toast'])
                 && $flash['toast']['type'] === 'success'
@@ -114,9 +114,9 @@ describe('TechnicalSupervisorStoreController', function () {
         });
 
         $response = $this->actingAs($this->user)
-            ->post(route('inertia.technical-supervisors.store'), validTechnicalSupervisorData());
+            ->post(route('technical-supervisors.store'), validTechnicalSupervisorData());
 
-        $response->assertRedirect(route('inertia.technical-supervisors.create'));
+        $response->assertRedirect(route('technical-supervisors.create'));
         $response->assertSessionHasErrors('message');
     });
 
@@ -140,9 +140,9 @@ describe('TechnicalSupervisorStoreController', function () {
         });
 
         $response = $this->actingAs($this->user)
-            ->post(route('inertia.technical-supervisors.store'), validTechnicalSupervisorData());
+            ->post(route('technical-supervisors.store'), validTechnicalSupervisorData());
 
-        $response->assertRedirect(route('inertia.technical-supervisors.create'));
+        $response->assertRedirect(route('technical-supervisors.create'));
         $response->assertSessionHasErrors('message');
     });
 
@@ -151,7 +151,7 @@ describe('TechnicalSupervisorStoreController', function () {
             $data = validTechnicalSupervisorData(['first_name' => null]);
 
             $response = $this->actingAs($this->user)
-                ->post(route('inertia.technical-supervisors.store'), $data);
+                ->post(route('technical-supervisors.store'), $data);
 
             $response->assertSessionHasErrors('first_name');
         });
@@ -160,7 +160,7 @@ describe('TechnicalSupervisorStoreController', function () {
             $data = validTechnicalSupervisorData(['first_name' => 'Jane Doe!']);
 
             $response = $this->actingAs($this->user)
-                ->post(route('inertia.technical-supervisors.store'), $data);
+                ->post(route('technical-supervisors.store'), $data);
 
             $response->assertSessionHasErrors('first_name');
         });
@@ -169,7 +169,7 @@ describe('TechnicalSupervisorStoreController', function () {
             $data = validTechnicalSupervisorData(['last_name' => null]);
 
             $response = $this->actingAs($this->user)
-                ->post(route('inertia.technical-supervisors.store'), $data);
+                ->post(route('technical-supervisors.store'), $data);
 
             $response->assertSessionHasErrors('last_name');
         });
@@ -178,7 +178,7 @@ describe('TechnicalSupervisorStoreController', function () {
             $data = validTechnicalSupervisorData(['last_name' => 'Smith Jr.']);
 
             $response = $this->actingAs($this->user)
-                ->post(route('inertia.technical-supervisors.store'), $data);
+                ->post(route('technical-supervisors.store'), $data);
 
             $response->assertSessionHasErrors('last_name');
         });

@@ -18,7 +18,7 @@ class TechnicalSupervisorStoreController extends Controller
         $response = CurrentRMS::fetch(uri: "list_names/{$technical_supervisors_list_id}", new_api: true);
 
         if ($response->hasErrors()) {
-            return to_route('inertia.technical-supervisors.create')->withErrors([
+            return to_route('technical-supervisors.create')->withErrors([
                 'message' => "An error occurred while attempting to save the data. Please refresh the page and try again. {$response->getErrorString()}",
             ]);
         }
@@ -41,7 +41,7 @@ class TechnicalSupervisorStoreController extends Controller
         ]);
 
         if ($response->hasErrors()) {
-            return to_route('inertia.technical-supervisors.create')->withErrors([
+            return to_route('technical-supervisors.create')->withErrors([
                 'message' => "An error occurred while attempting to save the data. Please refresh the page and try again. {$response->getErrorString()}",
             ]);
         }
@@ -51,6 +51,6 @@ class TechnicalSupervisorStoreController extends Controller
             'message' => 'Technical Supervisor created successfully.',
         ]);
 
-        return to_route('inertia.technical-supervisors.index');
+        return to_route('technical-supervisors.index');
     }
 }

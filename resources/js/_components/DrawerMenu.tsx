@@ -93,7 +93,7 @@ const menuItems: MenuItem[] = [
                 id: 2,
                 text: 'Technical supervisors',
                 href: '/technical-supervisors',
-                inertia_ready: false,
+                inertia_ready: true,
                 permissions: ['crud-technical-supervisors'],
             },
         ],

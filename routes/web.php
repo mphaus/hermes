@@ -11,7 +11,11 @@ use App\Http\Controllers\QuarantineCreateController;
 use App\Http\Controllers\QuarantineReportMistakeController;
 use App\Http\Controllers\QuarantineStoreController;
 use App\Http\Controllers\QuarantineSuccessController;
-use App\Http\Controllers\TechnicalSupervisorController;
+use App\Http\Controllers\TechnicalSupervisorCreateController;
+use App\Http\Controllers\TechnicalSupervisorEditController;
+use App\Http\Controllers\TechnicalSupervisorIndexController;
+use App\Http\Controllers\TechnicalSupervisorStoreController;
+use App\Http\Controllers\TechnicalSupervisorUpdateController;
 use App\Http\Controllers\UserChangePasswordController;
 use App\Http\Controllers\UserCreateController;
 use App\Http\Controllers\UserDestroyController;
@@ -30,8 +34,6 @@ use App\Livewire\JobsShow;
 use App\Livewire\QetIndex;
 use App\Livewire\UploadLogsShow;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'is_enabled'])->group(function () {
@@ -71,9 +73,11 @@ Route::middleware(['auth', 'is_enabled'])->group(function () {
     Route::get('i/production-administrators/{id}', [ProductionAdministratorController::class, 'show'])->name('production-administrators.show')->middleware('permission:crud-production-administrators');
     Route::put('i/production-administrators/{id}', [ProductionAdministratorController::class, 'update'])->name('production-administrators.update')->middleware('permission:crud-production-administrators');
 
-    Route::view('technical-supervisors', 'technical-supervisor.index')->name('technical-supervisors.index.view')->middleware('permission:crud-technical-supervisors');
-    Route::view('technical-supervisors/create', 'technical-supervisor.create')->name('technical-supervisors.create.view')->middleware('permission:crud-technical-supervisors');
-    Route::view('technical-supervisors/{id}/edit', 'technical-supervisor.edit')->name('technical-supervisors.edit.view')->middleware('permission:crud-technical-supervisors');
+    Route::get('technical-supervisors', TechnicalSupervisorIndexController::class)->name('technical-supervisors.index')->middleware('permission:crud-technical-supervisors');
+    Route::get('technical-supervisors/create', TechnicalSupervisorCreateController::class)->name('technical-supervisors.create')->middleware('permission:crud-technical-supervisors');
+    Route::post('technical-supervisors', TechnicalSupervisorStoreController::class)->name('technical-supervisors.store');
+    Route::get('technical-supervisors/{id}/edit', TechnicalSupervisorEditController::class)->name('technical-supervisors.edit')->middleware('permission:crud-technical-supervisors');
+    Route::put('technical-supervisors/{id}', TechnicalSupervisorUpdateController::class)->name('technical-supervisors.update');
 
     Route::get('users', UserIndexController::class)->name('users.index')->middleware('permission:crud-users');
     Route::get('users/create', UserCreateController::class)->name('users.create')->middleware('permission:crud-users');
@@ -103,11 +107,6 @@ Route::middleware(['auth', 'is_enabled'])->group(function () {
         'permission:crud-users',
         EnsureAdminsAreNotEditingThemselves::class,
     ]);
-
-    Route::get('i/technical-supervisors', [TechnicalSupervisorController::class, 'index'])->name('technical-supervisors.index')->middleware('permission:crud-technical-supervisors');
-    Route::post('i/technical-supervisors', [TechnicalSupervisorController::class, 'store'])->name('technical-supervisors.store')->middleware('permission:crud-technical-supervisors');
-    Route::get('i/technical-supervisors/{id}', [TechnicalSupervisorController::class, 'show'])->name('technical-supervisors.show')->middleware('permission:crud-technical-supervisors');
-    Route::put('i/technical-supervisors/{id}', [TechnicalSupervisorController::class, 'update'])->name('technical-supervisors.update')->middleware('permission:crud-technical-supervisors');
 
     Route::get('i/projects/search', [ProjectController::class, 'search'])->name('projects.search');
     Route::get('i/products/search', [ProductController::class, 'search'])->name('products.search');

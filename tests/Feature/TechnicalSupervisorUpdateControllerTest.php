@@ -52,7 +52,7 @@ function validTechnicalSupervisorData(array $overrides = []): array
 describe('TechnicalSupervisorUpdateController', function () {
     it('requires authentication', function () {
         $response = $this->put(
-            route('inertia.technical-supervisors.update', $this->technicalSupervisorId),
+            route('technical-supervisors.update', $this->technicalSupervisorId),
             validTechnicalSupervisorData()
         );
 
@@ -69,7 +69,7 @@ describe('TechnicalSupervisorUpdateController', function () {
 
         $response = $this->actingAs($userWithoutPermission)
             ->put(
-                route('inertia.technical-supervisors.update', $this->technicalSupervisorId),
+                route('technical-supervisors.update', $this->technicalSupervisorId),
                 validTechnicalSupervisorData()
             );
 
@@ -81,11 +81,11 @@ describe('TechnicalSupervisorUpdateController', function () {
 
         $response = $this->actingAs($this->user)
             ->put(
-                route('inertia.technical-supervisors.update', $this->technicalSupervisorId),
+                route('technical-supervisors.update', $this->technicalSupervisorId),
                 $data
             );
 
-        $response->assertRedirect(route('inertia.technical-supervisors.index'));
+        $response->assertRedirect(route('technical-supervisors.index'));
 
         Http::assertSent(function (Request $request) {
             if ($request->method() === 'PUT') {
@@ -101,11 +101,11 @@ describe('TechnicalSupervisorUpdateController', function () {
     it('flashes success toast on successful update', function () {
         $response = $this->actingAs($this->user)
             ->put(
-                route('inertia.technical-supervisors.update', $this->technicalSupervisorId),
+                route('technical-supervisors.update', $this->technicalSupervisorId),
                 validTechnicalSupervisorData()
             );
 
-        $response->assertRedirect(route('inertia.technical-supervisors.index'));
+        $response->assertRedirect(route('technical-supervisors.index'));
         $response->assertSessionHas('inertia.flash_data', function ($flash) {
             return isset($flash['toast'])
                 && $flash['toast']['type'] === 'success'
@@ -129,11 +129,11 @@ describe('TechnicalSupervisorUpdateController', function () {
 
         $response = $this->actingAs($this->user)
             ->put(
-                route('inertia.technical-supervisors.update', $this->technicalSupervisorId),
+                route('technical-supervisors.update', $this->technicalSupervisorId),
                 validTechnicalSupervisorData()
             );
 
-        $response->assertRedirect(route('inertia.technical-supervisors.edit', $this->technicalSupervisorId));
+        $response->assertRedirect(route('technical-supervisors.edit', $this->technicalSupervisorId));
         $response->assertSessionHasErrors('message');
     });
 
@@ -162,11 +162,11 @@ describe('TechnicalSupervisorUpdateController', function () {
 
         $response = $this->actingAs($this->user)
             ->put(
-                route('inertia.technical-supervisors.update', $this->technicalSupervisorId),
+                route('technical-supervisors.update', $this->technicalSupervisorId),
                 validTechnicalSupervisorData()
             );
 
-        $response->assertRedirect(route('inertia.technical-supervisors.edit', $this->technicalSupervisorId));
+        $response->assertRedirect(route('technical-supervisors.edit', $this->technicalSupervisorId));
         $response->assertSessionHasErrors('message');
     });
 
@@ -176,7 +176,7 @@ describe('TechnicalSupervisorUpdateController', function () {
 
             $response = $this->actingAs($this->user)
                 ->put(
-                    route('inertia.technical-supervisors.update', $this->technicalSupervisorId),
+                    route('technical-supervisors.update', $this->technicalSupervisorId),
                     $data
                 );
 
@@ -188,7 +188,7 @@ describe('TechnicalSupervisorUpdateController', function () {
 
             $response = $this->actingAs($this->user)
                 ->put(
-                    route('inertia.technical-supervisors.update', $this->technicalSupervisorId),
+                    route('technical-supervisors.update', $this->technicalSupervisorId),
                     $data
                 );
 
@@ -200,7 +200,7 @@ describe('TechnicalSupervisorUpdateController', function () {
 
             $response = $this->actingAs($this->user)
                 ->put(
-                    route('inertia.technical-supervisors.update', $this->technicalSupervisorId),
+                    route('technical-supervisors.update', $this->technicalSupervisorId),
                     $data
                 );
 
@@ -212,7 +212,7 @@ describe('TechnicalSupervisorUpdateController', function () {
 
             $response = $this->actingAs($this->user)
                 ->put(
-                    route('inertia.technical-supervisors.update', $this->technicalSupervisorId),
+                    route('technical-supervisors.update', $this->technicalSupervisorId),
                     $data
                 );
 
