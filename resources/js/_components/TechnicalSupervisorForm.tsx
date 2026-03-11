@@ -3,7 +3,13 @@ import FormGroup from "./FormGroup";
 import FormError from "./FormError";
 import TechnicalSupervisorStoreController from "@/actions/App/Http/Controllers/TechnicalSupervisorStoreController";
 
-export default function TechnicalSupervisorForm() {
+export default function TechnicalSupervisorForm({ technicalSupervisor }: {
+    technicalSupervisor: {
+        id: number;
+        first_name: string;
+        last_name: string;
+    } | undefined;
+}) {
     return (
         <div className="card bg-base-100 shadow-sm mx-auto max-w-2xl">
             <div className="card-body gap-4">
@@ -25,6 +31,7 @@ export default function TechnicalSupervisorForm() {
                                         id="first_name"
                                         name="first_name"
                                         className="input"
+                                        defaultValue={technicalSupervisor?.first_name ?? ""}
                                     />
                                     {errors.first_name && <FormError message={errors.first_name} />}
                                 </FormGroup>
@@ -35,11 +42,12 @@ export default function TechnicalSupervisorForm() {
                                         id="last_name"
                                         name="last_name"
                                         className="input"
+                                        defaultValue={technicalSupervisor?.last_name ?? ""}
                                     />
                                     {errors.last_name && <FormError message={errors.last_name} />}
                                 </FormGroup>
                             </div>
-                            <div className="flex items-center justify-end">
+                            <div className="sm:flex sm:items-center sm:justify-end">
                                 <button
                                     type="submit"
                                     className="btn btn-primary btn-block sm:w-auto"
