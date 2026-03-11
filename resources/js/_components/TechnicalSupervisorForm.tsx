@@ -2,6 +2,7 @@ import { Form } from "@inertiajs/react";
 import FormGroup from "./FormGroup";
 import FormError from "./FormError";
 import TechnicalSupervisorStoreController from "@/actions/App/Http/Controllers/TechnicalSupervisorStoreController";
+import TechnicalSupervisorUpdateController from "@/actions/App/Http/Controllers/TechnicalSupervisorUpdateController";
 
 export default function TechnicalSupervisorForm({ technicalSupervisor }: {
     technicalSupervisor: {
@@ -15,7 +16,7 @@ export default function TechnicalSupervisorForm({ technicalSupervisor }: {
             <div className="card-body gap-4">
                 <h2 className="card-title">{'Technical Supervisor'}</h2>
                 <Form
-                    action={TechnicalSupervisorStoreController()}
+                    action={technicalSupervisor ? TechnicalSupervisorUpdateController(technicalSupervisor.id) : TechnicalSupervisorStoreController()}
                     className="space-y-4"
                 >
                     {({
