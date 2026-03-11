@@ -2,10 +2,9 @@
 
 namespace App\Rules;
 
-use App\Services\CurrentRMSApiService;
+use App\Facades\CurrentRMS;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
-// use Illuminate\Support\Facades\Http;
 
 class UniqueSerialNumber implements ValidationRule
 {
@@ -21,18 +20,17 @@ class UniqueSerialNumber implements ValidationRule
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         if ($this->serial_number_status === 'serial-number-exists') {
-            $currentrms = new CurrentRMSApiService();
-            $result = $currentrms->fetch('quarantines', ['q' => [
+            $response = CurrentRMS::fetch('quarantines', ['q' => [
                 'reference_eq' => $value,
             ]]);
 
-            if ($result['fail']) {
+            if ($response->hasErrors()) {
                 $fail(__('An error occurred while checking if an active Quarantine already exists with this serial number, please refresh the page and try again.'));
 
                 return;
             }
 
-            ['meta' => $meta] = $result['data'];
+            ['meta' => $meta] = $response->getData();
 
             if ($meta['total_row_count'] > 0) {
                 $fail(__('💥Ooops! There\'s been a "serial number collision" - an item with this serial number is already registered in Quarantine. That\'s not... great 🫣. To move forward, add "-B" to the end of the serial number you entered above, and mention the problem in the Fault Description below. The SRMM team will sort it out.'));

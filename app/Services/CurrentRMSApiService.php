@@ -13,12 +13,7 @@ class CurrentRMSApiService
 
     protected string $host;
 
-    private const RESULT = [
-        'fail' => [],
-        'data' => null,
-    ];
-
-    private $result = [
+    private array $result = [
         'error' => [],
         'data' => null,
     ];
@@ -38,34 +33,28 @@ class CurrentRMSApiService
         ])->baseUrl($this->host);
     }
 
-    public function fetch(string $uri, array $params = [], $new_api = false)
+    public function fetch(string $uri, array $params = [])
     {
         $uri = $this->buildUri($uri, $params);
 
         /** @var \Illuminate\Http\Client\Response $response */
         $response = $this->client()->get($uri);
 
-        if ($new_api) {
-            $this->newHandleResponse($response);
-            return $this;
-        }
+        $this->handleResponse($response);
 
-        return $this->handleResponse($response);
+        return $this;
     }
 
-    public function store(string $uri, array $params = [], array $data = [], $new_api = false)
+    public function store(string $uri, array $params = [], array $data = [])
     {
         $uri = $this->buildUri($uri, $params);
 
         /** @var \Illuminate\Http\Client\Response $response */
         $response = $this->client()->post($uri, $data);
 
-        if ($new_api) {
-            $this->newHandleResponse($response);
-            return $this;
-        }
+        $this->handleResponse($response);
 
-        return $this->handleResponse($response);
+        return $this;
     }
 
     public function update(string $uri, array $params = [], array $data = []): self
@@ -75,7 +64,7 @@ class CurrentRMSApiService
         /** @var \Illuminate\Http\Client\Response $response */
         $response = $this->client()->put($uri, $data);
 
-        $this->newHandleResponse($response);
+        $this->handleResponse($response);
 
         return $this;
     }
@@ -83,30 +72,7 @@ class CurrentRMSApiService
     /**
      * @param \Illuminate\Http\Client\Response $response
      */
-    private function handleResponse($response): array
-    {
-        if ($response->failed()) {
-            $errors = isset($response->json()['errors']) ? $response->json()['errors'] : $response->json();
-
-            return [
-                ...self::RESULT,
-                'fail' => [
-                    'status' => $response->status(),
-                    'data' => json_encode($errors),
-                ],
-            ];
-        }
-
-        return [
-            ...self::RESULT,
-            'data' => $response->json(),
-        ];
-    }
-
-    /**
-     * @param \Illuminate\Http\Client\Response $response
-     */
-    private function newHandleResponse($response): void
+    private function handleResponse($response): void
     {
         if ($response->failed()) {
             $errors = isset($response->json()['errors']) ? $response->json()['errors'] : $response->json();

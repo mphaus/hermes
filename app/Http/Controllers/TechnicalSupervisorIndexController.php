@@ -26,7 +26,7 @@ class TechnicalSupervisorIndexController extends Controller
             'error' => '',
         ];
         $technical_supervisors_list_id = config('app.mph.technical_supervisor_list_id');
-        $response = CurrentRMS::fetch(uri: "list_names/{$technical_supervisors_list_id}", new_api: true);
+        $response = CurrentRMS::fetch(uri: "list_names/{$technical_supervisors_list_id}");
 
         if ($response->hasErrors()) {
             return [
