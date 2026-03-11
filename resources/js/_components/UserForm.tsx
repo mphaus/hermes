@@ -68,9 +68,11 @@ export default function UserForm({ user }: {
                         processing
                     }) => (
                         <>
-                            {hasErrors && <div role="alert" className="alert alert-error">
-                                <span>{'Some fields need your attention. Please review the form and correct the highlighted errors.'}</span>
-                            </div>}
+                            {hasErrors && (
+                                <div role="alert" className="alert alert-error">
+                                    <span>{'Some fields need your attention. Please review the form and correct the highlighted errors.'}</span>
+                                </div>
+                            )}
                             <div className="grid gap-4 md:grid-cols-2">
                                 <FormGroup>
                                     <label htmlFor="first_name">{'First name'}</label>

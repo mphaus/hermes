@@ -2,15 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\CurrentRMSApiService;
+use App\Facades\CurrentRMS;
 use Illuminate\Http\Request;
 
 class OpportunitySearchController extends Controller
 {
-    public function __construct(
-        protected CurrentRMSApiService $currentrms
-    ) {}
-
     /**
      * Handle the incoming request.
      */
@@ -26,13 +22,13 @@ class OpportunitySearchController extends Controller
             $uri = "{$uri}?{$params}";
         }
 
-        $result = $this->currentrms->fetch($uri);
+        $response = CurrentRMS::fetch($uri);
 
-        if ($result['fail']) {
+        if ($response->hasErrors()) {
             return response()->json([]);
         }
 
-        ['opportunities' => $opportunities] = $result['data'];
+        ['opportunities' => $opportunities] = $response->getData();
 
         if (empty($opportunities)) {
             return response()->json([]);
