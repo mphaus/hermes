@@ -46,7 +46,7 @@
             variant="primary"
             x-bind:disabled="submitting"
         >
-            @if (request()->routeIs('production-administrators.create.view'))
+            @if (request()->routeIs('production-administrators.create') || request()->routeIs('production-administrators.create.view'))
                 <span x-show="!submitting">{{ __('Add') }}</span>
                 <span x-cloak x-show="submitting">{{ __('Adding...') }}</span>
             @endif

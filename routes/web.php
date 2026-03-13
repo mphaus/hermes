@@ -6,7 +6,9 @@ use App\Http\Controllers\OpportunityController;
 use App\Http\Controllers\PasswordStoreController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductionAdministratorController;
+use App\Http\Controllers\ProductionAdministratorCreateController;
 use App\Http\Controllers\ProductionAdministratorIndexController;
+use App\Http\Controllers\ProductionAdministratorStoreController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\QuarantineCreateController;
 use App\Http\Controllers\QuarantineReportMistakeController;
@@ -66,7 +68,8 @@ Route::middleware(['auth', 'is_enabled'])->group(function () {
     Route::post('quarantine/report-mistake', QuarantineReportMistakeController::class)->name('quarantine.report-mistake')->middleware('permission:access-quarantine-intake');
 
     Route::get('production-administrators', ProductionAdministratorIndexController::class)->name('production-administrators.index.view')->middleware('permission:crud-production-administrators');
-    Route::view('production-administrators/create', 'production-administrator.create')->name('production-administrators.create.view')->middleware('permission:crud-production-administrators');
+    Route::get('production-administrators/create', ProductionAdministratorCreateController::class)->name('production-administrators.create')->middleware('permission:crud-production-administrators');
+    Route::post('production-administrators', ProductionAdministratorStoreController::class)->name('production-administrators.store.form')->middleware('permission:crud-production-administrators');
     Route::view('production-administrators/{id}/edit', 'production-administrator.edit')->name('production-administrators.edit.view')->middleware('permission:crud-production-administrators');
 
     Route::get('i/production-administrators', [ProductionAdministratorController::class, 'index'])->name('production-administrators.index')->middleware('permission:crud-production-administrators');
