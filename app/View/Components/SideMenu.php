@@ -74,8 +74,8 @@ class SideMenu extends Component
                 'subitems' => [
                     [
                         'text' => __('Production Administrators'),
-                        'route' => route('production-administrators.index.view'),
-                        'active' => request()->routeIs('production-administrators.index.view'),
+                        'route' => route('production-administrators.index'),
+                        'active' => request()->routeIs('production-administrators.index'),
                         'permission' => 'crud-production-administrators',
                     ],
                     [

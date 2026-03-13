@@ -42,7 +42,7 @@ class ProductionAdministratorController extends Controller
         ]);
 
         return response()->json([
-            'redirect_to' => route('production-administrators.index.view'),
+            'redirect_to' => route('production-administrators.index'),
         ]);
     }
 
@@ -106,7 +106,7 @@ class ProductionAdministratorController extends Controller
         ]);
 
         return response()->json([
-            'redirect_to' => route('production-administrators.index.view'),
+            'redirect_to' => route('production-administrators.index'),
         ]);
     }
 }

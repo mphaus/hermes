@@ -35,7 +35,7 @@
     </div>
     <div class="flex items-center justify-end gap-2">
         <x-button 
-            href="{{ route('production-administrators.index.view') }}" 
+            href="{{ route('production-administrators.index') }}" 
             variant="outline-primary"
             x-bind:class="{ 'disabled': submitting }"
         >

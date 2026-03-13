@@ -51,6 +51,6 @@ class ProductionAdministratorStoreController extends Controller
             'message' => __('Production Administrator created successfully.'),
         ]);
 
-        return to_route('production-administrators.index.view');
+        return to_route('production-administrators.index');
     }
 }

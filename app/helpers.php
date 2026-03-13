@@ -6,7 +6,7 @@ if (!function_exists('usercan')) {
     function usercan(string $permission)
     {
         $user = Auth::user();
-        return $user->username === config('app.super_user.username') || $user->is_admin || in_array($permission, $user->permissions->toArray());
+        return $user->is_admin || in_array($permission, $user->permissions->toArray());
     }
 }
 
@@ -15,7 +15,7 @@ if (!function_exists('get_redirect_route')) {
     {
         $user = Auth::user();
 
-        if ($user->username === config('app.super_user.username') || $user->is_admin) {
+        if ($user->is_admin) {
             return route('jobs.index');
         }
 
@@ -37,8 +37,8 @@ if (!function_exists('get_redirect_route')) {
             'create-default-discussions' => route('discussions.create'),
             'update-default-discussions' => route('discussions.edit'),
             'access-quarantine-intake' => route('quarantine.create'),
-            'crud-production-administrators' => route('production-administrators.index.view'),
-            'crud-technical-supervisors' => route('technical-supervisors.index.view'),
+            'crud-production-administrators' => route('production-administrators.index'),
+            'crud-technical-supervisors' => route('technical-supervisors.index'),
             'crud-users' => route('users.index'),
         ];
 
