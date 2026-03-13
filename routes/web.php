@@ -5,7 +5,6 @@ use App\Http\Controllers\MemberController;
 use App\Http\Controllers\OpportunityController;
 use App\Http\Controllers\PasswordStoreController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\ProductionAdministratorController;
 use App\Http\Controllers\ProductionAdministratorCreateController;
 use App\Http\Controllers\ProductionAdministratorEditController;
 use App\Http\Controllers\ProductionAdministratorIndexController;
