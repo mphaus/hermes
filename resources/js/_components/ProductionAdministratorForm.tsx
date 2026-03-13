@@ -2,14 +2,27 @@ import { Form } from "@inertiajs/react";
 import FormGroup from "./FormGroup";
 import FormError from "./FormError";
 import ProductionAdministratorStoreController from "@/actions/App/Http/Controllers/ProductionAdministratorStoreController";
+import ProductionAdministratorUpdateController from "@/actions/App/Http/Controllers/ProductionAdministratorUpdateController";
 
-export default function ProductionAdministratorForm() {
+export default function ProductionAdministratorForm({
+    productionAdministrator,
+}: {
+    productionAdministrator?: {
+        id: number;
+        first_name: string;
+        last_name: string;
+    };
+}) {
     return (
         <div className="card bg-base-100 shadow-sm mx-auto max-w-2xl">
             <div className="card-body gap-4">
                 <h2 className="card-title">{'Production Administrator'}</h2>
                 <Form
-                    action={ProductionAdministratorStoreController()}
+                    action={
+                        productionAdministrator
+                            ? ProductionAdministratorUpdateController(productionAdministrator.id)
+                            : ProductionAdministratorStoreController()
+                    }
                     className="space-y-4"
                 >
                     {({
@@ -25,7 +38,7 @@ export default function ProductionAdministratorForm() {
                                         id="first_name"
                                         name="first_name"
                                         className="input"
-                                        defaultValue=""
+                                        defaultValue={productionAdministrator?.first_name ?? ""}
                                     />
                                     {errors.first_name && <FormError message={errors.first_name} />}
                                 </FormGroup>
@@ -36,7 +49,7 @@ export default function ProductionAdministratorForm() {
                                         id="last_name"
                                         name="last_name"
                                         className="input"
-                                        defaultValue=""
+                                        defaultValue={productionAdministrator?.last_name ?? ""}
                                     />
                                     {errors.last_name && <FormError message={errors.last_name} />}
                                 </FormGroup>

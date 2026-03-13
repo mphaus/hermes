@@ -1,3 +1,4 @@
+import ProductionAdministratorEditController from "@/actions/App/Http/Controllers/ProductionAdministratorEditController";
 import { CurrentRMSListValue } from "@/types";
 import { Link } from "@inertiajs/react";
 
@@ -9,7 +10,7 @@ export default function ProductionAdministratorListItem({
     return (
         <li className="list-row">
             <Link
-                href={`/production-administrators/${productionAdministrator.id}/edit`}
+                href={ProductionAdministratorEditController(productionAdministrator.id)}
                 title={productionAdministrator.name}
                 className="after:absolute after:inset-0 after:z-1 after:content-['']"
             >
