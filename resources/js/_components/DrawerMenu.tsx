@@ -86,7 +86,7 @@ const menuItems: MenuItem[] = [
                 id: 1,
                 text: 'Production Administrators',
                 href: '/production-administrators',
-                inertia_ready: false,
+                inertia_ready: true,
                 permissions: ['crud-production-administrators'],
             },
             {

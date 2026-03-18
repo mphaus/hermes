@@ -5,7 +5,11 @@ use App\Http\Controllers\MemberController;
 use App\Http\Controllers\OpportunityController;
 use App\Http\Controllers\PasswordStoreController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\ProductionAdministratorController;
+use App\Http\Controllers\ProductionAdministratorCreateController;
+use App\Http\Controllers\ProductionAdministratorEditController;
+use App\Http\Controllers\ProductionAdministratorIndexController;
+use App\Http\Controllers\ProductionAdministratorStoreController;
+use App\Http\Controllers\ProductionAdministratorUpdateController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\QuarantineCreateController;
 use App\Http\Controllers\QuarantineReportMistakeController;
@@ -64,14 +68,11 @@ Route::middleware(['auth', 'is_enabled'])->group(function () {
     Route::get('quarantine/success', QuarantineSuccessController::class)->name('quarantine.success')->middleware('permission:access-quarantine-intake');
     Route::post('quarantine/report-mistake', QuarantineReportMistakeController::class)->name('quarantine.report-mistake')->middleware('permission:access-quarantine-intake');
 
-    Route::view('production-administrators', 'production-administrator.index')->name('production-administrators.index.view')->middleware('permission:crud-production-administrators');
-    Route::view('production-administrators/create', 'production-administrator.create')->name('production-administrators.create.view')->middleware('permission:crud-production-administrators');
-    Route::view('production-administrators/{id}/edit', 'production-administrator.edit')->name('production-administrators.edit.view')->middleware('permission:crud-production-administrators');
-
-    Route::get('i/production-administrators', [ProductionAdministratorController::class, 'index'])->name('production-administrators.index')->middleware('permission:crud-production-administrators');
-    Route::post('i/production-administrators', [ProductionAdministratorController::class, 'store'])->name('production-administrators.store')->middleware('permission:crud-production-administrators');
-    Route::get('i/production-administrators/{id}', [ProductionAdministratorController::class, 'show'])->name('production-administrators.show')->middleware('permission:crud-production-administrators');
-    Route::put('i/production-administrators/{id}', [ProductionAdministratorController::class, 'update'])->name('production-administrators.update')->middleware('permission:crud-production-administrators');
+    Route::get('production-administrators', ProductionAdministratorIndexController::class)->name('production-administrators.index')->middleware('permission:crud-production-administrators');
+    Route::get('production-administrators/create', ProductionAdministratorCreateController::class)->name('production-administrators.create')->middleware('permission:crud-production-administrators');
+    Route::post('production-administrators', ProductionAdministratorStoreController::class)->name('production-administrators.store')->middleware('permission:crud-production-administrators');
+    Route::get('production-administrators/{id}/edit', ProductionAdministratorEditController::class)->name('production-administrators.edit')->middleware('permission:crud-production-administrators');
+    Route::put('production-administrators/{id}', ProductionAdministratorUpdateController::class)->name('production-administrators.update')->middleware('permission:crud-production-administrators');
 
     Route::get('technical-supervisors', TechnicalSupervisorIndexController::class)->name('technical-supervisors.index')->middleware('permission:crud-technical-supervisors');
     Route::get('technical-supervisors/create', TechnicalSupervisorCreateController::class)->name('technical-supervisors.create')->middleware('permission:crud-technical-supervisors');
