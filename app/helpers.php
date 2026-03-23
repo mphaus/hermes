@@ -37,7 +37,7 @@ if (!function_exists('get_redirect_route')) {
             'create-default-discussions' => route('discussions.create'),
             'update-default-discussions' => route('discussions.edit'),
             'access-quarantine-intake' => route('quarantine.create'),
-            'crud-production-administrators' => route('production-administrators.index.view'),
+            'crud-production-administrators' => route('production-administrators.index'),
             'crud-technical-supervisors' => route('technical-supervisors.index'),
             'crud-users' => route('users.index'),
         ];
