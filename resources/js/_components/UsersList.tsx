@@ -28,19 +28,19 @@ export default function UsersList({ users, onUserIsBeingDeleted }: {
     return (
         <>
             <div className="space-y-4">
-                <div className="hidden md:flex card bg-base-100 card-xs">
+                <div className="hidden lg:flex card bg-base-100 card-xs">
                     <div className="card-body">
-                        <div className="grid grid-cols-6 items-center text-center font-semibold">
-                            <p>{'Name'}</p>
-                            <p>{'Username'}</p>
-                            <p>{'Email'}</p>
+                        <div className="grid grid-cols-10 items-center text-center font-semibold">
+                            <p className="col-span-2">{'Name'}</p>
+                            <p className="col-span-2">{'Username'}</p>
+                            <p className="col-span-3">{'Email'}</p>
                             <p>{'Is admin'}</p>
                             <p>{'Is enabled'}</p>
                             <p>{'Actions'}</p>
                         </div>
                     </div>
                 </div>
-                <div className="space-y-2">
+                <ul className="list bg-base-100 rounded-lg shadow-sm text-xs">
                     {users.map(user => (
                         <UserListItem
                             key={user.id}
@@ -48,7 +48,7 @@ export default function UsersList({ users, onUserIsBeingDeleted }: {
                             onDelete={(userToDelete) => { setDeleteConfirmDialogOpen(true); setUserToDelete(userToDelete); }}
                         />
                     ))}
-                </div>
+                </ul>
             </div>
             <UserDeleteConfirmDialog
                 open={deleteConfirmDialogOpen}
