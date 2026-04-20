@@ -19,12 +19,12 @@ export default function EquipmentImportIndex() {
                         {error}
                     </div>
                 )}
-                {!opportunities?.length && (
+                {!opportunities?.length && !error && (
                     <div role="alert" className="alert alert-info max-w-3xl mx-auto">
                         {'There are no opportunities that match the required criteria.'}
                     </div>
                 )}
-                {!!opportunities?.length && (
+                {!!opportunities?.length && !error && (
                     <OpportunitiesList opportunities={opportunities} />
                 )}
             </Deferred >
