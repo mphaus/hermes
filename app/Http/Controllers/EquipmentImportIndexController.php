@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\JobStatus;
 use App\Facades\CurrentRMS;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Inertia\Inertia;
 
 class EquipmentImportIndexController extends Controller
@@ -22,13 +23,16 @@ class EquipmentImportIndexController extends Controller
         return Inertia::render('EquipmentImportIndex', [
             'title' => 'Equipment Import',
             'description' => 'Opportunities in CurrentRMS with the state of <strong>Order</strong> and <strong>Open</strong>.',
-            'opportunities_data' => Inertia::defer(fn() => $this->opportunitiesData())->once(),
+            'opportunities_data' => Inertia::defer(fn() => $this->opportunitiesData()),
         ]);
     }
 
     private function opportunitiesData()
     {
+        $page = request()->query('page', 1);
+
         $response = CurrentRMS::fetch(uri: 'opportunities', params: [
+            'page' => $page,
             'per_page' => 25,
             'filtermode' => 'orders',
             'q[status_eq]' => JobStatus::Open->value,
@@ -41,9 +45,33 @@ class EquipmentImportIndexController extends Controller
             ];
         }
 
+        [
+            'opportunities' => $opportunities,
+            'meta' => $meta,
+        ] = $response->getData();
+
+        [
+            'total_row_count' => $total_row_count,
+            'per_page' => $per_page,
+        ] = $meta;
+
+        $paginator = new LengthAwarePaginator(
+            items: $opportunities ?? [],
+            total: $total_row_count,
+            perPage: $per_page,
+            currentPage: $page,
+        );
+
+        $paginator->withPath('/inertia/equipment-import');
+        $pagination_data = $paginator->toArray();
+
         return [
-            ...self::DATA,
-            'data' => $response->getData()['opportunities'] ?? [],
+            'error' => '',
+            'data' => $pagination_data['data'],
+            'current_page' => $pagination_data['current_page'],
+            'per_page' => $pagination_data['per_page'],
+            'total' => $pagination_data['total'],
+            'links' => $pagination_data['links'],
         ];
     }
 }
