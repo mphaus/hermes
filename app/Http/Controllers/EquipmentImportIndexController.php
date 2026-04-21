@@ -6,6 +6,7 @@ use App\Enums\JobStatus;
 use App\Facades\CurrentRMS;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Carbon;
 use Inertia\Inertia;
 
 class EquipmentImportIndexController extends Controller
@@ -56,7 +57,11 @@ class EquipmentImportIndexController extends Controller
         ] = $meta;
 
         $paginator = new LengthAwarePaginator(
-            items: $opportunities ?? [],
+            items: collect($opportunities ?? [])->map(fn($opportunity) => [
+                ...$opportunity,
+                'starts_at_formatted' => $opportunity['starts_at'] ? Carbon::parse($opportunity['starts_at'])->timezone(config('app.timezone'))->format('d-M-Y') : null,
+                'ends_at_formatted' => $opportunity['ends_at'] ? Carbon::parse($opportunity['ends_at'])->timezone(config('app.timezone'))->format('d-M-Y') : null,
+            ])->all(),
             total: $total_row_count,
             perPage: $per_page,
             currentPage: $page,

@@ -15,11 +15,11 @@ export default function OpportunityListItem({ opportunity }: {
                 </Link>
                 <div className="mt-2 lg:mt-0 lg:text-center">
                     <p className="font-semibold lg:hidden">{'Start date'}</p>
-                    <time>{opportunity.starts_at}</time>
+                    <time dateTime={opportunity.starts_at}>{opportunity.starts_at_formatted}</time>
                 </div>
                 <div className="lg:text-center">
                     <p className="font-semibold lg:hidden">{'End date'}</p>
-                    <time>{opportunity.ends_at}</time>
+                    <time dateTime={opportunity.ends_at}>{opportunity.ends_at_formatted}</time>
                 </div>
             </div>
         </li>
