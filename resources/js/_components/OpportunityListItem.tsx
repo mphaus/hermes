@@ -1,3 +1,4 @@
+import EquipmentImportShowController from "@/actions/App/Http/Controllers/EquipmentImportShowController";
 import { Link } from "@inertiajs/react";
 
 export default function OpportunityListItem({ opportunity }: {
@@ -7,7 +8,7 @@ export default function OpportunityListItem({ opportunity }: {
         <li className="list-row grid-cols-1 relative">
             <div className="grid lg:grid-cols-6 gap-2 items-center">
                 <Link
-                    href={'#'}
+                    href={EquipmentImportShowController(opportunity.id)}
                     className="lg:col-span-4 after:absolute after:inset-0 after:z-1"
                     title={opportunity.subject}
                 >

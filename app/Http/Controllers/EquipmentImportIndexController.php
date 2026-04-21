@@ -22,7 +22,7 @@ class EquipmentImportIndexController extends Controller
     public function __invoke(Request $request)
     {
         return Inertia::render('EquipmentImportIndex', [
-            'title' => 'Equipment Import',
+            'title' => 'Equipment Import > Opportunities',
             'description' => 'Opportunities in CurrentRMS with the state of <strong>Order</strong> and <strong>Open</strong>.',
             'opportunities_data' => Inertia::defer(fn() => $this->opportunitiesData()),
         ]);
