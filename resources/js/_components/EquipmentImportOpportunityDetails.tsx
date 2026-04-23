@@ -15,7 +15,7 @@ export default function EquipmentImportOpportunityDetails({ opportunity, opportu
                         {opportunity.subject}
                     </a>
                 </h2>
-                <div className="text-xs grid gap-2 grid-cols-2 md:grid-cols-4 md:text-sm items-start">
+                <div className="text-xs grid gap-2 grid-cols-2 md:grid-cols-4 md:text-sm items-start md:gap-6">
                     <div className="flex flex-col gap-1">
                         <p className="font-semibold">{'Start Date'}</p>
                         <time dateTime={opportunity.starts_at}>{opportunity.starts_at_formatted}</time>

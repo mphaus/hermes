@@ -1,5 +1,6 @@
 import EquipmentImportForm from "@/_components/EquipmentImportForm";
 import EquipmentImportOpportunityDetails from "@/_components/EquipmentImportOpportunityDetails";
+import EquipmentImportShowSkeleton from "@/_components/EquipmentImportShowSkeleton";
 import { SharedData } from "@/types";
 import { Deferred, Head, usePage } from "@inertiajs/react";
 import { useEffect, useState } from "react";
@@ -22,7 +23,7 @@ export default function EquipmentImportShow() {
     return (
         <>
             <Head title={pageTitle} />
-            <Deferred data="opportunity_data" fallback={<div>Loading...</div>}>
+            <Deferred data="opportunity_data" fallback={<EquipmentImportShowSkeleton />}>
                 {error && (
                     <div role="alert" className="alert alert-error">
                         {error}
