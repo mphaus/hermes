@@ -1,3 +1,4 @@
+import EquipmentImportForm from "@/_components/EquipmentImportForm";
 import EquipmentImportOpportunityDetails from "@/_components/EquipmentImportOpportunityDetails";
 import { SharedData } from "@/types";
 import { Deferred, Head, usePage } from "@inertiajs/react";
@@ -28,10 +29,13 @@ export default function EquipmentImportShow() {
                     </div>
                 )}
                 {!error && opportunity && (
-                    <EquipmentImportOpportunityDetails
-                        opportunity={opportunity}
-                        opportunities_url={opportunities_url}
-                    />
+                    <div className="space-y-4">
+                        <EquipmentImportOpportunityDetails
+                            opportunity={opportunity}
+                            opportunities_url={opportunities_url}
+                        />
+                        <EquipmentImportForm />
+                    </div>
                 )}
             </Deferred>
         </>
