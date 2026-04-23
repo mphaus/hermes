@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Number;
 use Inertia\Inertia;
-use Symfony\Component\Console\Color;
 
 class EquipmentImportShowController extends Controller
 {
