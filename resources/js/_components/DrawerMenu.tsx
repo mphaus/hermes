@@ -1,3 +1,8 @@
+import EquipmentImportIndexController from "@/actions/App/Http/Controllers/EquipmentImportIndexController";
+import ProductionAdministratorIndexController from "@/actions/App/Http/Controllers/ProductionAdministratorIndexController";
+import QuarantineCreateController from "@/actions/App/Http/Controllers/QuarantineCreateController";
+import TechnicalSupervisorIndexController from "@/actions/App/Http/Controllers/TechnicalSupervisorIndexController";
+import UserIndexController from "@/actions/App/Http/Controllers/UserIndexController";
 import { SharedData, User } from "@/types";
 import { Link, usePage } from "@inertiajs/react";
 import clsx from "clsx";
@@ -23,10 +28,25 @@ const menuItems: MenuItem[] = [
     {
         id: 1,
         text: 'Equipment Import',
-        href: '/equipment-import',
+        href: '',
         inertia_ready: false,
         permissions: ['access-equipment-import'],
-        subitems: [],
+        subitems: [
+            {
+                id: 1,
+                text: 'Opportunities',
+                href: EquipmentImportIndexController().url,
+                inertia_ready: true,
+                permissions: ['access-equipment-import'],
+            },
+            {
+                id: 2,
+                text: 'Logs',
+                href: '#',
+                inertia_ready: false,
+                permissions: ['access-equipment-import'],
+            },
+        ],
     },
     {
         id: 2,
@@ -70,7 +90,7 @@ const menuItems: MenuItem[] = [
     {
         id: 5,
         text: 'Quarantine Intake',
-        href: '/quarantine/create',
+        href: QuarantineCreateController().url,
         inertia_ready: true,
         permissions: ['access-quarantine-intake'],
         subitems: [],
@@ -85,14 +105,14 @@ const menuItems: MenuItem[] = [
             {
                 id: 1,
                 text: 'Production Administrators',
-                href: '/production-administrators',
+                href: ProductionAdministratorIndexController().url,
                 inertia_ready: true,
                 permissions: ['crud-production-administrators'],
             },
             {
                 id: 2,
                 text: 'Technical supervisors',
-                href: '/technical-supervisors',
+                href: TechnicalSupervisorIndexController().url,
                 inertia_ready: true,
                 permissions: ['crud-technical-supervisors'],
             },
@@ -101,7 +121,7 @@ const menuItems: MenuItem[] = [
     {
         id: 7,
         text: 'Users',
-        href: '/users',
+        href: UserIndexController().url,
         inertia_ready: true,
         permissions: ['crud-users'],
         subitems: [],

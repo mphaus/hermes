@@ -77,6 +77,11 @@ export interface UsersData extends PaginationData {
     data: User[];
 }
 
+export interface OpportunitiesData extends PaginationData {
+    data: Record<string, any>[];
+    error: string;
+}
+
 export type UserPermission = {
     value: string;
     label: string;
