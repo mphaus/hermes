@@ -13,7 +13,7 @@ class ProductsLabelsCreateController extends Controller
     public function __invoke(Request $request)
     {
         return Inertia::render('ProductsLabelsCreate', [
-            'title' => 'Products - Label generation',
+            'title' => 'Products > Label generation',
         ]);
     }
 }
