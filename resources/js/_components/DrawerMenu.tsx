@@ -1,4 +1,4 @@
-import EquipmentImportIndexController from "@/actions/App/Http/Controllers/EquipmentImportIndexController";
+// import EquipmentImportIndexController from "@/actions/App/Http/Controllers/EquipmentImportIndexController";
 import ProductionAdministratorIndexController from "@/actions/App/Http/Controllers/ProductionAdministratorIndexController";
 import QuarantineCreateController from "@/actions/App/Http/Controllers/QuarantineCreateController";
 import TechnicalSupervisorIndexController from "@/actions/App/Http/Controllers/TechnicalSupervisorIndexController";
@@ -25,28 +25,36 @@ interface MenuItem {
 }
 
 const menuItems: MenuItem[] = [
+    // {
+    //     id: 1,
+    //     text: 'Equipment Import',
+    //     href: '',
+    //     inertia_ready: false,
+    //     permissions: ['access-equipment-import'],
+    //     subitems: [
+    //         {
+    //             id: 1,
+    //             text: 'Opportunities',
+    //             href: EquipmentImportIndexController().url,
+    //             inertia_ready: true,
+    //             permissions: ['access-equipment-import'],
+    //         },
+    //         {
+    //             id: 2,
+    //             text: 'Logs',
+    //             href: '#',
+    //             inertia_ready: false,
+    //             permissions: ['access-equipment-import'],
+    //         },
+    //     ],
+    // },
     {
         id: 1,
         text: 'Equipment Import',
-        href: '',
+        href: '/equipment-import',
         inertia_ready: false,
         permissions: ['access-equipment-import'],
-        subitems: [
-            {
-                id: 1,
-                text: 'Opportunities',
-                href: EquipmentImportIndexController().url,
-                inertia_ready: true,
-                permissions: ['access-equipment-import'],
-            },
-            {
-                id: 2,
-                text: 'Logs',
-                href: '#',
-                inertia_ready: false,
-                permissions: ['access-equipment-import'],
-            },
-        ],
+        subitems: [],
     },
     {
         id: 2,
@@ -177,7 +185,7 @@ export default function DrawerMenu() {
     }
 
     return (
-        <ul className="p-4 menu bg-base-100 flex-1 sm:w-80 w-64">
+        <ul className="flex-1 w-64 p-4 menu bg-base-100 sm:w-80">
             {menuItems.map((item) => canViewItem(item, user) && (
                 <li key={item.id}>
                     {!item.subitems.length && <DrawerMenuItem item={item} url={url} />}
