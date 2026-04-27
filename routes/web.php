@@ -10,6 +10,7 @@ use App\Http\Controllers\ProductionAdministratorEditController;
 use App\Http\Controllers\ProductionAdministratorIndexController;
 use App\Http\Controllers\ProductionAdministratorStoreController;
 use App\Http\Controllers\ProductionAdministratorUpdateController;
+use App\Http\Controllers\ProductsLabelsCreateController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\QuarantineCreateController;
 use App\Http\Controllers\QuarantineReportMistakeController;
@@ -113,6 +114,8 @@ Route::middleware(['auth', 'is_enabled'])->group(function () {
     Route::get('i/products/search', [ProductController::class, 'search'])->name('products.search');
 
     Route::get('i/members/search', [MemberController::class, 'search'])->name('members.search')->middleware('permission:create-default-discussions');
+
+    Route::get('products/labels/create', ProductsLabelsCreateController::class)->name('products.labels.create');
 });
 
 require __DIR__ . '/auth.php';

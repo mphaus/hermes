@@ -1,5 +1,6 @@
 // import EquipmentImportIndexController from "@/actions/App/Http/Controllers/EquipmentImportIndexController";
 import ProductionAdministratorIndexController from "@/actions/App/Http/Controllers/ProductionAdministratorIndexController";
+import ProductsLabelsCreateController from "@/actions/App/Http/Controllers/ProductsLabelsCreateController";
 import QuarantineCreateController from "@/actions/App/Http/Controllers/QuarantineCreateController";
 import TechnicalSupervisorIndexController from "@/actions/App/Http/Controllers/TechnicalSupervisorIndexController";
 import UserIndexController from "@/actions/App/Http/Controllers/UserIndexController";
@@ -58,6 +59,23 @@ const menuItems: MenuItem[] = [
     },
     {
         id: 2,
+        text: 'Products',
+        href: '',
+        inertia_ready: false,
+        permissions: [],
+        subitems: [
+            {
+                id: 1,
+                text: 'Label generation',
+                href: ProductsLabelsCreateController().url,
+                inertia_ready: true,
+                permissions: [],
+            },
+
+        ],
+    },
+    {
+        id: 3,
         text: 'Action Stream',
         href: '/action-stream',
         inertia_ready: false,
@@ -65,7 +83,7 @@ const menuItems: MenuItem[] = [
         subitems: [],
     },
     {
-        id: 3,
+        id: 4,
         text: 'QET',
         href: '/qet',
         inertia_ready: false,
@@ -73,7 +91,7 @@ const menuItems: MenuItem[] = [
         subitems: [],
     },
     {
-        id: 4,
+        id: 5,
         text: 'Discussions',
         href: '',
         inertia_ready: false,
@@ -96,7 +114,7 @@ const menuItems: MenuItem[] = [
         ],
     },
     {
-        id: 5,
+        id: 6,
         text: 'Quarantine Intake',
         href: QuarantineCreateController().url,
         inertia_ready: true,
@@ -104,7 +122,7 @@ const menuItems: MenuItem[] = [
         subitems: [],
     },
     {
-        id: 6,
+        id: 7,
         text: 'Role CRUD',
         href: '',
         inertia_ready: false,
@@ -127,7 +145,7 @@ const menuItems: MenuItem[] = [
         ],
     },
     {
-        id: 7,
+        id: 8,
         text: 'Users',
         href: UserIndexController().url,
         inertia_ready: true,
