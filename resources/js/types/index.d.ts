@@ -94,3 +94,18 @@ export type FlashData = {
         message: string;
     };
 };
+
+export type Product = {
+    id: number;
+    name: string;
+    icon: {
+        thumb_url: string;
+        url: string;
+    } | null;
+    custom_fields: {
+        colour_coded_storage: string;
+        nally_bin_storage: string;
+        nally_bin_storage_stored_at_height: string;
+        tub_storage: string;
+    };
+};

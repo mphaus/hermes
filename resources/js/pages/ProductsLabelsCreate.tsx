@@ -1,83 +1,19 @@
-import ProductSearchSelect from "@/_components/ProductSearchSelect";
-import { SharedData } from "@/types";
+import ProductList from "@/_components/ProductList";
+import ProductSearchSelect, { ProductOption } from "@/_components/ProductSearchSelect";
+import { Product, SharedData } from "@/types";
 import { Head, usePage } from "@inertiajs/react";
 import { Printer, X } from "lucide-react";
-
-const products = [
-    {
-        id: 1,
-        name: "Classic Mug",
-        image: "https://placehold.co/80x80?text=Mug",
-    },
-    {
-        id: 2,
-        name: "Notebook Pro very long text name for this product in purpose just to test the layout",
-        image: "https://placehold.co/80x80?text=Book",
-    },
-    {
-        id: 3,
-        name: "Desk Lamp",
-        image: "https://placehold.co/80x80?text=Lamp",
-    },
-    {
-        id: 4,
-        name: "Travel Bottle",
-        image: "https://placehold.co/80x80?text=Bottle",
-    },
-    {
-        id: 5,
-        name: "Wireless Mouse",
-        image: "https://placehold.co/80x80?text=Mouse",
-    },
-    {
-        id: 6,
-        name: "Keyboard Case",
-        image: "https://placehold.co/80x80?text=Case",
-    },
-    {
-        id: 7,
-        name: "Coffee Grinder",
-        image: "https://placehold.co/80x80?text=Grind",
-    },
-    {
-        id: 8,
-        name: "Bluetooth Speaker",
-        image: "https://placehold.co/80x80?text=Sound",
-    },
-    {
-        id: 9,
-        name: "Phone Stand",
-        image: "https://placehold.co/80x80?text=Stand",
-    },
-    {
-        id: 10,
-        name: "Waterproof Bag",
-        image: "https://placehold.co/80x80?text=Bag",
-    },
-    {
-        id: 11,
-        name: "Smart Charger",
-        image: "https://placehold.co/80x80?text=Charge",
-    },
-    {
-        id: 12,
-        name: "Mini Projector",
-        image: "https://placehold.co/80x80?text=Beam",
-    },
-    {
-        id: 13,
-        name: "Canvas Backpack",
-        image: "https://placehold.co/80x80?text=Pack",
-    },
-    {
-        id: 14,
-        name: "Studio Headphones",
-        image: "https://placehold.co/80x80?text=Audio",
-    },
-];
+import { useState } from "react";
 
 export default function ProductsLabelsCreate() {
     const { title } = usePage<SharedData>().props;
+    const [products, setProducts] = useState<Product[]>([]);
+
+    const handleProductSearchSelectChange = (option: ProductOption | null) => {
+        if (option) {
+            setProducts(prevProducts => [...prevProducts, option.product]);
+        }
+    };
 
     return (
         <>
@@ -92,23 +28,13 @@ export default function ProductsLabelsCreate() {
                             'per_page': 20,
                             'q[name_cont]': '?',
                         }}
-                        onChange={(option) => console.log(option)}
+                        onChange={handleProductSearchSelectChange}
                     />
-                    <ul className="shadow-sm list bg-base-100 rounded-box">
-                        <li className="flex items-center justify-between gap-2 p-4 bg-base-200">
-                            <span className="opacity-60">{`Selected products (${products.length})`}</span>
-                            <button className="btn btn-ghost btn-sm">{'Clear all'}</button>
-                        </li>
-                        {products.map((product) => (
-                            <li key={product.id} className="items-center list-row">
-                                <div><img className="size-10 rounded-box" src={product.image} alt={product.name} /></div>
-                                <div>{product.name}</div>
-                                <button className="btn btn-square btn-ghost">
-                                    <X size={16} />
-                                </button>
-                            </li>
-                        ))}
-                    </ul>
+                    {products.length > 0 ? (
+                        <ProductList products={products} />
+                    ) : (
+                        <div className="alert alert-info alert-soft">{'No products have been selected. Search for and select products to generate labels.'}</div>
+                    )}
                 </div>
                 <div className="hidden shadow-sm card bg-base-100 md:block card-sm">
                     <div className="card-body">

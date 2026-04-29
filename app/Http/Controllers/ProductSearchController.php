@@ -37,8 +37,17 @@ class ProductSearchController extends Controller
         return response()->json(array_map(function ($product) {
             return [
                 'id' => $product['id'],
-                'text' => $product['name'],
-                'thumb_url' => $product['icon'] ? $product['icon']['thumb_url'] : '',
+                'name' => $product['name'],
+                'icon' => [
+                    'thumb_url' => $product['icon'] ? $product['icon']['thumb_url'] : '',
+                    'url' => $product['icon'] ? $product['icon']['url'] : '',
+                ],
+                'custom_fields' => [
+                    'colour_coded_storage' => $product['custom_fields']['colour_coded_storage'] ?? '',
+                    'nally_bin_storage' => $product['custom_fields']['nally_bin_storage'] ?? '',
+                    'nally_bin_storage_stored_at_height' => $product['custom_fields']['nally_bin_storage_stored_at_height'] ?? '',
+                    'tub_storage' => $product['custom_fields']['tub_storage'] ?? '',
+                ],
             ];
         }, $products));
     }
