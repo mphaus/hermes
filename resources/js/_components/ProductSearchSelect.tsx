@@ -3,6 +3,7 @@ import { components, OptionProps } from "react-select";
 import ProductSearchController from "@/actions/App/Http/Controllers/ProductSearchController";
 import { debounce } from "es-toolkit/function";
 import { daisyUISelectStyles } from "../reactSelectStyles";
+import { useState } from "react";
 
 async function loadOptions(inputValue: string, params?: Record<string, unknown>) {
     if (!inputValue) {
@@ -52,15 +53,29 @@ const Option = (props: OptionProps<any>) => {
     );
 };
 
-export default function ProductSearchSelect({ name, placeholder, params }: {
+export default function ProductSearchSelect({ name, placeholder, params, clearOnSelect = false, onChange }: {
     name: string;
     placeholder: string;
-    params?: Record<string, unknown>
+    params?: Record<string, unknown>;
+    clearOnSelect?: boolean;
+    onChange?: (option: any) => void;
 }) {
+    const [resetKey, setResetKey] = useState<number>(0);
+
+    const handleChange = (option: any) => {
+        onChange?.(option);
+
+        if (clearOnSelect) {
+            setResetKey(prev => prev + 1);
+        }
+    }
+
     return (
         <AsyncSelect
+            key={resetKey}
             loadOptions={inputValue => new Promise((resolve: any) => debouncedLoadOptions({ inputValue, params, callback: resolve }))}
             isSearchable
+            blurInputOnSelect
             placeholder={placeholder}
             loadingMessage={() => "Searching..."}
             noOptionsMessage={({ inputValue }) =>
@@ -69,6 +84,7 @@ export default function ProductSearchSelect({ name, placeholder, params }: {
             name={name}
             components={{ Option }}
             styles={daisyUISelectStyles}
+            onChange={handleChange}
         />
     );
 }

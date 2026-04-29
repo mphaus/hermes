@@ -1,4 +1,7 @@
-import { Printer, Search, X } from "lucide-react";
+import ProductSearchSelect from "@/_components/ProductSearchSelect";
+import { SharedData } from "@/types";
+import { Head, usePage } from "@inertiajs/react";
+import { Printer, X } from "lucide-react";
 
 const products = [
     {
@@ -74,19 +77,23 @@ const products = [
 ];
 
 export default function ProductsLabelsCreate() {
+    const { title } = usePage<SharedData>().props;
+
     return (
         <>
+            <Head title={title} />
             <div className="md:grid md:gap-4 md:grid-cols-3 md:items-start xl:grid-cols-4">
                 <div className="space-y-4 md:col-span-2 xl:col-span-3">
-                    <label htmlFor="" className="input">
-                        <Search />
-                        <input
-                            type="search"
-                            name=""
-                            id=""
-                            placeholder={'Search for products...'}
-                        />
-                    </label>
+                    <ProductSearchSelect
+                        name="product"
+                        placeholder="Search for products..."
+                        clearOnSelect
+                        params={{
+                            'per_page': 20,
+                            'q[name_cont]': '?',
+                        }}
+                        onChange={(option) => console.log(option)}
+                    />
                     <ul className="shadow-sm list bg-base-100 rounded-box">
                         <li className="flex items-center justify-between gap-2 p-4 bg-base-200">
                             <span className="opacity-60">{`Selected products (${products.length})`}</span>
