@@ -2,7 +2,7 @@ import ProductList from "@/_components/ProductList";
 import ProductSearchSelect, { ProductOption } from "@/_components/ProductSearchSelect";
 import { Product, SharedData } from "@/types";
 import { Head, usePage } from "@inertiajs/react";
-import { Printer, X } from "lucide-react";
+import { Printer } from "lucide-react";
 import { useState } from "react";
 
 export default function ProductsLabelsCreate() {
@@ -11,8 +11,18 @@ export default function ProductsLabelsCreate() {
 
     const handleProductSearchSelectChange = (option: ProductOption | null) => {
         if (option) {
-            setProducts(prevProducts => [...prevProducts, option.product]);
+            setProducts(prevProducts => {
+                if (prevProducts.some(product => product.id === option.product.id)) {
+                    return prevProducts;
+                }
+
+                return [...prevProducts, option.product];
+            });
         }
+    };
+
+    const handleRemoveProduct = (productId: number) => {
+        setProducts(prevProducts => prevProducts.filter(product => product.id !== productId));
     };
 
     return (
@@ -31,7 +41,11 @@ export default function ProductsLabelsCreate() {
                         onChange={handleProductSearchSelectChange}
                     />
                     {products.length > 0 ? (
-                        <ProductList products={products} onClear={() => setProducts([])} />
+                        <ProductList
+                            products={products}
+                            onClear={() => setProducts([])}
+                            onRemove={handleRemoveProduct}
+                        />
                     ) : (
                         <div className="alert alert-info alert-soft">{'No products have been selected. Search for and select products to generate labels.'}</div>
                     )}
