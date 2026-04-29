@@ -31,7 +31,7 @@ export default function ProductsLabelsCreate() {
                         onChange={handleProductSearchSelectChange}
                     />
                     {products.length > 0 ? (
-                        <ProductList products={products} />
+                        <ProductList products={products} onClear={() => setProducts([])} />
                     ) : (
                         <div className="alert alert-info alert-soft">{'No products have been selected. Search for and select products to generate labels.'}</div>
                     )}
