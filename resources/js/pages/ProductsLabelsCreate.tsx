@@ -4,7 +4,6 @@ import ProductList from "@/_components/ProductList";
 import ProductSearchSelect, { ProductOption } from "@/_components/ProductSearchSelect";
 import { Product, SharedData } from "@/types";
 import { Head, usePage } from "@inertiajs/react";
-import { Printer } from "lucide-react";
 import { useState } from "react";
 
 export default function ProductsLabelsCreate() {

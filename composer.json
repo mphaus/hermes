@@ -16,6 +16,8 @@
         "laravel/wayfinder": "^0.1.12",
         "livewire/livewire": "^3.4",
         "resend/resend-laravel": "^1.2",
+        "spatie/browsershot": "^5.3",
+        "spatie/laravel-pdf": "^2.8",
         "tightenco/ziggy": "^2.2"
     },
     "require-dev": {
