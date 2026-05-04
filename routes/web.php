@@ -115,7 +115,7 @@ Route::middleware(['auth', 'is_enabled'])->group(function () {
 
     Route::get('i/members/search', [MemberController::class, 'search'])->name('members.search')->middleware('permission:create-default-discussions');
 
-    Route::get('products/labels/create', ProductsLabelsCreateController::class)->name('products.labels.create');
+    Route::get('products/labels/create', ProductsLabelsCreateController::class)->name('products.labels.create')->middleware('permission:create-product-labels');
 });
 
 require __DIR__ . '/auth.php';
