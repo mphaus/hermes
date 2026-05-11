@@ -2,12 +2,13 @@ import ProductFloatingGenerateLabels from "@/_components/ProductFloatingGenerate
 import ProductGenerateLabels from "@/_components/ProductGenerateLabels";
 import ProductList from "@/_components/ProductList";
 import ProductSearchSelect, { ProductOption } from "@/_components/ProductSearchSelect";
+import ProductsLabelsGenerateController from "@/actions/App/Http/Controllers/ProductsLabelsGenerateController";
 import { Product, SharedData } from "@/types";
-import { Head, usePage } from "@inertiajs/react";
+import { Head, router, usePage } from "@inertiajs/react";
 import { useState } from "react";
 
 export default function ProductsLabelsCreate() {
-    const { title } = usePage<SharedData>().props;
+    const { title, errors } = usePage<SharedData>().props;
     const [products, setProducts] = useState<Product[]>([]);
 
     const handleProductSearchSelectChange = (option: ProductOption | null) => {
@@ -26,6 +27,10 @@ export default function ProductsLabelsCreate() {
         setProducts(prevProducts => prevProducts.filter(product => product.id !== productId));
     };
 
+    const handleGenerateLabels = () => {
+        router.post(ProductsLabelsGenerateController().url, { products });
+    };
+
     return (
         <>
             <Head title={title} />
@@ -41,6 +46,13 @@ export default function ProductsLabelsCreate() {
                         }}
                         onChange={handleProductSearchSelectChange}
                     />
+                    {errors.products && (
+                        <div
+                            role="alert"
+                            className="alert alert-error alert-soft block"
+                            dangerouslySetInnerHTML={{ __html: errors.products }}
+                        ></div>
+                    )}
                     {products.length > 0 ? (
                         <ProductList
                             products={products}
@@ -51,9 +63,16 @@ export default function ProductsLabelsCreate() {
                         <div className="alert alert-info alert-soft">{'No products have been selected. Search for and select products to generate labels.'}</div>
                     )}
                 </div>
-                <ProductGenerateLabels disabled={products.length === 0} />
+                <ProductGenerateLabels
+                    // disabled={products.length === 0}
+                    disabled={false}
+                    onGenerate={handleGenerateLabels}
+                />
             </div>
-            <ProductFloatingGenerateLabels disabled={products.length === 0} />
+            <ProductFloatingGenerateLabels
+                disabled={products.length === 0}
+                onGenerate={handleGenerateLabels}
+            />
         </>
     );
 }

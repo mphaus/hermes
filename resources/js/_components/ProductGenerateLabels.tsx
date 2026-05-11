@@ -1,7 +1,8 @@
 import { Printer } from "lucide-react";
 
-export default function ProductGenerateLabels({ disabled }: {
+export default function ProductGenerateLabels({ disabled, onGenerate }: {
     disabled?: boolean;
+    onGenerate?: () => void;
 }) {
     return (
         <div className="hidden shadow-sm card bg-base-100 md:block card-sm">
@@ -18,6 +19,7 @@ export default function ProductGenerateLabels({ disabled }: {
                     type="button"
                     className="mt-4 btn btn-primary btn-block"
                     disabled={disabled}
+                    onClick={onGenerate}
                 >
                     <Printer size={16} />
                     <span>{'Generate labels'}</span>
