@@ -15,8 +15,8 @@
         "@eslint/js": "^9.39.2",
         "@laravel/vite-plugin-wayfinder": "^0.1.7",
         "@tailwindcss/forms": "^0.5.11",
-        "@tailwindcss/vite": "^4.2.2",
-        "@types/node": "^25.6.0",
+        "@tailwindcss/vite": "^4.3.0",
+        "@types/node": "^25.6.2",
         "babel-plugin-react-compiler": "^1.0.0",
         "daisyui": "^5.5.19",
         "eslint": "^9.39.2",
@@ -26,7 +26,7 @@
         "prettier": "^3.8.3",
         "prettier-plugin-organize-imports": "^4.3.0",
         "prettier-plugin-tailwindcss": "^0.8.0",
-        "typescript-eslint": "^8.58.2"
+        "typescript-eslint": "^8.59.2"
     },
     "dependencies": {
         "@inertiajs/react": "^2.3.17",
@@ -40,13 +40,13 @@
         "laravel-precognition-react": "^2.0.0",
         "laravel-vite-plugin": "^3.1.0",
         "lucide-react": "^1.8.0",
-        "puppeteer": "^24.42.0",
-        "react": "^19.2.5",
-        "react-dom": "^19.2.5",
+        "puppeteer": "^24.43.1",
+        "react": "^19.2.6",
+        "react-dom": "^19.2.6",
         "react-imask": "^7.6.1",
         "react-select": "^5.10.2",
-        "tailwindcss": "^4.2.2",
+        "tailwindcss": "^4.3.0",
         "typescript": "^6.0.3",
-        "vite": "^8.0.9"
+        "vite": "^8.0.12"
     }
 }

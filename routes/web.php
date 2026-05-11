@@ -47,6 +47,8 @@ use Spatie\LaravelPdf\Enums\Unit;
 use function Spatie\LaravelPdf\Support\pdf;
 
 Route::get('/product-label', function () {
+    // return view('pdf.product-label');
+
     return pdf()
         ->withBrowsershot(function (Browsershot $browsershot) {
             $browsershot->setNodeBinary(config('app.browsershot.node_binary'));

@@ -24,11 +24,11 @@
             <p class="uppercase font-extrabold text-2xl">of</p>
             <span class="border-2 border-black size-20"></span>
         </footer>
-        <div class="border-2 border-black size-58 p-2 absolute left-0 bottom-0 bg-white z-10 border-l-0 border-b-0">
-            <div class="border-2 border-black h-full"></div>
-            <div class="absolute h-1 bg-white w-2 -top-1 left-0 z-20"></div>
-            <div class="absolute bg-white w-1 z-20 -right-1 h-2 top-20.5"></div>
-            <div class="absolute bg-white w-1 z-20 bottom-0 -right-1 h-2"></div>
+        <div
+            class="border-2 border-black size-58 p-2 absolute left-0 bottom-0 bg-white z-10 border-l-0 border-b-0 before:absolute before:w-2 before:h-0.5 before:bg-white before:-top-0.5 before:left-0 before:z-10 after:absolute after:w-0.5 after:h-2 after:bg-white after:z-10 after:-right-0.5 after:bottom-0">
+            <div
+                class="border-2 border-black h-full relative after:absolute after:w-0.5 after:h-2 after:bg-white after:z-10 after:-right-3 after:top-18">
+            </div>
         </div>
     </main>
 </body>
