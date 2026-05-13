@@ -56,6 +56,7 @@ Route::get('/product-label', function () {
             $browsershot->setNpmBinary(config('app.browsershot.npm_binary'));
         })
         ->view('pdf.product-label')
+        ->landscape()
         ->format(Format::A4)
         ->margins(0.5, 0.5, 0.5, 0.5, Unit::Inch)
         ->name('test-product-label.pdf');
