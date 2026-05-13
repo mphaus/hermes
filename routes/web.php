@@ -56,7 +56,6 @@ Route::get('/product-label', function () {
         ->view('pdf.product-label')
         // ->landscape()
         ->format(Format::A4)
-        // ->margins(0.5, 0.5, 0.5, 0.5, Unit::Inch)
         ->name('test-product-label.pdf');
     // ->download('product-label.pdf');
 })->name('product.label');
