@@ -48,20 +48,22 @@ use Spatie\LaravelPdf\Enums\Unit;
 use function Spatie\LaravelPdf\Support\pdf;
 
 Route::get('/product-label', function () {
-    // return view('pdf.product-label');
-
     return pdf()
         ->withBrowsershot(function (Browsershot $browsershot) {
             $browsershot->setNodeBinary(config('app.browsershot.node_binary'));
             $browsershot->setNpmBinary(config('app.browsershot.npm_binary'));
         })
         ->view('pdf.product-label')
-        ->landscape()
+        // ->landscape()
         ->format(Format::A4)
-        ->margins(0.5, 0.5, 0.5, 0.5, Unit::Inch)
+        // ->margins(0.5, 0.5, 0.5, 0.5, Unit::Inch)
         ->name('test-product-label.pdf');
     // ->download('product-label.pdf');
 })->name('product.label');
+
+Route::get('/product-label-2', function () {
+    return view('pdf.product-label');
+})->name('product.label.2');
 
 Route::middleware(['auth', 'is_enabled'])->group(function () {
     Route::get('change-password', ChangePasswordController::class)->name('change-password');
