@@ -54,7 +54,7 @@ Route::get('/product-label', function () {
             $browsershot->setNpmBinary(config('app.browsershot.npm_binary'));
         })
         ->view('pdf.product-label')
-        // ->landscape()
+        ->landscape()
         ->format(Format::A4)
         ->name('test-product-label.pdf');
     // ->download('product-label.pdf');

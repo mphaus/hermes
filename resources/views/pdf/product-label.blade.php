@@ -11,7 +11,7 @@
 
 <body class="flex flex-col h-full p-2 min-h-dvh">
     <div class="flex flex-row flex-1 w-full h-full min-h-0 gap-4">
-        @for ($i = 0; $i < 1; $i++)
+        @for ($i = 0; $i < 2; $i++)
             <div class="p-10 relative w-full">
                 <div class="grid grid-cols-3 absolute bottom-10 left-10 right-4 z-10">
                     <div class="border-2 border-black w-full aspect-square bg-white p-2 relative before:absolute before:bg-white before:w-2 before:h-0.5 before:-top-0.5 before:left-0 after:absolute after:bg-white after:w-0.5 after:h-2 after:bottom-0 after:-right-0.5">
