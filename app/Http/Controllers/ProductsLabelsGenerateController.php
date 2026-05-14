@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\GenerateProductLabelsRequest;
+use Inertia\Inertia;
+use Spatie\Browsershot\Browsershot;
+use Spatie\LaravelPdf\Enums\Format;
+
+use function Spatie\LaravelPdf\Support\pdf;
 
 class ProductsLabelsGenerateController extends Controller
 {
@@ -42,5 +47,21 @@ class ProductsLabelsGenerateController extends Controller
         })->filter(function (array $product) {
             return $product['label_type'] !== '';
         })->values();
+
+        $timestamp = now()->timestamp;
+        $file_name = "product-labels-{$timestamp}.pdf";
+
+        pdf()
+            ->withBrowsershot(function (Browsershot $browsershot) {
+                $browsershot->setNodeBinary(config('app.browsershot.node_binary'));
+                $browsershot->setNpmBinary(config('app.browsershot.npm_binary'));
+            })
+            ->view('pdf.product-label', ['products' => $products])
+            ->landscape()
+            ->format(Format::A4)
+            ->disk('local')
+            ->save("pdf_files/{$file_name}");
+
+        return Inertia::location(route('products.labels.download', ['file' => $file_name]));
     }
 }

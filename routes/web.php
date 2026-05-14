@@ -42,28 +42,6 @@ use App\Livewire\QetIndex;
 use App\Livewire\UploadLogsShow;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Support\Facades\Route;
-use Spatie\Browsershot\Browsershot;
-use Spatie\LaravelPdf\Enums\Format;
-use Spatie\LaravelPdf\Enums\Unit;
-
-use function Spatie\LaravelPdf\Support\pdf;
-
-Route::get('/product-label', function () {
-    return pdf()
-        ->withBrowsershot(function (Browsershot $browsershot) {
-            $browsershot->setNodeBinary(config('app.browsershot.node_binary'));
-            $browsershot->setNpmBinary(config('app.browsershot.npm_binary'));
-        })
-        ->view('pdf.product-label')
-        ->landscape()
-        ->format(Format::A4)
-        ->disk('local')
-        ->save('pdf_files/test-product-label.pdf');
-})->name('product.label');
-
-Route::get('/product-label-2', function () {
-    return view('pdf.product-label');
-})->name('product.label.2');
 
 Route::middleware(['auth', 'is_enabled'])->group(function () {
     Route::get('change-password', ChangePasswordController::class)->name('change-password');
