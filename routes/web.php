@@ -11,6 +11,7 @@ use App\Http\Controllers\ProductionAdministratorIndexController;
 use App\Http\Controllers\ProductionAdministratorStoreController;
 use App\Http\Controllers\ProductionAdministratorUpdateController;
 use App\Http\Controllers\ProductsLabelsCreateController;
+use App\Http\Controllers\ProductsLabelsDownloadController;
 use App\Http\Controllers\ProductsLabelsGenerateController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\QuarantineCreateController;
@@ -56,8 +57,8 @@ Route::get('/product-label', function () {
         ->view('pdf.product-label')
         ->landscape()
         ->format(Format::A4)
-        ->name('test-product-label.pdf');
-    // ->download('product-label.pdf');
+        ->disk('local')
+        ->save('pdf_files/test-product-label.pdf');
 })->name('product.label');
 
 Route::get('/product-label-2', function () {
@@ -140,6 +141,7 @@ Route::middleware(['auth', 'is_enabled'])->group(function () {
 
     Route::get('products/labels/create', ProductsLabelsCreateController::class)->name('products.labels.create')->middleware('permission:create-product-labels');
     Route::post('products/labels', ProductsLabelsGenerateController::class)->name('products.labels.store')->middleware('permission:create-product-labels');
+    Route::get('products/labels/download', ProductsLabelsDownloadController::class)->name('products.labels.download')->middleware('permission:create-product-labels');
 });
 
 require __DIR__ . '/auth.php';

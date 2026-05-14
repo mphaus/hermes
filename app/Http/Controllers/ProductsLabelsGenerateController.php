@@ -42,7 +42,5 @@ class ProductsLabelsGenerateController extends Controller
         })->filter(function (array $product) {
             return $product['label_type'] !== '';
         })->values();
-
-        dd($products);
     }
 }
