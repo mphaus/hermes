@@ -1,3 +1,24 @@
 @import "tailwindcss";
 
 @source "../views/**/*.blade.php";
+
+@font-face {
+	font-family: "PDF Minion Pro";
+	src: url("../fonts/pdf/MinionPro-Regular.otf") format("opentype");
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "PDF Aptos";
+	src: url("../fonts/pdf/aptos-black.ttf") format("truetype");
+	font-style: normal;
+	font-weight: 900;
+	font-display: swap;
+}
+
+@theme {
+	--font-minion: "PDF Minion Pro", serif;
+	--font-aptos: "PDF Aptos", sans-serif;
+}

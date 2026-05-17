@@ -6,6 +6,7 @@ use App\Http\Requests\GenerateProductLabelsRequest;
 use Inertia\Inertia;
 use Spatie\Browsershot\Browsershot;
 use Spatie\LaravelPdf\Enums\Format;
+use Spatie\LaravelPdf\Enums\Unit;
 
 use function Spatie\LaravelPdf\Support\pdf;
 
@@ -55,6 +56,10 @@ class ProductsLabelsGenerateController extends Controller
             ->withBrowsershot(function (Browsershot $browsershot) {
                 $browsershot->setNodeBinary(config('app.browsershot.node_binary'));
                 $browsershot->setNpmBinary(config('app.browsershot.npm_binary'));
+                $browsershot->setOption('args', [
+                    '--disable-web-security',
+                    '--allow-file-access-from-files',
+                ]);
             })
             ->view('pdf.product-label', ['products' => $products])
             ->landscape()
