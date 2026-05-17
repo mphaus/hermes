@@ -11,7 +11,7 @@
 
 <body class="font-aptos">
     @foreach ($products->chunk(2) as $products_chunk)
-        <div class="grid grid-cols-2 gap-4 h-198 break-inside-avoid">
+        <div class="grid grid-cols-2 h-198 break-inside-avoid">
             @foreach ($products_chunk as $product)
                 @php
                     $icon_url = $product !== null && ($product['icon_url'] ?? '') !== ''
