@@ -1,3 +1,4 @@
+@use('tbQuar\Facades\Quar')
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,6 +19,7 @@
                         ? $product['icon_url']
                         : 'https://placehold.co/600x600?text=No+image';
                     $label_type = $product !== null ?? $product['label_type'];
+                    $qr = Quar::size(138)->eye('rounded')->generate("https://mphaustralia.current-rms.com/products/{$product['id']}");
                 @endphp
                 <div class="relative w-full h-full p-10">
                     <img 
@@ -26,7 +28,9 @@
                     >
                     <div class="grid grid-cols-3 absolute bottom-10 left-10 right-4 z-10">
                         <div class="border-2 border-black w-full aspect-square bg-white p-2 relative before:absolute before:bg-white before:w-2 before:h-0.5 before:-top-0.5 before:left-0 after:absolute after:bg-white after:w-0.5 after:h-2 after:bottom-0 after:-right-0.5">
-                            <div class="border-2 border-black w-full aspect-square"></div>
+                            <div class="border-2 border-black w-full aspect-square flex flex-col items-center justify-center">
+                                {{ $qr }}
+                            </div>
                         </div>
                         <div class="col-span-2 invisible"></div>
                     </div>
