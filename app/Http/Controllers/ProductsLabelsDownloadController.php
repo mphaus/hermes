@@ -18,7 +18,7 @@ class ProductsLabelsDownloadController extends Controller
             return to_route('products.labels.create');
         }
 
-        return response()->file(storage_path("app/pdf_files/{$file}"), headers: [
+        return response()->download(storage_path("app/pdf_files/{$file}"), headers: [
             'Content-Type' => 'application/pdf',
         ]);
     }

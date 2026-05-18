@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\GenerateProductLabelsRequest;
-use Inertia\Inertia;
 use Spatie\Browsershot\Browsershot;
 use Spatie\LaravelPdf\Enums\Format;
-use Spatie\LaravelPdf\Enums\Unit;
 
 use function Spatie\LaravelPdf\Support\pdf;
 
@@ -67,11 +65,11 @@ class ProductsLabelsGenerateController extends Controller
             ->disk('local')
             ->save("pdf_files/{$file_name}");
 
-        Inertia::flash('product_labels_download', [
+        session()->flash('product_labels_download', [
             'url' => route('products.labels.download', ['file' => $file_name]),
             'filename' => $file_name,
         ]);
 
-        return to_route('products.labels.create');
+        return to_route('products.labels.create.success');
     }
 }

@@ -1,6 +1,5 @@
 import ProductFloatingGenerateLabels from "@/_components/ProductFloatingGenerateLabels";
 import ProductGenerateLabels from "@/_components/ProductGenerateLabels";
-import ProductLabelsDownloadAction from "@/_components/ProductLabelsDownloadAction";
 import ProductList from "@/_components/ProductList";
 import ProductSearchSelect, { ProductOption } from "@/_components/ProductSearchSelect";
 import ProductsLabelsGenerateController from "@/actions/App/Http/Controllers/ProductsLabelsGenerateController";

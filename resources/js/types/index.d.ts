@@ -93,10 +93,6 @@ export type FlashData = {
         type: 'success' | 'error' | 'warning' | 'info';
         message: string;
     };
-    productLabelsDownload?: {
-        url: string;
-        filename: string;
-    };
 };
 
 export type Product = {
