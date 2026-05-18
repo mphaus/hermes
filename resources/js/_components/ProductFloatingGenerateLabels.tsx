@@ -1,6 +1,7 @@
-import { Printer } from "lucide-react";
+import { Printer, RefreshCw } from "lucide-react";
 
-export default function ProductFloatingGenerateLabels({ disabled, onGenerate }: {
+export default function ProductFloatingGenerateLabels({ processing, disabled, onGenerate }: {
+    processing?: boolean;
     disabled?: boolean;
     onGenerate?: () => void;
 }) {
@@ -8,11 +9,20 @@ export default function ProductFloatingGenerateLabels({ disabled, onGenerate }: 
         <div className="fixed z-10 inset-x-4 bottom-4 md:hidden">
             <button
                 type="button" className="btn btn-primary btn-lg btn-block"
-                disabled={disabled}
+                disabled={disabled || processing}
                 onClick={onGenerate}
             >
-                <Printer size={16} />
-                <span>{'Generate labels'}</span>
+                {processing ? (
+                    <>
+                        <RefreshCw size={16} className="animate-spin" />
+                        <span>{'Generating...'}</span>
+                    </>
+                ) : (
+                    <>
+                        <Printer size={16} />
+                        <span>{'Generate labels'}</span>
+                    </>
+                )}
             </button>
         </div>
     );

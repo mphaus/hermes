@@ -1,5 +1,6 @@
 import ProductFloatingGenerateLabels from "@/_components/ProductFloatingGenerateLabels";
 import ProductGenerateLabels from "@/_components/ProductGenerateLabels";
+import ProductLabelsDownloadAction from "@/_components/ProductLabelsDownloadAction";
 import ProductList from "@/_components/ProductList";
 import ProductSearchSelect, { ProductOption } from "@/_components/ProductSearchSelect";
 import ProductsLabelsGenerateController from "@/actions/App/Http/Controllers/ProductsLabelsGenerateController";
@@ -10,6 +11,7 @@ import { useState } from "react";
 export default function ProductsLabelsCreate() {
     const { title, errors } = usePage<SharedData>().props;
     const [products, setProducts] = useState<Product[]>([]);
+    const [processing, setProcessing] = useState(false);
 
     const handleProductSearchSelectChange = (option: ProductOption | null) => {
         if (option) {
@@ -28,6 +30,7 @@ export default function ProductsLabelsCreate() {
     };
 
     const handleGenerateLabels = () => {
+        setProcessing(true);
         router.post(ProductsLabelsGenerateController().url, { products });
     };
 
@@ -64,12 +67,13 @@ export default function ProductsLabelsCreate() {
                     )}
                 </div>
                 <ProductGenerateLabels
-                    // disabled={products.length === 0}
-                    disabled={false}
+                    processing={processing}
+                    disabled={products.length === 0}
                     onGenerate={handleGenerateLabels}
                 />
             </div>
             <ProductFloatingGenerateLabels
+                processing={processing}
                 disabled={products.length === 0}
                 onGenerate={handleGenerateLabels}
             />

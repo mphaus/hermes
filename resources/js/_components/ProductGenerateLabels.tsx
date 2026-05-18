@@ -1,6 +1,7 @@
-import { Printer } from "lucide-react";
+import { Printer, RefreshCw } from "lucide-react";
 
-export default function ProductGenerateLabels({ disabled, onGenerate }: {
+export default function ProductGenerateLabels({ processing, disabled, onGenerate }: {
+    processing?: boolean;
     disabled?: boolean;
     onGenerate?: () => void;
 }) {
@@ -18,11 +19,20 @@ export default function ProductGenerateLabels({ disabled, onGenerate }: {
                 <button
                     type="button"
                     className="mt-4 btn btn-primary btn-block"
-                    disabled={disabled}
+                    disabled={disabled || processing}
                     onClick={onGenerate}
                 >
-                    <Printer size={16} />
-                    <span>{'Generate labels'}</span>
+                    {processing ? (
+                        <>
+                            <RefreshCw size={16} className="animate-spin" />
+                            <span>{'Generating...'}</span>
+                        </>
+                    ) : (
+                        <>
+                            <Printer size={16} />
+                            <span>{'Generate labels'}</span>
+                        </>
+                    )}
                 </button>
             </div>
         </div>

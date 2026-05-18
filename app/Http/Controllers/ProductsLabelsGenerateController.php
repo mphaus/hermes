@@ -67,6 +67,11 @@ class ProductsLabelsGenerateController extends Controller
             ->disk('local')
             ->save("pdf_files/{$file_name}");
 
-        return Inertia::location(route('products.labels.download', ['file' => $file_name]));
+        Inertia::flash('product_labels_download', [
+            'url' => route('products.labels.download', ['file' => $file_name]),
+            'filename' => $file_name,
+        ]);
+
+        return to_route('products.labels.create');
     }
 }
