@@ -36,8 +36,8 @@ export default function ProductsLabelsCreate() {
     return (
         <>
             <Head title={title} />
-            <div className="md:grid md:gap-4 md:grid-cols-3 md:items-start xl:grid-cols-4">
-                <div className="space-y-4 md:col-span-2 xl:col-span-3">
+            <div className="md:grid md:gap-4 md:grid-cols-3 md:items-stretch xl:grid-cols-4">
+                <div className="space-y-4 md:col-span-2 xl:col-span-3 md:flex md:flex-col md:min-h-0">
                     <ProductSearchSelect
                         name="product"
                         placeholder="Search for products..."
@@ -56,20 +56,24 @@ export default function ProductsLabelsCreate() {
                         ></div>
                     )}
                     {products.length > 0 ? (
-                        <ProductList
-                            products={products}
-                            onClear={() => setProducts([])}
-                            onRemove={handleRemoveProduct}
-                        />
+                        <div className="flex-1 min-h-0 overflow-y-auto max-h-[calc(100dvh-14rem)] rounded-b-lg md:max-h-[calc(100dvh-10.5rem)]">
+                            <ProductList
+                                products={products}
+                                onClear={() => setProducts([])}
+                                onRemove={handleRemoveProduct}
+                            />
+                        </div>
                     ) : (
                         <div className="alert alert-info alert-soft">{'No products have been selected. Search for and select products to generate labels.'}</div>
                     )}
                 </div>
-                <ProductGenerateLabels
-                    processing={processing}
-                    disabled={products.length === 0}
-                    onGenerate={handleGenerateLabels}
-                />
+                <div className="place-self-start">
+                    <ProductGenerateLabels
+                        processing={processing}
+                        disabled={products.length === 0}
+                        onGenerate={handleGenerateLabels}
+                    />
+                </div>
             </div>
             <ProductFloatingGenerateLabels
                 processing={processing}

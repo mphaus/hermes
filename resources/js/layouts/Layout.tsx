@@ -16,7 +16,10 @@ export default function Layout({ children }: {
     const toast = usePage<SharedData>().flash?.toast as FlashData['toast'];
 
     useEffect(() => {
-        return router.on('navigate', () => {
+        return router.on('navigate', (e) => {
+            const { component } = e.detail.page;
+            document.documentElement.classList.toggle('overflow-y-hidden', component === 'ProductsLabelsCreate');
+
             if (drawerToggleRef.current) {
                 drawerToggleRef.current.checked = false;
             }
