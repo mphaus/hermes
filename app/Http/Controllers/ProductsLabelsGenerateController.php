@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\GenerateProductLabelsRequest;
 use Spatie\Browsershot\Browsershot;
 use Spatie\LaravelPdf\Enums\Format;
+use Illuminate\Validation\ValidationException;
 
 use function Spatie\LaravelPdf\Support\pdf;
 
@@ -46,6 +47,12 @@ class ProductsLabelsGenerateController extends Controller
         })->filter(function (array $product) {
             return $product['label_type'] !== '';
         })->values();
+
+        if ($products->isEmpty()) {
+            throw ValidationException::withMessages([
+                'products' => __('The selected products do not match any of the Storage Container Types established in CurrentRMS.'),
+            ]);
+        }
 
         $timestamp = now()->timestamp;
         $file_name = "product-labels-{$timestamp}.pdf";

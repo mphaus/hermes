@@ -30,7 +30,11 @@ export default function ProductsLabelsCreate() {
 
     const handleGenerateLabels = () => {
         setProcessing(true);
-        router.post(ProductsLabelsGenerateController().url, { products });
+        router.post(ProductsLabelsGenerateController().url, { products }, {
+            onError() {
+                setProcessing(false);
+            },
+        });
     };
 
     return (
