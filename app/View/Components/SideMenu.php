@@ -30,13 +30,13 @@ class SideMenu extends Component
                 'text' => __('Products'),
                 'route' => null,
                 'active' => null,
-                'permission' => '',
+                'permission' => ['create-product-labels'],
                 'subitems' => [
                     [
                         'text' => __('Label generation'),
                         'route' => route('products.labels.create'),
                         'active' => request()->routeIs('products.labels.create'),
-                        'permission' => '',
+                        'permission' => 'create-product-labels',
                     ],
                 ],
             ],

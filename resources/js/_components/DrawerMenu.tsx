@@ -62,14 +62,14 @@ const menuItems: MenuItem[] = [
         text: 'Products',
         href: '',
         inertia_ready: false,
-        permissions: [],
+        permissions: ['create-product-labels'],
         subitems: [
             {
                 id: 1,
                 text: 'Label generation',
                 href: ProductsLabelsCreateController().url,
                 inertia_ready: true,
-                permissions: [],
+                permissions: ['create-product-labels'],
             },
 
         ],
