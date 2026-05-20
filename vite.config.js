@@ -13,6 +13,7 @@ export default defineConfig({
                 'resources/css/inertia.css',
                 'resources/js/app.tsx',
                 'resources/css/pdf.css',
+                'resources/images/pdf/mph-rings.png',
             ],
             ssr: 'resources/js/ssr.tsx',
             refresh: true,
