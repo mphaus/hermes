@@ -33,7 +33,12 @@ class ProductsLabelsGenerateController extends Controller
                 $label_type = '';
             }
 
-            $name_parts = explode(' - ', $product['name'] ?? '');
+            $full_product_name = $product['name'] ?? '';
+            $highlight_classes = $label_type === 'color'
+                ? $this->highlightClassesForLabelText($full_product_name)
+                : '';
+
+            $name_parts = explode(' - ', $full_product_name);
             $title = $name_parts[0] ?? '';
             $subtitle = $name_parts[1] ?? '';
 
@@ -43,6 +48,7 @@ class ProductsLabelsGenerateController extends Controller
                 'subtitle' => $subtitle,
                 'icon_url' => $product['icon']['url'] ?? 'https://placehold.co/600x600?text=No+image',
                 'label_type' => $label_type,
+                'highlight_classes' => $highlight_classes,
             ];
         })->filter(function (array $product) {
             return $product['label_type'] !== '';
@@ -78,5 +84,36 @@ class ProductsLabelsGenerateController extends Controller
         ]);
 
         return to_route('products.labels.create.success');
+    }
+
+    private function highlightClassesForLabelText(string $value): string
+    {
+        $length_in_metres = $this->extractLengthInMetres($value);
+
+        if ($length_in_metres === null) {
+            return '';
+        }
+
+        return match (true) {
+            $length_in_metres === 2 => 'bg-purple-600 text-white p-2',
+            $length_in_metres >= 5 && $length_in_metres <= 9 => 'bg-red-600 text-white p-2',
+            $length_in_metres >= 10 && $length_in_metres <= 14 => 'bg-blue-600 text-white p-2',
+            $length_in_metres >= 15 && $length_in_metres <= 19 => 'bg-green-600 text-white p-2',
+            $length_in_metres >= 20 && $length_in_metres <= 24 => 'bg-yellow-400 text-black p-2',
+            $length_in_metres >= 25 && $length_in_metres <= 29 => 'bg-red-600 text-white p-2',
+            $length_in_metres >= 30 && $length_in_metres <= 39 => 'bg-orange-500 text-white p-2',
+            $length_in_metres >= 40 && $length_in_metres <= 49 => 'bg-amber-800 text-white p-2',
+            $length_in_metres >= 50 && $length_in_metres <= 79 => 'bg-gray-400 text-black p-2',
+            default => '',
+        };
+    }
+
+    private function extractLengthInMetres(string $value): ?int
+    {
+        if (! preg_match('/(?<![\d.])(\d+)m$/i', rtrim($value), $matches)) {
+            return null;
+        }
+
+        return (int) $matches[1];
     }
 }

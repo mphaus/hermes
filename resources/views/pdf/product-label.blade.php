@@ -18,10 +18,23 @@
                     $icon_url = $product !== null && ($product['icon_url'] ?? '') !== ''
                         ? $product['icon_url']
                         : 'https://placehold.co/600x600?text=No+image';
-                    $label_type = $product !== null ?? $product['label_type'];
+                    $label_type = $product['label_type'] ?? '';
+                    $highlight_classes = $product['highlight_classes'] ?? '';
                     $qr = Quar::size(138)->eye('rounded')->generate("https://mphaustralia.current-rms.com/products/{$product['id']}");
                 @endphp
                 <div class="relative w-full h-full p-10">
+                    @php
+                        $pdf_highlight_class_tokens = [
+                            'bg-purple-600 text-white p-2',
+                            'bg-red-600 text-white p-2',
+                            'bg-blue-600 text-white p-2',
+                            'bg-green-600 text-white p-2',
+                            'bg-yellow-400 text-black p-2',
+                            'bg-orange-500 text-white p-2',
+                            'bg-amber-800 text-white p-2',
+                            'bg-gray-400 text-black p-2',
+                        ];
+                    @endphp
                     <img 
                         src="{{ Vite::asset('resources/images/pdf/mph-rings.png') }}"
                         class="absolute bottom-0 right-0 left-0 w-full -z-1"
@@ -52,9 +65,9 @@
                                     </div>
                                 @else
                                     <div class="grid h-full content-start justify-items-center">
-                                        <p class="text-3xl leading-none text-center">{{ $product['title'] }}</p>
+                                        <p class="{{ trim('text-3xl leading-none text-center ' . $highlight_classes) }}">{{ $product['title'] }}</p>
                                         @if (($product['subtitle'] ?? '') !== '')
-                                            <p class="text-2xl leading-none text-center mt-2 font-minion">{{ $product['subtitle'] }}</p>
+                                            <p class="{{ trim('text-2xl leading-none text-center mt-2 font-minion ' . $highlight_classes) }}">{{ $product['subtitle'] }}</p>
                                         @endif
                                         <figure class="size-60 block mx-auto mt-4">
                                             <img
