@@ -12,6 +12,7 @@ export default defineConfig({
                 'resources/js/old.js',
                 'resources/css/inertia.css',
                 'resources/js/app.tsx',
+                'resources/css/pdf.css',
             ],
             ssr: 'resources/js/ssr.tsx',
             refresh: true,
