@@ -23,18 +23,18 @@ class ProductsLabelsGenerateController extends Controller
         $products = collect($products)->map(function (array $product) {
             $custom_fields = $product['custom_fields'] ?? [];
 
-            if (($custom_fields['tub_storage'] ?? null) === 'Yes' || ($custom_fields['nally_bin_storage'] ?? null) === 'Yes') {
-                $label_type = 'tub_or_nally_bin';
-            } elseif (($custom_fields['colour_coded_storage'] ?? null) === 'Yes') {
-                $label_type = 'color';
-            } elseif (($custom_fields['nally_bin_storage_stored_at_height'] ?? null) === 'Yes') {
-                $label_type = 'stored_at_height';
-            } else {
-                $label_type = '';
-            }
+            $colour_coded_storage = $custom_fields['colour_coded_storage'] ?? '';
+            $stored_at_height = $custom_fields['nally_bin_storage_stored_at_height'] ?? '';
+
+            $label_type = match (true) {
+                $colour_coded_storage === 'Yes' && in_array($stored_at_height, ['No', ''], true) => 'color',
+                in_array($colour_coded_storage, ['No', ''], true) && $stored_at_height === 'Yes' => 'stored_at_height',
+                $colour_coded_storage === 'Yes' && $stored_at_height === 'Yes' => 'color_stored_at_height',
+                default => 'tub_or_nally_bin',
+            };
 
             $full_product_name = $product['name'] ?? '';
-            $highlight_classes = $label_type === 'color'
+            $highlight_classes = $label_type === 'color' || $label_type === 'color_stored_at_height'
                 ? $this->highlightClassesForLabelText($full_product_name)
                 : '';
 

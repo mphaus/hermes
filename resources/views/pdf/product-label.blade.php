@@ -56,19 +56,28 @@
                         </header>
                         <section class="min-h-0 border-2 border-black p-4">
                             @if ($product !== null)
-                                @if ($label_type === 'stored_at_height')
-                                    <div class="grid h-full place-content-center justify-items-center">
-                                        <p class="text-6xl leading-none text-center">{{ $product['title'] }}</p>
-                                        @if (($product['subtitle'] ?? '') !== '')
-                                            <p class="text-4xl leading-none text-center mt-4">{{ $product['subtitle'] }}</p>
-                                        @endif
-                                    </div>
-                                @else
-                                    <div class="grid h-full content-start justify-items-center">
-                                        <p class="{{ trim('text-5xl leading-none text-center ' . $highlight_classes) }}">{{ $product['title'] }}</p>
-                                        @if (($product['subtitle'] ?? '') !== '')
-                                            <p class="{{ trim('text-3xl leading-none text-center mt-2 ' . $highlight_classes) }}">{{ $product['subtitle'] }}</p>
-                                        @endif
+                                <div @class([
+                                    'grid h-full justify-items-center',
+                                    'content-start' => $label_type === 'color' || $label_type === 'tub_or_nally_bin',
+                                    'place-content-center' => $label_type === 'stored_at_height' || $label_type === 'color_stored_at_height'
+                                ])>
+                                    <p @class([
+                                        'leading-none text-center ' . $highlight_classes,
+                                        'text-5xl' => $label_type === 'color' || $label_type === 'tub_or_nally_bin',
+                                        'text-6xl' => $label_type === 'stored_at_height' || $label_type === 'color_stored_at_height',
+                                    ])>
+                                        {{ $product['title'] }}
+                                    </p>
+                                    @if (($product['subtitle'] ?? '') !== '')
+                                        <p @class([
+                                            'leading-none text-center mt-2 ' .  $highlight_classes,
+                                            'text-3xl' => $label_type === 'color' || $label_type === 'tub_or_nally_bin',
+                                            'text-4xl' => $label_type === 'stored_at_height' || $label_type === 'color_stored_at_height',
+                                        ])>
+                                            {{ $product['subtitle'] }}
+                                        </p>
+                                    @endif
+                                    @if ($label_type === 'color' || $label_type === 'tub_or_nally_bin')
                                         <figure class="size-70 block mx-auto mt-4">
                                             <img
                                                 class="w-full h-full object-contain"
@@ -76,8 +85,8 @@
                                                 alt="{{ $product['title'] !== '' ? $product['title'] : 'Product image' }}"
                                             >
                                         </figure>
-                                    </div>
-                                @endif
+                                    @endif
+                                </div>
                             @endif
                         </section>
                         <footer class="grid grid-cols-3 gap-2">
