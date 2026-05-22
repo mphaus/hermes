@@ -2,13 +2,13 @@
 
 @source "../views/**/*.blade.php";
 
-@font-face {
+/* @font-face {
 	font-family: "PDF Minion Pro";
 	src: url("../fonts/pdf/MinionPro-Regular.otf") format("opentype");
 	font-style: normal;
 	font-weight: 400;
 	font-display: swap;
-}
+} */
 
 @font-face {
 	font-family: "PDF Aptos";
@@ -19,6 +19,6 @@
 }
 
 @theme {
-	--font-minion: "PDF Minion Pro", serif;
+	/* --font-minion: "PDF Minion Pro", serif; */
 	--font-aptos: "PDF Aptos", sans-serif;
 }
