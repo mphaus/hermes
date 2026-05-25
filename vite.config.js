@@ -14,6 +14,7 @@ export default defineConfig({
                 'resources/js/app.tsx',
                 'resources/css/pdf.css',
                 'resources/images/pdf/mph-rings.png',
+                'resources/images/pdf/mph-rings.jpg',
             ],
             ssr: 'resources/js/ssr.tsx',
             refresh: true,
