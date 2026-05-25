@@ -27,6 +27,20 @@ class SideMenu extends Component
                 'subitems' => [],
             ],
             [
+                'text' => __('Products'),
+                'route' => null,
+                'active' => null,
+                'permission' => ['create-product-labels'],
+                'subitems' => [
+                    [
+                        'text' => __('Label generation'),
+                        'route' => route('products.labels.create'),
+                        'active' => request()->routeIs('products.labels.create'),
+                        'permission' => 'create-product-labels',
+                    ],
+                ],
+            ],
+            [
                 'text' => __('Action Stream'),
                 'route' => route('action-stream.index'),
                 'active' => request()->routeIs('action-stream.index'),

@@ -3,6 +3,10 @@ import { components, OptionProps } from "react-select";
 import ProductSearchController from "@/actions/App/Http/Controllers/ProductSearchController";
 import { debounce } from "es-toolkit/function";
 import { daisyUISelectStyles } from "../reactSelectStyles";
+import { useState } from "react";
+import { Product } from "@/types";
+
+export type ProductOption = { value: number; label: string; product: Product };
 
 async function loadOptions(inputValue: string, params?: Record<string, unknown>) {
     if (!inputValue) {
@@ -22,10 +26,10 @@ async function loadOptions(inputValue: string, params?: Record<string, unknown>)
         const response = await fetch(`${ProductSearchController().url}?${searchParams}`);
         const data = await response.json();
 
-        return data.map((product: any) => ({
-            thumb_url: product.thumb_url,
+        return data.map((product: Product) => ({
             value: product.id,
-            label: product.text,
+            label: product.name,
+            product,
         }));
     } catch (error) {
         console.error(error);
@@ -36,13 +40,13 @@ async function loadOptions(inputValue: string, params?: Record<string, unknown>)
 const debouncedLoadOptions = debounce(({ inputValue, params, callback }: {
     inputValue: string;
     params?: Record<string, unknown>;
-    callback: (options: any[]) => void;
+    callback: (options: ProductOption[]) => void;
 }) => {
     loadOptions(inputValue, params).then(callback);
 }, 500);
 
-const Option = (props: OptionProps<any>) => {
-    const thumburl = props.data.thumb_url = props.data.thumb_url || 'https://placehold.co/40x40?text=No+image';
+const Option = (props: OptionProps<ProductOption>) => {
+    const thumburl = props.data.product.icon?.thumb_url || 'https://placehold.co/40x40?text=No+image';
 
     return (
         <components.Option {...props} className="flex! items-center gap-2">
@@ -52,15 +56,29 @@ const Option = (props: OptionProps<any>) => {
     );
 };
 
-export default function ProductSearchSelect({ name, placeholder, params }: {
+export default function ProductSearchSelect({ name, placeholder, params, clearOnSelect = false, onChange }: {
     name: string;
     placeholder: string;
-    params?: Record<string, unknown>
+    params?: Record<string, unknown>;
+    clearOnSelect?: boolean;
+    onChange?: (option: ProductOption | null) => void;
 }) {
+    const [resetKey, setResetKey] = useState<number>(0);
+
+    const handleChange = (option: ProductOption | null) => {
+        onChange?.(option);
+
+        if (clearOnSelect) {
+            setResetKey(prev => prev + 1);
+        }
+    }
+
     return (
         <AsyncSelect
-            loadOptions={inputValue => new Promise((resolve: any) => debouncedLoadOptions({ inputValue, params, callback: resolve }))}
+            key={resetKey}
+            loadOptions={inputValue => new Promise((resolve: (options: ProductOption[]) => void) => debouncedLoadOptions({ inputValue, params, callback: resolve }))}
             isSearchable
+            blurInputOnSelect
             placeholder={placeholder}
             loadingMessage={() => "Searching..."}
             noOptionsMessage={({ inputValue }) =>
@@ -69,6 +87,7 @@ export default function ProductSearchSelect({ name, placeholder, params }: {
             name={name}
             components={{ Option }}
             styles={daisyUISelectStyles}
+            onChange={handleChange}
         />
     );
 }

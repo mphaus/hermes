@@ -1,5 +1,6 @@
-import EquipmentImportIndexController from "@/actions/App/Http/Controllers/EquipmentImportIndexController";
+// import EquipmentImportIndexController from "@/actions/App/Http/Controllers/EquipmentImportIndexController";
 import ProductionAdministratorIndexController from "@/actions/App/Http/Controllers/ProductionAdministratorIndexController";
+import ProductsLabelsCreateController from "@/actions/App/Http/Controllers/ProductsLabelsCreateController";
 import QuarantineCreateController from "@/actions/App/Http/Controllers/QuarantineCreateController";
 import TechnicalSupervisorIndexController from "@/actions/App/Http/Controllers/TechnicalSupervisorIndexController";
 import UserIndexController from "@/actions/App/Http/Controllers/UserIndexController";
@@ -25,31 +26,56 @@ interface MenuItem {
 }
 
 const menuItems: MenuItem[] = [
+    // {
+    //     id: 1,
+    //     text: 'Equipment Import',
+    //     href: '',
+    //     inertia_ready: false,
+    //     permissions: ['access-equipment-import'],
+    //     subitems: [
+    //         {
+    //             id: 1,
+    //             text: 'Opportunities',
+    //             href: EquipmentImportIndexController().url,
+    //             inertia_ready: true,
+    //             permissions: ['access-equipment-import'],
+    //         },
+    //         {
+    //             id: 2,
+    //             text: 'Logs',
+    //             href: '#',
+    //             inertia_ready: false,
+    //             permissions: ['access-equipment-import'],
+    //         },
+    //     ],
+    // },
     {
         id: 1,
         text: 'Equipment Import',
-        href: '',
+        href: '/equipment-import',
         inertia_ready: false,
         permissions: ['access-equipment-import'],
-        subitems: [
-            {
-                id: 1,
-                text: 'Opportunities',
-                href: EquipmentImportIndexController().url,
-                inertia_ready: true,
-                permissions: ['access-equipment-import'],
-            },
-            {
-                id: 2,
-                text: 'Logs',
-                href: '#',
-                inertia_ready: false,
-                permissions: ['access-equipment-import'],
-            },
-        ],
+        subitems: [],
     },
     {
         id: 2,
+        text: 'Products',
+        href: '',
+        inertia_ready: false,
+        permissions: ['create-product-labels'],
+        subitems: [
+            {
+                id: 1,
+                text: 'Label generation',
+                href: ProductsLabelsCreateController().url,
+                inertia_ready: true,
+                permissions: ['create-product-labels'],
+            },
+
+        ],
+    },
+    {
+        id: 3,
         text: 'Action Stream',
         href: '/action-stream',
         inertia_ready: false,
@@ -57,7 +83,7 @@ const menuItems: MenuItem[] = [
         subitems: [],
     },
     {
-        id: 3,
+        id: 4,
         text: 'QET',
         href: '/qet',
         inertia_ready: false,
@@ -65,7 +91,7 @@ const menuItems: MenuItem[] = [
         subitems: [],
     },
     {
-        id: 4,
+        id: 5,
         text: 'Discussions',
         href: '',
         inertia_ready: false,
@@ -88,7 +114,7 @@ const menuItems: MenuItem[] = [
         ],
     },
     {
-        id: 5,
+        id: 6,
         text: 'Quarantine Intake',
         href: QuarantineCreateController().url,
         inertia_ready: true,
@@ -96,7 +122,7 @@ const menuItems: MenuItem[] = [
         subitems: [],
     },
     {
-        id: 6,
+        id: 7,
         text: 'Role CRUD',
         href: '',
         inertia_ready: false,
@@ -119,7 +145,7 @@ const menuItems: MenuItem[] = [
         ],
     },
     {
-        id: 7,
+        id: 8,
         text: 'Users',
         href: UserIndexController().url,
         inertia_ready: true,
@@ -177,7 +203,7 @@ export default function DrawerMenu() {
     }
 
     return (
-        <ul className="p-4 menu bg-base-100 flex-1 sm:w-80 w-64">
+        <ul className="flex-1 w-64 p-4 menu bg-base-100 sm:w-80">
             {menuItems.map((item) => canViewItem(item, user) && (
                 <li key={item.id}>
                     {!item.subitems.length && <DrawerMenuItem item={item} url={url} />}

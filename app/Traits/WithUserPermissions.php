@@ -20,14 +20,14 @@ trait WithUserPermissions
      */
     protected array $permissions = [
         [
-            'value' => 'crud-users',
-            'label' => 'CRUD users',
-            'description' => 'Create, Rename, Update, Delete users of the Hermes system. Typically used by Executive, IT and HR staff when on-boarding and off-boarding staff, acting on requests from managers to change users\' access levels, or changing user names (eg, when married).',
-        ],
-        [
             'value' => 'access-equipment-import',
             'label' => 'Equipment Import',
             'description' => 'Used by full-time Lighting Technicians working as Production Administrators to import equipment list data in CSV form into specific CurrentRMS Jobs. This tool pokes real data directly into Opportunities in CurrentRMS, so care must be taken!',
+        ],
+        [
+            'value' => 'create-product-labels',
+            'label' => 'Create product labels',
+            'description' => 'Used by users to create different types of product labels according to product specifications.',
         ],
         [
             'value' => 'access-action-stream',
@@ -63,6 +63,11 @@ trait WithUserPermissions
             'value' => 'crud-technical-supervisors',
             'label' => 'Technical Supervisor CRUD',
             'description' => 'Used by the Production Assistant to add MPH Technical Supervisors to the drop-down list on the Opportunity / Project edit page in CurrentRMS (this in turn is used to ensure Quarantine items assigned to Jobs are also assigned to Technical Supervisors, so accurate Quarantine reporting is possible).',
+        ],
+        [
+            'value' => 'crud-users',
+            'label' => 'CRUD users',
+            'description' => 'Create, Rename, Update, Delete users of the Hermes system. Typically used by Executive, IT and HR staff when on-boarding and off-boarding staff, acting on requests from managers to change users\' access levels, or changing user names (eg, when married).',
         ],
     ];
 

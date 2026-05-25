@@ -156,4 +156,9 @@ return [
         'app_username' => env('WORDPRESS_APP_USERNAME', ''),
         'app_password' => env('WORDPRESS_APP_PASSWORD', ''),
     ],
+
+    'browsershot' => [
+        'node_binary' => env('BROWSERSHOT_NODE_BINARY', ''),
+        'npm_binary' => env('BROWSERSHOT_NPM_BINARY', ''),
+    ],
 ];

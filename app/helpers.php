@@ -32,6 +32,7 @@ if (!function_exists('get_redirect_route')) {
 
         $routeMappings = [
             'access-equipment-import' => route('jobs.index'),
+            'create-product-labels' => route('products.labels.create'),
             'access-action-stream' => route('action-stream.index'),
             'access-qet' => route('qet.index'),
             'create-default-discussions' => route('discussions.create'),
