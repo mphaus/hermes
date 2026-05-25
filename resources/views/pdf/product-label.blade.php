@@ -71,8 +71,10 @@
                                     @if (($product['subtitle'] ?? '') !== '')
                                         <p @class([
                                             'leading-none text-center mt-2 ' .  $highlight_classes,
-                                            'text-3xl' => $label_type === 'color' || $label_type === 'tub_or_nally_bin',
-                                            'text-4xl' => $label_type === 'stored_at_height' || $label_type === 'color_stored_at_height',
+                                            'text-3xl' => $label_type === 'tub_or_nally_bin',
+                                            'text-4xl' => $label_type === 'stored_at_height',
+                                            'text-5xl' => $label_type === 'color',
+                                            'text-6xl' => $label_type === 'color_stored_at_height',
                                         ])>
                                             {{ $product['subtitle'] }}
                                         </p>
