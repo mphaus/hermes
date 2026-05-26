@@ -80,7 +80,7 @@
                                         </p>
                                     @endif
                                     @if ($label_type === 'color' || $label_type === 'tub_or_nally_bin')
-                                        <figure class="size-70 block mx-auto mt-4">
+                                        <figure class="size-70 block mx-auto -mt-1">
                                             <img
                                                 class="w-full h-full object-contain"
                                                 src="{{ $icon_url }}"
