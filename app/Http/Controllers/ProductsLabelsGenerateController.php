@@ -46,7 +46,7 @@ class ProductsLabelsGenerateController extends Controller
                 'id' => $product['id'],
                 'title' => $title,
                 'subtitle' => $subtitle,
-                'icon_url' => $product['icon']['url'] ?? 'https://placehold.co/600x600?text=No+image',
+                'icon_url' => $product['icon']['url'] ?? '',
                 'label_type' => $label_type,
                 'highlight_classes' => $highlight_classes,
             ];
