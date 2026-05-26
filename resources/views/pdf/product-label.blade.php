@@ -15,9 +15,6 @@
         <div class="grid grid-cols-2 h-198 break-inside-avoid">
             @foreach ($products_chunk as $product)
                 @php
-                    $icon_url = $product !== null && ($product['icon_url'] ?? '') !== ''
-                        ? $product['icon_url']
-                        : 'https://placehold.co/600x600?text=No+image';
                     $label_type = $product['label_type'] ?? '';
                     $highlight_classes = $product['highlight_classes'] ?? '';
                     $qr = Quar::size(138)->generate("https://mphaustralia.current-rms.com/products/{$product['id']}");
@@ -36,8 +33,8 @@
                         ];
                     @endphp
                     <img 
-                        src="{{ Vite::asset('resources/images/pdf/mph-rings.jpg') }}"
-                        class="absolute bottom-0 left-0 -z-1"
+                        src="{{ Vite::asset('resources/images/mph-logo-black.png') }}"
+                        class="absolute bottom-0 right-0 -z-1 opacity-20"
                     >
                     <div class="grid grid-cols-3 absolute bottom-10 left-10 right-4 z-10">
                         <div class="border-2 border-black w-full aspect-square bg-white p-2 relative before:absolute before:bg-white before:w-2 before:h-0.5 before:-top-0.5 before:left-0 after:absolute after:bg-white after:w-0.5 after:h-2 after:bottom-0 after:-right-0.5">
@@ -55,41 +52,39 @@
                             <div class="h-20 col-span-2 border-2 border-black"></div>
                         </header>
                         <section class="min-h-0 border-2 border-black p-4">
-                            @if ($product !== null)
-                                <div @class([
-                                    'grid h-full justify-items-center',
-                                    'content-start' => $label_type === 'color' || $label_type === 'tub_or_nally_bin',
-                                    'place-content-center' => $label_type === 'stored_at_height' || $label_type === 'color_stored_at_height'
+                            <div @class([
+                                'grid h-full justify-items-center',
+                                'content-start' => $label_type === 'color' || $label_type === 'tub_or_nally_bin',
+                                'place-content-center' => $label_type === 'stored_at_height' || $label_type === 'color_stored_at_height'
+                            ])>
+                                <p @class([
+                                    'leading-none text-center ' . $highlight_classes,
+                                    'text-5xl' => $label_type === 'color' || $label_type === 'tub_or_nally_bin',
+                                    'text-7xl' => $label_type === 'stored_at_height' || $label_type === 'color_stored_at_height',
                                 ])>
+                                    {{ $product['title'] }}
+                                </p>
+                                @if (($product['subtitle'] ?? '') !== '')
                                     <p @class([
-                                        'leading-none text-center ' . $highlight_classes,
-                                        'text-5xl' => $label_type === 'color' || $label_type === 'tub_or_nally_bin',
-                                        'text-7xl' => $label_type === 'stored_at_height' || $label_type === 'color_stored_at_height',
+                                        'leading-none text-center mt-2 ' . $highlight_classes,
+                                        'text-3xl' => $label_type === 'tub_or_nally_bin',
+                                        'text-5xl' => $label_type === 'color' || $label_type === 'stored_at_height' || $label_type === 'color_stored_at_height',
                                     ])>
-                                        {{ $product['title'] }}
+                                        {{ $product['subtitle'] }}
                                     </p>
-                                    @if (($product['subtitle'] ?? '') !== '')
-                                        <p @class([
-                                            'leading-none text-center mt-2 ' . $highlight_classes,
-                                            'text-3xl' => $label_type === 'tub_or_nally_bin',
-                                            'text-5xl' => $label_type === 'color' || $label_type === 'stored_at_height' || $label_type === 'color_stored_at_height',
-                                        ])>
-                                            {{ $product['subtitle'] }}
-                                        </p>
+                                @endif
+                                @if ($label_type === 'color' || $label_type === 'tub_or_nally_bin')
+                                    @if (!empty($product['icon_url']))
+                                        <figure class="size-70 block mx-auto -mt-1">
+                                            <img
+                                                class="w-full h-full object-contain"
+                                                src="{{ $product['icon_url'] }}"
+                                                alt="{{ $product['title'] !== '' ? $product['title'] : 'Product image' }}"
+                                            >
+                                        </figure>
                                     @endif
-                                    @if ($label_type === 'color' || $label_type === 'tub_or_nally_bin')
-                                        @if (!empty($product['icon_url']))
-                                            <figure class="size-70 block mx-auto -mt-1">
-                                                <img
-                                                    class="w-full h-full object-contain"
-                                                    src="{{ $icon_url }}"
-                                                    alt="{{ $product['title'] !== '' ? $product['title'] : 'Product image' }}"
-                                                >
-                                            </figure>
-                                        @endif
-                                    @endif
-                                </div>
-                            @endif
+                                @endif
+                            </div>
                         </section>
                         <footer class="grid grid-cols-3 gap-2">
                             <div class="invisible w-full"></div>
