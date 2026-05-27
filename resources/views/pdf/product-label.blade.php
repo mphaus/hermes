@@ -33,8 +33,8 @@
                         ];
                     @endphp
                     <img 
-                        src="{{ Vite::asset('resources/images/mph-logo-black.png') }}"
-                        class="absolute bottom-0 right-0 -z-1 opacity-20"
+                        src="{{ Vite::asset('resources/images/mph-rings-grey.png') }}"
+                        class="absolute bottom-0 w-full left-0 -z-1 opacity-10"
                     >
                     <div class="grid grid-cols-3 absolute bottom-10 left-10 right-4 z-10">
                         <div class="border-2 border-black w-full aspect-square bg-white p-2 relative before:absolute before:bg-white before:w-2 before:h-0.5 before:-top-0.5 before:left-0 after:absolute after:bg-white after:w-0.5 after:h-2 after:bottom-0 after:-right-0.5">
