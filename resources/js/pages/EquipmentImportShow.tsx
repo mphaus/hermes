@@ -35,7 +35,7 @@ export default function EquipmentImportShow() {
                             opportunity={opportunity}
                             opportunities_url={opportunities_url}
                         />
-                        <EquipmentImportForm />
+                        <EquipmentImportForm opportunity={opportunity} />
                     </div>
                 )}
             </Deferred>
