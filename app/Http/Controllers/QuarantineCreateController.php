@@ -35,7 +35,6 @@ class QuarantineCreateController extends Controller
     private function technicalSupervisorsData()
     {
         $list_id = config('app.mph.technical_supervisor_list_id');
-        // $result = $this->currentrms->fetch("list_names/{$list_id}");
         $response = CurrentRMS::fetch("list_names/{$list_id}");
 
         if ($response->hasErrors()) {

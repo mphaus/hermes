@@ -77,6 +77,11 @@ export interface UsersData extends PaginationData {
     data: User[];
 }
 
+export interface OpportunitiesData extends PaginationData {
+    data: Record<string, any>[];
+    error: string;
+}
+
 export type UserPermission = {
     value: string;
     label: string;
@@ -87,5 +92,20 @@ export type FlashData = {
     toast?: {
         type: 'success' | 'error' | 'warning' | 'info';
         message: string;
+    };
+};
+
+export type Product = {
+    id: number;
+    name: string;
+    icon: {
+        thumb_url: string;
+        url: string;
+    } | null;
+    custom_fields: {
+        colour_coded_storage: string;
+        nally_bin_storage: string;
+        nally_bin_storage_stored_at_height: string;
+        tub_storage: string;
     };
 };

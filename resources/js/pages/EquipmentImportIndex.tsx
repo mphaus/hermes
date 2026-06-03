@@ -1,0 +1,38 @@
+import EquipmentImportSkeleton from "@/_components/EquipmentImportSkeleton";
+import OpportunitiesList from "@/_components/OpportunitiesList";
+import Pagination from "@/_components/Pagination";
+import { OpportunitiesData, SharedData } from "@/types";
+import { Deferred, Head, usePage } from "@inertiajs/react";
+
+export default function EquipmentImportIndex() {
+    const opportunitiesData = usePage<SharedData>().props.opportunities_data as OpportunitiesData | undefined;
+    const { error, data: opportunities, per_page, total, links } = opportunitiesData || {};
+
+    return (
+        <>
+            <Head title={'Equipment Import'} />
+            <Deferred data="opportunities_data" fallback={<EquipmentImportSkeleton />}>
+                {error && (
+                    <div role="alert" className="alert alert-error">
+                        {error}
+                    </div>
+                )}
+                {!opportunities?.length && !error && (
+                    <div role="alert" className="alert alert-info max-w-3xl mx-auto">
+                        {'There are no opportunities that match the required criteria.'}
+                    </div>
+                )}
+                {!!opportunities?.length && !error && (
+                    <>
+                        <OpportunitiesList opportunities={opportunities} />
+                        {per_page && total && per_page < total && (
+                            <div className="mt-4">
+                                <Pagination links={links || []} />
+                            </div>
+                        )}
+                    </>
+                )}
+            </Deferred >
+        </>
+    );
+}

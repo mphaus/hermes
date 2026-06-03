@@ -10,6 +10,10 @@ use App\Http\Controllers\ProductionAdministratorEditController;
 use App\Http\Controllers\ProductionAdministratorIndexController;
 use App\Http\Controllers\ProductionAdministratorStoreController;
 use App\Http\Controllers\ProductionAdministratorUpdateController;
+use App\Http\Controllers\ProductsLabelsCreateController;
+use App\Http\Controllers\ProductsLabelsCreateSuccessController;
+use App\Http\Controllers\ProductsLabelsDownloadController;
+use App\Http\Controllers\ProductsLabelsGenerateController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\QuarantineCreateController;
 use App\Http\Controllers\QuarantineReportMistakeController;
@@ -113,6 +117,11 @@ Route::middleware(['auth', 'is_enabled'])->group(function () {
     Route::get('i/products/search', [ProductController::class, 'search'])->name('products.search');
 
     Route::get('i/members/search', [MemberController::class, 'search'])->name('members.search')->middleware('permission:create-default-discussions');
+
+    Route::get('products/labels/create', ProductsLabelsCreateController::class)->name('products.labels.create')->middleware('permission:create-product-labels');
+    Route::post('products/labels', ProductsLabelsGenerateController::class)->name('products.labels.store')->middleware('permission:create-product-labels');
+    Route::get('products/labels/create/success', ProductsLabelsCreateSuccessController::class)->name('products.labels.create.success')->middleware('permission:create-product-labels');
+    Route::get('products/labels/download', ProductsLabelsDownloadController::class)->name('products.labels.download')->middleware('permission:create-product-labels');
 });
 
 require __DIR__ . '/auth.php';

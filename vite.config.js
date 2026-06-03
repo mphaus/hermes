@@ -12,6 +12,8 @@ export default defineConfig({
                 'resources/js/old.js',
                 'resources/css/inertia.css',
                 'resources/js/app.tsx',
+                'resources/css/pdf.css',
+                'resources/images/mph-rings-grey.png',
             ],
             ssr: 'resources/js/ssr.tsx',
             refresh: true,
