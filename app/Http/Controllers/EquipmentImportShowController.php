@@ -22,7 +22,7 @@ class EquipmentImportShowController extends Controller
     {
         return Inertia::render('EquipmentImportShow', [
             'title' => 'Equipment Import > Import',
-            'opportunity_data' => Inertia::defer(fn() => $this->opportunityData($request->route('opportunity_id'))),
+            'opportunity_data' => Inertia::defer(fn() => $this->opportunityData($request->route('opportunity_id')))->once(),
             'opportunities_url' => config('app.mph.opportunities_url'),
         ]);
     }
