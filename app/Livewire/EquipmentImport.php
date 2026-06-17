@@ -2,7 +2,7 @@
 
 namespace App\Livewire;
 
-use App\Models\UploadLog as ModelsUploadLog;
+use App\Models\UploadLog as UploadLogModel;
 use App\OpportunityItems;
 use App\UploadLog;
 use Illuminate\Contracts\View\View;
@@ -89,7 +89,7 @@ class EquipmentImport extends Component
                  */
 
                 if ($discussions) {
-                    if (ModelsUploadLog::where('job_id', $this->opportunityid)->count() === 0) {
+                    if (UploadLogModel::query()->where('job_id', $this->opportunityid)->count('*') === 0) {
                         $remark = __('Initial equipment list import completed');
                     } else {
                         $remark = __(':username did a new Equipment Import for this Job. There changes were;', ['username' => Auth::user()->username]);
