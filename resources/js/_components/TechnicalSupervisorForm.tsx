@@ -5,11 +5,11 @@ import TechnicalSupervisorStoreController from "@/actions/App/Http/Controllers/T
 import TechnicalSupervisorUpdateController from "@/actions/App/Http/Controllers/TechnicalSupervisorUpdateController";
 
 export default function TechnicalSupervisorForm({ technicalSupervisor }: {
-    technicalSupervisor: {
+    technicalSupervisor?: {
         id: number;
         first_name: string;
         last_name: string;
-    } | undefined;
+    };
 }) {
     return (
         <div className="card bg-base-100 shadow-sm mx-auto max-w-2xl">
