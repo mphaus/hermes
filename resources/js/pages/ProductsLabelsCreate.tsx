@@ -4,6 +4,7 @@ import ProductList from "@/_components/ProductList";
 import ProductSearchSelect, { ProductOption } from "@/_components/ProductSearchSelect";
 import ProductsLabelsGenerateController from "@/actions/App/Http/Controllers/ProductsLabelsGenerateController";
 import { Product, SharedData } from "@/types";
+import productHasNoCustomFields from "@/utils/productHasNoCustomFields";
 import { Head, router, usePage } from "@inertiajs/react";
 import { useState } from "react";
 
@@ -11,6 +12,7 @@ export default function ProductsLabelsCreate() {
     const { title, errors } = usePage<SharedData>().props;
     const [products, setProducts] = useState<Product[]>([]);
     const [processing, setProcessing] = useState(false);
+    const hasProductsWithNoCustomFields = products.some(productHasNoCustomFields);
 
     const handleProductSearchSelectChange = (option: ProductOption | null) => {
         if (option) {
@@ -58,6 +60,11 @@ export default function ProductsLabelsCreate() {
                             className="alert alert-error alert-soft block"
                             dangerouslySetInnerHTML={{ __html: errors.products }}
                         ></div>
+                    )}
+                    {hasProductsWithNoCustomFields && (
+                        <div role="alert" className="alert alert-warning alert-soft">
+                            {'You have selected one or more products that are not configured for label generation (highlighted in red). Labels for these products will not be generated. If you believe labels should be available for these products, please contact your supervisor to have the product settings reviewed'}
+                        </div>
                     )}
                     {products.length > 0 ? (
                         <div className="flex-1 min-h-0 overflow-y-auto max-h-[calc(100dvh-14rem)] rounded-b-lg md:max-h-[calc(100dvh-10.5rem)]">
