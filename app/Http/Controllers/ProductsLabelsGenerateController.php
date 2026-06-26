@@ -20,39 +20,41 @@ class ProductsLabelsGenerateController extends Controller
 
         ['products' => $products] = $validated;
 
-        $products = collect($products)->map(function (array $product) {
-            $custom_fields = $product['custom_fields'] ?? [];
+        $products = collect($products)
+            ->filter(fn(array $product): bool => $this->productHasUsableCustomFields($product))
+            ->map(function (array $product) {
+                $custom_fields = $product['custom_fields'] ?? [];
 
-            $colour_coded_storage = $custom_fields['colour_coded_storage'] ?? '';
-            $stored_at_height = $custom_fields['nally_bin_storage_stored_at_height'] ?? '';
+                $colour_coded_storage = $custom_fields['colour_coded_storage'] ?? '';
+                $stored_at_height = $custom_fields['nally_bin_storage_stored_at_height'] ?? '';
 
-            $label_type = match (true) {
-                $colour_coded_storage === 'Yes' && in_array($stored_at_height, ['No', ''], true) => 'color',
-                in_array($colour_coded_storage, ['No', ''], true) && $stored_at_height === 'Yes' => 'stored_at_height',
-                $colour_coded_storage === 'Yes' && $stored_at_height === 'Yes' => 'color_stored_at_height',
-                default => 'tub_or_nally_bin',
-            };
+                $label_type = match (true) {
+                    $colour_coded_storage === 'Yes' && in_array($stored_at_height, ['No', ''], true) => 'color',
+                    in_array($colour_coded_storage, ['No', ''], true) && $stored_at_height === 'Yes' => 'stored_at_height',
+                    $colour_coded_storage === 'Yes' && $stored_at_height === 'Yes' => 'color_stored_at_height',
+                    default => 'tub_or_nally_bin',
+                };
 
-            $full_product_name = $product['name'] ?? '';
-            $highlight_classes = $label_type === 'color' || $label_type === 'color_stored_at_height'
-                ? $this->highlightClassesForLabelText($full_product_name)
-                : '';
+                $full_product_name = $product['name'] ?? '';
+                $highlight_classes = $label_type === 'color' || $label_type === 'color_stored_at_height'
+                    ? $this->highlightClassesForLabelText($full_product_name)
+                    : '';
 
-            $name_parts = explode(' - ', $full_product_name);
-            $title = $name_parts[0] ?? '';
-            $subtitle = $name_parts[1] ?? '';
+                $name_parts = explode(' - ', $full_product_name);
+                $title = $name_parts[0] ?? '';
+                $subtitle = $name_parts[1] ?? '';
 
-            return [
-                'id' => $product['id'],
-                'title' => $title,
-                'subtitle' => $subtitle,
-                'icon_url' => $product['icon']['url'] ?? '',
-                'label_type' => $label_type,
-                'highlight_classes' => $highlight_classes,
-            ];
-        })->filter(function (array $product) {
-            return $product['label_type'] !== '';
-        })->values();
+                return [
+                    'id' => $product['id'],
+                    'title' => $title,
+                    'subtitle' => $subtitle,
+                    'icon_url' => $product['icon']['url'] ?? '',
+                    'label_type' => $label_type,
+                    'highlight_classes' => $highlight_classes,
+                ];
+            })->filter(function (array $product) {
+                return $product['label_type'] !== '';
+            })->values();
 
         if ($products->isEmpty()) {
             throw ValidationException::withMessages([
@@ -106,6 +108,36 @@ class ProductsLabelsGenerateController extends Controller
             $length_in_metres >= 50 && $length_in_metres <= 79 => 'bg-gray-400 text-black p-2',
             default => '',
         };
+    }
+
+    private function productHasUsableCustomFields(array $product): bool
+    {
+        $custom_fields = $product['custom_fields'] ?? null;
+
+        if (! is_array($custom_fields) || $custom_fields === []) {
+            return false;
+        }
+
+        foreach ($custom_fields as $value) {
+            if (! $this->isEmptyCustomFieldValue($value)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function isEmptyCustomFieldValue(mixed $value): bool
+    {
+        if ($value === null) {
+            return true;
+        }
+
+        if (is_string($value)) {
+            return trim($value) === '';
+        }
+
+        return false;
     }
 
     private function extractLengthInMetres(string $value): ?int
