@@ -51,8 +51,8 @@
         "vite": "^8.2.1"
     },
     "allowScripts": {
-        "core-js-pure@3.49.0": true,
-        "fsevents@2.3.3": true,
-        "puppeteer@25.8.0": true
+        "core-js-pure@3.50.0": true,
+        "puppeteer@25.8.0": true,
+        "fsevents@2.3.3": true
     }
 }
