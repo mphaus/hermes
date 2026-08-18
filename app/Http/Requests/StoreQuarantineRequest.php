@@ -155,7 +155,7 @@ class StoreQuarantineRequest extends FormRequest
             PHP_EOL .
             "Submitted by {$first_name}";
 
-        $result = CurrentRMS::store(uri: 'quarantines', data: [
+        $response = CurrentRMS::store(uri: 'quarantines', data: [
             'quarantine' => [
                 'item_id' => intval($product_id),
                 'store_id' => 1,
@@ -179,16 +179,14 @@ class StoreQuarantineRequest extends FormRequest
             ],
         ]);
 
-        if ($result['fail']) {
-            ['fail' => ['data' => $errorData]] = $result;
-
+        if ($response->hasErrors()) {
             return [
-                'error' => $errorData,
+                'error' => $response->getErrorString(),
                 'data' => [],
             ];
         }
 
-        ['quarantine' => $quarantine] = $result['data'];
+        ['quarantine' => $quarantine] = $response->getData();
 
         return [
             'error' => '',
