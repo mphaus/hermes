@@ -27,7 +27,7 @@
         @vite(['resources/css/app.css', 'resources/js/old.js'])
         @livewireStyles
     </head>
-    <body class="font-sans antialiased max-[1279px]:pb-[62px] bg-gray-100 ">
+    <body class="font-sans antialiased max-[1279px]:pb-15.5 bg-gray-100 ">
         <div class="min-h-dvh">
             <!-- Page Content -->
             <main>

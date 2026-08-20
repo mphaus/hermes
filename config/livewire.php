@@ -38,7 +38,7 @@ return [
     |
     */
 
-    'layout' => 'components.layout-app',
+    'component_layout' => 'layouts::app',
 
     /*
     |---------------------------------------------------------------------------
@@ -50,7 +50,7 @@ return [
     |
     */
 
-    'lazy_placeholder' => null,
+    'component_placeholder' => null,
 
     /*
     |---------------------------------------------------------------------------
@@ -69,9 +69,22 @@ return [
         'directory' => null,   // Example: 'tmp'                      | Default: 'livewire-tmp'
         'middleware' => null,  // Example: 'throttle:5,1'             | Default: 'throttle:60,1'
         'preview_mimes' => [   // Supported file types for temporary pre-signed file URLs...
-            'png', 'gif', 'bmp', 'svg', 'wav', 'mp4',
-            'mov', 'avi', 'wmv', 'mp3', 'm4a',
-            'jpg', 'jpeg', 'mpga', 'webp', 'wma',
+            'png',
+            'gif',
+            'bmp',
+            'svg',
+            'wav',
+            'mp4',
+            'mov',
+            'avi',
+            'wmv',
+            'mp3',
+            'm4a',
+            'jpg',
+            'jpeg',
+            'mpga',
+            'webp',
+            'wma',
         ],
         'max_upload_time' => 5, // Max duration (in minutes) before an upload is invalidated...
         'cleanup' => true, // Should cleanup temporary uploads older than 24 hrs...
@@ -157,4 +170,21 @@ return [
     */
 
     'pagination_theme' => 'tailwind',
+
+    'smart_wire_keys' => true,
+
+    'component_locations' => [
+        resource_path('views/components'),
+        resource_path('views/livewire'),
+    ],
+
+    'component_namespaces' => [
+        'layouts' => resource_path('views/layouts'),
+        'pages' => resource_path('views/pages'),
+    ],
+
+    'make_command' => [
+        'type' => 'sfc',  // Options: 'sfc', 'mfc', or 'class'
+        'emoji' => false,   // Whether to use ⚡ emoji prefix
+    ],
 ];

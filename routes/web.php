@@ -48,18 +48,18 @@ Route::middleware(['auth', 'is_enabled'])->group(function () {
     Route::get('change-password', ChangePasswordController::class)->name('change-password');
     Route::post('change-password', PasswordStoreController::class)->name('change-password.store');
 
-    Route::get('equipment-import', JobsIndex::class)->name('jobs.index')->middleware('permission:access-equipment-import');
+    Route::livewire('equipment-import', JobsIndex::class)->name('jobs.index')->middleware('permission:access-equipment-import');
     Route::permanentRedirect('/jobs', '/equipment-import');
 
-    Route::get('equipment-import/{id}', JobsShow::class)->name('jobs.show')->middleware('permission:access-equipment-import');
+    Route::livewire('equipment-import/{id}', JobsShow::class)->name('jobs.show')->middleware('permission:access-equipment-import');
     Route::permanentRedirect('/jobs/{id}', '/equipment-import/{id}');
 
-    Route::get('logs/{id}', UploadLogsShow::class)->name('logs.show')->middleware('permission:access-equipment-import');
-    Route::get('action-stream', ActionStreamIndex::class)->name('action-stream.index')->middleware('permission:access-action-stream');
-    Route::get('qet', QetIndex::class)->name('qet.index')->middleware('permission:access-qet');
+    Route::livewire('logs/{id}', UploadLogsShow::class)->name('logs.show')->middleware('permission:access-equipment-import');
+    Route::livewire('action-stream', ActionStreamIndex::class)->name('action-stream.index')->middleware('permission:access-action-stream');
+    Route::livewire('qet', QetIndex::class)->name('qet.index')->middleware('permission:access-qet');
 
-    Route::get('discussions/create', DiscussionsCreate::class)->name('discussions.create')->middleware('permission:create-default-discussions');
-    Route::get('discussions/edit', DiscussionsEdit::class)->name('discussions.edit')->middleware('permission:update-default-discussions');
+    Route::livewire('discussions/create', DiscussionsCreate::class)->name('discussions.create')->middleware('permission:create-default-discussions');
+    Route::livewire('discussions/edit', DiscussionsEdit::class)->name('discussions.edit')->middleware('permission:update-default-discussions');
 
     Route::get('opportunities/search', [OpportunityController::class, 'search'])->name('opportunities.search');
     Route::get('opportunities/{id}', [OpportunityController::class, 'show'])->name('opportunities.show');
