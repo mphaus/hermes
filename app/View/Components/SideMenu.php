@@ -47,13 +47,13 @@ class SideMenu extends Component
                 'permission' => 'access-action-stream',
                 'subitems' => [],
             ],
-            [
-                'text' => __('QET'),
-                'route' => route('qet.index'),
-                'active' => request()->routeIs('qet.index'),
-                'permission' => 'access-qet',
-                'subitems' => [],
-            ],
+            // [
+            //     'text' => __('QET'),
+            //     'route' => route('qet.index'),
+            //     'active' => request()->routeIs('qet.index'),
+            //     'permission' => 'access-qet',
+            //     'subitems' => [],
+            // ],
             [
                 'text' => __('Discussions'),
                 'route' => null,

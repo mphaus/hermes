@@ -34,7 +34,7 @@ if (!function_exists('get_redirect_route')) {
             'access-equipment-import' => route('jobs.index'),
             'create-product-labels' => route('products.labels.create'),
             'access-action-stream' => route('action-stream.index'),
-            'access-qet' => route('qet.index'),
+            // 'access-qet' => route('qet.index'),
             'create-default-discussions' => route('discussions.create'),
             'update-default-discussions' => route('discussions.edit'),
             'access-quarantine-intake' => route('quarantine.create'),

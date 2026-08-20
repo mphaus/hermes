@@ -1,3 +1,4 @@
+import inertia from '@inertiajs/vite';
 import { wayfinder } from "@laravel/vite-plugin-wayfinder";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
@@ -15,8 +16,10 @@ export default defineConfig({
                 'resources/css/pdf.css',
                 'resources/images/mph-rings-grey.png',
             ],
-            ssr: 'resources/js/ssr.tsx',
             refresh: true,
+        }),
+        inertia({
+            ssr: false,
         }),
         react({
             babel: {
