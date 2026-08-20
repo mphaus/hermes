@@ -82,14 +82,14 @@ const menuItems: MenuItem[] = [
         permissions: ['access-action-stream'],
         subitems: [],
     },
-    {
-        id: 4,
-        text: 'QET',
-        href: '/qet',
-        inertia_ready: false,
-        permissions: ['access-qet'],
-        subitems: [],
-    },
+    // {
+    //     id: 4,
+    //     text: 'QET',
+    //     href: '/qet',
+    //     inertia_ready: false,
+    //     permissions: ['access-qet'],
+    //     subitems: [],
+    // },
     {
         id: 5,
         text: 'Discussions',

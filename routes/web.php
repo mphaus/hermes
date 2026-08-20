@@ -56,7 +56,7 @@ Route::middleware(['auth', 'is_enabled'])->group(function () {
 
     Route::livewire('logs/{id}', UploadLogsShow::class)->name('logs.show')->middleware('permission:access-equipment-import');
     Route::livewire('action-stream', ActionStreamIndex::class)->name('action-stream.index')->middleware('permission:access-action-stream');
-    Route::livewire('qet', QetIndex::class)->name('qet.index')->middleware('permission:access-qet');
+    // Route::livewire('qet', QetIndex::class)->name('qet.index')->middleware('permission:access-qet');
 
     Route::livewire('discussions/create', DiscussionsCreate::class)->name('discussions.create')->middleware('permission:create-default-discussions');
     Route::livewire('discussions/edit', DiscussionsEdit::class)->name('discussions.edit')->middleware('permission:update-default-discussions');

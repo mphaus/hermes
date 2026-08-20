@@ -34,11 +34,11 @@ trait WithUserPermissions
             'label' => 'Action Stream',
             'description' => 'Typically used by the Production Assistant to see what changes have been made to which Jobs in CurrentRMS in certain timeframes. This is "read only" data, and any staff member can be assigned to this function if it would be useful to them.',
         ],
-        [
-            'value' => 'access-qet',
-            'label' => 'QET',
-            'description' => 'The Quick Equipment Transfers function (QET) is primarily used by Warehouse staff and Production Administrators to see what equipment needs to be quickly transferred to new Jobs in busy periods.',
-        ],
+        // [
+        //     'value' => 'access-qet',
+        //     'label' => 'QET',
+        //     'description' => 'The Quick Equipment Transfers function (QET) is primarily used by Warehouse staff and Production Administrators to see what equipment needs to be quickly transferred to new Jobs in busy periods.',
+        // ],
         [
             'value' => 'create-default-discussions',
             'label' => 'Create template Discussions',
