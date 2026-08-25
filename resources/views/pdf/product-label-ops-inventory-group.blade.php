@@ -18,15 +18,15 @@
     @foreach (array_chunk($range, 2) as $range_chunk)
         <div class="grid grid-cols-2 break-inside-avoid gap-4">
             @foreach ($range_chunk as $item)
-                <div class="flex">
-                    <div class="size-34.5 border border-black"></div>
-                    <div>
+                <div class="flex gap-2 p-3 w-[80mm] h-[35mm] border border-black">
+                    <div class="aspect-square border border-black shrink-0"></div>
+                    <div class="flex flex-col justify-between text-sm">
                         <p>Product really long title</p>
-                        <p>Product really long subtitle</p>
-                        <p>
-                            <span>Stock unit</span>
-                            <span>Box of 100</span>
-                        </p>
+                        <p class="font-black">Product really long subtitle</p>
+                        <div class="flex items-baseline gap-2">
+                            <p class="uppercase">Stock unit:</p>
+                            <p>Box of 100</p>
+                        </div>
                     </div>
                 </div>
             @endforeach
