@@ -47,7 +47,7 @@
                     <div class="grid h-full min-h-0 gap-2 p-2 border-2 border-black grid-rows-[auto_1fr_auto]">
                         <header class="grid items-center grid-cols-3 gap-2">
                             <div class="flex items-center justify-center h-20 p-4 border-2 border-black">
-                                <h1 class="uppercase text-[26px]">Location</h1>
+                                <h1 class="uppercase text-[26px] font-black">Location</h1>
                             </div>
                             <div class="h-20 col-span-2 border-2 border-black"></div>
                         </header>
@@ -58,7 +58,7 @@
                                 'place-content-center' => $label_type === 'stored_at_height' || $label_type === 'color_stored_at_height'
                             ])>
                                 <p @class([
-                                    'leading-none text-center ' . $highlight_classes,
+                                    'leading-none text-center font-black ' . $highlight_classes,
                                     'text-5xl' => $label_type === 'color' || $label_type === 'tub_or_nally_bin',
                                     'text-7xl' => $label_type === 'stored_at_height' || $label_type === 'color_stored_at_height',
                                 ])>
@@ -66,7 +66,7 @@
                                 </p>
                                 @if (($product['subtitle'] ?? '') !== '')
                                     <p @class([
-                                        'leading-none text-center mt-2 ' . $highlight_classes,
+                                        'leading-none text-center mt-2 font-black ' . $highlight_classes,
                                         'text-3xl' => $label_type === 'tub_or_nally_bin',
                                         'text-5xl' => $label_type === 'color' || $label_type === 'stored_at_height' || $label_type === 'color_stored_at_height',
                                     ])>
@@ -89,7 +89,7 @@
                         <footer class="grid grid-cols-3 gap-2">
                             <div class="invisible w-full"></div>
                             <div class="box-content flex flex-col justify-end col-span-2 border-2 border-black p-4 relative before:absolute before:bg-white before:w-0.5 before:h-2 before:-top-2.5 before:-left-0.5 before:z-20">
-                                <div class="flex items-center justify-end gap-2">
+                                <div class="flex items-center justify-end gap-2 font-black">
                                     <p class="uppercase text-[18px]">Tub / Nally</p>
                                     <span class="border-2 border-black w-14 aspect-square"></span>
                                     <p class="uppercase text-[18px]">of</p>

@@ -45,6 +45,10 @@ use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'is_enabled'])->group(function () {
+    Route::get('/label-test', function () {
+        return view('pdf/product-label-ops-inventory-group');
+    });
+
     Route::get('change-password', ChangePasswordController::class)->name('change-password');
     Route::post('change-password', PasswordStoreController::class)->name('change-password.store');
 
