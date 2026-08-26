@@ -15,6 +15,14 @@ export default function ProductsLabelsCreate() {
     const [generateForOpsInventoryGroup, setGenerateForOpsInventoryGroup] = useState(false);
     const hasProductsWithNoCustomFields = products.some(productHasNoCustomFields);
 
+    const handleGenerateForOpsInventoryGroupChange = (checked: boolean) => {
+        setGenerateForOpsInventoryGroup(checked);
+
+        if (products.length > 0) {
+            setProducts([]);
+        }
+    };
+
     const handleProductSearchSelectChange = (option: ProductOption | null) => {
         if (option) {
             setProducts(prevProducts => {
@@ -84,7 +92,7 @@ export default function ProductsLabelsCreate() {
                         processing={processing}
                         disabled={products.length === 0}
                         checked={generateForOpsInventoryGroup}
-                        onCheckedChange={setGenerateForOpsInventoryGroup}
+                        onCheckedChange={handleGenerateForOpsInventoryGroupChange}
                         onGenerate={handleGenerateLabels}
                     />
                 </div>
@@ -93,7 +101,7 @@ export default function ProductsLabelsCreate() {
                 processing={processing}
                 disabled={products.length === 0}
                 checked={generateForOpsInventoryGroup}
-                onCheckedChange={setGenerateForOpsInventoryGroup}
+                onCheckedChange={handleGenerateForOpsInventoryGroupChange}
                 onGenerate={handleGenerateLabels}
             />
         </>
