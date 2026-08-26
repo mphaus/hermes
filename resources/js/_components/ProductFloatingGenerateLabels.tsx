@@ -1,12 +1,24 @@
 import { Printer, RefreshCw } from "lucide-react";
 
-export default function ProductFloatingGenerateLabels({ processing, disabled, onGenerate }: {
+export default function ProductFloatingGenerateLabels({ processing, disabled, checked, onCheckedChange, onGenerate }: {
     processing?: boolean;
     disabled?: boolean;
+    checked?: boolean;
+    onCheckedChange?: (checked: boolean) => void;
     onGenerate?: () => void;
 }) {
     return (
         <div className="fixed z-10 inset-x-4 bottom-4 md:hidden">
+            <label className="label whitespace-normal text-xs">
+                <input
+                    type="checkbox"
+                    className="checkbox checkbox-sm"
+                    checked={checked ?? false}
+                    onChange={event => onCheckedChange?.(event.target.checked)}
+                />
+                <span>{'Generate labels for products in the OPS Inventory group'}</span>
+            </label>
+            <hr className="my-4" />
             <button
                 type="button" className="btn btn-primary btn-lg btn-block"
                 disabled={disabled || processing}

@@ -12,6 +12,7 @@ export default function ProductsLabelsCreate() {
     const { title, errors } = usePage<SharedData>().props;
     const [products, setProducts] = useState<Product[]>([]);
     const [processing, setProcessing] = useState(false);
+    const [generateForOpsInventoryGroup, setGenerateForOpsInventoryGroup] = useState(false);
     const hasProductsWithNoCustomFields = products.some(productHasNoCustomFields);
 
     const handleProductSearchSelectChange = (option: ProductOption | null) => {
@@ -82,6 +83,8 @@ export default function ProductsLabelsCreate() {
                     <ProductGenerateLabels
                         processing={processing}
                         disabled={products.length === 0}
+                        checked={generateForOpsInventoryGroup}
+                        onCheckedChange={setGenerateForOpsInventoryGroup}
                         onGenerate={handleGenerateLabels}
                     />
                 </div>
@@ -89,6 +92,8 @@ export default function ProductsLabelsCreate() {
             <ProductFloatingGenerateLabels
                 processing={processing}
                 disabled={products.length === 0}
+                checked={generateForOpsInventoryGroup}
+                onCheckedChange={setGenerateForOpsInventoryGroup}
                 onGenerate={handleGenerateLabels}
             />
         </>
