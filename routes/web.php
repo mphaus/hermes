@@ -44,9 +44,16 @@ use App\Livewire\UploadLogsShow;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Support\Facades\Route;
 
+use function Spatie\LaravelPdf\Support\pdf;
+use Spatie\LaravelPdf\Enums\Format;
+
 Route::middleware(['auth', 'is_enabled'])->group(function () {
     Route::get('/label-test', function () {
-        return view('pdf/product-label-ops-inventory-group');
+        return pdf()
+            ->view('pdf.product-label-ops-inventory-group')
+            ->margins(top: 11, right: 20, bottom: 11, left: 20)
+            ->format(Format::A4)
+            ->name('test-name.pdf');
     });
 
     Route::get('change-password', ChangePasswordController::class)->name('change-password');
