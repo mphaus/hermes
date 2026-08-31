@@ -3,10 +3,11 @@ import ProductListItem from "./ProductListItem";
 import ProductListClearConfirmDialog from "./ProductListClearConfirmDialog";
 import { useState } from "react";
 
-export default function ProductList({ products, onClear, onRemove }: {
+export default function ProductList({ products, onClear, onRemove, ignoreMissingCustomFields }: {
     products: Product[];
     onClear: () => void;
     onRemove?: (productId: number) => void;
+    ignoreMissingCustomFields?: boolean;
 }) {
     const [isClearConfirmDialogOpen, setIsClearConfirmDialogOpen] = useState(false);
 
@@ -28,6 +29,7 @@ export default function ProductList({ products, onClear, onRemove }: {
                         key={product.id}
                         product={product}
                         onRemove={onRemove}
+                        ignoreMissingCustomFields={ignoreMissingCustomFields}
                     />
                 ))}
             </ul>

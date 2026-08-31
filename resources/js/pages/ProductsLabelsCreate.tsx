@@ -14,7 +14,7 @@ export default function ProductsLabelsCreate() {
     const [products, setProducts] = useState<Product[]>([]);
     const [processing, setProcessing] = useState(false);
     const [generateForOpsInventoryGroup, setGenerateForOpsInventoryGroup] = useState(false);
-    const hasProductsWithNoCustomFields = products.some(productHasNoCustomFields);
+    const hasProductsWithNoCustomFields = !generateForOpsInventoryGroup && products.some(productHasNoCustomFields);
 
     const productSearchParams = {
         'per_page': 20,
@@ -89,6 +89,7 @@ export default function ProductsLabelsCreate() {
                                 products={products}
                                 onClear={() => setProducts([])}
                                 onRemove={handleRemoveProduct}
+                                ignoreMissingCustomFields={generateForOpsInventoryGroup}
                             />
                         </div>
                     ) : (
