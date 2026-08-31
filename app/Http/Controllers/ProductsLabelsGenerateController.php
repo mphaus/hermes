@@ -20,6 +20,8 @@ class ProductsLabelsGenerateController extends Controller
 
         ['products' => $products, 'generate_for_ops_inventory_group' => $generate_for_ops_inventory_group] = $validated;
 
+        dd($products, $generate_for_ops_inventory_group);
+
         $products = collect($products)
             ->filter(fn(array $product): bool => $this->productHasUsableCustomFields($product))
             ->map(function (array $product) {

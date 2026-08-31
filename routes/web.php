@@ -39,7 +39,7 @@ use App\Livewire\DiscussionsCreate;
 use App\Livewire\DiscussionsEdit;
 use App\Livewire\JobsIndex;
 use App\Livewire\JobsShow;
-use App\Livewire\QetIndex;
+// use App\Livewire\QetIndex;
 use App\Livewire\UploadLogsShow;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Support\Facades\Route;

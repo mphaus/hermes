@@ -42,6 +42,9 @@ class GenerateProductLabelsRequest extends FormRequest
             $rules['products.*.custom_fields.nally_bin_storage'] = ['present', 'nullable', 'string', Rule::in(['Yes', 'No'])];
             $rules['products.*.custom_fields.nally_bin_storage_stored_at_height'] = ['present', 'nullable', 'string', Rule::in(['Yes', 'No'])];
             $rules['products.*.custom_fields.tub_storage'] = ['present', 'nullable', 'string', Rule::in(['Yes', 'No'])];
+        } else {
+            $rules['products.*.custom_fields'] = ['required', 'array'];
+            $rules['products.*.custom_fields.stock_unit'] = ['present', 'nullable', 'string'];
         }
 
         return $rules;

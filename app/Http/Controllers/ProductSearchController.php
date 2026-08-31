@@ -47,6 +47,7 @@ class ProductSearchController extends Controller
                     'nally_bin_storage' => $product['custom_fields']['nally_bin_storage'] ?? '',
                     'nally_bin_storage_stored_at_height' => $product['custom_fields']['nally_bin_storage_stored_at_height'] ?? '',
                     'tub_storage' => $product['custom_fields']['tub_storage'] ?? '',
+                    'stock_unit' => $product['custom_fields']['stock_unit'] ?? '',
                 ],
             ];
         }, $products));
