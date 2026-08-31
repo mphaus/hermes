@@ -138,6 +138,7 @@ return [
         'fault_root_cause_list_id' => env('MPH_FAULT_ROOT_CAUSE_LIST_ID'),
         'notification_mail_address' => env('MPH_NOTIFICATION_MAIL_ADDRESS'),
         'service_manager_mail_address' => env('MPH_SERVICE_MANAGER_MAIL_ADDRESS'),
+        'ops_inventory_group_id' => env('MPH_OPS_INVENTORY_GROUP_ID'),
     ],
 
     'recaptcha_v3' => [

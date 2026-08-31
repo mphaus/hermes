@@ -27,6 +27,7 @@ class GenerateProductLabelsRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'generate_for_ops_inventory_group' => ['required', 'boolean'],
             'products' => ['required', 'array', 'min:1'],
             'products.*' => ['required', 'array'],
             'products.*.id' => ['required', 'numeric'],
