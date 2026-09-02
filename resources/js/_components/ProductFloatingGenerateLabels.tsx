@@ -8,7 +8,7 @@ export default function ProductFloatingGenerateLabels({ processing, disabled, ch
     onGenerate?: () => void;
 }) {
     return (
-        <div className="fixed z-10 inset-x-4 bottom-4 md:hidden">
+        <div className="fixed z-10 inset-x-3 bottom-3 md:hidden bg-white shadow-md p-4 rounded-md">
             <label className="label whitespace-normal text-xs">
                 <input
                     type="checkbox"
