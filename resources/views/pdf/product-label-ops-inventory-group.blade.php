@@ -11,26 +11,31 @@
 </head>
 
 <body class="font-aptos">
-    @php
-        $range = range(0, 13);
-    @endphp
-
-    <div class="grid grid-cols-2 gap-y-[5mm] gap-x-[10mm]">
-        @foreach ($range as $chunk)
-            <div class="flex gap-2 p-3 w-[80mm] h-[35mm] border border-black">
-                <div class="aspect-square border border-black shrink-0"></div>
-                <div class="flex flex-col justify-between text-sm">
-                    <p>Product really long title</p>
-                    <p class="font-black">Product really long subtitle</p>
-                    <div class="flex items-baseline gap-2">
-                        <p class="uppercase">Stock unit:</p>
-                        <p>Box of 100</p>
+    @foreach ($products->chunk(14) as $product_chunk)
+        <div class="grid grid-cols-2 gap-y-[5mm] gap-x-[10mm]">
+            @foreach ($product_chunk as $product)
+            @php
+                $qr = Quar::size(106)->generate("https://mphaustralia.current-rms.com/products/{$product['id']}");
+            @endphp
+                <div class="flex gap-2 p-3 w-[80mm] h-[35mm]">
+                    <div class="aspect-square shrink-0">
+                        {{ $qr }}
+                    </div>
+                    <div class="flex flex-col justify-between text-xs">
+                        <p>{{ $product['title'] }}</p>
+                        <p class="font-black">{{ $product['subtitle'] }}</p>
+                        <div class="flex items-baseline gap-2">
+                            <p class="uppercase">Stock unit:</p>
+                            <p>{{ $product['stock_unit'] }}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-        @endforeach
-    </div>
-
+            @endforeach
+        </div>
+        @unless($loop->last)
+            @pageBreak
+        @endunless
+    @endforeach
 </body>
 
 </html>
