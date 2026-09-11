@@ -21,11 +21,11 @@
                     <div class="aspect-square shrink-0">
                         {{ $qr }}
                     </div>
-                    <div class="flex flex-col justify-between text-xs">
+                    <div class="flex flex-col justify-between text-[10pt] leading-tight">
                         <p>{{ $product['title'] }}</p>
                         <p class="font-black">{{ $product['subtitle'] }}</p>
-                        <div class="flex items-baseline gap-2">
-                            <p class="uppercase">Stock unit:</p>
+                        <div class="flex items-baseline justify-between">
+                            <p class="uppercase shrink-0">Stock unit:</p>
                             <p>{{ $product['stock_unit'] }}</p>
                         </div>
                     </div>
