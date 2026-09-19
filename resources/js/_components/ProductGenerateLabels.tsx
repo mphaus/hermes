@@ -1,8 +1,10 @@
-import { Printer, RefreshCw } from "lucide-react";
+import { ChessKing, Printer, RefreshCw } from "lucide-react";
 
-export default function ProductGenerateLabels({ processing, disabled, onGenerate }: {
+export default function ProductGenerateLabels({ processing, disabled, checked, onCheckedChange, onGenerate }: {
     processing?: boolean;
     disabled?: boolean;
+    checked?: boolean;
+    onCheckedChange?: (checked: boolean) => void;
     onGenerate?: () => void;
 }) {
     return (
@@ -16,9 +18,19 @@ export default function ProductGenerateLabels({ processing, disabled, onGenerate
                     <li>{'Nally bin labels - Stored at height'}</li>
                     <li>{'Colour-coded labels'}</li>
                 </ul>
+                <hr className="my-4" />
+                <label className="label whitespace-normal">
+                    <input
+                        type="checkbox"
+                        className="checkbox"
+                        checked={checked ?? false}
+                        onChange={event => onCheckedChange?.(event.target.checked)}
+                    />
+                    <span>{'Generate labels for products in the OPS Inventory group'}</span>
+                </label>
                 <button
                     type="button"
-                    className="mt-4 btn btn-primary btn-block"
+                    className="btn btn-primary btn-block mt-4"
                     disabled={disabled || processing}
                     onClick={onGenerate}
                 >

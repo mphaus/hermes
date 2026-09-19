@@ -26,19 +26,28 @@ class GenerateProductLabelsRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
+            'generate_for_ops_inventory_group' => ['required', 'boolean'],
             'products' => ['required', 'array', 'min:1'],
             'products.*' => ['required', 'array'],
             'products.*.id' => ['required', 'numeric'],
             'products.*.name' => ['required', 'string'],
             'products.*.icon' => ['required', 'array'],
             'products.*.icon.url' => ['present', 'nullable', 'string'],
-            'products.*.custom_fields' => ['required', 'array'],
-            'products.*.custom_fields.colour_coded_storage' => ['present', 'nullable', 'string', Rule::in(['Yes', 'No'])],
-            'products.*.custom_fields.nally_bin_storage' => ['present', 'nullable', 'string', Rule::in(['Yes', 'No'])],
-            'products.*.custom_fields.nally_bin_storage_stored_at_height' => ['present', 'nullable', 'string', Rule::in(['Yes', 'No'])],
-            'products.*.custom_fields.tub_storage' => ['present', 'nullable', 'string', Rule::in(['Yes', 'No'])],
         ];
+
+        if (!$this->boolean('generate_for_ops_inventory_group')) {
+            $rules['products.*.custom_fields'] = ['required', 'array'];
+            $rules['products.*.custom_fields.colour_coded_storage'] = ['present', 'nullable', 'string', Rule::in(['Yes', 'No'])];
+            $rules['products.*.custom_fields.nally_bin_storage'] = ['present', 'nullable', 'string', Rule::in(['Yes', 'No'])];
+            $rules['products.*.custom_fields.nally_bin_storage_stored_at_height'] = ['present', 'nullable', 'string', Rule::in(['Yes', 'No'])];
+            $rules['products.*.custom_fields.tub_storage'] = ['present', 'nullable', 'string', Rule::in(['Yes', 'No'])];
+        } else {
+            $rules['products.*.custom_fields'] = ['required', 'array'];
+            $rules['products.*.custom_fields.stock_unit'] = ['present', 'nullable', 'string'];
+        }
+
+        return $rules;
     }
 
     public function withValidator(Validator $validator): void

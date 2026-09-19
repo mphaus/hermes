@@ -107,5 +107,6 @@ export type Product = {
         nally_bin_storage: string;
         nally_bin_storage_stored_at_height: string;
         tub_storage: string;
+        stock_unit: string;
     } | null;
 };

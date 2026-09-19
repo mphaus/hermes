@@ -18,54 +18,82 @@ class ProductsLabelsGenerateController extends Controller
     {
         $validated = $request->validated();
 
-        ['products' => $products] = $validated;
+        ['products' => $products, 'generate_for_ops_inventory_group' => $generate_for_ops_inventory_group] = $validated;
 
-        $products = collect($products)
-            ->filter(fn(array $product): bool => $this->productHasUsableCustomFields($product))
-            ->map(function (array $product) {
-                $custom_fields = $product['custom_fields'] ?? [];
+        if ($generate_for_ops_inventory_group) {
+            $products = collect($products)
+                ->filter(function (array $product): bool {
+                    $stock_unit = $product['custom_fields']['stock_unit'] ?? null;
+                    return !$this->isEmptyCustomFieldValue($stock_unit);
+                })
+                ->map(function (array $product): array {
+                    $custom_fields = $product['custom_fields'] ?? [];
+                    $stock_unit = $custom_fields['stock_unit'] ?? '';
 
-                $colour_coded_storage = $custom_fields['colour_coded_storage'] ?? '';
-                $stored_at_height = $custom_fields['nally_bin_storage_stored_at_height'] ?? '';
+                    $full_product_name = $product['name'] ?? '';
+                    $name_parts = explode(' - ', $full_product_name);
+                    $title = $name_parts[0] ?? '';
+                    $subtitle = $name_parts[1] ?? '';
 
-                $label_type = match (true) {
-                    $colour_coded_storage === 'Yes' && in_array($stored_at_height, ['No', ''], true) => 'color',
-                    in_array($colour_coded_storage, ['No', ''], true) && $stored_at_height === 'Yes' => 'stored_at_height',
-                    $colour_coded_storage === 'Yes' && $stored_at_height === 'Yes' => 'color_stored_at_height',
-                    default => 'tub_or_nally_bin',
-                };
+                    return [
+                        'id' => $product['id'],
+                        'title' => $title,
+                        'subtitle' => $subtitle,
+                        'stock_unit' => $stock_unit,
+                    ];
+                })
+                ->values();
+        } else {
+            $products = collect($products)
+                ->filter(fn(array $product): bool => $this->productHasUsableCustomFields($product))
+                ->map(function (array $product) {
+                    $custom_fields = $product['custom_fields'] ?? [];
 
-                $full_product_name = $product['name'] ?? '';
-                $highlight_classes = $label_type === 'color' || $label_type === 'color_stored_at_height'
-                    ? $this->highlightClassesForLabelText($full_product_name)
-                    : '';
+                    $colour_coded_storage = $custom_fields['colour_coded_storage'] ?? '';
+                    $stored_at_height = $custom_fields['nally_bin_storage_stored_at_height'] ?? '';
 
-                $name_parts = explode(' - ', $full_product_name);
-                $title = $name_parts[0] ?? '';
-                $subtitle = $name_parts[1] ?? '';
+                    $label_type = match (true) {
+                        $colour_coded_storage === 'Yes' && in_array($stored_at_height, ['No', ''], true) => 'color',
+                        in_array($colour_coded_storage, ['No', ''], true) && $stored_at_height === 'Yes' => 'stored_at_height',
+                        $colour_coded_storage === 'Yes' && $stored_at_height === 'Yes' => 'color_stored_at_height',
+                        default => 'tub_or_nally_bin',
+                    };
 
-                return [
-                    'id' => $product['id'],
-                    'title' => $title,
-                    'subtitle' => $subtitle,
-                    'icon_url' => $product['icon']['url'] ?? '',
-                    'label_type' => $label_type,
-                    'highlight_classes' => $highlight_classes,
-                ];
-            })->filter(function (array $product) {
-                return $product['label_type'] !== '';
-            })->values();
+                    $full_product_name = $product['name'] ?? '';
+                    $highlight_classes = $label_type === 'color' || $label_type === 'color_stored_at_height'
+                        ? $this->highlightClassesForLabelText($full_product_name)
+                        : '';
+
+                    $name_parts = explode(' - ', $full_product_name);
+                    $title = $name_parts[0] ?? '';
+                    $subtitle = $name_parts[1] ?? '';
+
+                    return [
+                        'id' => $product['id'],
+                        'title' => $title,
+                        'subtitle' => $subtitle,
+                        'icon_url' => $product['icon']['url'] ?? '',
+                        'label_type' => $label_type,
+                        'highlight_classes' => $highlight_classes,
+                    ];
+                })->filter(function (array $product) {
+                    return $product['label_type'] !== '';
+                })->values();
+        }
 
         if ($products->isEmpty()) {
             throw ValidationException::withMessages([
-                'products' => __('The selected products do not match any of the Storage Container Types established in CurrentRMS.'),
+                'products' => __($generate_for_ops_inventory_group
+                    ? 'The selected products do not have a Stock Unit configured in CurrentRMS.'
+                    : 'The selected products do not match any of the Storage Container Types established in CurrentRMS'),
             ]);
         }
 
         $timestamp = now()->timestamp;
-        $file_name = "product-labels-{$timestamp}.pdf";
+        $file_name = $generate_for_ops_inventory_group ? "product-labels-ops-inventory-group-{$timestamp}.pdf" : "product-labels-{$timestamp}.pdf";
+        $view = $generate_for_ops_inventory_group ? 'pdf.product-label-ops-inventory-group' : 'pdf.product-label';
 
-        pdf()
+        $pdf = pdf()
             ->withBrowsershot(function (Browsershot $browsershot) {
                 $browsershot->setNodeBinary(config('app.browsershot.node_binary'));
                 $browsershot->setNpmBinary(config('app.browsershot.npm_binary'));
@@ -74,11 +102,19 @@ class ProductsLabelsGenerateController extends Controller
                     '--allow-file-access-from-files',
                 ]);
             })
-            ->view('pdf.product-label', ['products' => $products])
-            ->landscape()
+            ->view($view, ['products' => $products])
             ->format(Format::A4)
-            ->disk('local')
-            ->save("pdf_files/{$file_name}");
+            ->disk('local');
+
+        if ($generate_for_ops_inventory_group) {
+            $pdf->margins(top: 11, right: 20, bottom: 11, left: 20);
+        }
+
+        if (!$generate_for_ops_inventory_group) {
+            $pdf->landscape();
+        }
+
+        $pdf->save("pdf_files/{$file_name}");
 
         session()->flash('product_labels_download', [
             'url' => route('products.labels.download', ['file' => $file_name]),

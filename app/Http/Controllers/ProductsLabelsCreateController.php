@@ -14,6 +14,7 @@ class ProductsLabelsCreateController extends Controller
     {
         return Inertia::render('ProductsLabelsCreate', [
             'title' => 'Products > Label generation',
+            'ops_inventory_group_id' => config('app.mph.ops_inventory_group_id'),
         ]);
     }
 }

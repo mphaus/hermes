@@ -3,11 +3,12 @@ import productHasNoCustomFields from "@/utils/productHasNoCustomFields";
 import clsx from "clsx";
 import { X } from "lucide-react";
 
-export default function ProductListItem({ product, onRemove }: {
+export default function ProductListItem({ product, onRemove, ignoreMissingCustomFields }: {
     product: Product;
     onRemove?: (productId: number) => void;
+    ignoreMissingCustomFields?: boolean;
 }) {
-    const hasNoCustomFields = productHasNoCustomFields(product);
+    const hasNoCustomFields = !ignoreMissingCustomFields && productHasNoCustomFields(product);
 
     return (
         <li className={clsx({
